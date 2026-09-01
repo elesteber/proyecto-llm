@@ -1,0 +1,58 @@
+﻿[
+  {
+    "texto": "Al guardar un flujo, la plataforma crea automáticamente su configuración, un punto de acceso exclusivo y su documentación.",
+    "cita_textual": "genera automáticamente la configuración ejecutable, un punto de acceso propio para ese flujo y la documentación",
+    "fuente": "Sección 2.10",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "La integración del cliente con el punto de acceso requiere enviar la evidencia en esa misma llamada.",
+    "cita_textual": "El cliente integra ese punto de acceso desde sus sistemas y envía la evidencia en la misma llamada.",
+    "fuente": "Sección 2.10",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "La respuesta del sistema debe entregar el identificador, puntaje, decisión, desglose de señales y un enlace a la auditoría.",
+    "cita_textual": "La respuesta debe contener el identificador del caso, el puntaje, la decisión, el desglose de señales",
+    "fuente": "Sección 2.10",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "Ante tiempos de procesamiento prolongados, el sistema debe aceptar el caso, contestar instantáneamente y notificar el resultado posteriormente.",
+    "cita_textual": "la plataforma debe aceptar el caso, responder de inmediato y avisar el resultado después.",
+    "fuente": "Sección 2.10",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "Los puntos de acceso implementados incluyen mecanismos de autenticación y una restricción de llamadas por tiempo.",
+    "cita_textual": "Cada punto de acceso incorpora autenticación y un límite de llamadas por unidad de tiempo.",
+    "fuente": "Sección 2.10",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "Existe un límite general de operación establecido en mil llamadas por minuto por cada cliente.",
+    "cita_textual": "El límite general es de mil llamadas por minuto por cliente.",
+    "fuente": "Sección 2.10",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "Los ambientes de integración cuentan con un límite específico de cien llamadas por minuto.",
+    "cita_textual": "se especifica un límite de cien llamadas por minuto para los ambientes de integración.",
+    "fuente": "Sección 2.10",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  },
+  {
+    "texto": "El compromiso comercial asume como referencia un tiempo de respuesta promedio de 2,3 segundos por cada caso.",
+    "cita_textual": "2,3 segundos por caso, y esa es la referencia que se está comprometiendo comercialmente.",
+    "fuente": "Sección 2.10",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.10 La interfaz de programación"
+  }
+]

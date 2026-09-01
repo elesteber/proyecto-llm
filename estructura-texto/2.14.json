@@ -1,0 +1,37 @@
+﻿[
+  {
+    "texto": "El modelo comercial se basa en cobrar al éxito por validación efectiva, reduciendo el costo unitario mediante una tarifa escalonada.",
+    "cita_textual": "se cobra por validación efectiva, con una tarifa mensual escalonada según volumen",
+    "fuente": "Sección 2.14",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.14 Medición del uso y facturación"
+  },
+  {
+    "texto": "Se establecen tres tramos mensuales de validación: hasta 2.000, entre 2.000 y 5.000, y más de 5.000.",
+    "cita_textual": "Los tramos definidos son hasta dos mil validaciones mensuales, de dos mil a cinco mil, y sobre cinco mil.",
+    "fuente": "Sección 2.14",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.14 Medición del uso y facturación"
+  },
+  {
+    "texto": "Se requiere que el sistema contabilice las validaciones por cliente y las muestre en tiempo real a ellos y a DPRIME.",
+    "cita_textual": "La plataforma debe llevar el conteo de las validaciones de cada cliente, mostrarlo en tiempo real",
+    "fuente": "Sección 2.14",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.14 Medición del uso y facturación"
+  },
+  {
+    "texto": "Al término de cada período, el sistema debe entregar la información detallada para la emisión de facturas por parte de administración.",
+    "cita_textual": "generar al cierre del período el detalle que administración necesita para emitir la factura.",
+    "fuente": "Sección 2.14",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.14 Medición del uso y facturación"
+  },
+  {
+    "texto": "Únicamente procede el cobro cuando la validación es útil y concluyente; las evidencias ilegibles no procesadas quedan exentas.",
+    "cita_textual": "Un caso que la plataforma no pudo procesar por evidencia ilegible no se cobra.",
+    "fuente": "Sección 2.14",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.14 Medición del uso y facturación"
+  }
+]

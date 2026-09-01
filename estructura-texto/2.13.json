@@ -1,0 +1,51 @@
+﻿[
+  {
+    "texto": "Se ha definido que cada cliente opere como una organización independiente con sus propios usuarios, flujos y datos.",
+    "cita_textual": "Cada cliente es una organización independiente dentro de la plataforma, con sus propios usuarios, flujos",
+    "fuente": "Sección 2.13",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  },
+  {
+    "texto": "Existe la regla estricta de que bajo ninguna circunstancia un cliente puede visualizar la información de otro.",
+    "cita_textual": "Bajo ninguna circunstancia un cliente puede ver información de otro",
+    "fuente": "Sección 2.13",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  },
+  {
+    "texto": "Se requiere que el aislamiento de información entre clientes tenga la capacidad de demostrarse formalmente ante una auditoría.",
+    "cita_textual": "y esa separación debe poder demostrarse ante una auditoría, no solo afirmarse.",
+    "fuente": "Sección 2.13",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  },
+  {
+    "texto": "El sistema necesita establecer permisos que diferencien al menos los roles de operador, diseñador, consultor de indicadores y administrador.",
+    "cita_textual": "los permisos deben distinguir al menos entre quien opera casos, quien diseña flujos, quien consulta",
+    "fuente": "Sección 2.13",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  },
+  {
+    "texto": "La facultad operativa de configurar los umbrales de decisión le corresponde al rol que diseña los flujos.",
+    "cita_textual": "La configuración de los umbrales de decisión corresponde a quien diseña flujos.",
+    "fuente": "Sección 2.13",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  },
+  {
+    "texto": "El mecanismo de acceso establece que los usuarios se autentican usando credenciales administradas por la misma plataforma.",
+    "cita_textual": "Los usuarios de los clientes se autentican con las credenciales que administra la propia plataforma.",
+    "fuente": "Sección 2.13",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  },
+  {
+    "texto": "Existe la demanda por parte de clientes grandes de requerir una autenticación federada contra sus directorios corporativos.",
+    "cita_textual": "Los clientes de mayor tamaño exigen federar la autenticación contra su propio directorio corporativo.",
+    "fuente": "Sección 2.13",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.13 Cuentas, perfiles y aislamiento"
+  }
+]

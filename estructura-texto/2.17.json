@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "Se requiere que la plataforma provea observabilidad sobre el estado de componentes, casos en cola, tiempos, errores y consumo.",
+    "cita_textual": "exige que la plataforma se pueda observar: estado de cada componente, casos en cola",
+    "fuente": "Sección 2.17",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.17 Operación del servicio"
+  },
+  {
+    "texto": "Ante la caída de un servicio externo, está prohibido que la plataforma simplemente se limite a fallar.",
+    "cita_textual": "Cuando un servicio externo del que depende el motor deja de responder, la plataforma no puede limitarse a fallar.",
+    "fuente": "Sección 2.17",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.17 Operación del servicio"
+  },
+  {
+    "texto": "Si un servicio externo no responde, el sistema debe reintentar, aceptar y encolar casos, y notificar la demora.",
+    "cita_textual": "Debe reintentar con criterio, seguir aceptando casos, mantenerlos en cola y avisar",
+    "fuente": "Sección 2.17",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.17 Operación del servicio"
+  },
+  {
+    "texto": "La política de servicio establece que el soporte a los clientes se entrega durante horario hábil.",
+    "cita_textual": "El soporte a los clientes se presta en horario hábil",
+    "fuente": "Sección 2.17",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.17 Operación del servicio"
+  },
+  {
+    "texto": "Se ha definido la existencia de un canal de emergencia exclusivo para incidentes que detengan la operación.",
+    "cita_textual": "con un canal de emergencia para incidentes que detengan la operación.",
+    "fuente": "Sección 2.17",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.17 Operación del servicio"
+  },
+  {
+    "texto": "Los tiempos de respuesta acordados según cada plan se establecerán formalmente en el contrato marco.",
+    "cita_textual": "Los tiempos de respuesta comprometidos según el plan contratado se definirán en el contrato marco.",
+    "fuente": "Sección 2.17",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.17 Operación del servicio"
+  }
+]

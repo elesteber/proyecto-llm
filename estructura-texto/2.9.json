@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "Las capacidades del motor se estructuran y ofrecen como módulos independientes que se activan por cada cliente.",
+    "cita_textual": "Las capacidades del motor se ofrecen como módulos independientes que se activan por cliente",
+    "fuente": "Sección 2.9",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.9 Los módulos de análisis"
+  },
+  {
+    "texto": "Se requiere de un panel que visualice los módulos activos, indicando su versión y configuración respectiva.",
+    "cita_textual": "Debe existir un panel donde se vea qué módulos están activos, en qué versión y con qué configuración.",
+    "fuente": "Sección 2.9",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.9 Los módulos de análisis"
+  },
+  {
+    "texto": "El sistema debe permitir que los clientes que ya están operando obtengan nuevas capacidades sin modificar su integración.",
+    "cita_textual": "que un cliente que ya está operando reciba capacidades nuevas sin cambiar su integración.",
+    "fuente": "Sección 2.9",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.9 Los módulos de análisis"
+  },
+  {
+    "texto": "Ningún módulo nuevo o actualizado tiene permitido modificar el comportamiento de un flujo en producción sin autorización explícita.",
+    "cita_textual": "no puede alterar el comportamiento de un flujo que ya está en producción sin que alguien lo autorice",
+    "fuente": "Sección 2.9",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.9 Los módulos de análisis"
+  },
+  {
+    "texto": "La plataforma debe hacer posible la conexión con sistemas externos a través de conectores que funcionen como bloques.",
+    "cita_textual": "La plataforma debe permitir además conectar sistemas externos",
+    "fuente": "Sección 2.9",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.9 Los módulos de análisis"
+  },
+  {
+    "texto": "Los conectores hacia sistemas externos deben funcionar y comportarse como un bloque adicional dentro del flujo.",
+    "cita_textual": "mediante conectores que se comporten como un bloque más dentro del flujo.",
+    "fuente": "Sección 2.9",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.9 Los módulos de análisis"
+  }
+]

@@ -1,0 +1,100 @@
+﻿[
+  {
+    "texto": "El proceso manual actual requiere tres minutos para revisar un caso simple y veinte minutos para uno complicado.",
+    "cita_textual": "Un caso simple son tres minutos. Uno complicado, veinte.",
+    "fuente": "ENT5 [00:01:00]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Actualmente, un analista liquidador revisa un volumen de entre setenta y noventa casos al día.",
+    "cita_textual": "Reviso entre setenta y noventa casos al día.",
+    "fuente": "ENT5 [00:01:00]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "En la operativa diaria, el analista invierte la mitad de su tiempo solamente encontrando los datos dentro de los documentos.",
+    "cita_textual": "Yo paso la mitad del tiempo encontrando el dato y la otra mitad decidiendo.",
+    "fuente": "ENT5 [00:02:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Se necesita que el sistema tenga la capacidad de subrayar visualmente la ubicación exacta de cada dato.",
+    "cita_textual": "Si la máquina me subraya dónde está cada cosa, me cambia el día.",
+    "fuente": "ENT5 [00:02:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Se requiere que la plataforma especifique claramente la razón por la cual un caso es derivado y no solamente un puntaje.",
+    "cita_textual": "Necesito la razón, no el número.",
+    "fuente": "ENT5 [00:05:07]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Existe una regla de revisión donde, ante una foto defectuosa, se solicita nuevamente, pero ante una mentira se envía a investigación.",
+    "cita_textual": "en uno le pido la foto de nuevo, en el otro lo mando a investigación.",
+    "fuente": "ENT5 [00:05:07]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Marco tiene la preferencia de poder visualizar exactamente la información que la máquina logró leer de cada documento.",
+    "cita_textual": "Yo quiero poder ver qué leyó de cada documento.",
+    "fuente": "ENT5 [00:07:36]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "El sistema debe permitir hacer clic en un dato extraído y navegar automáticamente al fragmento original del documento.",
+    "cita_textual": "quiero ver dónde lo leyó, apretar ahí y que me lleve al pedazo de la boleta.",
+    "fuente": "ENT5 [00:07:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Marco opina que la responsabilidad ante un error por confiar en un dato mal leído recae exclusivamente en el analista humano.",
+    "cita_textual": "Si me equivoco confiando en un dato mal leído, el que responde soy yo, no el sistema.",
+    "fuente": "ENT5 [00:07:36]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Marco espera contar con la capacidad de marcar y corregir los datos mal leídos directamente en la interfaz de la plataforma.",
+    "cita_textual": "Quiero poder decirlo ahí mismo. Marcar \"esto está mal leído\" y corregirlo.",
+    "fuente": "ENT5 [00:10:05]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Existe el problema de que las correcciones manuales realizadas en el sistema de siniestros piloto no son registradas por la plataforma.",
+    "cita_textual": "uno corrige en el sistema de siniestros y la plataforma nunca se entera.",
+    "fuente": "ENT5 [00:10:05]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Marco anticipa que si comienzan a ser medidos por casos por hora, él y todos los analistas simplemente aceptarán la sugerencia de la máquina mecánicamente.",
+    "cita_textual": "yo voy a apretar aceptar. Todos lo van a hacer.",
+    "fuente": "ENT5 [00:12:45]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Marco prefiere no ver el puntaje antes de analizar el caso, ya que esto lo predispone a aprobar la solicitud.",
+    "cita_textual": "preferiría no verlo, o verlo después. Si me muestran ochenta y siete antes, yo ya estoy inclinado a aprobar.",
+    "fuente": "ENT5 [00:15:16]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT5"
+  },
+  {
+    "texto": "Marco opina que el sistema debería priorizar mostrar la evidencia y las alertas, dejando el puntaje total para el final.",
+    "cita_textual": "Muéstrenme la evidencia y las alertas, y el número al final.",
+    "fuente": "ENT5 [00:15:16]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT5"
+  }
+]

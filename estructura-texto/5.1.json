@@ -1,0 +1,58 @@
+﻿[
+  {
+    "texto": "Se ha definido que el proyecto no contempla construir un sistema de gestión de siniestros, de admisión ni de originación de créditos.",
+    "cita_textual": "No se construye un sistema de gestión de siniestros, de admisión ni de originación de créditos.",
+    "fuente": "Sección 5.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "El sistema operará entregando decisiones a los sistemas del cliente sin llegar a reemplazarlos.",
+    "cita_textual": "MIRA entrega decisiones a los sistemas del cliente; no reemplaza esos sistemas.",
+    "fuente": "Sección 5.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "Existe la regla de no construir modelos propios de reconocimiento desde cero si existen capacidades disponibles que lo resuelvan.",
+    "cita_textual": "No se construyen modelos propios de reconocimiento desde cero cuando existan capacidades disponibles",
+    "fuente": "Sección 5.1",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "Se ha decidido excluir de esta etapa la creación de una aplicación móvil para la captura de evidencia.",
+    "cita_textual": "No forma parte de esta etapa la aplicación móvil para captura de evidencia por parte del asegurado",
+    "fuente": "Sección 5.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "El diseño de la plataforma requiere tener la capacidad de permitir la incorporación de una aplicación móvil en el futuro.",
+    "cita_textual": "aunque el diseño debe permitir incorporarla más adelante.",
+    "fuente": "Sección 5.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "El alcance de la plataforma no contempla incluir la facturación electrónica ni la contabilización.",
+    "cita_textual": "No se incluye la facturación electrónica ni la contabilización:",
+    "fuente": "Sección 5.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "La plataforma está diseñada para entregar el detalle del consumo, dejando que la emisión ocurra de forma externa.",
+    "cita_textual": "la plataforma entrega el detalle de consumo y la emisión ocurre fuera de ella.",
+    "fuente": "Sección 5.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  },
+  {
+    "texto": "Está decidido que no se llevará a cabo la migración de los casos que fueron procesados en pilotos anteriores.",
+    "cita_textual": "No se incluye la migración de los casos procesados en los pilotos anteriores.",
+    "fuente": "Sección 5.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.1 Lo que no forma parte de este proyecto"
+  }
+]

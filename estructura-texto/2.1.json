@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "MIRA operará como una plataforma de inteligencia artificial multimodal que transforma evidencias digitales en decisiones empresariales automatizadas y trazables.",
+    "cita_textual": "plataforma de inteligencia artificial multimodal que convierte evidencia digital en decisiones empresariales automatizadas y trazables.",
+    "fuente": "Sección 2.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.1 Qué es MIRA"
+  },
+  {
+    "texto": "La plataforma está diseñada para aceptar y procesar como evidencia documentos, fotografías, videos, archivos de audio o códigos impresos.",
+    "cita_textual": "La evidencia puede ser un documento, una fotografía, un video, un archivo de audio o un código impreso;",
+    "fuente": "Sección 2.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.1 Qué es MIRA"
+  },
+  {
+    "texto": "Los tipos de decisión que el sistema emitirá abarcan aprobar reembolsos, rechazar solicitudes, derivar casos o pedir reenvíos por ilegibilidad.",
+    "cita_textual": "la decisión puede ser aprobar un reembolso, rechazar una solicitud, derivar un caso a un especialista",
+    "fuente": "Sección 2.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.1 Qué es MIRA"
+  },
+  {
+    "texto": "El mecanismo operativo de la plataforma consiste en cruzar la información de distintas piezas de evidencia en lugar de analizarlas aisladamente.",
+    "cita_textual": "MIRA no analiza cada pieza de evidencia por separado. El valor está en el cruce",
+    "fuente": "Sección 2.1",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.1 Qué es MIRA"
+  },
+  {
+    "texto": "Se requiere que el sistema entregue, por cada caso evaluado, un resultado, su nivel de confianza y la evidencia que los sustenta.",
+    "cita_textual": "MIRA debe entregar, para cada caso, tres cosas: un resultado, un nivel de confianza en ese resultado, y la evidencia",
+    "fuente": "Sección 2.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.1 Qué es MIRA"
+  },
+  {
+    "texto": "Existe la condición determinante de que la plataforma no podrá ser utilizada comercialmente si es incapaz de explicar sus decisiones.",
+    "cita_textual": "Si la plataforma no puede explicar por qué decidió lo que decidió, en nuestros mercados no se puede usar.",
+    "fuente": "Sección 2.1",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.1 Qué es MIRA"
+  }
+]

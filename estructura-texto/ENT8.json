@@ -1,0 +1,107 @@
+﻿[
+  {
+    "texto": "El sistema actual de facturación mediante planilla manual no es escalable para veinte clientes ni defendible ante reclamos.",
+    "cita_textual": "Con veinte clientes es imposible, y además no tengo cómo defenderlo si un cliente reclama el número.",
+    "fuente": "ENT8 [00:00:56]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Según la propuesta comercial, únicamente se cobra si la plataforma toma la decisión y resuelve el caso por sí sola.",
+    "cita_textual": "si la plataforma resuelve el caso sola, se cobra.",
+    "fuente": "ENT8 [00:02:36]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "La propuesta comercial establece que no hay cobro si el caso termina siendo resuelto en el escritorio de un analista.",
+    "cita_textual": "Si el caso termina en el escritorio de un analista de ellos, la plataforma no decidió",
+    "fuente": "ENT8 [00:02:36]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Valentina señala que el gerente general considera que se debe cobrar por el simple hecho de que hubo procesamiento.",
+    "cita_textual": "Él dice que hubo procesamiento y que el procesamiento se cobra.",
+    "fuente": "ENT8 [00:04:46]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Es necesario resolver la definición de qué constituye una validación antes de programar el módulo de consumo del sistema.",
+    "cita_textual": "Esto hay que resolverlo antes de escribir el módulo de consumo, porque el sistema tiene que contar",
+    "fuente": "ENT8 [00:04:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Valentina opina que la reevaluación de un caso con evidencia nueva debería considerarse y cobrarse como dos validaciones.",
+    "cita_textual": "Yo diría dos, porque hubo dos análisis.",
+    "fuente": "ENT8 [00:07:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Valentina anticipa que el cliente argumentará que una reevaluación equivale a una sola validación por tratarse de un único siniestro.",
+    "cita_textual": "El cliente va a decir una, porque es un solo siniestro.",
+    "fuente": "ENT8 [00:07:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Se requiere que exista una definición escrita sobre cómo contabilizar las reevaluaciones antes de iniciar la marcha blanca.",
+    "cita_textual": "Necesitamos una definición escrita antes de la marcha blanca y no después de la primera factura.",
+    "fuente": "ENT8 [00:07:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Valentina considera que detectar y notificar al cliente que una evidencia es ilegible es un servicio prestado.",
+    "cita_textual": "para mí eso es un servicio prestado: le dijimos al cliente que el documento no servía.",
+    "fuente": "ENT8 [00:10:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "La propuesta formal dicta que los casos que la plataforma no pudo procesar quedan exentos de cobro.",
+    "cita_textual": "en la propuesta quedó escrito que no se cobra lo que no se pudo procesar.",
+    "fuente": "ENT8 [00:10:06]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Se requiere un contador en línea detallado por caso, mostrando el criterio aplicado, para que el cliente lo visualice.",
+    "cita_textual": "Un contador confiable, visible para el cliente en línea, con el detalle caso por caso y con el criterio",
+    "fuente": "ENT8 [00:12:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "El sistema debe permitir que el cliente y administración vean simultáneamente el mismo número de validaciones en todo momento.",
+    "cita_textual": "Que el cliente pueda mirar el mismo número que yo miro, cuando quiera.",
+    "fuente": "ENT8 [00:12:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "El modelo de precios establece tramos definidos hasta llegar a un volumen de diez mil validaciones al mes.",
+    "cita_textual": "Los tramos están definidos hasta diez mil validaciones mensuales",
+    "fuente": "ENT8 [00:15:16]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "Existe una condición comercial definida para el tramo de diez mil o más validaciones, pero carece de tarifa asignada.",
+    "cita_textual": "hay un tramo que dice \"diez mil o más\" sin precio.",
+    "fuente": "ENT8 [00:15:16]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT8"
+  },
+  {
+    "texto": "De acuerdo con los volúmenes declarados, el cliente piloto se ubicará en el tramo mayor a diez mil validaciones.",
+    "cita_textual": "Ese es el tramo en el que va a caer el cliente piloto, según los volúmenes que ellos declararon.",
+    "fuente": "ENT8 [00:15:16]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT8"
+  }
+]

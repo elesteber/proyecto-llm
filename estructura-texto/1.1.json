@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "La empresa enfrenta el problema operativo de mantener la costumbre de resolver los casos de manera manual.",
+    "cita_textual": "arrastramos la costumbre de resolver cada caso a mano.",
+    "fuente": "Sección 1.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.1 Quiénes somos"
+  },
+  {
+    "texto": "Actualmente existe el problema de tener que construir soluciones casi desde cero para cada nuevo cliente.",
+    "cita_textual": "llega otro cliente con un problema parecido y volvemos a empezar casi desde cero.",
+    "fuente": "Sección 1.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.1 Quiénes somos"
+  },
+  {
+    "texto": "Existe la necesidad de que la plataforma contemple siempre la revisión de evidencia digital.",
+    "cita_textual": "siempre hay evidencia digital que alguien debe revisar",
+    "fuente": "Sección 1.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.1 Quiénes somos"
+  },
+  {
+    "texto": "El sistema debe contemplar invariablemente la toma de una decisión basada en la evidencia digital analizada.",
+    "cita_textual": "siempre hay una decisión que tomar sobre esa evidencia",
+    "fuente": "Sección 1.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.1 Quiénes somos"
+  },
+  {
+    "texto": "Es un requisito que las decisiones tomadas sobre la evidencia puedan ser justificadas ante terceros.",
+    "cita_textual": "siempre esa decisión debe poder justificarse ante alguien",
+    "fuente": "Sección 1.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.1 Quiénes somos"
+  },
+  {
+    "texto": "El negocio necesita transformar su estructura común en una plataforma para vender capacidad instalada en lugar de horas.",
+    "cita_textual": "Si esa estructura común se convierte en una plataforma, dejamos de vender horas y empezamos a vender capacidad instalada.",
+    "fuente": "Sección 1.1",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.1 Quiénes somos"
+  }
+]

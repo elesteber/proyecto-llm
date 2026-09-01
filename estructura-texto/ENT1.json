@@ -1,0 +1,86 @@
+﻿[
+  {
+    "texto": "La empresa tiene el requerimiento central de proveer una plataforma para que el cliente tome decisiones sobre evidencia y pueda defenderlas.",
+    "cita_textual": "Vendemos la capacidad de que una empresa tome una decisión sobre evidencia y pueda defenderla después.",
+    "fuente": "ENT1 [00:01:16]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "El sistema actual carece de escalabilidad, ya que requiere que un ingeniero sostenga cada piloto operativamente, problema que el proyecto debe solucionar.",
+    "cita_textual": "cada piloto tiene un ingeniero nuestro detrás sosteniéndolo.",
+    "fuente": "ENT1 [00:02:45]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "El modelo comercial define un cobro al éxito, donde el cliente paga por las validaciones útiles y no una licencia.",
+    "cita_textual": "Cobro al éxito. El cliente paga por lo que le sirvió, no por una licencia.",
+    "fuente": "ENT1 [00:04:35]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Se establece comercialmente que se cobra cada caso procesado que resulta en la entrega de un veredicto concluyente.",
+    "cita_textual": "Si nosotros procesamos el caso y entregamos un veredicto, eso se cobra.",
+    "fuente": "ENT1 [00:05:55]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Rodrigo opina que también se deberían cobrar los casos derivados a revisión humana porque requieren procesamiento y análisis del sistema.",
+    "cita_textual": "Ahí también hubo trabajo nuestro. El análisis se hizo igual. Yo diría que se cobra.",
+    "fuente": "ENT1 [00:06:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "La propuesta formal enviada a la aseguradora establece que únicamente se cobra la decisión automática.",
+    "cita_textual": "en la propuesta que le mandamos a la aseguradora quedó escrito que se cobra la decisión automática",
+    "fuente": "ENT1 [00:06:26]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Rodrigo señala que Valentina tiene una interpretación distinta sobre la política de cobro escrita en la propuesta.",
+    "cita_textual": "y la Valentina lo interpreta de otra manera.",
+    "fuente": "ENT1 [00:06:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Se necesita desarrollar funcionalidades para que el cliente opere de manera autónoma, como versionar flujos, revisar casos y entender consumos.",
+    "cita_textual": "Lo que no existe es todo lo que hace que un cliente pueda operar solo",
+    "fuente": "ENT1 [00:08:45]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "El plan formal del proyecto fija la salida a producción para abril del veintisiete.",
+    "cita_textual": "El plan formal dice abril del veintisiete para producción.",
+    "fuente": "ENT1 [00:11:05]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Rodrigo menciona que la aseguradora tiene la expectativa comercial de operar con casos reales a partir de enero.",
+    "cita_textual": "la aseguradora quiere estar operando con casos reales en enero",
+    "fuente": "ENT1 [00:11:05]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Rodrigo tiene la preferencia de mostrar la plataforma funcionando en vivo con un cliente real en una feria a fines de marzo.",
+    "cita_textual": "hay una feria del sector a fines de marzo donde queremos mostrar la plataforma completa funcionando en vivo",
+    "fuente": "ENT1 [00:11:05]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT1"
+  },
+  {
+    "texto": "Rodrigo opina que estaría dispuesto a sacrificar el procesamiento de audio del proyecto debido a que no es utilizado en el piloto.",
+    "cita_textual": "si me preguntas por el piloto, el audio no se usa en ninguna parte.",
+    "fuente": "ENT1 [00:13:35]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT1"
+  }
+]

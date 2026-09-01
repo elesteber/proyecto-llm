@@ -1,0 +1,65 @@
+﻿[
+  {
+    "texto": "La versión actual de la plataforma ya cuenta con un panel para activar y desactivar los módulos de análisis.",
+    "cita_textual": "Tiene un panel donde se activan y desactivan módulos de análisis",
+    "fuente": "Sección 1.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "Se ha construido un diseñador visual que permite armar flujos mediante la acción de arrastrar y conectar bloques.",
+    "cita_textual": "un diseñador visual de flujos con el que se arrastran bloques y se conectan",
+    "fuente": "Sección 1.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "El sistema actual incluye módulos especializados como lectura de códigos, detección de rostros, validación de firmas y análisis de video.",
+    "cita_textual": "un conjunto de módulos especializados —lectura de códigos, detección de rostros, validación de firmas",
+    "fuente": "Sección 1.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "La plataforma permite exportar el flujo diseñado hacia un archivo de configuración que es ejecutable.",
+    "cita_textual": "y una exportación del flujo a un archivo de configuración ejecutable.",
+    "fuente": "Sección 1.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "Existe el problema de que la versión actual del sistema carece de un control de versiones para los flujos.",
+    "cita_textual": "No tiene control de versiones de los flujos",
+    "fuente": "Sección 1.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "La información de trazabilidad se almacena actualmente en registros que no están diseñados para poder ser consultados.",
+    "cita_textual": "la trazabilidad se guarda en registros que nadie diseñó para consultarse",
+    "fuente": "Sección 1.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "Se debe resolver el problema técnico donde los módulos comparten estado de maneras que solo los creadores originales entienden.",
+    "cita_textual": "los módulos comparten estado de maneras que solo conocen las dos personas que los escribieron",
+    "fuente": "Sección 1.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "Existe una deficiencia de rendimiento, el cual empeora de manera impredecible al recibir múltiples casos simultáneos.",
+    "cita_textual": "y el rendimiento se degrada de forma impredecible cuando entran varios casos a la vez.",
+    "fuente": "Sección 1.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  },
+  {
+    "texto": "Se necesita eliminar la dependencia operativa que obliga a tener un ingeniero disponible para sostener el funcionamiento de cada piloto.",
+    "cita_textual": "Cada piloto ha requerido que un ingeniero nuestro esté disponible",
+    "fuente": "Sección 1.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.3 Qué hemos construido hasta ahora"
+  }
+]

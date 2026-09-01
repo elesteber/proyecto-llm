@@ -1,0 +1,72 @@
+﻿[
+  {
+    "texto": "Todo caso evaluado recibe un puntaje de confianza en una escala definida entre 0 y 100.",
+    "cita_textual": "Cada caso analizado recibe un puntaje de confianza entre 0 y 100, que resume las señales obtenidas.",
+    "fuente": "Sección 2.6",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "El sistema incluye el desglose de los componentes del puntaje para explicar qué factores afectaron el resultado final.",
+    "cita_textual": "El puntaje se acompaña de sus componentes, para que quien lo lea entienda qué lo empujó",
+    "fuente": "Sección 2.6",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "La plataforma utiliza umbrales configurables para traducir el puntaje obtenido en una decisión concreta.",
+    "cita_textual": "Ese puntaje se traduce en una decisión mediante umbrales configurables.",
+    "fuente": "Sección 2.6",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "Los casos que obtengan un puntaje sobre 85 serán aprobados de forma automática sin requerir intervención humana.",
+    "cita_textual": "sobre 85, el caso se aprueba automáticamente sin intervención humana;",
+    "fuente": "Sección 2.6",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "Los casos con un puntaje situado entre 60 y 84 deben ser derivados a una revisión asistida por un operador.",
+    "cita_textual": "entre 60 y 84, se deriva a revisión asistida por un operador;",
+    "fuente": "Sección 2.6",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "Los casos evaluados con un puntaje por debajo de 60 son escalados o rechazados debido a su alto riesgo.",
+    "cita_textual": "bajo 60, se escala o se rechaza por riesgo alto.",
+    "fuente": "Sección 2.6",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "Se requiere que el cliente pueda ajustar libremente los rangos de decisión desde el diseñador de flujos, sin depender de DPRIME.",
+    "cita_textual": "Estos rangos deben poder ajustarse por cliente y por tipo de proceso desde el propio diseñador de flujos",
+    "fuente": "Sección 2.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "La aprobación automática procede a partir de los 80 puntos si el caso no presenta ninguna señal de fraude activa.",
+    "cita_textual": "La aprobación automática debe aplicarse a partir de 80 puntos cuando el caso no presente ninguna señal de fraude",
+    "fuente": "Sección 2.6",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "El caso debe ser derivado a revisión si alguna señal individual no alcanza su mínimo propio, sin importar que el puntaje total sea aprobatorio.",
+    "cita_textual": "Cuando el puntaje sea suficiente pero alguna señal individual esté por debajo de su mínimo, el caso debe derivarse",
+    "fuente": "Sección 2.6",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  },
+  {
+    "texto": "Está pendiente acordar con el área de riesgo del cliente piloto cuáles señales llevarán un mínimo propio y sus valores.",
+    "cita_textual": "está pendiente de definir con el área de riesgo del cliente piloto.",
+    "fuente": "Sección 2.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.6 El nivel de confianza y la decisión"
+  }
+]

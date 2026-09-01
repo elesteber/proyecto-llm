@@ -1,0 +1,100 @@
+﻿[
+  {
+    "texto": "Está definido operativamente que la plataforma MIRA cuenta con usuarios pertenecientes a dos organizaciones distintas.",
+    "cita_textual": "MIRA tiene usuarios de dos organizaciones distintas",
+    "fuente": "Sección 2.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "El operador del proceso es la persona designada para recibir los casos que la plataforma no resuelve de forma automática.",
+    "cita_textual": "Es quien recibe lo que MIRA no resolvió sola y quien tiene que decidir",
+    "fuente": "Sección 2.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "El trabajo del operador está normado y condicionado por un tiempo de respuesta que se ha comprometido con los clientes.",
+    "cita_textual": "trabaja contra un tiempo de respuesta comprometido con sus propios clientes",
+    "fuente": "Sección 2.3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Se requiere que la interfaz del operador muestre toda la información necesaria para decidir sin tener que abrir sistemas adicionales.",
+    "cita_textual": "que la pantalla le muestre lo que necesita para decidir sin abrir cinco sistemas más.",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "El supervisor del proceso requiere visualizar métricas de tendencias y anomalías en lugar de acceder a expedientes individuales.",
+    "cita_textual": "Necesita ver tendencias y anomalías, no expedientes.",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Se necesita que el perfil encargado del diseño del flujo pueda armar y modificar validaciones sin depender de desarrolladores.",
+    "cita_textual": "debe poder armar y modificar la secuencia de validaciones sin depender de un desarrollador.",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Se opina que existe incertidumbre sobre la existencia real de un perfil de usuario de negocio capaz de diseñar flujos en todos los clientes.",
+    "cita_textual": "es también la más incierta, porque no está claro que exista en todos los clientes.",
+    "fuente": "Sección 2.3",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Las áreas de cumplimiento, riesgo o auditoría interna tienen formalmente poder de veto sobre el uso de la plataforma.",
+    "cita_textual": "que no usa la plataforma día a día pero que tiene poder de veto sobre ella.",
+    "fuente": "Sección 2.3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "El área de cumplimiento requiere como prioridad que las decisiones tomadas de manera automática por el sistema sean justificables.",
+    "cita_textual": "Le importa que las decisiones automáticas sean justificables",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Se requiere obligatoriamente que el tratamiento de los datos personales procesados se realice en conformidad con la normativa legal.",
+    "cita_textual": "que los datos personales se traten conforme a la normativa",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "El área de cumplimiento requiere que la plataforma genere y conserve un rastro de sus acciones que pueda soportar fiscalizaciones.",
+    "cita_textual": "y que exista un rastro que sobreviva a una fiscalización.",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Está decidido que el equipo de tecnología del cliente es el responsable de conectar MIRA con sus propios sistemas centrales.",
+    "cita_textual": "el equipo de tecnología del cliente, que conecta MIRA con los sistemas centrales",
+    "fuente": "Sección 2.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "El área comercial y de administración requiere obtener el detalle de cuánto utilizó la plataforma cada cliente para facturar correspondientemente.",
+    "cita_textual": "necesita saber cuánto usó cada cliente y qué se le factura.",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  },
+  {
+    "texto": "Se requiere que el diseño de la plataforma contemple e incorpore condiciones derivadas de los derechos que tienen las personas sobre su información.",
+    "cita_textual": "tiene derechos sobre lo que hacemos con su información, y ese hecho impone condiciones al diseño.",
+    "fuente": "Sección 2.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.3 A quiénes sirve"
+  }
+]

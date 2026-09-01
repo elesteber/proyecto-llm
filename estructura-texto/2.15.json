@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "La plataforma requiere emitir avisos cuando se necesite atención humana, evitando generar exceso de notificaciones que sean ignoradas.",
+    "cita_textual": "La plataforma debe avisar cuando algo requiere atención humana, sin convertirse en una fuente de ruido",
+    "fuente": "Sección 2.15",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.15 Notificaciones y alertas"
+  },
+  {
+    "texto": "El sistema debe informar al operador cuando ingresen nuevos casos a su bandeja y cuando estén próximos a vencer sus plazos.",
+    "cita_textual": "Al operador le corresponde saber cuándo entró un caso a su bandeja y cuándo un caso está por vencer",
+    "fuente": "Sección 2.15",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.15 Notificaciones y alertas"
+  },
+  {
+    "texto": "Se requiere alertar al supervisor ante crecimientos inusuales de la bandeja, cambios bruscos en derivaciones o patrones de fraude reiterados.",
+    "cita_textual": "Al supervisor le corresponde enterarse cuando la bandeja crece por sobre lo habitual, cuando la proporción",
+    "fuente": "Sección 2.15",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.15 Notificaciones y alertas"
+  },
+  {
+    "texto": "El equipo de DPRIME necesita recibir alertas sobre errores de procesamiento, degradación de tiempos de respuesta y caídas de servicios externos.",
+    "cita_textual": "Al equipo de DPRIME le corresponde enterarse de los errores de procesamiento, de la degradación de tiempos",
+    "fuente": "Sección 2.15",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.15 Notificaciones y alertas"
+  },
+  {
+    "texto": "Se ha definido que los canales oficiales para notificar al cliente serán el correo electrónico y la propia interfaz.",
+    "cita_textual": "El canal de aviso al cliente es el correo electrónico y la propia interfaz.",
+    "fuente": "Sección 2.15",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.15 Notificaciones y alertas"
+  },
+  {
+    "texto": "Los clientes han expresado la expectativa de recibir una notificación de retorno en su sistema origen mediante una dirección configurable.",
+    "cita_textual": "Los clientes han pedido además notificación al sistema del que provino el caso, mediante una llamada de vuelta",
+    "fuente": "Sección 2.15",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "2.15 Notificaciones y alertas"
+  }
+]

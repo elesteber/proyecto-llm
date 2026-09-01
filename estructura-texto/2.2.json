@@ -1,0 +1,51 @@
+﻿[
+  {
+    "texto": "Se requiere construir una versión productiva de MIRA que los clientes puedan operar de manera autónoma.",
+    "cita_textual": "una plataforma que un cliente pueda operar por su cuenta",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  },
+  {
+    "texto": "El sistema requiere contar con la capacidad de que se pueda comprometer un nivel de servicio sobre él.",
+    "cita_textual": "sobre la que se pueda comprometer un nivel de servicio,",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  },
+  {
+    "texto": "La plataforma debe registrar sus operaciones con el detalle suficiente para poder sostener y respaldar una auditoría.",
+    "cita_textual": "que registre lo que hizo con suficiente detalle como para sostener una auditoría,",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  },
+  {
+    "texto": "Se necesita que el uso de la plataforma pueda ser medido y facturado sin requerir de intervención manual.",
+    "cita_textual": "y cuyo uso pueda medirse y facturarse sin intervención manual.",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  },
+  {
+    "texto": "Se requiere automatizar decisiones para lograr que un gran volumen de casos se resuelva sin revisión humana.",
+    "cita_textual": "Queremos automatizar decisiones, es decir, que muchos casos se resuelvan sin que nadie los mire.",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  },
+  {
+    "texto": "Las decisiones del sistema deben ser confiables, garantizando que los errores de la plataforma sean escasos y detectables.",
+    "cita_textual": "Queremos que las decisiones sean confiables, es decir, que cuando la plataforma se equivoque lo haga poco",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  },
+  {
+    "texto": "Se necesita que las decisiones sean auditables para que terceros puedan reconstruir el razonamiento meses después.",
+    "cita_textual": "Y queremos que sean auditables, es decir, que un tercero pueda reconstruir el razonamiento meses después.",
+    "fuente": "Sección 2.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.2 Objetivo del proyecto"
+  }
+]

@@ -1,0 +1,51 @@
+﻿[
+  {
+    "texto": "Un caso se inicia formalmente en el momento en que se recibe evidencia.",
+    "cita_textual": "Un caso comienza cuando llega evidencia.",
+    "fuente": "Sección 2.4",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  },
+  {
+    "texto": "Se requiere que la evidencia pueda ingresar mediante interfaz de programación, carga manual del operador o carpetas revisadas periódicamente.",
+    "cita_textual": "Debe poder llegar de tres maneras: enviada por otro sistema a través de una interfaz de programación",
+    "fuente": "Sección 2.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  },
+  {
+    "texto": "Un caso puede componerse de una o múltiples evidencias de diferentes tipos que pueden ingresar en distintos momentos.",
+    "cita_textual": "Un caso puede traer una sola pieza de evidencia o muchas, de tipos distintos",
+    "fuente": "Sección 2.4",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  },
+  {
+    "texto": "La plataforma debe ser capaz de asociar nueva información a un caso existente y reevaluarlo sin perder conclusiones previas.",
+    "cita_textual": "La plataforma tiene que entender que eso sigue siendo el mismo caso y volver a evaluarlo",
+    "fuente": "Sección 2.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  },
+  {
+    "texto": "La plataforma está diseñada para aceptar documentos en formato PDF, imágenes estándar, video y archivos de audio.",
+    "cita_textual": "La plataforma acepta documentos en formato PDF, imágenes en los formatos habituales, video y audio.",
+    "fuente": "Sección 2.4",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  },
+  {
+    "texto": "El sistema debe verificar si un archivo es legible y utilizable antes de proceder a analizarlo.",
+    "cita_textual": "Antes de analizar debe verificar que el archivo sea legible y utilizable",
+    "fuente": "Sección 2.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  },
+  {
+    "texto": "Si un archivo no es legible, el sistema debe informar el motivo de forma clara para un usuario no técnico.",
+    "cita_textual": "cuando no lo sea debe decirlo con una razón entendible por una persona que no es técnica",
+    "fuente": "Sección 2.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.4 Cómo entra la evidencia"
+  }
+]

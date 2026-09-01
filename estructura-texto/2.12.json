@@ -1,0 +1,30 @@
+﻿[
+  {
+    "texto": "Se requiere que la plataforma entregue a cada cliente una visión detallada de los indicadores de su propia operación.",
+    "cita_textual": "La plataforma debe entregar, a cada cliente, una visión de su propia operación",
+    "fuente": "Sección 2.12",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.12 Paneles e indicadores"
+  },
+  {
+    "texto": "El equipo opina que el indicador donde el operador contradice a la plataforma es el más importante e incómodo.",
+    "cita_textual": "Este último indicador es el más importante para nosotros y el más incómodo para el cliente",
+    "fuente": "Sección 2.12",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "2.12 Paneles e indicadores"
+  },
+  {
+    "texto": "Se necesita que el indicador de contradicciones del operador esté visible en el panel bajo cualquier circunstancia.",
+    "cita_textual": "Debe estar visible de todas formas.",
+    "fuente": "Sección 2.12",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.12 Paneles e indicadores"
+  },
+  {
+    "texto": "DPRIME tiene la necesidad interna de visualizar la información agregada de todos los clientes, incluyendo consumo, rendimiento y errores.",
+    "cita_textual": "Internamente, DPRIME necesita ver lo mismo agregado por todos los clientes, además del consumo por cliente",
+    "fuente": "Sección 2.12",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.12 Paneles e indicadores"
+  }
+]

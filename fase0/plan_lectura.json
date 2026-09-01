@@ -1,0 +1,62 @@
+[
+  {
+    "seccion": "2.14 Medición del uso y facturación (junto con 1.4 Por qué ahora)",
+    "que_buscar": "La definición exacta de qué constituye una 'validación' cobrable y el volumen esperado de procesamiento[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT1, ENT4, ENT8",
+    "riesgo_de_contradiccion": "Alto. En la sección 2.14 se definen tramos de cobro de hasta 2.000 validaciones mensuales[cite: 1]. Sin embargo, en ENT4, la gerencia del cliente señala que manejan 40.000 documentos y 12.000 casos al mes[cite: 1]. Además, respecto a qué se cobra, en ENT1 (Gerencia General) se afirma que todo caso procesado se cobra[cite: 1], mientras que en ENT8 (Finanzas) se sostiene que, según el contrato, solo se cobra si la plataforma toma la decisión automática[cite: 1]."
+  },
+  {
+    "seccion": "2.11 Trazabilidad y auditoría (junto con 3. Comportamiento esperado)",
+    "que_buscar": "Políticas de retención de evidencia y la promesa de reproducibilidad exacta de las decisiones tomadas por el sistema[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT3, ENT6",
+    "riesgo_de_contradiccion": "Alto. En la sección 2.11 se establece que la evidencia se conserva solo por 90 días[cite: 1], pero en ENT6 (Oficial de Cumplimiento) se exige retenerla entre 5 y 10 años por normativa legal[cite: 1]. Por otro lado, la sección 2.11 promete reconstruir una decisión pasada tal como se tomó[cite: 1], pero en ENT3 (Ingeniería) se aclara que reproducir el resultado exacto es imposible debido a la variabilidad de los modelos generativos[cite: 1]."
+  },
+  {
+    "seccion": "2.10 La interfaz de programación y 4. Consideraciones técnicas",
+    "que_buscar": "Límites de llamadas (rate limits), tiempos de respuesta del sistema y la arquitectura de integración con el cliente[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT3, ENT7",
+    "riesgo_de_contradiccion": "Alto. La sección 2.10 y el capítulo 4 prometen procesar casos en 2,3 a 5 segundos mediante llamadas web en línea[cite: 1]. No obstante, en ENT3 (Ingeniería) se advierte que procesar casos reales con múltiples documentos toma 30 a 40 segundos[cite: 1]. Además, en ENT7 (Arquitectura del cliente) se revela que su sistema no soporta servicios web, sino que funciona dejando archivos en una carpeta compartida[cite: 1]."
+  },
+  {
+    "seccion": "2.6 El nivel de confianza y la decisión",
+    "que_buscar": "Reglas para aprobar o rechazar automáticamente, y el manejo de los casos con puntaje por debajo de 60[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT2, ENT6",
+    "riesgo_de_contradiccion": "Alto. La sección 2.6 indica que un puntaje bajo 60 desencadena el escalamiento o rechazo automático[cite: 1]. En contraste, en ENT6 (Oficial de Cumplimiento) se prohíbe tajantemente el rechazo automático de siniestros sin una intervención humana significativa, por implicancias legales[cite: 1]."
+  },
+  {
+    "seccion": "2.8 El diseñador de flujos y 2.16 Incorporación de un cliente nuevo",
+    "que_buscar": "La viabilidad de que usuarios de negocio creen flujos sin necesidad de programadores[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT2, ENT9",
+    "riesgo_de_contradiccion": "Medio. La sección 2.8 promete explícitamente que el flujo se construye y despliega sin desarrolladores[cite: 1]. Sin embargo, en ENT2 (Producto) se reconoce que esta promesa no se ha cumplido y que en los tres pilotos los flujos fueron armados por ingenieros de DPRIME[cite: 1]."
+  },
+  {
+    "seccion": "2.7 La revisión asistida",
+    "que_buscar": "El nivel de detalle y contexto que se muestra en pantalla al operador humano cuando un caso no se resuelve de forma automática[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT4, ENT5",
+    "riesgo_de_contradiccion": "Medio. La sección 2.7 asume que la plataforma mostrará la evidencia y la razón de derivación[cite: 1]. En ENT4 y ENT5 (Operaciones y Analista), los usuarios finales advierten que si la plataforma solo les muestra un número (ej. puntaje 72) sin subrayar exactamente el dato problemático en el documento, considerarán que la herramienta no sirve[cite: 1]."
+  },
+  {
+    "seccion": "2.17 Operación del servicio (junto con 2.15 Notificaciones)",
+    "que_buscar": "Protocolos de soporte, ventanas de mantenimiento e interrupciones de proveedores[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT7, ENT9",
+    "riesgo_de_contradiccion": "Medio. El capítulo 4 establece una ventana de mantención mensual en horario nocturno[cite: 1]. En ENT9 (Operaciones) se cuestiona esto señalando que, al expandirse a países como México, el horario nocturno local coincidirá con horarios hábiles en el extranjero, y que actualmente no tienen cómo manejar las caídas de proveedores de terceros sin perder casos[cite: 1]."
+  },
+  {
+    "seccion": "2.4, 2.5 y 2.9 Módulos y motor de análisis",
+    "que_buscar": "Modalidades soportadas por la IA (texto, imagen, video, audio) y la calidad mínima de los archivos[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT1, ENT3, ENT4",
+    "riesgo_de_contradiccion": "Bajo. Las divergencias son sobre prioridades. La sección 2.5 incluye el análisis de audio[cite: 1], pero en ENT1 (Gerencia) se admite que no lo usan ni lo piden[cite: 1]. La sección 2.4 espera evidencia del mundo real[cite: 1], y en ENT4 se detalla que esto incluye fotos a pantallas o comprobantes cortados en múltiples idiomas[cite: 1]."
+  },
+  {
+    "seccion": "1. Contexto de la empresa y 2.1 a 2.3 Descripción general",
+    "que_buscar": "Propósito base del proyecto y el aprendizaje de los proyectos pasados (los tres pilotos)[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT1, ENT2",
+    "riesgo_de_contradiccion": "Bajo. El contenido es principalmente histórico y fundacional para justificar por qué se pasa de un modelo de servicio a un modelo de producto[cite: 1]."
+  },
+  {
+    "seccion": "5. Alcance excluido y plazos",
+    "que_buscar": "El cronograma de entregas y lo que queda formalmente fuera de la construcción[cite: 1].",
+    "entrevistas_relacionadas_probables": "ENT1",
+    "riesgo_de_contradiccion": "Bajo. La sección 5.2 establece claramente los plazos, proyectando la salida a producción para abril de 2027[cite: 1]. Aunque en ENT1 (Gerencia) menciona el deseo comercial de adelantar la operación a enero[cite: 1], el alcance del documento define las fechas oficiales."
+  }
+]

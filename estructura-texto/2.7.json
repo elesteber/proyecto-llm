@@ -1,0 +1,65 @@
+﻿[
+  {
+    "texto": "Los casos que no obtienen una resolución automática son dirigidos hacia una bandeja de trabajo.",
+    "cita_textual": "Los casos que no se resuelven solos llegan a una bandeja de trabajo.",
+    "fuente": "Sección 2.7",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "El cliente piloto considera que la sección de revisión asistida es fundamental para decidir la adopción de la plataforma.",
+    "cita_textual": "según el cliente piloto, la que decide si la plataforma se usa o no.",
+    "fuente": "Sección 2.7",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "Se requiere que el sistema consolide en una única pantalla la evidencia, puntaje, desglose y motivo de derivación.",
+    "cita_textual": "El operador debe ver, en una sola pantalla, la evidencia del caso, el puntaje obtenido, el desglose",
+    "fuente": "Sección 2.7",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "El operador debe tener la capacidad de abrir evidencias y visualizar exactamente qué halló el sistema y en qué lugar.",
+    "cita_textual": "Debe poder abrir cada pieza de evidencia, ver qué encontró la plataforma en ella y en qué parte",
+    "fuente": "Sección 2.7",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "El mecanismo operativo establece que el operador resuelve los casos aprobando, rechazando o pidiendo antecedentes adicionales.",
+    "cita_textual": "El operador resuelve el caso: aprueba, rechaza o solicita antecedentes adicionales.",
+    "fuente": "Sección 2.7",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "El sistema debe dejar un registro tanto de la decisión final del operador como del motivo de esta.",
+    "cita_textual": "Su decisión y el motivo quedan registrados.",
+    "fuente": "Sección 2.7",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "Si la decisión del operador es diferente a la sugerencia automática, se debe marcar la discrepancia para su revisión.",
+    "cita_textual": "Cuando la decisión del operador difiere de lo que la plataforma sugería, esa discrepancia debe quedar marcada",
+    "fuente": "Sección 2.7",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "La regla exige que los casos derivados sean resueltos dentro del plazo que el cliente comprometió con sus asegurados.",
+    "cita_textual": "Un caso derivado a revisión debe resolverse dentro del plazo comprometido por el cliente",
+    "fuente": "Sección 2.7",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  },
+  {
+    "texto": "La plataforma necesita visualizar el tiempo restante de resolución y generar alertas cuando los casos lleven mucho tiempo detenidos.",
+    "cita_textual": "la plataforma debe mostrar el tiempo restante y alertar cuando un caso lleve demasiado tiempo detenido.",
+    "fuente": "Sección 2.7",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.7 La revisión asistida"
+  }
+]

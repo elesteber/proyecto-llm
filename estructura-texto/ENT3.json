@@ -1,0 +1,205 @@
+﻿[
+  {
+    "texto": "Todo caso que ingresa a la plataforma recibe un identificador único y permanente que se mantiene en reevaluaciones.",
+    "cita_textual": "Todo caso que entra a la plataforma recibe un identificador propio, único y permanente",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "El identificador asignado al caso es el que utilizan el cliente, el operador y la auditoría para referirse a él.",
+    "cita_textual": "Ese identificador es el que usan el cliente, el operador y el rastro de auditoría",
+    "fuente": "Sección 3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Se establece la prohibición absoluta de que un caso quede en el sistema sin alcanzar una resolución.",
+    "cita_textual": "Ningún caso puede quedar sin resolución.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "La resolución de un caso se alcanza si se aprueba, rechaza, decide un operador o cierra por expirar su plazo.",
+    "cita_textual": "Un caso está resuelto cuando se aprobó, se rechazó, se derivó y un operador decidió, o se cerró",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Los casos que la plataforma haya aprobado automáticamente quedan exentos de cualquier revisión posterior.",
+    "cita_textual": "Un caso aprobado automáticamente no vuelve a revisarse.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Si se ingresa evidencia adicional a un caso cerrado, se debe generar un nuevo caso vinculado a este último.",
+    "cita_textual": "Si llega evidencia nueva sobre un caso ya cerrado, se abre un caso nuevo vinculado al anterior.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Toda decisión de la plataforma sobre un individuo exige registrar explícitamente los fundamentos que la respaldan.",
+    "cita_textual": "La plataforma nunca decide sobre una persona sin dejar constancia de los elementos que sustentaron la decisión",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Se requiere que el registro de los motivos de decisión sea entendible para personas que no participaron en el análisis.",
+    "cita_textual": "esa constancia debe ser comprensible para alguien que no participó en el análisis.",
+    "fuente": "Sección 3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Ante la falla de un módulo, el caso se deriva detallando la ausencia, prohibiéndose su aprobación con datos incompletos.",
+    "cita_textual": "Cuando un módulo de análisis falla o no está disponible, el caso no se aprueba con la información parcial",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "No está permitido interpretar la carencia de una señal de análisis como si fuera un resultado a favor.",
+    "cita_textual": "La ausencia de una señal nunca se interpreta como señal favorable.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Las alertas de fraude gozan de una jerarquía superior frente a la sumatoria del puntaje total del caso.",
+    "cita_textual": "Las señales de fraude tienen precedencia sobre el puntaje total.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "La presencia de una alerta de fraude activa impone la derivación o escalamiento del caso, sin importar su puntuación.",
+    "cita_textual": "Un caso con una señal de fraude activa se deriva o se escala, cualquiera sea su puntaje.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Queda prohibido modificar un flujo en producción; cualquier cambio obliga a probar y publicar una versión distinta.",
+    "cita_textual": "Un flujo publicado no puede modificarse en producción: se crea una versión nueva, se prueba y se publica.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Todo caso en curso debe completar su proceso rigiéndose por la versión del flujo con la que comenzó.",
+    "cita_textual": "Los casos en curso terminan de procesarse con la versión con la que empezaron.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Es el propio cliente quien cuenta con la facultad de fijar los umbrales de decisión del sistema.",
+    "cita_textual": "Los umbrales de decisión los define el cliente.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Se debe generar un registro que indique autor, fecha y valor antiguo por cada modificación hecha a un umbral.",
+    "cita_textual": "Cualquier cambio de umbral queda registrado con su autor, su fecha y el valor anterior.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Únicamente los usuarios pertenecientes a la organización propietaria de un caso tienen permiso para observar su evidencia.",
+    "cita_textual": "La evidencia de un caso solo puede ser vista por usuarios de la organización a la que pertenece",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Los empleados de DPRIME solo visualizan evidencias tras la autorización formal del cliente y exclusivamente para resolver incidentes.",
+    "cita_textual": "El personal de DPRIME accede a la evidencia de un cliente únicamente con autorización expresa y registrada",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Los datos sensibles de las evidencias se operan bajo la ley correspondiente y se borran si su titular lo demanda.",
+    "cita_textual": "Los datos personales contenidos en la evidencia se tratan conforme a la normativa aplicable y se eliminan",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Una validación se considerará consumada para el conteo siempre que el sistema emita un desenlace que contenga un puntaje.",
+    "cita_textual": "Una validación se contabiliza cuando la plataforma entrega un resultado con puntaje.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Las repeticiones de procesos motivadas por errores internos de la plataforma no se suman a las validaciones cobrables.",
+    "cita_textual": "Los reintentos por error interno de la plataforma no se contabilizan.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Las decisiones de operadores contrarias a las sugerencias del sistema disparan una revisión algorítmica pero mantienen la postura humana.",
+    "cita_textual": "Cuando el operador contradice la sugerencia de la plataforma, el caso queda marcado para revisión del equipo de modelos",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "La falta de respuesta de un servicio ajeno sitúa al caso en espera, sin ser descartado bajo ninguna circunstancia.",
+    "cita_textual": "Un caso permanece en cola mientras un servicio externo no responda, y nunca se descarta por esa causa.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Los datos erróneos pueden ser modificados por un operador, dejando ambas versiones asentadas sin reemplazar la información inicial.",
+    "cita_textual": "la corrección queda registrada junto al valor original y no se sobrescribe.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Toda evidencia asociada a un caso pendiente no podrá ser borrada en tanto dicho caso permanezca activo.",
+    "cita_textual": "Ninguna pieza de evidencia se elimina mientras exista un caso abierto que dependa de ella.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Es requisito indispensable contar con al menos un módulo activo para que el sistema consienta la publicación de un flujo.",
+    "cita_textual": "Un flujo sin al menos un módulo de análisis activo no puede publicarse.",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Debe existir la capacidad de agrupar y vincular múltiples casos provenientes de un mismo emisor en períodos breves.",
+    "cita_textual": "Los casos provenientes de un mismo asegurado o de un mismo prestador dentro de una ventana breve deben poder relacionarse",
+    "fuente": "Sección 3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "El cliente es quien escoge la política a seguir con los casos sin revisión que sobrepasan su límite temporal.",
+    "cita_textual": "El cliente decide qué se hace con los casos que exceden el plazo de resolución sin que nadie los revise",
+    "fuente": "Sección 3",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  },
+  {
+    "texto": "Se requiere que el cliente posea la capacidad de exportar toda su información en formatos ajenos a la tecnología interna.",
+    "cita_textual": "El cliente puede exportar en cualquier momento sus flujos, sus resultados y su historial, en un formato",
+    "fuente": "Sección 3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "3. Comportamiento esperado del sistema"
+  }
+]

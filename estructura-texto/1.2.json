@@ -1,0 +1,37 @@
+﻿[
+  {
+    "texto": "Existe el problema de que los procesos críticos de los clientes aún dependen de decisiones manuales de una persona.",
+    "cita_textual": "Los procesos críticos de nuestros clientes siguen dependiendo de que una persona mire un documento",
+    "fuente": "Sección 1.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.2 El problema que vemos en el mercado"
+  },
+  {
+    "texto": "Existe la ineficiencia de que aproximadamente siete de cada diez casos sufren revisión humana completa, incluso los triviales.",
+    "cita_textual": "alrededor de siete de cada diez casos pasan por revisión humana completa, incluso cuando el caso es trivial",
+    "fuente": "Sección 1.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.2 El problema que vemos en el mercado"
+  },
+  {
+    "texto": "Las herramientas actuales de detección de fraude de los clientes son obsoletas ante las nuevas formas de falsificación.",
+    "cita_textual": "las herramientas que tienen para detectarlo fueron diseñadas para un mundo en que falsificar era caro.",
+    "fuente": "Sección 1.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.2 El problema que vemos en el mercado"
+  },
+  {
+    "texto": "La solución del mercado de usar múltiples proveedores genera arquitecturas frágiles con múltiples puntos de falla.",
+    "cita_textual": "El resultado es una arquitectura frágil, con cinco contratos, cinco modelos de precio, cinco puntos de falla",
+    "fuente": "Sección 1.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.2 El problema que vemos en el mercado"
+  },
+  {
+    "texto": "Falta una visión integral que permita detectar contradicciones cruzadas entre diferentes piezas de evidencia de un mismo caso.",
+    "cita_textual": "Cuando el documento dice una cosa y la foto dice otra, no hay quién lo note.",
+    "fuente": "Sección 1.2",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.2 El problema que vemos en el mercado"
+  }
+]

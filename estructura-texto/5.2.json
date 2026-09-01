@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "Se ha definido que el proyecto inicia el 1 de septiembre de 2026 y se estructura en cuatro entregas.",
+    "cita_textual": "El proyecto comienza el 1 de septiembre de 2026 y se organiza en cuatro entregas.",
+    "fuente": "Sección 5.2",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.2 Plazos"
+  },
+  {
+    "texto": "La primera entrega ocurrirá a mediados de octubre e incluirá especificación, modelo de datos y prototipos del diseñador y bandeja.",
+    "cita_textual": "La primera, a mediados de octubre, cubre la especificación, el modelo de datos y un prototipo navegable",
+    "fuente": "Sección 5.2",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.2 Plazos"
+  },
+  {
+    "texto": "La segunda entrega se realizará a mediados de diciembre, incorporando ingesta de evidencia, motor para documentos, puntajes e interfaz.",
+    "cita_textual": "La segunda, a mediados de diciembre, entrega la ingesta de evidencia, el motor sobre documentos e imágenes",
+    "fuente": "Sección 5.2",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.2 Plazos"
+  },
+  {
+    "texto": "La tercera entrega, a fines de febrero de 2027, agregará capacidades multimedia, versionamiento, revisión asistida y comenzará la marcha blanca.",
+    "cita_textual": "La tercera, a fines de febrero de 2027, incorpora video y audio, el diseñador completo con versionamiento",
+    "fuente": "Sección 5.2",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.2 Plazos"
+  },
+  {
+    "texto": "La cuarta entrega se programa para fines de abril de 2027 e incluirá paneles, medición, aislamiento y despliegue productivo.",
+    "cita_textual": "La cuarta, a fines de abril de 2027, cubre paneles, medición de consumo, aislamiento multicliente y el despliegue",
+    "fuente": "Sección 5.2",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.2 Plazos"
+  },
+  {
+    "texto": "Está decidido que la marcha blanca se ejecutará exclusivamente con el proceso de reembolso de gastos médicos de la aseguradora piloto.",
+    "cita_textual": "La marcha blanca se realiza con el proceso de reembolso de gastos médicos de la aseguradora piloto",
+    "fuente": "Sección 5.2",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.2 Plazos"
+  }
+]

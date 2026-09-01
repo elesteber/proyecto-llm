@@ -1,0 +1,262 @@
+[
+    {
+"id": "H-01",
+"grupo_origen": "[2.6 + ENT2/ENT4]",
+"tema": "Manejo de casos con puntaje por debajo de 60 y validez del rechazo",
+"entrada_A": {
+"texto": "Los casos evaluados con un puntaje por debajo de 60 son escalados o rechazados debido a su alto riesgo.",
+"fuente": "Sección 2.6"
+},
+"entrada_B": {
+"texto": "Daniela opina que se debe eliminar del documento la opción de rechazo para el tramo menor a sesenta puntos.",
+"fuente": "ENT6"
+},
+"naturaleza_del_conflicto": "La fuente de la Sección 2.6 establece formalmente como regla que los casos que obtengan un puntaje inferior a 60 pueden ser rechazados. En contraposición, la fuente ENT6 considera inválida esta medida y exige que la opción de rechazo para este mismo tramo de puntaje sea eliminada del documento, ya que requiere intervención y explicación humana y no debe ocurrir de manera automática.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+
+{
+"id": "H-02",
+"grupo_origen": "[2.14/1.4 + ENT1/ENT4/ENT8]",
+"tema": "Umbrales de volumen para los tramos de facturación",
+"entrada_A": {
+"texto": "Se establecen tres tramos mensuales de validación: hasta 2.000, entre 2.000 y 5.000, y más de 5.000.",
+"fuente": "Sección 2.14"
+},
+"entrada_B": {
+"texto": "El modelo de precios establece tramos definidos hasta llegar a un volumen de diez mil validaciones al mes.",
+"fuente": "ENT8"
+},
+"naturaleza_del_conflicto": "La fuente de la Sección 2.14 define formalmente que los tramos de validación contemplan un límite superior de 'más de 5.000' validaciones. En contradicción, la fuente ENT8 estipula que los tramos del modelo de precios están definidos para alcanzar un volumen superior, llegando hasta las diez mil validaciones mensuales.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-03",
+"grupo_origen": "[2.14/1.4 + ENT1/ENT4/ENT8]",
+"tema": "Criterio de cobro para casos no resueltos automáticamente",
+"entrada_A": {
+"texto": "La propuesta comercial establece que no hay cobro si el caso termina siendo resuelto en el escritorio de un analista.",
+"fuente": "ENT8"
+},
+"entrada_B": {
+"texto": "Rodrigo opina que también se deberían cobrar los casos derivados a revisión humana porque requieren procesamiento y análisis del sistema.",
+"fuente": "ENT1"
+},
+"naturaleza_del_conflicto": "Existe una incompatibilidad en la definición de cobro para las derivaciones: mientras la propuesta comercial descrita en ENT8 establece la regla de no cobrar los casos que terminan en el escritorio de un analista humano, en ENT1 se sostiene la postura incompatible de que esos mismos casos derivados sí deben facturarse debido al procesamiento y análisis previo que invierte el sistema.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-04",
+"grupo_origen": "[2.14/1.4 + ENT1/ENT4/ENT8]",
+"tema": "Condición de cobro ante evidencia ilegible o inútil",
+"entrada_A": {
+"texto": "Únicamente procede el cobro cuando la validación es útil y concluyente; las evidencias ilegibles no procesadas quedan exentas.",
+"fuente": "Sección 2.14"
+},
+"entrada_B": {
+"texto": "Valentina señala que el gerente general considera que se debe cobrar por el simple hecho de que hubo procesamiento.",
+"fuente": "ENT8"
+},
+"naturaleza_del_conflicto": "La Sección 2.14 instaura la regla de negocio que exime de cobro a las evidencias ilegibles porque la validación debe ser útil y concluyente para facturarse. Esto es incompatible con el criterio del gerente general expuesto en ENT8, quien plantea que se debe cobrar por el mero hecho de existir procesamiento en el sistema, ignorando la condición de que el resultado deba ser concluyente.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+
+{
+"id": "H-05",
+"grupo_origen": "[2.17/2.15 + ENT7/ENT9]",
+"tema": "Comportamiento del sistema ante la caída de servicios externos (proveedores)",
+"entrada_A": {
+"texto": "Ante la caída de un servicio externo, está prohibido que la plataforma simplemente se limite a fallar.",
+"fuente": "Sección 2.17"
+},
+"entrada_B": {
+"texto": "Existe el problema de que una caída del proveedor de modelos provoca la caída total de la plataforma MIRA.",
+"fuente": "ENT9"
+},
+"naturaleza_del_conflicto": "La regla de negocio estipulada en la Sección 2.17 prohíbe explícitamente que la plataforma colapse al fallar un servicio externo. Esta condición es incompatible con la realidad operativa reportada en ENT9, la cual revela que actualmente la caída del proveedor provoca la falla y caída total del sistema, vulnerando la regla de contingencia.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-06",
+"grupo_origen": "[2.17/2.15 + ENT7/ENT9]",
+"tema": "Manejo de casos ante la caída de proveedores externos",
+"entrada_A": {
+"texto": "Si un servicio externo no responde, el sistema debe reintentar, aceptar y encolar casos, y notificar la demora.",
+"fuente": "Sección 2.17"
+},
+"entrada_B": {
+"texto": "La plataforma carece de alternativas configuradas, manejo de colas y mecanismos de reintento inteligente ante caídas de proveedores.",
+"fuente": "ENT9"
+},
+"naturaleza_del_conflicto": "La Sección 2.17 define como regla obligatoria que el sistema debe poseer la capacidad de encolar casos y realizar reintentos cuando un servicio externo no responde. En directa contradicción con este requerimiento, ENT9 afirma que la plataforma actualmente carece de cualquier mecanismo de encolamiento o reintento inteligente para manejar estas caídas.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-07",
+"grupo_origen": "[2.17/2.15 + ENT7/ENT9]",
+"tema": "Sistema de alertas y dependencia para la detección de fallas",
+"entrada_A": {
+"texto": "El equipo de DPRIME necesita recibir alertas sobre errores de procesamiento, degradación de tiempos de respuesta y caídas de servicios externos.",
+"fuente": "Sección 2.15"
+},
+"entrada_B": {
+"texto": "Existe el problema de que el equipo no cuenta con alertas propias y depende del aviso del cliente ante fallas.",
+"fuente": "ENT9"
+},
+"naturaleza_del_conflicto": "La condición establecida en la Sección 2.15 exige que el equipo interno reciba notificaciones proactivas y automáticas sobre caídas y errores. Sin embargo, esta regla entra en conflicto con la situación expuesta en ENT9, donde se afirma que el equipo operativo no posee alertas propias y depende de que sea el cliente quien avise sobre las fallas.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-08",
+"grupo_origen": "[2.11/3.0 + ENT3/ENT6]",
+"tema": "Plazo de retención de la evidencia original",
+"entrada_A": {
+"texto": "Al término del plazo de noventa días, la evidencia original se elimina y solo se mantiene el registro de la decisión.",
+"fuente": "Sección 2.11"
+},
+"entrada_B": {
+"texto": "La aseguradora tiene la política formal de conservar los expedientes por cinco años, y hasta diez años en ciertos productos.",
+"fuente": "ENT6"
+},
+"naturaleza_del_conflicto": "La regla definida en la Sección 2.11 establece la eliminación obligatoria de la evidencia original al transcurrir 90 días. Esta condición es incompatible con la regla de negocio de la aseguradora descrita en ENT6, la cual estipula formalmente la conservación de los expedientes por un período que oscila entre cinco y diez años.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-09",
+"grupo_origen": "[2.11/3.0 + ENT3/ENT6]",
+"tema": "Inalterabilidad del rastro de auditoría frente a la eliminación de datos a solicitud",
+"entrada_A": {
+"texto": "Está establecido que el rastro es inalterable y ningún usuario, incluyendo administradores y personal de DPRIME, puede modificarlo o borrarlo.",
+"fuente": "Sección 2.11"
+},
+"entrada_B": {
+"texto": "Los datos sensibles de las evidencias se operan bajo la ley correspondiente y se borran si su titular lo demanda.",
+"fuente": "Sección 3"
+},
+"naturaleza_del_conflicto": "La Sección 2.11 plantea una regla de inalterabilidad absoluta del rastro, prohibiendo su borrado sin excepciones. Esto entra en conflicto directo con la Sección 3, que autoriza y exige el borrado de datos contenidos en las evidencias si el titular de los mismos lo solicita.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-10",
+"grupo_origen": "[2.10/4.0 + ENT3/ENT7]",
+"tema": "Límite de llamadas (rate limit) aplicable a la operación de carga",
+"entrada_A": {
+"texto": "Existe un límite general de operación establecido en mil llamadas por minuto por cada cliente.",
+"fuente": "Sección 2.10"
+},
+"entrada_B": {
+"texto": "Hugo anticipa que el límite de cien llamadas por minuto será superado al realizar cargas de casos históricos.",
+"fuente": "ENT7"
+},
+"naturaleza_del_conflicto": "La regla de negocio establecida en la Sección 2.10 define que el límite general para la operación de un cliente es de mil llamadas por minuto. Esto choca directamente con la premisa expuesta en ENT7, donde se asume que la operación real para la carga histórica de casos estará sujeta a un límite de cien llamadas por minuto, un umbral que según la Sección 2.10 está restringido únicamente a los ambientes de integración.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-11",
+"grupo_origen": "[2.10/4.0 + ENT3/ENT7]",
+"tema": "Arquitectura de integración para la entrega y escritura de resultados",
+"entrada_A": {
+"texto": "La respuesta del sistema debe entregar el identificador, puntaje, decisión, desglose de señales y un enlace a la auditoría.",
+"fuente": "Sección 2.10"
+},
+"entrada_B": {
+"texto": "La escritura de los resultados dentro del sistema de siniestros actualmente solo es posible mediante archivos.",
+"fuente": "ENT7"
+},
+"naturaleza_del_conflicto": "El diseño de la interfaz descrito en la Sección 2.10 asume una arquitectura donde la plataforma devuelve la decisión, el puntaje y los datos integrados directamente a través de la respuesta web a la llamada original. Esto es incompatible con la restricción tecnológica y de integración del cliente señalada en ENT7, la cual dicta que escribir esos resultados en su sistema central no puede procesarse vía web y requiere obligatoriamente el intercambio de archivos.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+
+{
+"id": "H-12",
+"grupo_origen": "[2.7 + ENT5/ENT4]",
+"tema": "Inclusión y visualización del puntaje inicial en la pantalla de revisión",
+"entrada_A": {
+"texto": "Se requiere que el sistema consolide en una única pantalla la evidencia, puntaje, desglose y motivo de derivación.",
+"fuente": "Sección 2.7"
+},
+"entrada_B": {
+"texto": "Marco prefiere no ver el puntaje antes de analizar el caso, ya que esto lo predispone a aprobar la solicitud.",
+"fuente": "ENT5"
+},
+"naturaleza_del_conflicto": "La especificación de la Sección 2.7 exige que el puntaje del caso se muestre consolidado en una única pantalla inicial junto con la evidencia y los motivos de derivación. Esto entra en conflicto directo con la necesidad operativa expuesta en ENT5, donde se solicita expresamente no visualizar el puntaje antes de analizar la evidencia, ya que hacerlo predispone al operador humano y genera sesgos en su decisión.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-13",
+"grupo_origen": "[2.4/2.5/2.9 + ENT1/ENT3/ENT5]",
+"tema": "Inclusión de la modalidad de audio en el procesamiento de la plataforma",
+"entrada_A": {
+"texto": "La plataforma está diseñada para aceptar documentos en formato PDF, imágenes estándar, video y archivos de audio.",
+"fuente": "Sección 2.4"
+},
+"entrada_B": {
+"texto": "Rodrigo opina que estaría dispuesto a sacrificar el procesamiento de audio del proyecto debido a que no es utilizado en el piloto.",
+"fuente": "ENT1"
+},
+"naturaleza_del_conflicto": "La especificación de la Sección 2.4 establece como regla de diseño que la plataforma soporta y acepta el procesamiento de archivos de audio. En contradicción, la fuente ENT1 evidencia la intención de prescindir de esta modalidad y sacrificar su desarrollo para el proyecto debido a su nulo uso en el piloto.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+
+{
+"id": "H-14",
+"grupo_origen": "[5.1/5.2/5.3 + ENT1]",
+"tema": "Fecha de inicio de operaciones con casos reales (marcha blanca)",
+"entrada_A": {
+"texto": "La tercera entrega, a fines de febrero de 2027, agregará capacidades multimedia, versionamiento, revisión asistida y comenzará la marcha blanca.",
+"fuente": "Sección 5.2"
+},
+"entrada_B": {
+"texto": "Rodrigo menciona que la aseguradora tiene la expectativa comercial de operar con casos reales a partir de enero.",
+"fuente": "ENT1"
+},
+"naturaleza_del_conflicto": "Existe una incompatibilidad en los plazos esperados para el inicio de la operación. Mientras la expectativa comercial de la aseguradora exige comenzar a operar con casos reales en enero, el cronograma formal de la Sección 5.2 retrasa el inicio de la marcha blanca hasta fines de febrero de 2027.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-15",
+"grupo_origen": "[5.1/5.2/5.3 + ENT1]",
+"tema": "Fecha para la exhibición de la plataforma en vivo y despliegue productivo",
+"entrada_A": {
+"texto": "La cuarta entrega se programa para fines de abril de 2027 e incluirá paneles, medición, aislamiento y despliegue productivo.",
+"fuente": "Sección 5.2"
+},
+"entrada_B": {
+"texto": "Rodrigo tiene la preferencia de mostrar la plataforma funcionando en vivo con un cliente real en una feria a fines de marzo.",
+"fuente": "ENT1"
+},
+"naturaleza_del_conflicto": "El cronograma de entregas de la Sección 5.2 establece que el despliegue productivo y los componentes finales de la plataforma se entregarán recién a fines de abril de 2027. Esto entra en conflicto directo con la intención de Rodrigo expresada en ENT1 de mostrar la plataforma completa y funcionando en vivo un mes antes, a fines de marzo.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+},
+{
+"id": "H-16",
+"grupo_origen": "[5.1/5.2/5.3 + ENT1]",
+"tema": "Inclusión del procesamiento de audio en el alcance de construcción",
+"entrada_A": {
+"texto": "La tercera entrega, a fines de febrero de 2027, agregará capacidades multimedia, versionamiento, revisión asistida y comenzará la marcha blanca.",
+"fuente": "Sección 5.2"
+},
+"entrada_B": {
+"texto": "Rodrigo opina que estaría dispuesto a sacrificar el procesamiento de audio del proyecto debido a que no es utilizado en el piloto.",
+"fuente": "ENT1"
+},
+"naturaleza_del_conflicto": "El cronograma de la Sección 5.2 asume la construcción y entrega de capacidades multimedia (como el audio) dentro del plan formal. Sin embargo, la fuente ENT1 revela la disposición de Rodrigo a dejar formalmente fuera de la construcción el procesamiento de audio, sacrificándolo por considerarlo innecesario para el piloto.",
+"validado_por_equipo": null,
+"notas_validacion": ""
+}
+]

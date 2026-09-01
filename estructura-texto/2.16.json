@@ -1,0 +1,51 @@
+﻿[
+  {
+    "texto": "Se requiere que el proceso de poner en marcha a un cliente nuevo deje de manejarse como un proyecto.",
+    "cita_textual": "Poner a un cliente en marcha debe dejar de ser un proyecto.",
+    "fuente": "Sección 2.16",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  },
+  {
+    "texto": "Actualmente existe el problema de que incorporar un cliente demora entre seis y ocho semanas por tareas repetitivas.",
+    "cita_textual": "Hoy toma entre seis y ocho semanas, casi todas consumidas en tareas que se repiten",
+    "fuente": "Sección 2.16",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  },
+  {
+    "texto": "Se tiene la meta de que el cliente pueda procesar casos de prueba el mismo día de la firma.",
+    "cita_textual": "La meta es que un cliente nuevo pueda estar procesando casos de prueba el mismo día en que se firma",
+    "fuente": "Sección 2.16",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  },
+  {
+    "texto": "El cliente nuevo debe poder encontrarse operando en el ambiente de producción dentro de un plazo de dos semanas.",
+    "cita_textual": "y en producción dentro de dos semanas.",
+    "fuente": "Sección 2.16",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  },
+  {
+    "texto": "La plataforma debe contar con flujos preconfigurados clasificados por caso de uso para que los clientes los adapten.",
+    "cita_textual": "la plataforma debe ofrecer flujos preconfigurados por caso de uso",
+    "fuente": "Sección 2.16",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  },
+  {
+    "texto": "Se ha definido que las plantillas preconfiguradas incluyen internamente sus módulos, reglas y umbrales sugeridos por defecto.",
+    "cita_textual": "Cada plantilla trae sus módulos, sus reglas y sus umbrales sugeridos.",
+    "fuente": "Sección 2.16",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  },
+  {
+    "texto": "El mecanismo de adaptación está resuelto de manera que el cliente solo modifique las diferencias sin construir todo desde cero.",
+    "cita_textual": "La adaptación consiste en cambiar lo que difiere, no en armar el proceso completo.",
+    "fuente": "Sección 2.16",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.16 Incorporación de un cliente nuevo"
+  }
+]

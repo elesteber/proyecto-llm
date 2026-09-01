@@ -1,0 +1,45 @@
+﻿
+[
+  {
+    "texto": "Existe una aseguradora lista para firmar un contrato de producción si la plataforma cumple con lo requerido.",
+    "cita_textual": "aseguradora dispuesta a firmar un contrato de producción, no un piloto, si la plataforma cumple.",
+    "fuente": "Sección 1.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.4 Por qué ahora"
+  },
+  {
+    "texto": "El modelo de negocio establece que se cobrará por resultado, pagando el cliente solo por validaciones útiles.",
+    "cita_textual": "Queremos cobrar por resultado: que el cliente pague por las validaciones que efectivamente le sirvieron",
+    "fuente": "Sección 1.4",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "1.4 Por qué ahora"
+  },
+  {
+    "texto": "El sistema debe tener la capacidad de identificar individualmente si cada validación entregada fue de utilidad.",
+    "cita_textual": "obliga a que la plataforma sepa, caso a caso, si lo que entregó fue útil.",
+    "fuente": "Sección 1.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.4 Por qué ahora"
+  },
+  {
+    "texto": "La versión actual del sistema no tiene la capacidad de identificar si la validación entregada fue útil.",
+    "cita_textual": "Nada de la versión actual permite responder esa pregunta.",
+    "fuente": "Sección 1.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.4 Por qué ahora"
+  },
+  {
+    "texto": "Se requerirá que la plataforma cuente con características de explicabilidad y trazabilidad.",
+    "cita_textual": "la exigencia va a ser explicabilidad y trazabilidad.",
+    "fuente": "Sección 1.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.4 Por qué ahora"
+  },
+  {
+    "texto": "La plataforma debe poder justificar y demostrar los motivos detrás de cada una de sus decisiones.",
+    "cita_textual": "plataforma que pueda demostrar por qué decidió lo que decidió",
+    "fuente": "Sección 1.4",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.4 Por qué ahora"
+  }
+]

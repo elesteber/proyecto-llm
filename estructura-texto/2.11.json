@@ -1,0 +1,44 @@
+﻿[
+  {
+    "texto": "La plataforma debe registrar toda la actividad sobre cada caso: evidencia, módulos ejecutados, versiones, resultados, reglas, puntajes, decisiones e intervenciones.",
+    "cita_textual": "Todo lo que la plataforma hace sobre un caso debe quedar registrado: qué evidencia entró, qué módulos se ejecutaron",
+    "fuente": "Sección 2.11",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.11 Trazabilidad y auditoría"
+  },
+  {
+    "texto": "El sistema debe permitir que el rastro de auditoría sea consultado directamente desde la interfaz y también descargado.",
+    "cita_textual": "Ese rastro debe poder consultarse desde la interfaz y descargarse.",
+    "fuente": "Sección 2.11",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.11 Trazabilidad y auditoría"
+  },
+  {
+    "texto": "Está establecido que el rastro es inalterable y ningún usuario, incluyendo administradores y personal de DPRIME, puede modificarlo o borrarlo.",
+    "cita_textual": "Ningún usuario, incluido el administrador de la cuenta del cliente y el personal de DPRIME, puede modificarlo ni eliminarlo.",
+    "fuente": "Sección 2.11",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.11 Trazabilidad y auditoría"
+  },
+  {
+    "texto": "Se requiere que el sistema pueda reconstruir una decisión pasada exactamente como se tomó, usando las versiones vigentes en ese momento.",
+    "cita_textual": "Debe ser posible reconstruir una decisión pasada tal como se tomó, es decir, con las versiones de los módulos",
+    "fuente": "Sección 2.11",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.11 Trazabilidad y auditoría"
+  },
+  {
+    "texto": "Existe un plazo definido de noventa días durante los cuales se deben conservar la evidencia y los resultados.",
+    "cita_textual": "La evidencia y los resultados se conservan noventa días, plazo tras el cual la evidencia original se elimina",
+    "fuente": "Sección 2.11",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.11 Trazabilidad y auditoría"
+  },
+  {
+    "texto": "Al término del plazo de noventa días, la evidencia original se elimina y solo se mantiene el registro de la decisión.",
+    "cita_textual": "tras el cual la evidencia original se elimina y se conserva únicamente el registro de la decisión.",
+    "fuente": "Sección 2.11",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.11 Trazabilidad y auditoría"
+  }
+]

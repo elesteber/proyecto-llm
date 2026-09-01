@@ -1,0 +1,58 @@
+﻿[
+  {
+    "texto": "La plataforma implementó un mecanismo donde leía denuncias, analizaba fotografías de daños y proponía un monto de liquidación.",
+    "cita_textual": "La plataforma leía la denuncia, analizaba las fotografías del daño y proponía un monto.",
+    "fuente": "Sección 1.6",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "Existe el problema de que los liquidadores desconfían del monto propuesto por el sistema y terminan recalculándolo manualmente.",
+    "cita_textual": "los liquidadores no confiaban en el monto propuesto y lo recalculaban igual.",
+    "fuente": "Sección 1.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "La falta de explicabilidad en la automatización genera el problema de que el trabajo simplemente se desplaza en lugar de ahorrarse.",
+    "cita_textual": "la automatización sin explicación no ahorra trabajo, solo lo desplaza.",
+    "fuente": "Sección 1.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "El sistema utiliza mecanismos de comparación de rostros y detección de suplantación para realizar la verificación de identidad.",
+    "cita_textual": "la comparación de rostros y la detección de suplantación funcionaron por encima de lo esperado.",
+    "fuente": "Sección 1.6",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "Existe la necesidad de tener claridad legal sobre el tratamiento, almacenamiento y plazos de retención de las imágenes biométricas.",
+    "cita_textual": "entender qué se hacía con las imágenes biométricas, dónde se almacenaban y por cuánto tiempo.",
+    "fuente": "Sección 1.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "Se identificó el problema operativo de que la calidad de la evidencia enviada por los asegurados es sumamente deficiente.",
+    "cita_textual": "la calidad de lo que envían los asegurados es peor de lo que cualquiera de nosotros imaginaba",
+    "fuente": "Sección 1.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "La plataforma requiere destinar un esfuerzo importante para determinar si un archivo sirve antes de intentar procesarlo o entenderlo.",
+    "cita_textual": "una parte importante del esfuerzo de la plataforma se va en determinar si un archivo sirve",
+    "fuente": "Sección 1.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  },
+  {
+    "texto": "Se requiere resolver problemas sistémicos ligados a la confianza del usuario, la conformidad legal y la calidad de entrada de los datos.",
+    "cita_textual": "Lo son la confianza del usuario, la conformidad legal y la calidad de la entrada.",
+    "fuente": "Sección 1.6",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.6 Lo que dejaron los pilotos"
+  }
+]

@@ -1,0 +1,58 @@
+﻿[
+  {
+    "texto": "La capacidad operativa de la plataforma se basa en gran medida en la utilización de modelos de proveedores de terceros.",
+    "cita_textual": "Una parte central de la capacidad de MIRA proviene de modelos de terceros",
+    "fuente": "Sección 5.3",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "La Dirección de Producto anticipa que una modificación en los precios del proveedor podría inviabilizar el modelo de cobro.",
+    "cita_textual": "Un cambio de precios de un proveedor puede volver inviable el modelo de cobro al éxito",
+    "fuente": "Sección 5.3",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "Existe el problema comercial de que las promesas plasmadas en el material de ventas superan las capacidades reales de la plataforma.",
+    "cita_textual": "Lo que la plataforma promete en el material comercial va por delante de lo que la plataforma hace.",
+    "fuente": "Sección 5.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "La Dirección de Producto considera peligroso que un cliente firme un contrato de producción basándose exclusivamente en una promesa.",
+    "cita_textual": "es peligrosa cuando el cliente firma un contrato de producción basado en la promesa.",
+    "fuente": "Sección 5.3",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "La Dirección de Producto tiene la expectativa de que las regulaciones sobre decisiones automatizadas cambiarán durante la vida del proyecto.",
+    "cita_textual": "las reglas van a cambiar durante la vida de este proyecto.",
+    "fuente": "Sección 5.3",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "La Dirección de Producto opina que no dejar un margen de adaptación para cambios regulatorios futuros equivale a arriesgar el producto.",
+    "cita_textual": "Construir asumiendo el marco actual y sin margen para el que viene es hipotecar el producto.",
+    "fuente": "Sección 5.3",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "Existe el problema de adopción de que los usuarios actuales que revisan casos a mano reciben la plataforma como imposición.",
+    "cita_textual": "Las personas que hoy revisan casos a mano no piden esta plataforma: la reciben.",
+    "fuente": "Sección 5.3",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  },
+  {
+    "texto": "La Dirección de Producto anticipa que los usuarios evadirán utilizar la herramienta si su uso les complica el trabajo diario.",
+    "cita_textual": "Si la herramienta les complica el día, van a encontrar la manera de no usarla",
+    "fuente": "Sección 5.3",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "5.3 Riesgos que el negocio reconoce"
+  }
+]

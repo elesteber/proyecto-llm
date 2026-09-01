@@ -1,0 +1,114 @@
+﻿[
+  {
+    "texto": "Camila opina que el diseñador visual es la parte más importante para vender y la más riesgosa para operar.",
+    "cita_textual": "Es la más importante para vender y la más riesgosa para operar.",
+    "fuente": "ENT2 [00:00:58]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Camila señala que la promesa de no requerir desarrolladores nunca se ha cumplido en los pilotos ejecutados.",
+    "cita_textual": "esa promesa hasta ahora no se ha cumplido nunca. En los tres pilotos, el flujo lo armó un ingeniero",
+    "fuente": "ENT2 [00:00:58]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Camila considera que la gente de negocio sabe diseñar excepciones y procesos pero no plasmarlos en la herramienta.",
+    "cita_textual": "la gente de negocio sabe hacerlo pero no lo sabe expresar en una herramienta.",
+    "fuente": "ENT2 [00:02:35]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Se necesita construir una capa adicional que ofrezca plantillas por industria y un asistente interactivo para el diseño.",
+    "cita_textual": "le falta una capa que todavía no construimos: plantillas por industria, un asistente que pregunte",
+    "fuente": "ENT2 [00:02:35]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Los clientes necesitan poder probar los cambios en los flujos sin afectar la operación que está en funcionamiento.",
+    "cita_textual": "Poder probar un cambio sin romper lo que está andando.",
+    "fuente": "ENT2 [00:05:16]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Actualmente, cualquier modificación realizada a un flujo se refleja y queda activa de inmediato en producción.",
+    "cita_textual": "Hoy, si tú modificas un flujo, el cambio queda vivo al tiro.",
+    "fuente": "ENT2 [00:05:16]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Se requiere implementar el manejo de versiones, ambientes de prueba y un mecanismo de publicación explícita.",
+    "cita_textual": "Necesitamos versiones, ambiente de prueba y publicación explícita.",
+    "fuente": "ENT2 [00:05:16]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "La plataforma permite revertir el flujo a versiones anteriores, pero no es capaz de deshacer las decisiones ya tomadas.",
+    "cita_textual": "Puedes volver a la versión anterior del flujo, cierto. Lo que no puedes es deshacer las decisiones",
+    "fuente": "ENT2 [00:07:47]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "El sistema es capaz de procesar e entender documentos estándar sin requerir entrenamiento previo.",
+    "cita_textual": "Es cierto para documentos estándar: una boleta, una cédula, un certificado.",
+    "fuente": "ENT2 [00:10:26]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Camila aclara que lograr que un formulario propio de cliente funcione adecuadamente toma entre dos y tres semanas.",
+    "cita_textual": "Cuando llega un formulario propio de un cliente... tomamos entre dos y tres semanas en dejarlo funcionando bien.",
+    "fuente": "ENT2 [00:10:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Se requiere procesar una muestra de unos veinte o treinta ejemplos para configurar un formulario de formato propio.",
+    "cita_textual": "No son miles de ejemplos, son unos veinte o treinta, pero no es instantáneo.",
+    "fuente": "ENT2 [00:10:26]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Los umbrales de decisión deben ser definidos por el cliente directamente a través del diseñador.",
+    "cita_textual": "Los define el cliente, en el diseñador.",
+    "fuente": "ENT2 [00:13:05]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Camila reconoce que los umbrales de ochenta y cinco y sesenta se usaron solo como referencia sin justificación científica.",
+    "cita_textual": "Yo puse ochenta y cinco, sesenta y cero como referencia... No hay ninguna ciencia detrás de esos números.",
+    "fuente": "ENT2 [00:13:05]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Camila opina que los umbrales correctos deben ser calibrados con datos históricos según el apetito de riesgo del cliente.",
+    "cita_textual": "en rigor deberían calibrarse con datos históricos antes de encender la automatización.",
+    "fuente": "ENT2 [00:13:05]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Existe un problema de falta de contexto porque los casos derivados llegan actualmente a una lista sin información adicional.",
+    "cita_textual": "El caso que se deriva cae en una lista sin contexto.",
+    "fuente": "ENT2 [00:16:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT2"
+  },
+  {
+    "texto": "Francisca anticipa que la plataforma no será utilizada si el operador se ve obligado a abrir expedientes aparte.",
+    "cita_textual": "si el operador tiene que abrir el expediente aparte para entender qué pasó, prefieren no usar la plataforma.",
+    "fuente": "ENT2 [00:16:36]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT2"
+  }
+]

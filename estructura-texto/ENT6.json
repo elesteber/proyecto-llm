@@ -1,0 +1,170 @@
+﻿[
+  {
+    "texto": "La normativa de protección de datos exige que las decisiones automatizadas cuenten con intervención humana significativa, explicabilidad y derecho de oposición.",
+    "cita_textual": "La normativa de protección de datos, y la que viene, exige que exista intervención humana significativa",
+    "fuente": "ENT6 [00:01:21]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela opina que una intervención humana significativa no consiste simplemente en que un operador apruebe en tres segundos.",
+    "cita_textual": "\"Significativa\" no es que un operador apriete aceptar en tres segundos.",
+    "fuente": "ENT6 [00:01:21]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela considera que la aprobación automática de un reembolso a favor del asegurado no representa un problema.",
+    "cita_textual": "Aprobar automáticamente un reembolso a favor del asegurado no me quita el sueño: es una decisión favorable.",
+    "fuente": "ENT6 [00:04:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Se necesita que los rechazos de reembolsos no sean automáticos, requiriendo una persona que decida y pueda explicarlo.",
+    "cita_textual": "Lo que no puede ocurrir es un rechazo automático. Ahí necesito una persona que decida y que pueda explicar.",
+    "fuente": "ENT6 [00:04:06]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Existe un documento que establece como regla que para el tramo bajo sesenta puntos procede el escalamiento o rechazo.",
+    "cita_textual": "En el documento, el tramo bajo sesenta dice \"escalamiento o rechazo\"",
+    "fuente": "ENT6 [00:04:06]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela opina que se debe eliminar del documento la opción de rechazo para el tramo menor a sesenta puntos.",
+    "cita_textual": "y ese \"o rechazo\" es exactamente lo que no puede quedar así.",
+    "fuente": "ENT6 [00:04:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela opina que conservar la evidencia únicamente por noventa días es inviable porque los reclamos ocurren mucho después.",
+    "cita_textual": "Noventa días es imposible. Un siniestro puede reclamarse ante la comisión mucho después",
+    "fuente": "ENT6 [00:07:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "El sistema debe permitir mostrar el expediente completo con la evidencia que fundamentó una decisión ante posibles reclamos.",
+    "cita_textual": "el expediente completo, con la evidencia que sustentó la decisión, tenemos que poder mostrarlo.",
+    "fuente": "ENT6 [00:07:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "La aseguradora tiene la política formal de conservar los expedientes por cinco años, y hasta diez años en ciertos productos.",
+    "cita_textual": "Nosotros conservamos cinco años, y en algunos productos diez.",
+    "fuente": "ENT6 [00:07:26]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Eliminar la evidencia a los noventa días provoca que la aseguradora se quede sin el respaldo documental necesario ante reclamos.",
+    "cita_textual": "Si la plataforma borra la evidencia a los noventa días, nos deja sin respaldo justo cuando lo necesitamos.",
+    "fuente": "ENT6 [00:07:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela considera que las reglas de inalterabilidad del rastro y la eliminación a solicitud del titular no pueden funcionar juntas.",
+    "cita_textual": "y esas dos frases juntas no funcionan.",
+    "fuente": "ENT6 [00:10:08]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Se requiere definir formalmente con abogados qué datos se eliminan, cuáles se conservan anonimizados y cuáles por obligación legal.",
+    "cita_textual": "Alguien tiene que sentarse a resolver eso con criterio: qué se elimina, qué se conserva anonimizado",
+    "fuente": "ENT6 [00:10:08]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Existe una obligación legal de conservación de ciertos datos que tiene prioridad sobre la solicitud de eliminación del titular.",
+    "cita_textual": "existe una obligación legal que prevalece sobre la solicitud del titular.",
+    "fuente": "ENT6 [00:10:08]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "El contrato marco de la aseguradora prohíbe explícitamente que los datos de los asegurados salgan del territorio chileno.",
+    "cita_textual": "Nuestro contrato marco dice que los datos de asegurados no salen de Chile.",
+    "fuente": "ENT6 [00:13:36]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "El procesamiento de los documentos se realiza actualmente utilizando modelos que se encuentran alojados en Estados Unidos.",
+    "cita_textual": "me dijeron que los documentos se procesan con modelos que están en Estados Unidos.",
+    "fuente": "ENT6 [00:13:36]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "La normativa define que enviar datos a procesar en Estados Unidos constituye una transferencia internacional de datos.",
+    "cita_textual": "Eso es una transferencia internacional.",
+    "fuente": "ENT6 [00:13:36]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Para llevar a cabo una transferencia internacional se exigen cláusulas específicas, una evaluación de impacto y un aviso.",
+    "cita_textual": "requiere cláusulas específicas, evaluación de impacto y aviso",
+    "fuente": "ENT6 [00:13:36]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela prefiere que el problema de la transferencia internacional de datos se aborde actualmente y no en la auditoría futura.",
+    "cita_textual": "Prefiero que aparezca ahora y no en la auditoría de febrero.",
+    "fuente": "ENT6 [00:13:36]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "El sistema debe permitir obtener el expediente íntegro de una decisión en un formato que pueda ser entregado a terceros.",
+    "cita_textual": "pueda obtener el expediente completo de cómo se decidió, en un formato que pueda entregar a un tercero.",
+    "fuente": "ENT6 [00:17:06]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Debe existir un registro detallado de cada persona, incluido el personal proveedor, que acceda a la evidencia de un asegurado.",
+    "cita_textual": "Que exista un registro de quién accedió a la evidencia de un asegurado, incluido el personal de ustedes.",
+    "fuente": "ENT6 [00:17:06]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Las decisiones procesadas deben poder reproducirse asegurando que se evaluaron usando las reglas vigentes de ese momento específico.",
+    "cita_textual": "que las decisiones se puedan reproducir: si yo mando a revisar el caso de marzo, quiero saber que se evaluó",
+    "fuente": "ENT6 [00:17:06]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Daniela opina que cambiar un umbral de ochenta y cinco a setenta equivale a modificar el apetito de riesgo corporativo.",
+    "cita_textual": "Mover el umbral de ochenta y cinco a setenta es cambiar el apetito de riesgo de la compañía",
+    "fuente": "ENT6 [00:21:16]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Cualquier modificación a los umbrales de la plataforma debe exigir imperativamente la autorización mediante dos aprobaciones separadas.",
+    "cita_textual": "Eso tiene que requerir dos aprobaciones",
+    "fuente": "ENT6 [00:21:16]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  },
+  {
+    "texto": "Toda modificación en los umbrales de decisión debe quedar asentada formalmente como un cambio de política y no como configuración.",
+    "cita_textual": "y quedar registrado como cambio de política, no como configuración.",
+    "fuente": "ENT6 [00:21:16]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT6"
+  }
+]

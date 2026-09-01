@@ -1,0 +1,100 @@
+﻿[
+  {
+    "texto": "Existe el problema de que los cambios realizados en un módulo alteran de forma imprevista los flujos de otros clientes.",
+    "cita_textual": "Un cambio en un módulo altera el comportamiento de flujos de otros clientes",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "La plataforma actual carece de la capacidad para identificar qué versión específica de un módulo procesó un caso particular.",
+    "cita_textual": "No hay forma de saber qué versión de qué módulo procesó un caso determinado",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "Existe la deficiencia de que resulta imposible volver a construir una decisión que el sistema tomó en el pasado.",
+    "cita_textual": "lo que hace imposible reconstruir una decisión pasada.",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "La versión actual del sistema presenta el problema de asumir que los archivos son limpios, fallando con cualquier otro formato.",
+    "cita_textual": "La versión actual asume archivos limpios y falla con todo lo demás",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "Se requiere solucionar el problema de que la plataforma no informa la razón o motivo cuando falla al procesar.",
+    "cita_textual": "y cuando falla no dice por qué.",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "Existe una carencia de explicabilidad automática, lo que obliga a un ingeniero a dedicar horas revisando registros para responder al cliente.",
+    "cita_textual": "Hoy la respuesta la da un ingeniero mirando registros, y toma horas.",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "Los casos que la plataforma no logra resolver automáticamente caen en una bandeja que carece de un diseño pensado para el operador.",
+    "cita_textual": "Los casos que la plataforma no resuelve sola caen en una bandeja que nadie diseñó",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "El operador humano tiene la limitante de no poder visualizar la misma información que el sistema evaluó.",
+    "cita_textual": "la persona que los revisa no ve lo que la plataforma vio",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "El operador carece de la información o contexto necesario para comprender los motivos por los cuales se le derivó un caso.",
+    "cita_textual": "no entiende por qué se derivó el caso",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "El sistema carece de un mecanismo que permita al operador indicarle a la plataforma que cometió una equivocación.",
+    "cita_textual": "y no tiene manera de decirle a la plataforma que se equivocó.",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "Existe la necesidad de establecer una definición operativa clara sobre qué constituye una validación.",
+    "cita_textual": "No tenemos una definición operativa de qué es una validación",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "La plataforma carece de un registro certero y confiable que contabilice el número de validaciones que se realizaron.",
+    "cita_textual": "ni un registro confiable de cuántas se hicieron",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "Falta establecer un criterio unificado entre las áreas de finanzas y producto respecto a cuáles validaciones deben ser cobradas.",
+    "cita_textual": "ni un criterio compartido entre finanzas y producto sobre cuáles se cobran.",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  },
+  {
+    "texto": "El método manual de facturación utilizando una planilla presenta un problema de escalabilidad, resultando inviable operar con veinte clientes.",
+    "cita_textual": "Con dos clientes lo resolvimos con una planilla; con veinte es imposible.",
+    "fuente": "Sección 1.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "1.5 Lo que hoy nos duele"
+  }
+]

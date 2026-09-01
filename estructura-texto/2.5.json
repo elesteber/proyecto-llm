@@ -1,0 +1,86 @@
+﻿[
+  {
+    "texto": "El motor central del sistema tiene la capacidad decidida de interpretar y relacionar seis tipos de señales.",
+    "cita_textual": "un motor que interpreta seis tipos de señal y las relaciona entre sí.",
+    "fuente": "Sección 2.5",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "El sistema debe ser capaz de extraer el texto de los documentos, entender su estructura e identificar su tipo.",
+    "cita_textual": "debe extraer el texto y entender su estructura: identificar de qué tipo de documento se trata",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "La falta de correspondencia entre el total de un comprobante y la suma de sus líneas constituye un hallazgo detectado.",
+    "cita_textual": "un comprobante cuyo total no corresponde a la suma de sus líneas es un hallazgo",
+    "fuente": "Sección 2.5",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "Para el procesamiento de imágenes, se necesita describir su contenido, detectar objetos, identificar daños y evaluar posibles alteraciones.",
+    "cita_textual": "debe describir lo que se ve, detectar objetos y daños, y evaluar si la imagen fue alterada.",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "El análisis de imágenes de la plataforma incluye explícitamente el examen de los metadatos del archivo.",
+    "cita_textual": "El análisis de los metadatos del archivo",
+    "fuente": "Sección 2.5",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "En la evaluación de videos, el sistema debe habilitar consultas en lenguaje natural y detectar eventos y patrones.",
+    "cita_textual": "debe permitir hacer preguntas en lenguaje natural sobre el contenido y detectar eventos y patrones",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "Para las señales de audio, se requiere realizar transcripciones, comprender el contexto y contrastar la voz con referencias.",
+    "cita_textual": "debe transcribir, entender el contexto de la conversación y, cuando corresponda, contrastar la voz",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "El sistema debe leer códigos de barras y QR, contrastando la información que contienen con fuentes externas.",
+    "cita_textual": "debe leer códigos de barras y códigos QR y verificar la información contenida contra fuentes externas.",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "La capacidad de análisis de códigos impresos agrupa operativamente las verificaciones de identidad, como comparación de rostros y suplantación.",
+    "cita_textual": "Aquí se agrupan también las verificaciones de identidad: comparación de rostros, detección de suplantación",
+    "fuente": "Sección 2.5",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "El sistema debe cruzar las señales de distintas modalidades para entregar un puntaje o evaluación de riesgo que sea explicable.",
+    "cita_textual": "debe cruzar señales entre modalidades y producir una evaluación de riesgo explicable.",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "El motor requiere poder funcionar de inmediato en los procesos del cliente sin necesidad de proveer miles de ejemplos etiquetados.",
+    "cita_textual": "El motor debe funcionar desde el primer día sobre los procesos del cliente sin necesidad de que este aporte",
+    "fuente": "Sección 2.5",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  },
+  {
+    "texto": "Existe la promesa comercial central de que el producto no necesita ejemplos etiquetados para entrenarse antes de operar.",
+    "cita_textual": "Esa es una de las promesas centrales del producto frente a las herramientas tradicionales.",
+    "fuente": "Sección 2.5",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.5 El motor de análisis"
+  }
+]

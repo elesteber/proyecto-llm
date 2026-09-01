@@ -1,0 +1,51 @@
+﻿[
+  {
+    "texto": "Se requiere que la plataforma posea la capacidad de alimentar su propia mejora continua.",
+    "cita_textual": "La plataforma debe alimentar su propia mejora.",
+    "fuente": "Sección 2.18",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  },
+  {
+    "texto": "Existe el problema de que actualmente se pierde información valiosa sobre correcciones operativas, discrepancias y errores reportados.",
+    "cita_textual": "son información valiosa que hoy se pierde.",
+    "fuente": "Sección 2.18",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  },
+  {
+    "texto": "Se necesita que la información de correcciones y evidencias quede disponible como un conjunto revisable para el equipo de DPRIME.",
+    "cita_textual": "Esa información debe quedar disponible para el equipo de modelos de DPRIME en forma de un conjunto revisable",
+    "fuente": "Sección 2.18",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  },
+  {
+    "texto": "Es una regla establecida que el uso de los datos de un cliente para mejorar el servicio exige su autorización.",
+    "cita_textual": "El uso de los datos de un cliente para mejorar el servicio requiere su autorización",
+    "fuente": "Sección 2.18",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  },
+  {
+    "texto": "El sistema debe disponer de un mecanismo para que la autorización de uso de datos pueda otorgarse o retirarse por cliente.",
+    "cita_textual": "y esa autorización debe poder otorgarse o retirarse por cliente.",
+    "fuente": "Sección 2.18",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  },
+  {
+    "texto": "Se requiere poder comparar el comportamiento de una nueva versión de un módulo contra la vigente antes de su activación.",
+    "cita_textual": "Antes de activar una versión nueva de un módulo para un cliente, debe poder compararse su comportamiento",
+    "fuente": "Sección 2.18",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  },
+  {
+    "texto": "La plataforma debe visibilizar en cuántos casos resueltos habría cambiado la decisión al probar una versión nueva de un módulo.",
+    "cita_textual": "mostrando en cuántos casos la decisión habría cambiado.",
+    "fuente": "Sección 2.18",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "2.18 Mejora continua de los modelos"
+  }
+]

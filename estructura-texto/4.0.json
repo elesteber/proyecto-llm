@@ -1,0 +1,128 @@
+﻿[
+  {
+    "texto": "El sistema central de siniestros no expone servicios web para realizar integraciones en línea.",
+    "cita_textual": "y no expone servicios web.",
+    "fuente": "ENT7 [00:01:06]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "La integración actual funciona intercambiando archivos en una carpeta mediante procesos que se ejecutan cada media hora.",
+    "cita_textual": "nosotros dejamos y leemos archivos en una carpeta, y hay procesos que corren cada media hora.",
+    "fuente": "ENT7 [00:01:06]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo considera que cualquier diseño basado en llamadas en línea directas contra el sistema core fracasará.",
+    "cita_textual": "Todo lo que ustedes diseñen asumiendo llamadas en línea contra nuestro core no va a funcionar.",
+    "fuente": "ENT7 [00:01:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "El envío de casos desde la aseguradora hacia la plataforma puede hacerse utilizando su nueva capa tecnológica.",
+    "cita_textual": "eso lo puedo hacer desde la capa nueva que tenemos, no desde el core.",
+    "fuente": "ENT7 [00:03:46]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "La escritura de los resultados dentro del sistema de siniestros actualmente solo es posible mediante archivos.",
+    "cita_textual": "alguien tiene que escribirlo en el sistema de siniestros, y eso hoy solo se puede hacer por archivo",
+    "fuente": "ENT7 [00:03:46]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Se requiere definir si la escritura de resultados en el sistema será un proceso automático o mediante transcripción manual.",
+    "cita_textual": "Hay que decidir si el resultado se escribe automático o si el operador lo transcribe.",
+    "fuente": "ENT7 [00:03:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo anticipa que el límite de cien llamadas por minuto será superado al realizar cargas de casos históricos.",
+    "cita_textual": "cuando yo haga la carga inicial de casos históricos... voy a superarlo en el primer minuto.",
+    "fuente": "ENT7 [00:06:37]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Se necesita definir el comportamiento del sistema, ya sea rechazo o encolamiento, al superarse los límites de llamadas.",
+    "cita_textual": "Necesito saber qué pasa cuando lo supero: ¿me rechazan las llamadas?, ¿me encolan?",
+    "fuente": "ENT7 [00:06:37]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo opina que una caída mensual equivalente al 99,9 % de disponibilidad es tolerable si no se pierden casos.",
+    "cita_textual": "99,9 % mensual son cuarenta y tres minutos de caída al mes y eso lo puedo tolerar",
+    "fuente": "ENT7 [00:09:56]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Se requiere que las llamadas queden encoladas durante las caídas de la plataforma para procesarse después, sin pérdida alguna.",
+    "cita_textual": "mis llamadas queden encoladas y se procesen después, no que se pierdan",
+    "fuente": "ENT7 [00:09:56]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo considera que cualquier horario para mantenciones es aceptable si cuenta con aviso previo y encolamiento de casos.",
+    "cita_textual": "Con aviso y con encolamiento, cualquier horario me sirve.",
+    "fuente": "ENT7 [00:09:56]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo opina que es indiferente si el tiempo de respuesta es corto o largo, siempre que mantenga previsibilidad.",
+    "cita_textual": "Mientras sea predecible, me da lo mismo si son tres segundos o tres minutos.",
+    "fuente": "ENT7 [00:14:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo anticipa que tiempos de procesamiento variables e impredecibles en un diseño sincrónico causarán caídas y casos duplicados.",
+    "cita_textual": "se me caen los tiempos de espera y voy a tener casos duplicados porque el sistema reintenta.",
+    "fuente": "ENT7 [00:14:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "La aseguradora ha establecido que sus usuarios realizan la autenticación a través del directorio corporativo.",
+    "cita_textual": "Nuestros usuarios se autentican contra el directorio corporativo.",
+    "fuente": "ENT7 [00:18:26]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo tiene la preferencia de no administrar un juego adicional de contraseñas específico para sus cincuenta analistas.",
+    "cita_textual": "No voy a administrar un segundo juego de contraseñas para cincuenta analistas",
+    "fuente": "ENT7 [00:18:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Hugo anticipa que el área de seguridad de la aseguradora no aprobará el uso de credenciales independientes.",
+    "cita_textual": "y seguridad tampoco lo va a aprobar.",
+    "fuente": "ENT7 [00:18:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Actualmente, la plataforma opera gestionando su propio directorio o sistema de usuarios.",
+    "cita_textual": "hoy la plataforma tiene usuarios propios",
+    "fuente": "ENT7 [00:18:26]",
+    "tipo": "solucion_decidida",
+    "seccion_o_entrevista": "ENT7"
+  },
+  {
+    "texto": "Se necesita adaptar el mecanismo de autenticación del sistema para no utilizar usuarios propios.",
+    "cita_textual": "eso va a tener que cambiar para nosotros.",
+    "fuente": "ENT7 [00:18:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT7"
+  }
+]

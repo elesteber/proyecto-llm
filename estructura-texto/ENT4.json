@@ -1,0 +1,107 @@
+﻿[
+  {
+    "texto": "El área de reembolsos procesa un volumen aproximado de cuarenta mil documentos mensuales, correspondientes a doce mil casos.",
+    "cita_textual": "recibimos del orden de cuarenta mil documentos al mes, repartidos en unos doce mil casos.",
+    "fuente": "ENT4 [00:01:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Francisca opina que el volumen de dos mil validaciones mensuales planteado es incorrecto para la realidad de su operación.",
+    "cita_textual": "En ningún escenario son dos mil. Esa conversación la tuvimos y quedó en el aire.",
+    "fuente": "ENT4 [00:03:07]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "La plataforma debe ser capaz de procesar evidencias complejas y desordenadas, no limitándose únicamente a archivos PDF ordenados.",
+    "cita_textual": "Si la plataforma solo acepta PDF ordenados, no le sirve a nadie.",
+    "fuente": "ENT4 [00:05:20]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "El sistema debe permitir el procesamiento de boletas y documentos en múltiples idiomas, como inglés, portugués y francés.",
+    "cita_textual": "Llegan boletas en inglés, en portugués y he visto en francés.",
+    "fuente": "ENT4 [00:08:35]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Francisca prefiere que al inicio la plataforma sea conservadora y automatice solo las validaciones que superen los noventa puntos.",
+    "cita_textual": "para partir, yo automatizaría solo sobre noventa puntos, no sobre ochenta y cinco.",
+    "fuente": "ENT4 [00:11:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Francisca tiene la expectativa de poder modificar el umbral de automatización por sí misma, sin depender de nuevas versiones.",
+    "cita_textual": "quiero poder mover ese número yo, sin pedirle permiso a nadie ni esperar una versión nueva.",
+    "fuente": "ENT4 [00:11:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Existe una condición de negocio que compromete un plazo de cinco días hábiles para resolver los casos con el asegurado.",
+    "cita_textual": "Tenemos comprometidos cinco días hábiles con el asegurado",
+    "fuente": "ENT4 [00:13:46]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "La comisión del mercado establece un plazo de medición de tres días para la resolución de los casos.",
+    "cita_textual": "la comisión del mercado nos mide en tres.",
+    "fuente": "ENT4 [00:13:46]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "El área de operaciones trabaja bajo la regla interna de resolver los siniestros en un plazo de tres días.",
+    "cita_textual": "Internamente trabajamos con tres días.",
+    "fuente": "ENT4 [00:13:46]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Se requiere que el sistema muestre o notifique sobre los casos detenidos antes de que expire su plazo de resolución.",
+    "cita_textual": "Si un caso queda detenido esperando que alguien lo mire, necesito verlo antes de que se me venza",
+    "fuente": "ENT4 [00:13:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Al derivar un caso, la plataforma debe mostrar al analista toda la información procesada y el motivo exacto del rechazo.",
+    "cita_textual": "Todo lo que la máquina vio, en la misma pantalla. Y sobre todo, por qué me lo mandó.",
+    "fuente": "ENT4 [00:16:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "El sistema debe evitar que el analista tenga que ingresar al sistema de siniestros externo para comprender el caso derivado.",
+    "cita_textual": "Si mi analista tiene que abrir el sistema de siniestros por otro lado para entender el caso, gané cero",
+    "fuente": "ENT4 [00:16:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Ante cualquier discrepancia de criterio con la plataforma, la decisión del analista humano es la que manda.",
+    "cita_textual": "Manda mi analista, obviamente.",
+    "fuente": "ENT4 [00:19:06]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Se requiere que todas las discrepancias donde el analista corrige a la plataforma queden debidamente registradas.",
+    "cita_textual": "quiero que quede registrado, porque esa es la única manera de saber si la plataforma está mejorando",
+    "fuente": "ENT4 [00:19:06]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT4"
+  },
+  {
+    "texto": "Francisca espera tener visibilidad mensual directa sobre los registros de las discrepancias entre analistas y el sistema.",
+    "cita_textual": "Y quiero verlo yo, mensualmente, no que se lo lleven ustedes.",
+    "fuente": "ENT4 [00:19:06]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT4"
+  }
+]

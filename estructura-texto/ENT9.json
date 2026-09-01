@@ -1,0 +1,142 @@
+﻿[
+  {
+    "texto": "Actualmente, cuando un cliente reporta un problema, la resolución depende de contactar informalmente al ingeniero y de su disponibilidad.",
+    "cita_textual": "yo le escribo al ingeniero que armó ese piloto. Si está, lo mira. Si está de vacaciones, esperamos.",
+    "fuente": "ENT9 [00:01:07]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "El equipo operativo actual carece de guardias, de un registro de incidentes y de un historial de problemas previos.",
+    "cita_textual": "No tenemos guardia, no tenemos registro de incidentes y no tenemos manera de saber si un problema ya pasó",
+    "fuente": "ENT9 [00:01:07]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Existe el problema de que el equipo no cuenta con alertas propias y depende del aviso del cliente ante fallas.",
+    "cita_textual": "Porque nos avisa el cliente. Esa es la respuesta honesta. No tenemos alertas propias.",
+    "fuente": "ENT9 [00:03:26]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Tomás opina que depender del aviso del cliente es inaceptable en producción bajo un contrato que incluye multas.",
+    "cita_textual": "Eso, en producción, con un contrato con multas, no puede pasar.",
+    "fuente": "ENT9 [00:03:26]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Existe un documento que establece formalmente un compromiso de disponibilidad permanente del 99,9 %.",
+    "cita_textual": "El documento habla de disponibilidad permanente con 99,9 %.",
+    "fuente": "ENT9 [00:06:07]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "El documento estipula formalmente la existencia de una ventana de mantención mensual que se realiza en horario nocturno.",
+    "cita_textual": "Y también dice que hay una ventana de mantención mensual en horario nocturno.",
+    "fuente": "ENT9 [00:06:07]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Tomás anticipa que una ventana nocturna será problemática al incorporar clientes de países con otras zonas horarias como México.",
+    "cita_textual": "si mañana entra alguien en México, la ventana nocturna de allá es plena mañana acá.",
+    "fuente": "ENT9 [00:06:07]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Tomás considera que cualquier ventana de mantención generará retrasos para alguien debido a que aceptan casos las veinticuatro horas.",
+    "cita_textual": "si estamos aceptando casos las veinticuatro horas, cualquier ventana es una ventana en que alguien está esperando.",
+    "fuente": "ENT9 [00:06:07]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Se requiere un plan de acción para manejar las fallas de los servicios de terceros de los que dependen.",
+    "cita_textual": "dependemos de servicios de terceros que no controlamos y no tenemos un plan para cuando fallan.",
+    "fuente": "ENT9 [00:09:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Existe el problema de que una caída del proveedor de modelos provoca la caída total de la plataforma MIRA.",
+    "cita_textual": "Hoy, si el proveedor de modelos se cae, MIRA se cae.",
+    "fuente": "ENT9 [00:09:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "La plataforma carece de alternativas configuradas, manejo de colas y mecanismos de reintento inteligente ante caídas de proveedores.",
+    "cita_textual": "No hay alternativa configurada, no hay cola, no hay reintento con criterio.",
+    "fuente": "ENT9 [00:09:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Existe el problema de que los casos fallidos se pierden en registros que no son revisados por nadie.",
+    "cita_textual": "El caso simplemente falla y queda perdido en un registro que nadie mira.",
+    "fuente": "ENT9 [00:09:36]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Actualmente, para resolver problemas, el personal de soporte visualiza directamente la evidencia del caso (boletas, fotos) del cliente.",
+    "cita_textual": "Hoy, para resolver un problema, yo abro la evidencia del caso del cliente. Miro la boleta, miro la foto.",
+    "fuente": "ENT9 [00:12:21]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "El acceso a la evidencia del cliente se realiza actualmente sin autorización formal y sin dejar rastro de auditoría.",
+    "cita_textual": "Nadie me lo autorizó formalmente y no queda registrado en ninguna parte.",
+    "fuente": "ENT9 [00:12:21]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Un documento estipula formalmente que acceder a la evidencia requiere de la autorización expresa por parte del cliente.",
+    "cita_textual": "El documento dice que el acceso requiere autorización expresa del cliente",
+    "fuente": "ENT9 [00:12:21]",
+    "tipo": "regla_de_negocio",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Se requiere un mecanismo práctico e inmediato para solicitar y obtener la autorización del cliente para acceder a sus datos.",
+    "cita_textual": "necesito una manera práctica de pedir y obtener esa autorización en el minuto",
+    "fuente": "ENT9 [00:12:21]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Tomás opina que si no se provee un mecanismo práctico de autorización, el personal continuará evadiendo los controles establecidos.",
+    "cita_textual": "porque si no, la gente va a seguir entrando por la puerta de atrás.",
+    "fuente": "ENT9 [00:12:21]",
+    "tipo": "opinion",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Se requiere poder visualizar el estado general y reprocesar casos fallidos sin necesidad de intervención técnica o código.",
+    "cita_textual": "Ver el estado de todo en una pantalla, poder reprocesar un caso que falló sin que un ingeniero escriba nada",
+    "fuente": "ENT9 [00:16:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Se requiere disponer de un historial que detalle de manera clara todo lo ocurrido con cada caso en particular.",
+    "cita_textual": "y tener el historial de qué pasó con cada caso.",
+    "fuente": "ENT9 [00:16:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  },
+  {
+    "texto": "Actualmente, la gran mayoría de las escalaciones al equipo de ingeniería son exclusivamente para reiniciar casos que se atascaron.",
+    "cita_textual": "El noventa por ciento de lo que hoy escala a ingeniería es \"este caso quedó pegado",
+    "fuente": "ENT9 [00:16:46]",
+    "tipo": "necesidad",
+    "seccion_o_entrevista": "ENT9"
+  }
+]
