@@ -112,3 +112,29 @@ Salida a reformatear:
 **Caso de "la técnica no funcionó bien" (evidencia explícita para §5.4):** al reintentar el grupo de Contexto y propósito en otro modelo (por límite de adjuntos), la salida devolvió 10 supuestas contradicciones que en su propia justificación (`naturaleza_del_conflicto`) se describían a sí mismas como "compatibles" o "sin conflicto" en los 10 casos — es decir, el modelo no aplicó la regla 3 del prompt (no reportar como conflicto lo que es compatible). Se descartaron los 10 candidatos y se confirmó el resultado original (sin inconsistencias) con el otro modelo. Este es un ejemplo concreto de falla de la técnica pese a un prompt idéntico al usado exitosamente en los otros nueve grupos — variación entre modelos, no entre prompts.
 
 **Segundo caso, en la etapa de consolidación:** en una de las corridas del prompt de reformateo, la salida del chat truncó el timestamp entre corchetes (ej. "ENT6 [00:04:06]" quedó como "ENT6") porque no se pidió el bloque de código y el chat interpretó el corchete como sintaxis markdown. Se corrigió agregando la regla 6 al prompt de consolidación (exigir bloque de código) y reextrayendo el timestamp perdido desde el archivo original de esa fuente.
+
+---
+
+## Generación de la tabla resumen (formato final) — Structured Output Prompting
+
+Una vez que el equipo validó las inconsistencias (campos `validado_por_equipo` y `notas_validacion` completados a mano), se generó la tabla en Markdown para el informe con este prompt:
+
+```text
+Tienes un arreglo JSON de inconsistencias validadas. Genera una tabla en
+formato Markdown donde:
+- Cada FILA es un ítem (H-01, H-02, etc.), en el mismo orden en que
+  aparecen en el arreglo.
+- Cada COLUMNA es un campo: Tema, Entrada A (con su fuente), Entrada B
+  (con su fuente), Naturaleza del conflicto.
+
+No agregues texto antes ni después de la tabla. No resumas ni acortes
+ningún campo — cópialos literalmente tal como aparecen en el JSON.
+Devuelve la tabla dentro de un bloque de código markdown.
+
+JSON a convertir:
+[pegar aquí el arreglo consolidado]
+```
+
+**Por qué Structured Output Prompting acá:** el objetivo es forzar un formato de salida fijo (tabla Markdown con columnas predefinidas) sobre contenido que ya existe y está validado — no generar contenido nuevo. Es el mismo principio de la Fase 1 (esquema fijo, sin inferencia), aplicado a la última etapa: presentación, no análisis.
+
+**Ajuste respecto de la idea original:** se planteó primero con los ítems en columnas y los campos en filas (una tabla "transpuesta", pensando en comparar hallazgos lado a lado). Se invirtió a ítems-en-filas / campos-en-columnas antes de ejecutarlo, porque con 16 hallazgos una tabla de 16 columnas habría forzado al modelo a truncar los campos más largos (sobre todo "naturaleza_del_conflicto", que trae párrafos completos) para mantener un ancho manejable — el formato convencional evita ese riesgo sin perder ningún dato.

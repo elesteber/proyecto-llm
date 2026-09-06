@@ -1,0 +1,342 @@
+{
+  "lote": "[Secciones 2.10–2.17, ENT7, ENT9]",
+  "entidades": [
+    {
+      "nombre": "Flujo",
+      "atributos": [
+        "configuración",
+        "documentación"
+      ],
+      "terminos_usados": [
+        "flujo",
+        "flujos"
+      ],
+      "fuentes": [
+        "Sección 2.10",
+        "Sección 2.13"
+      ]
+    },
+    {
+      "nombre": "Punto de Acceso",
+      "atributos": [
+        "autenticación",
+        "límite de llamadas"
+      ],
+      "terminos_usados": [
+        "punto de acceso"
+      ],
+      "fuentes": [
+        "Sección 2.10"
+      ]
+    },
+    {
+      "nombre": "Caso",
+      "atributos": [
+        "identificador",
+        "puntaje",
+        "decisión",
+        "desglose de señales",
+        "módulos ejecutados",
+        "versiones",
+        "reglas",
+        "intervenciones"
+      ],
+      "terminos_usados": [
+        "caso",
+        "casos",
+        "casos de prueba",
+        "casos históricos"
+      ],
+      "fuentes": [
+        "Sección 2.10",
+        "Sección 2.11",
+        "Sección 2.15",
+        "Sección 2.16",
+        "Sección 2.17",
+        "ENT9 [00:09:36]",
+        "ENT9 [00:16:46]",
+        "ENT7 [00:06:37]"
+      ]
+    },
+    {
+      "nombre": "Evidencia",
+      "atributos": [
+        "estado original",
+        "ilegible",
+        "autorización expresa"
+      ],
+      "terminos_usados": [
+        "evidencia",
+        "boleta",
+        "foto"
+      ],
+      "fuentes": [
+        "Sección 2.10",
+        "Sección 2.11",
+        "Sección 2.14",
+        "ENT9 [00:12:21]"
+      ]
+    },
+    {
+      "nombre": "Rastro de auditoría",
+      "atributos": [
+        "inalterable",
+        "enlace a la auditoría"
+      ],
+      "terminos_usados": [
+        "rastro de auditoría",
+        "registro de la decisión",
+        "historial"
+      ],
+      "fuentes": [
+        "Sección 2.10",
+        "Sección 2.11",
+        "ENT9 [00:16:46]"
+      ]
+    },
+    {
+      "nombre": "Cliente",
+      "atributos": [
+        "organización independiente",
+        "tarifa escalonada según volumen"
+      ],
+      "terminos_usados": [
+        "cliente",
+        "clientes grandes"
+      ],
+      "fuentes": [
+        "Sección 2.10",
+        "Sección 2.12",
+        "Sección 2.13",
+        "Sección 2.14",
+        "Sección 2.15",
+        "Sección 2.16"
+      ]
+    },
+    {
+      "nombre": "Usuario",
+      "atributos": [
+        "rol",
+        "credenciales"
+      ],
+      "terminos_usados": [
+        "usuario",
+        "operador",
+        "diseñador",
+        "consultor de indicadores",
+        "administrador",
+        "supervisor",
+        "analista"
+      ],
+      "fuentes": [
+        "Sección 2.12",
+        "Sección 2.13",
+        "Sección 2.15",
+        "ENT7 [00:18:26]"
+      ]
+    },
+    {
+      "nombre": "Panel",
+      "atributos": [
+        "indicador de contradicciones",
+        "consumo",
+        "rendimiento",
+        "errores"
+      ],
+      "terminos_usados": [
+        "panel",
+        "indicadores"
+      ],
+      "fuentes": [
+        "Sección 2.12"
+      ]
+    },
+    {
+      "nombre": "Bandeja",
+      "atributos": [
+        "proporción de derivaciones"
+      ],
+      "terminos_usados": [
+        "bandeja"
+      ],
+      "fuentes": [
+        "Sección 2.15"
+      ]
+    },
+    {
+      "nombre": "Plantilla de flujo",
+      "atributos": [
+        "caso de uso",
+        "módulos",
+        "reglas",
+        "umbrales sugeridos"
+      ],
+      "terminos_usados": [
+        "flujos preconfigurados",
+        "plantillas preconfiguradas"
+      ],
+      "fuentes": [
+        "Sección 2.16"
+      ]
+    },
+    {
+      "nombre": "Validación",
+      "atributos": [
+        "efectiva",
+        "útil",
+        "concluyente"
+      ],
+      "terminos_usados": [
+        "validación",
+        "validaciones"
+      ],
+      "fuentes": [
+        "Sección 2.14"
+      ]
+    },
+    {
+      "nombre": "Notificación",
+      "atributos": [
+        "canal"
+      ],
+      "terminos_usados": [
+        "notificación",
+        "alerta",
+        "aviso",
+        "llamada de vuelta"
+      ],
+      "fuentes": [
+        "Sección 2.15",
+        "ENT9 [00:03:26]"
+      ]
+    },
+    {
+      "nombre": "Incidente",
+      "atributos": [
+        "estado"
+      ],
+      "terminos_usados": [
+        "incidente",
+        "problema",
+        "falla"
+      ],
+      "fuentes": [
+        "Sección 2.17",
+        "ENT9 [00:01:07]"
+      ]
+    },
+    {
+      "nombre": "Servicio externo",
+      "atributos": [
+        "disponibilidad"
+      ],
+      "terminos_usados": [
+        "servicio externo",
+        "servicios de terceros",
+        "proveedor de modelos"
+      ],
+      "fuentes": [
+        "Sección 2.17",
+        "ENT9 [00:09:36]"
+      ]
+    },
+    {
+      "nombre": "Sistema de siniestros",
+      "atributos": [],
+      "terminos_usados": [
+        "sistema central de siniestros",
+        "sistema de siniestros",
+        "core"
+      ],
+      "fuentes": [
+        "ENT7 [00:01:06]",
+        "ENT7 [00:03:46]"
+      ]
+    }
+  ],
+  "relaciones": [
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Punto de Acceso",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": null,
+      "fuentes": [
+        "Sección 2.10"
+      ]
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Punto de Acceso",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "El límite general es 1000 llamadas por minuto por cliente, pero existe un límite de 100 llamadas por minuto para los ambientes de integración.",
+      "fuentes": [
+        "Sección 2.10"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Rastro de auditoría",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "El rastro es inalterable, y ni los administradores de cuenta del cliente ni el personal de DPRIME pueden modificarlo o borrarlo.",
+      "fuentes": [
+        "Sección 2.11"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Evidencia",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "La evidencia original se elimina tras 90 días, conservándose únicamente el registro de la decisión.",
+      "fuentes": [
+        "Sección 2.11"
+      ]
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Usuario",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Por lo general se utilizan credenciales administradas por la plataforma, pero clientes grandes exigen federar la autenticación contra su propio directorio corporativo.",
+      "fuentes": [
+        "Sección 2.13",
+        "ENT7 [00:18:26]"
+      ]
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Validación",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Los casos donde la plataforma no pudo procesar por evidencia ilegible quedan exentos de cobro.",
+      "fuentes": [
+        "Sección 2.14"
+      ]
+    },
+    {
+      "entidad_A": "Usuario (Operador)",
+      "entidad_B": "Bandeja",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": null,
+      "fuentes": [
+        "Sección 2.15"
+      ]
+    },
+    {
+      "entidad_A": "Bandeja",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": null,
+      "fuentes": [
+        "Sección 2.15"
+      ]
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Servicio externo",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Ante la caída de un servicio externo (como el proveedor de modelos), la plataforma no puede fallar. Debe reintentar con criterio, encolar casos y avisar de la demora.",
+      "fuentes": [
+        "Sección 2.17",
+        "ENT9 [00:09:36]"
+      ]
+    }
+  ]
+}

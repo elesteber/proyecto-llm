@@ -1,0 +1,268 @@
+{
+  "lote": "[2.18, 3.0, 4.0, 5.1, 5.2, 5.3, ENT1, ENT2, ENT6, ENT8]",
+  "entidades": [
+    {
+      "nombre": "Caso",
+      "atributos": [
+        "Identificador único y permanente",
+        "Puntaje total"
+      ],
+      "terminos_usados": [
+        "Caso",
+        "Siniestro",
+        "Expediente"
+      ],
+      "fuentes": [
+        "Sección 3",
+        "ENT7 [00:03:46]",
+        "ENT2 [00:16:36]",
+        "ENT1 [00:05:55]",
+        "ENT6 [00:07:26]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Cliente",
+      "atributos": [
+        "Autorización de uso de datos",
+        "Límite temporal"
+      ],
+      "terminos_usados": [
+        "Cliente",
+        "Aseguradora",
+        "Organización",
+        "Empresa"
+      ],
+      "fuentes": [
+        "Sección 2.18",
+        "Sección 3",
+        "ENT7 [00:03:46]",
+        "ENT2 [00:10:26]",
+        "ENT1 [00:01:16]",
+        "ENT8 [00:00:56]"
+      ]
+    },
+    {
+      "nombre": "Evidencia",
+      "atributos": [
+        "Datos personales",
+        "Legibilidad"
+      ],
+      "terminos_usados": [
+        "Evidencia",
+        "Documento",
+        "Información parcial"
+      ],
+      "fuentes": [
+        "Sección 3",
+        "Sección 5.2",
+        "ENT2 [00:10:26]",
+        "ENT1 [00:01:16]",
+        "ENT6 [00:07:26]",
+        "ENT8 [00:10:06]"
+      ]
+    },
+    {
+      "nombre": "Decisión",
+      "atributos": [
+        "Fundamentos",
+        "Puntaje"
+      ],
+      "terminos_usados": [
+        "Decisión",
+        "Resolución",
+        "Veredicto",
+        "Aprobación",
+        "Rechazo"
+      ],
+      "fuentes": [
+        "Sección 2.18",
+        "Sección 3",
+        "Sección 5.1",
+        "ENT1 [00:01:16]",
+        "ENT6 [00:01:21]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Flujo",
+      "atributos": [
+        "Versión"
+      ],
+      "terminos_usados": [
+        "Flujo"
+      ],
+      "fuentes": [
+        "Sección 3",
+        "ENT2 [00:00:58]",
+        "ENT1 [00:08:45]"
+      ]
+    },
+    {
+      "nombre": "Umbral de decisión",
+      "atributos": [
+        "Autor",
+        "Fecha",
+        "Valor anterior"
+      ],
+      "terminos_usados": [
+        "Umbrales de decisión",
+        "Umbral"
+      ],
+      "fuentes": [
+        "Sección 3",
+        "ENT2 [00:13:05]",
+        "ENT6 [00:21:16]"
+      ]
+    },
+    {
+      "nombre": "Módulo de análisis",
+      "atributos": [
+        "Versión",
+        "Estado activo"
+      ],
+      "terminos_usados": [
+        "Módulo",
+        "Módulo de análisis"
+      ],
+      "fuentes": [
+        "Sección 2.18",
+        "Sección 3"
+      ]
+    },
+    {
+      "nombre": "Plataforma",
+      "atributos": [],
+      "terminos_usados": [
+        "Plataforma",
+        "Sistema",
+        "MIRA"
+      ],
+      "fuentes": [
+        "Sección 2.18",
+        "Sección 3",
+        "ENT7 [00:09:56]",
+        "Sección 5.1",
+        "Sección 5.3",
+        "ENT1 [00:01:16]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Validación",
+      "atributos": [],
+      "terminos_usados": [
+        "Validación",
+        "Reevaluación"
+      ],
+      "fuentes": [
+        "Sección 3",
+        "ENT8 [00:04:46]"
+      ]
+    },
+    {
+      "nombre": "Operador",
+      "atributos": [],
+      "terminos_usados": [
+        "Operador",
+        "Analista",
+        "Persona"
+      ],
+      "fuentes": [
+        "Sección 3",
+        "ENT7 [00:03:46]",
+        "ENT2 [00:16:36]",
+        "ENT6 [00:01:21]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Señal de fraude",
+      "atributos": [
+        "Estado activa"
+      ],
+      "terminos_usados": [
+        "Señal de fraude",
+        "Alerta de fraude"
+      ],
+      "fuentes": [
+        "Sección 3"
+      ]
+    }
+  ],
+  "relaciones": [
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Decisión",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "Ningún caso puede quedar en el sistema sin alcanzar una resolución. Si se aprueba automáticamente, no vuelve a revisarse.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Evidencia",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Si se ingresa evidencia adicional a un caso ya cerrado, se debe generar un nuevo caso vinculado al anterior.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Umbral de decisión",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "El cliente tiene la facultad de fijar los umbrales, pero cualquier modificación debe exigir imperativamente la autorización mediante dos aprobaciones separadas y registrarse como cambio de política.",
+      "fuentes": [
+        "Sección 3",
+        "ENT6 [00:21:16]"
+      ]
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Módulo de análisis",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Es requisito indispensable contar con al menos un módulo activo para que el sistema consienta la publicación de un flujo.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Flujo",
+      "cardinalidad": "N a 1",
+      "excepcion_detectada": "Todo caso en curso debe completar su proceso rigiéndose estrictamente por la versión del flujo con la que comenzó.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Señal de fraude",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "La presencia de una alerta de fraude activa impone la derivación del caso sin importar su puntuación, gozando de jerarquía superior.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "La falta de respuesta de un servicio ajeno sitúa al caso en espera, prohibiéndose descartarlo bajo ninguna circunstancia.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Operador",
+      "entidad_B": "Decisión",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Las decisiones de operadores que sean contrarias a las sugerencias del sistema disparan una revisión algorítmica obligatoria pero mantienen la postura humana.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,924 @@
+{
+  "entidades": [
+    {
+      "nombre": "Caso",
+      "atributos": [
+        "identificador propio (único y permanente)",
+        "puntaje de confianza (0 a 100)",
+        "resolución (aprobado, rechazado, derivado, cerrado)",
+        "tiempo restante",
+        "complejidad (simple, complicado)",
+        "desglose de señales",
+        "módulos ejecutados",
+        "versiones",
+        "reglas",
+        "intervenciones"
+      ],
+      "terminos_usados": [
+        "caso",
+        "casos",
+        "casos de prueba",
+        "casos históricos",
+        "Siniestro",
+        "Expediente",
+        "expediente"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.2",
+        "Sección 1.3",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3",
+        "Sección 2.4",
+        "Sección 2.6",
+        "Sección 2.7",
+        "Sección 2.10",
+        "Sección 2.11",
+        "Sección 2.15",
+        "Sección 2.16",
+        "Sección 2.17",
+        "Sección 3",
+        "ENT1 [00:05:55]",
+        "ENT2 [00:16:36]",
+        "ENT4 [00:13:46]",
+        "ENT5 [00:01:00]",
+        "ENT6 [00:07:26]",
+        "ENT7 [00:03:46]",
+        "ENT7 [00:06:37]",
+        "ENT8 [00:02:36]",
+        "ENT9 [00:09:36]",
+        "ENT9 [00:16:46]"
+      ]
+    },
+    {
+      "nombre": "Evidencia",
+      "atributos": [
+        "tipo (PDF, imagen, video, audio)",
+        "legibilidad",
+        "motivo (si no es legible)",
+        "idioma (inglés, portugués, francés)",
+        "estado original",
+        "autorización expresa",
+        "Datos personales"
+      ],
+      "terminos_usados": [
+        "evidencia",
+        "pieza de evidencia",
+        "archivo",
+        "documento",
+        "comprobante",
+        "boleta",
+        "foto",
+        "Información parcial",
+        "evidencia digital",
+        "fotografía",
+        "fotografías del daño",
+        "video",
+        "archivo de audio",
+        "código impreso",
+        "imágenes biométricas",
+        "denuncia"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.2",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.1",
+        "Sección 2.4",
+        "Sección 2.5",
+        "Sección 2.10",
+        "Sección 2.11",
+        "Sección 2.14",
+        "Sección 3",
+        "Sección 5.2",
+        "ENT1 [00:01:16]",
+        "ENT2 [00:10:26]",
+        "ENT4 [00:08:35]",
+        "ENT5 [00:05:07]",
+        "ENT6 [00:07:26]",
+        "ENT8 [00:10:06]",
+        "ENT9 [00:12:21]"
+      ]
+    },
+    {
+      "nombre": "Puntaje",
+      "atributos": [
+        "componentes / desglose",
+        "explicable"
+      ],
+      "terminos_usados": [
+        "puntaje",
+        "puntaje de confianza",
+        "evaluación de riesgo"
+      ],
+      "fuentes": [
+        "Sección 2.5",
+        "Sección 2.6",
+        "Sección 2.7"
+      ]
+    },
+    {
+      "nombre": "Señal",
+      "atributos": [
+        "tipo (texto, imagen, video, audio, códigos)",
+        "mínimo propio",
+        "activa / inactiva (para señales de fraude)"
+      ],
+      "terminos_usados": [
+        "señal",
+        "señal individual",
+        "señal de fraude",
+        "Alerta de fraude"
+      ],
+      "fuentes": [
+        "Sección 2.5",
+        "Sección 2.6",
+        "Sección 3"
+      ]
+    },
+    {
+      "nombre": "Flujo",
+      "atributos": [
+        "versión",
+        "estado (en curso, publicado)",
+        "configuración",
+        "documentación"
+      ],
+      "terminos_usados": [
+        "flujo",
+        "proceso",
+        "flujo empresarial",
+        "flujos",
+        "secuencia de validaciones"
+      ],
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.3",
+        "Sección 2.8",
+        "Sección 2.10",
+        "Sección 2.13",
+        "Sección 3",
+        "ENT1 [00:08:45]",
+        "ENT2 [00:00:58]"
+      ]
+    },
+    {
+      "nombre": "Bloque",
+      "atributos": [
+        "configuración"
+      ],
+      "terminos_usados": [
+        "bloque",
+        "conector"
+      ],
+      "fuentes": [
+        "Sección 2.8",
+        "Sección 2.9"
+      ]
+    },
+    {
+      "nombre": "Umbral",
+      "atributos": [
+        "autor (del cambio)",
+        "fecha",
+        "valor anterior"
+      ],
+      "terminos_usados": [
+        "umbrales configurables",
+        "rangos de decisión",
+        "umbral",
+        "Umbrales de decisión"
+      ],
+      "fuentes": [
+        "Sección 2.6",
+        "Sección 3",
+        "ENT2 [00:13:05]",
+        "ENT4 [00:11:06]",
+        "ENT6 [00:21:16]"
+      ]
+    },
+    {
+      "nombre": "Operador",
+      "atributos": [
+        "tiempo de respuesta comprometido"
+      ],
+      "terminos_usados": [
+        "operador",
+        "analista",
+        "analista liquidador",
+        "Persona",
+        "operador del proceso",
+        "persona",
+        "liquidador"
+      ],
+      "fuentes": [
+        "Sección 1.2",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.3",
+        "Sección 2.6",
+        "Sección 2.7",
+        "Sección 3",
+        "ENT2 [00:16:36]",
+        "ENT4 [00:16:26]",
+        "ENT5 [00:01:00]",
+        "ENT6 [00:01:21]",
+        "ENT7 [00:03:46]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Decisión del Operador",
+      "atributos": [
+        "motivo",
+        "discrepancia registrada"
+      ],
+      "terminos_usados": [
+        "decisión final",
+        "resolución",
+        "discrepancia"
+      ],
+      "fuentes": [
+        "Sección 2.7",
+        "Sección 3",
+        "ENT4 [00:19:06]"
+      ]
+    },
+    {
+      "nombre": "Módulo de análisis",
+      "atributos": [
+        "activo",
+        "versión",
+        "configuración"
+      ],
+      "terminos_usados": [
+        "módulos independientes",
+        "módulo de análisis",
+        "Módulo",
+        "módulos especializados",
+        "módulo"
+      ],
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.9",
+        "Sección 2.18",
+        "Sección 3"
+      ]
+    },
+    {
+      "nombre": "Dato",
+      "atributos": [
+        "ubicación exacta",
+        "estado (mal leído)"
+      ],
+      "terminos_usados": [
+        "dato",
+        "datos"
+      ],
+      "fuentes": [
+        "ENT5 [00:02:46]",
+        "ENT5 [00:10:05]"
+      ]
+    },
+    {
+      "nombre": "Punto de Acceso",
+      "atributos": [
+        "autenticación",
+        "límite de llamadas"
+      ],
+      "terminos_usados": [
+        "punto de acceso"
+      ],
+      "fuentes": [
+        "Sección 2.10"
+      ]
+    },
+    {
+      "nombre": "Registro de auditoría y trazabilidad",
+      "atributos": [
+        "inalterable",
+        "enlace a la auditoría"
+      ],
+      "terminos_usados": [
+        "rastro de auditoría",
+        "registro de la decisión",
+        "historial",
+        "registros",
+        "trazabilidad",
+        "rastro"
+      ],
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.3",
+        "Sección 2.10",
+        "Sección 2.11",
+        "ENT9 [00:16:46]"
+      ]
+    },
+    {
+      "nombre": "Cliente",
+      "atributos": [
+        "organización independiente",
+        "tarifa escalonada según volumen",
+        "Autorización de uso de datos",
+        "Límite temporal"
+      ],
+      "terminos_usados": [
+        "cliente",
+        "clientes grandes",
+        "Aseguradora",
+        "Organización",
+        "Empresa",
+        "aseguradora"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.2",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.2",
+        "Sección 2.3",
+        "Sección 2.10",
+        "Sección 2.12",
+        "Sección 2.13",
+        "Sección 2.14",
+        "Sección 2.15",
+        "Sección 2.16",
+        "Sección 2.18",
+        "Sección 3",
+        "ENT1 [00:01:16]",
+        "ENT2 [00:10:26]",
+        "ENT7 [00:03:46]",
+        "ENT8 [00:00:56]"
+      ]
+    },
+    {
+      "nombre": "Usuario",
+      "atributos": [
+        "rol",
+        "credenciales"
+      ],
+      "terminos_usados": [
+        "usuario",
+        "operador",
+        "diseñador",
+        "consultor de indicadores",
+        "administrador",
+        "supervisor",
+        "analista",
+        "supervisor del proceso",
+        "perfil encargado del diseño del flujo",
+        "usuario de negocio",
+        "área de cumplimiento, riesgo o auditoría interna",
+        "equipo de tecnología del cliente",
+        "área comercial y de administración"
+      ],
+      "fuentes": [
+        "Sección 2.3",
+        "Sección 2.12",
+        "Sección 2.13",
+        "Sección 2.15",
+        "ENT7 [00:18:26]"
+      ]
+    },
+    {
+      "nombre": "Panel",
+      "atributos": [
+        "indicador de contradicciones",
+        "consumo",
+        "rendimiento",
+        "errores"
+      ],
+      "terminos_usados": [
+        "panel",
+        "indicadores"
+      ],
+      "fuentes": [
+        "Sección 2.12"
+      ]
+    },
+    {
+      "nombre": "Bandeja",
+      "atributos": [
+        "proporción de derivaciones"
+      ],
+      "terminos_usados": [
+        "bandeja",
+        "bandeja de revisión",
+        "pantalla",
+        "interfaz"
+      ],
+      "fuentes": [
+        "Sección 1.5",
+        "Sección 2.3",
+        "Sección 2.15"
+      ]
+    },
+    {
+      "nombre": "Plantilla de flujo",
+      "atributos": [
+        "caso de uso",
+        "módulos",
+        "reglas",
+        "umbrales sugeridos"
+      ],
+      "terminos_usados": [
+        "flujos preconfigurados",
+        "plantillas preconfiguradas"
+      ],
+      "fuentes": [
+        "Sección 2.16"
+      ]
+    },
+    {
+      "nombre": "Validación",
+      "atributos": [
+        "efectiva",
+        "útil",
+        "concluyente"
+      ],
+      "terminos_usados": [
+        "validación",
+        "validaciones",
+        "Reevaluación",
+        "validaciones útiles"
+      ],
+      "fuentes": [
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.3",
+        "Sección 2.14",
+        "Sección 3",
+        "ENT8 [00:04:46]"
+      ]
+    },
+    {
+      "nombre": "Notificación",
+      "atributos": [
+        "canal"
+      ],
+      "terminos_usados": [
+        "notificación",
+        "alerta",
+        "aviso",
+        "llamada de vuelta"
+      ],
+      "fuentes": [
+        "Sección 2.15",
+        "ENT9 [00:03:26]"
+      ]
+    },
+    {
+      "nombre": "Incidente",
+      "atributos": [
+        "estado"
+      ],
+      "terminos_usados": [
+        "incidente",
+        "problema",
+        "falla"
+      ],
+      "fuentes": [
+        "Sección 2.17",
+        "ENT9 [00:01:07]"
+      ]
+    },
+    {
+      "nombre": "Servicio externo",
+      "atributos": [
+        "disponibilidad"
+      ],
+      "terminos_usados": [
+        "servicio externo",
+        "servicios de terceros",
+        "proveedor de modelos"
+      ],
+      "fuentes": [
+        "Sección 2.17",
+        "ENT9 [00:09:36]"
+      ]
+    },
+    {
+      "nombre": "Sistema de siniestros",
+      "atributos": [],
+      "terminos_usados": [
+        "sistema central de siniestros",
+        "sistema de siniestros",
+        "core"
+      ],
+      "fuentes": [
+        "ENT7 [00:01:06]",
+        "ENT7 [00:03:46]"
+      ]
+    },
+    {
+      "nombre": "Decisión",
+      "atributos": [
+        "Fundamentos",
+        "Puntaje",
+        "nivel de confianza",
+        "resultado"
+      ],
+      "terminos_usados": [
+        "Decisión",
+        "Resolución",
+        "Veredicto",
+        "Aprobación",
+        "Rechazo",
+        "decisión",
+        "resultado",
+        "aprobar reembolso",
+        "rechazar solicitud",
+        "derivar caso",
+        "pedir reenvío por ilegibilidad",
+        "monto de liquidación"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3",
+        "Sección 2.18",
+        "Sección 3",
+        "Sección 5.1",
+        "ENT1 [00:01:16]",
+        "ENT6 [00:01:21]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Plataforma",
+      "atributos": [],
+      "terminos_usados": [
+        "Plataforma",
+        "Sistema",
+        "MIRA",
+        "plataforma",
+        "sistema",
+        "plataforma de inteligencia artificial multimodal"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.3",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3",
+        "Sección 2.18",
+        "Sección 3",
+        "Sección 5.1",
+        "Sección 5.3",
+        "ENT1 [00:01:16]",
+        "ENT7 [00:09:56]",
+        "ENT8 [00:02:36]"
+      ]
+    },
+    {
+      "nombre": "Asegurado o titular",
+      "atributos": [],
+      "terminos_usados": [
+        "asegurado",
+        "personas"
+      ],
+      "fuentes": [
+        "Sección 1.6",
+        "Sección 2.3"
+      ]
+    }
+  ],
+  "relaciones": [
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Evidencia",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Si ingresa nueva evidencia a un caso que ya está cerrado, no se asocia directamente a ese caso, sino que se abre un caso nuevo vinculado al anterior. La evidencia original se elimina tras 90 días, conservándose únicamente el registro de la decisión. La evidencia enviada suele tener una calidad sumamente deficiente, lo que exige esfuerzo previo para saber si un archivo es siquiera útil."
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Bloque",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "null"
+    },
+    {
+      "entidad_A": "Puntaje",
+      "entidad_B": "Umbral",
+      "cardinalidad": "1 a 1 (para determinar la decisión)",
+      "excepcion_detectada": "Aunque el puntaje sea aprobatorio (ej. mayor a 80/85), si una señal de fraude está activa o una señal individual no alcanza su mínimo propio, se ignora el puntaje y se deriva o rechaza el caso."
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Caso",
+      "cardinalidad": "Muchos a muchos (vinculación)",
+      "excepcion_detectada": "Los casos de un mismo asegurado/emisor dentro de una ventana breve deben poder relacionarse entre sí."
+    },
+    {
+      "entidad_A": "Operador",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Los casos aprobados automáticamente quedan exentos y nunca son revisados por el operador. Alrededor de 7 de cada 10 casos pasan por revisión humana completa, incluso cuando el caso es trivial."
+    },
+    {
+      "entidad_A": "Decisión del Operador",
+      "entidad_B": "Puntaje",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "Ante cualquier discrepancia, la decisión del analista humano manda sobre la sugerencia de la plataforma, pero marca el caso para revisión algorítmica."
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Punto de Acceso",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "null"
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Punto de Acceso",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "El límite general es 1000 llamadas por minuto por cliente, pero existe un límite de 100 llamadas por minuto para los ambientes de integración."
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Registro de auditoría y trazabilidad",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "El rastro es inalterable, y ni los administradores de cuenta del cliente ni el personal de DPRIME pueden modificarlo o borrarlo."
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Usuario",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Por lo general se utilizan credenciales administradas por la plataforma, pero clientes grandes exigen federar la autenticación contra su propio directorio corporativo."
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Validación",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Los casos donde la plataforma no pudo procesar por evidencia ilegible quedan exentos de cobro."
+    },
+    {
+      "entidad_A": "Usuario (Operador)",
+      "entidad_B": "Bandeja",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "null"
+    },
+    {
+      "entidad_A": "Bandeja",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "null"
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Servicio externo",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Ante la caída de un servicio externo (como el proveedor de modelos), la plataforma no puede fallar. Debe reintentar con criterio, encolar casos y avisar de la demora."
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Decisión",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "Ningún caso puede quedar en el sistema sin alcanzar una resolución. Si se aprueba automáticamente, no vuelve a revisarse."
+    },
+    {
+      "entidad_A": "Cliente",
+      "entidad_B": "Umbral",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "El cliente tiene la facultad de fijar los umbrales, pero cualquier modificación debe exigir imperativamente la autorización mediante dos aprobaciones separadas y registrarse como cambio de política."
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Módulo de análisis",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Es requisito indispensable contar con al menos un módulo activo para que el sistema consienta la publicación de un flujo."
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Flujo",
+      "cardinalidad": "N a 1",
+      "excepcion_detectada": "Todo caso en curso debe completar su proceso rigiéndose estrictamente por la versión del flujo con la que comenzó."
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Señal",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "La presencia de una alerta de fraude activa impone la derivación del caso sin importar su puntuación, gozando de jerarquía superior."
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "La falta de respuesta de un servicio ajeno sitúa al caso en espera, prohibiéndose descartarlo bajo ninguna circunstancia. Los casos que no se resuelven de forma automática caen a una bandeja no diseñada para ese fin, sin que la plataforma explique su falla."
+    },
+    {
+      "entidad_A": "Operador",
+      "entidad_B": "Decisión",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Las decisiones de operadores que sean contrarias a las sugerencias del sistema disparan una revisión algorítmica obligatoria pero mantienen la postura humana."
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Decisión",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Los liquidadores humanos frecuentemente desconfían de la decisión (monto propuesto) y la recalculan, desplazando el trabajo en vez de automatizarlo."
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Validación",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Carece de registro confiable de cuántas validaciones hizo y falta criterio compartido entre áreas sobre cuáles efectivamente deben cobrarse."
+    },
+    {
+      "entidad_A": "Módulo de análisis",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "En la versión actual no hay forma de saber retrospectivamente qué versión exacta de módulo procesó un caso determinado."
+    },
+    {
+      "entidad_A": "Usuario",
+      "entidad_B": "Flujo",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Existe gran incertidumbre sobre si un perfil de usuario de negocio capaz de diseñar flujos realmente existe en todos los clientes."
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Registro de auditoría y trazabilidad",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Los registros de trazabilidad actuales no están diseñados para ser consultados y obligan a un ingeniero a dedicar horas mirándolos."
+    }
+  ],
+  "glosario": [
+    {
+      "concepto": "Caso",
+      "terminos_usados": [
+        "caso",
+        "casos",
+        "casos de prueba",
+        "casos históricos",
+        "Siniestro",
+        "Expediente",
+        "expediente"
+      ],
+      "fuentes": [
+        "Lote 1",
+        "Lote 2",
+        "Lote 3",
+        "Lote 4"
+      ]
+    },
+    {
+      "concepto": "Evidencia",
+      "terminos_usados": [
+        "evidencia",
+        "pieza de evidencia",
+        "archivo",
+        "documento",
+        "comprobante",
+        "boleta",
+        "foto",
+        "Información parcial",
+        "evidencia digital",
+        "fotografía",
+        "fotografías del daño",
+        "video",
+        "archivo de audio",
+        "código impreso",
+        "imágenes biométricas",
+        "denuncia"
+      ],
+      "fuentes": [
+        "Lote 1",
+        "Lote 2",
+        "Lote 3",
+        "Lote 4"
+      ]
+    },
+    {
+      "concepto": "Registro de auditoría y trazabilidad",
+      "terminos_usados": [
+        "rastro de auditoría",
+        "registro de la decisión",
+        "historial",
+        "registros",
+        "trazabilidad",
+        "rastro"
+      ],
+      "fuentes": [
+        "Lote 2",
+        "Lote 4"
+      ]
+    },
+    {
+      "concepto": "Señal",
+      "terminos_usados": [
+        "señal",
+        "señal individual",
+        "señal de fraude",
+        "Alerta de fraude"
+      ],
+      "fuentes": [
+        "Lote 1",
+        "Lote 3"
+      ]
+    },
+    {
+      "concepto": "Operador",
+      "terminos_usados": [
+        "operador",
+        "analista",
+        "analista liquidador",
+        "Persona",
+        "operador del proceso",
+        "persona",
+        "liquidador"
+      ],
+      "fuentes": [
+        "Lote 1",
+        "Lote 3",
+        "Lote 4"
+      ]
+    },
+    {
+      "concepto": "Usuario",
+      "terminos_usados": [
+        "usuario",
+        "operador",
+        "diseñador",
+        "consultor de indicadores",
+        "administrador",
+        "supervisor",
+        "analista",
+        "supervisor del proceso",
+        "perfil encargado del diseño del flujo",
+        "usuario de negocio",
+        "área de cumplimiento, riesgo o auditoría interna",
+        "equipo de tecnología del cliente",
+        "área comercial y de administración"
+      ],
+      "fuentes": [
+        "Lote 2",
+        "Lote 4"
+      ]
+    },
+    {
+      "concepto": "Bandeja",
+      "terminos_usados": [
+        "bandeja",
+        "bandeja de revisión",
+        "pantalla",
+        "interfaz"
+      ],
+      "fuentes": [
+        "Lote 2",
+        "Lote 4"
+      ]
+    },
+    {
+      "concepto": "Decisión",
+      "terminos_usados": [
+        "Decisión",
+        "Resolución",
+        "Veredicto",
+        "Aprobación",
+        "Rechazo",
+        "decisión",
+        "resultado",
+        "aprobar reembolso",
+        "rechazar solicitud",
+        "derivar caso",
+        "pedir reenvío por ilegibilidad",
+        "monto de liquidación"
+      ],
+      "fuentes": [
+        "Lote 3",
+        "Lote 4"
+      ]
+    }
+  ],
+  "fusiones_dudosas": [
+    {
+      "entidad_A": "Decisión",
+      "entidad_B": "Decisión del Operador",
+      "por_que_podrian_ser_la_misma": "Ambas entidades representan la resolución final de un caso y sus fundamentos, pero provienen de dos actores distintos (el sistema automatizado vs. el revisor humano). Podrían ser la misma entidad abstracta o mantenerse separadas para destacar la naturaleza humana de la discrepancia."
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Plantilla de flujo",
+      "por_que_podrian_ser_la_misma": "La plantilla parece ser un conjunto preconfigurado de un flujo. Dependiendo de cómo se implemente en el sistema base, una plantilla podría ser solo una entidad 'Flujo' con un atributo 'es_plantilla' activo, en lugar de ser una entidad estructuralmente distinta."
+    },
+    {
+      "entidad_A": "Usuario",
+      "entidad_B": "Operador",
+      "por_que_podrian_ser_la_misma": "El Lote 2 y el Lote 4 describen 'Usuario'/'Perfil de usuario' con distintos roles (incluyendo el de operador/liquidador). Sin embargo, el Lote 1, 3 y 4 modelan explícitamente a 'Operador' como su propia entidad con relación directa y excepcional a los Casos. Podría fusionarse como un único modelo de 'Usuario'."
+    }
+  ]
+}

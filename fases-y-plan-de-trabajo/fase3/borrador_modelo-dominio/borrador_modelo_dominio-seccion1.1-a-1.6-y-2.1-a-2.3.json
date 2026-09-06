@@ -1,0 +1,314 @@
+{
+  "lote": "[secciones 1.1–1.6, 2.1–2.3]",
+  "entidades": [
+    {
+      "nombre": "Plataforma",
+      "atributos": [],
+      "terminos_usados": [
+        "plataforma",
+        "sistema",
+        "MIRA",
+        "plataforma de inteligencia artificial multimodal"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.3",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Cliente",
+      "atributos": [],
+      "terminos_usados": [
+        "cliente",
+        "aseguradora"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.2",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.2",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Caso",
+      "atributos": [],
+      "terminos_usados": [
+        "caso",
+        "expediente"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.2",
+        "Sección 1.3",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Evidencia Digital",
+      "atributos": [],
+      "terminos_usados": [
+        "evidencia digital",
+        "evidencia",
+        "documento",
+        "fotografía",
+        "fotografías del daño",
+        "video",
+        "archivo de audio",
+        "código impreso",
+        "archivo",
+        "imágenes biométricas",
+        "denuncia"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.2",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.1"
+      ]
+    },
+    {
+      "nombre": "Decisión",
+      "atributos": [
+        "nivel de confianza",
+        "resultado"
+      ],
+      "terminos_usados": [
+        "decisión",
+        "resultado",
+        "aprobar reembolso",
+        "rechazar solicitud",
+        "derivar caso",
+        "pedir reenvío por ilegibilidad",
+        "monto de liquidación"
+      ],
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Módulo de análisis",
+      "atributos": [
+        "versión",
+        "estado"
+      ],
+      "terminos_usados": [
+        "módulo",
+        "módulos de análisis",
+        "módulos especializados"
+      ],
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5"
+      ]
+    },
+    {
+      "nombre": "Flujo",
+      "atributos": [],
+      "terminos_usados": [
+        "flujo",
+        "secuencia de validaciones"
+      ],
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Validación",
+      "atributos": [
+        "utilidad"
+      ],
+      "terminos_usados": [
+        "validación",
+        "validaciones útiles"
+      ],
+      "fuentes": [
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Operador del proceso",
+      "atributos": [
+        "tiempo de respuesta comprometido"
+      ],
+      "terminos_usados": [
+        "operador del proceso",
+        "operador",
+        "persona",
+        "liquidador"
+      ],
+      "fuentes": [
+        "Sección 1.2",
+        "Sección 1.5",
+        "Sección 1.6",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Bandeja de revisión",
+      "atributos": [],
+      "terminos_usados": [
+        "bandeja",
+        "pantalla",
+        "interfaz"
+      ],
+      "fuentes": [
+        "Sección 1.5",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Registro de trazabilidad",
+      "atributos": [],
+      "terminos_usados": [
+        "registros",
+        "trazabilidad",
+        "rastro"
+      ],
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Perfil de usuario u organización",
+      "atributos": [],
+      "terminos_usados": [
+        "usuario",
+        "supervisor del proceso",
+        "perfil encargado del diseño del flujo",
+        "usuario de negocio",
+        "área de cumplimiento, riesgo o auditoría interna",
+        "equipo de tecnología del cliente",
+        "área comercial y de administración"
+      ],
+      "fuentes": [
+        "Sección 2.3"
+      ]
+    },
+    {
+      "nombre": "Asegurado o titular",
+      "atributos": [],
+      "terminos_usados": [
+        "asegurado",
+        "personas"
+      ],
+      "fuentes": [
+        "Sección 1.6",
+        "Sección 2.3"
+      ]
+    }
+  ],
+  "relaciones": [
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Los casos que no se resuelven de forma automática caen a una bandeja no diseñada para ese fin, sin que la plataforma explique su falla.",
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.5",
+        "Sección 2.1",
+        "Sección 2.2"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Evidencia Digital",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "La evidencia enviada suele tener una calidad sumamente deficiente, lo que exige esfuerzo previo para saber si un archivo es siquiera útil.",
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.6",
+        "Sección 2.1"
+      ]
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Decisión",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Los liquidadores humanos frecuentemente desconfían de la decisión (monto propuesto) y la recalculan, desplazando el trabajo en vez de automatizarlo.",
+      "fuentes": [
+        "Sección 1.1",
+        "Sección 1.4",
+        "Sección 1.6",
+        "Sección 2.1",
+        "Sección 2.2"
+      ]
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Validación",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Carece de registro confiable de cuántas validaciones hizo y falta criterio compartido entre áreas sobre cuáles efectivamente deben cobrarse.",
+      "fuentes": [
+        "Sección 1.4",
+        "Sección 1.5"
+      ]
+    },
+    {
+      "entidad_A": "Módulo de análisis",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "En la versión actual no hay forma de saber retrospectivamente qué versión exacta de módulo procesó un caso determinado.",
+      "fuentes": [
+        "Sección 1.5"
+      ]
+    },
+    {
+      "entidad_A": "Operador del proceso",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Alrededor de 7 de cada 10 casos pasan por revisión humana completa, incluso cuando el caso es trivial.",
+      "fuentes": [
+        "Sección 1.2",
+        "Sección 1.5",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "entidad_A": "Perfil de usuario (Diseñador)",
+      "entidad_B": "Flujo",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Existe gran incertidumbre sobre si un perfil de usuario de negocio capaz de diseñar flujos realmente existe en todos los clientes.",
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 2.3"
+      ]
+    },
+    {
+      "entidad_A": "Plataforma",
+      "entidad_B": "Registro de trazabilidad",
+      "cardinalidad": "1 a N",
+      "excepcion_detectada": "Los registros de trazabilidad actuales no están diseñados para ser consultados y obligan a un ingeniero a dedicar horas mirándolos.",
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.3"
+      ]
+    }
+  ]
+}

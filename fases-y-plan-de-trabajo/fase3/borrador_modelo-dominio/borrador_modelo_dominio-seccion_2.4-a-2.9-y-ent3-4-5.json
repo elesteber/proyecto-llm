@@ -1,0 +1,261 @@
+{
+  "lote": "[secciones 2.4–2.9, ENT3, ENT4, ENT5]",
+  "entidades": [
+    {
+      "nombre": "Caso",
+      "atributos": [
+        "identificador propio (único y permanente)",
+        "puntaje de confianza (0 a 100)",
+        "resolución (aprobado, rechazado, derivado, cerrado)",
+        "tiempo restante",
+        "complejidad (simple, complicado)"
+      ],
+      "terminos_usados": [
+        "caso",
+        "casos"
+      ],
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 2.6",
+        "Sección 2.7",
+        "Sección 3",
+        "ENT4 [00:13:46]",
+        "ENT5 [00:01:00]"
+      ]
+    },
+    {
+      "nombre": "Evidencia",
+      "atributos": [
+        "tipo (PDF, imagen, video, audio)",
+        "legibilidad",
+        "motivo (si no es legible)",
+        "idioma (inglés, portugués, francés)"
+      ],
+      "terminos_usados": [
+        "evidencia",
+        "pieza de evidencia",
+        "archivo",
+        "documento",
+        "comprobante",
+        "boleta",
+        "foto"
+      ],
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 2.5",
+        "Sección 3",
+        "ENT4 [00:08:35]",
+        "ENT5 [00:05:07]"
+      ]
+    },
+    {
+      "nombre": "Puntaje",
+      "atributos": [
+        "componentes / desglose",
+        "explicable"
+      ],
+      "terminos_usados": [
+        "puntaje",
+        "puntaje de confianza",
+        "evaluación de riesgo"
+      ],
+      "fuentes": [
+        "Sección 2.5",
+        "Sección 2.6",
+        "Sección 2.7"
+      ]
+    },
+    {
+      "nombre": "Señal",
+      "atributos": [
+        "tipo (texto, imagen, video, audio, códigos)",
+        "mínimo propio",
+        "activa / inactiva (para señales de fraude)"
+      ],
+      "terminos_usados": [
+        "señal",
+        "señal individual",
+        "señal de fraude"
+      ],
+      "fuentes": [
+        "Sección 2.5",
+        "Sección 2.6",
+        "Sección 3"
+      ]
+    },
+    {
+      "nombre": "Flujo",
+      "atributos": [
+        "versión",
+        "estado (en curso, publicado)"
+      ],
+      "terminos_usados": [
+        "flujo",
+        "proceso",
+        "flujo empresarial"
+      ],
+      "fuentes": [
+        "Sección 2.8",
+        "Sección 3"
+      ]
+    },
+    {
+      "nombre": "Bloque",
+      "atributos": [
+        "configuración"
+      ],
+      "terminos_usados": [
+        "bloque",
+        "conector"
+      ],
+      "fuentes": [
+        "Sección 2.8",
+        "Sección 2.9"
+      ]
+    },
+    {
+      "nombre": "Umbral",
+      "atributos": [
+        "autor (del cambio)",
+        "fecha",
+        "valor anterior"
+      ],
+      "terminos_usados": [
+        "umbrales configurables",
+        "rangos de decisión",
+        "umbral"
+      ],
+      "fuentes": [
+        "Sección 2.6",
+        "Sección 3",
+        "ENT4 [00:11:06]"
+      ]
+    },
+    {
+      "nombre": "Operador",
+      "atributos": [],
+      "terminos_usados": [
+        "operador",
+        "analista",
+        "analista liquidador"
+      ],
+      "fuentes": [
+        "Sección 2.6",
+        "Sección 2.7",
+        "ENT4 [00:16:26]",
+        "ENT5 [00:01:00]"
+      ]
+    },
+    {
+      "nombre": "Decisión del Operador",
+      "atributos": [
+        "motivo",
+        "discrepancia registrada"
+      ],
+      "terminos_usados": [
+        "decisión final",
+        "resolución",
+        "discrepancia"
+      ],
+      "fuentes": [
+        "Sección 2.7",
+        "Sección 3",
+        "ENT4 [00:19:06]"
+      ]
+    },
+    {
+      "nombre": "Módulo de análisis",
+      "atributos": [
+        "activo",
+        "versión",
+        "configuración"
+      ],
+      "terminos_usados": [
+        "módulos independientes",
+        "módulo de análisis"
+      ],
+      "fuentes": [
+        "Sección 2.9",
+        "Sección 3"
+      ]
+    },
+    {
+      "nombre": "Dato",
+      "atributos": [
+        "ubicación exacta",
+        "estado (mal leído)"
+      ],
+      "terminos_usados": [
+        "dato",
+        "datos"
+      ],
+      "fuentes": [
+        "ENT5 [00:02:46]",
+        "ENT5 [00:10:05]"
+      ]
+    }
+  ],
+  "relaciones": [
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Evidencia",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Si ingresa nueva evidencia a un caso que ya está cerrado, no se asocia directamente a ese caso, sino que se abre un caso nuevo vinculado al anterior.",
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Bloque",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "null",
+      "fuentes": [
+        "Sección 2.8",
+        "Sección 2.9"
+      ]
+    },
+    {
+      "entidad_A": "Puntaje",
+      "entidad_B": "Umbral",
+      "cardinalidad": "1 a 1 (para determinar la decisión)",
+      "excepcion_detectada": "Aunque el puntaje sea aprobatorio (ej. mayor a 80/85), si una señal de fraude está activa o una señal individual no alcanza su mínimo propio, se ignora el puntaje y se deriva o rechaza el caso.",
+      "fuentes": [
+        "Sección 2.6",
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Caso",
+      "entidad_B": "Caso",
+      "cardinalidad": "Muchos a muchos (vinculación)",
+      "excepcion_detectada": "Los casos de un mismo asegurado/emisor dentro de una ventana breve deben poder relacionarse entre sí.",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "entidad_A": "Operador",
+      "entidad_B": "Caso",
+      "cardinalidad": "1 a muchos",
+      "excepcion_detectada": "Los casos aprobados automáticamente quedan exentos y nunca son revisados por el operador.",
+      "fuentes": [
+        "Sección 2.6",
+        "Sección 3",
+        "ENT5 [00:01:00]"
+      ]
+    },
+    {
+      "entidad_A": "Decisión del Operador",
+      "entidad_B": "Puntaje",
+      "cardinalidad": "1 a 1",
+      "excepcion_detectada": "Ante cualquier discrepancia, la decisión del analista humano manda sobre la sugerencia de la plataforma, pero marca el caso para revisión algorítmica.",
+      "fuentes": [
+        "Sección 2.7",
+        "Sección 3",
+        "ENT4 [00:19:06]"
+      ]
+    }
+  ]
+}
