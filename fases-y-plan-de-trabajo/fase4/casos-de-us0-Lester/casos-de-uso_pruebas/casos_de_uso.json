@@ -21,6 +21,93 @@
   ],
   "candidatos_consolidados": [
     {
+      "caso_de_uso_candidato": "Ingresar evidencia y encolar peticiones por límite de tasa",
+      "actor_probable": "Sistema Externo / Cliente / Operador",
+      "objetivo": "Enviar archivos y datos a la plataforma de forma masiva o manual, encolando las llamadas para evitar pérdida de información y bloqueos cuando se excede la tasa límite.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 1,
+      "por_que_este_orden": "Aborda un bloqueo técnico absoluto (límite de 100/1000 llamadas por minuto y soporte de archivos vs API) que impide la entrada misma de datos. Supera en prioridad al Candidato 2 porque sin resolver la ingesta inicial (4 entidades clave), el operador ni siquiera tendrá casos que resolver en su bandeja (6 entidades).",
+      "entidades_relacionadas": [
+        "Cliente",
+        "Caso",
+        "Evidencia",
+        "Punto de Acceso"
+      ],
+      "fusion_aplicada": null,
+      "toca_decision_pendiente": "HC-003, HC-013",
+      "verificado": true,
+      "resumen_decision": "HC-003: Se definen límites de llamadas a la API (100 por minuto en integración, 1000 en producción), pero no se especifica el comportamiento del sistema cuando un cliente excede estos límites, dejando un vacío crítico para la integración y la operación. Se requiere definir si las llamadas se rechazan o se encolan. | HC-013: El documento describe una integración mediante API REST para el envío y recepción de casos, pero para el cliente piloto la integración debe hacerse mediante intercambio de archivos en carpetas compartidas, ya que su sistema central no expone servicios web. Esta contradicción afecta el diseño de la capa de integración.",
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 3",
+        "Sección 2.10",
+        "ENT7 [00:06:37]",
+        "ENT7 [00:09:56]"
+      ],
+      "seleccionado": true
+    },
+    {
+      "caso_de_uso_candidato": "Resolver caso derivado con intervención manual y visualización integral",
+      "actor_probable": "Usuario (Rol: Operador / Analista)",
+      "objetivo": "Evaluar la evidencia, datos extraídos y alertas de fraude de un caso en una única bandeja unificada, emitiendo una decisión fundamentada cuando el motor deriva el flujo.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 2,
+      "por_que_este_orden": "Resuelve un conflicto de negocio crítico (stakeholder Daniela rechaza la automatización bajo 60 puntos). Se posiciona por encima del Candidato 3 ya que es imperativo garantizar la correcta resolución legal y operativa del siniestro por parte de un humano antes de poder contabilizar dicha acción en la facturación comercial.",
+      "entidades_relacionadas": [
+        "Bandeja",
+        "Caso",
+        "Evidencia",
+        "Señal",
+        "Usuario",
+        "Decisión del Operador"
+      ],
+      "fusion_aplicada": "Usuario y Operador fueron fusionadas bajo un solo modelo relacional con distinciones de rol.",
+      "toca_decision_pendiente": "HC-008",
+      "verificado": true,
+      "resumen_decision": "Conflicto entre la regla de negocio que permite el rechazo automático para el tramo bajo 60 puntos y la opinión de Daniela, quien sostiene que los rechazos de reembolsos no pueden ser automáticos y que debe intervenir una persona.",
+      "fuentes": [
+        "Sección 1.5",
+        "Sección 2.3",
+        "Sección 2.7",
+        "ENT4 [00:16:26]",
+        "ENT5 [00:02:46]",
+        "ENT5 [00:07:36]",
+        "Sección 3",
+        "ENT6 [00:04:06]"
+      ],
+      "seleccionado": true
+    },
+    {
+      "caso_de_uso_candidato": "Facturación automatizada y visualización de validaciones útiles",
+      "actor_probable": "Sistema Automatizado / Área Comercial / Cliente",
+      "objetivo": "Identificar y auditar a través de contadores qué ejecuciones parciales o reevaluaciones constituyen validaciones útiles, habilitando el proceso de cobro sin ambigüedades.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 3,
+      "por_que_este_orden": "Define el modelo de ingresos principal ante posturas divergentes de Finanzas, Rodrigo y Cliente sobre qué se cobra. El corte de selección queda aquí (vs Candidato 4) porque el proyecto no puede comercializarse sin facturación clara, mientras que el conflicto regulatorio de retención de datos (Candidato 4) admite medidas operativas transitorias (almacenamiento extendido) sin frenar la salida a producción.",
+      "entidades_relacionadas": [
+        "Cliente",
+        "Validación",
+        "Caso",
+        "Plataforma",
+        "Panel"
+      ],
+      "fusion_aplicada": null,
+      "toca_decision_pendiente": "HC-004, HC-009",
+      "verificado": true,
+      "resumen_decision": "HC-004: Conflicto entre la opinión de Rodrigo (cobrar también los casos derivados a revisión humana porque hubo procesamiento) y la propuesta formal enviada al cliente, que establece que solo se cobra la decisión automática. Además, existe discrepancia sobre qué constituye una 'validación' facturable, ya que el gerente general sostiene que se cobra por todo procesamiento concluyente, mientras que el área de finanzas y la propuesta comercial indican que solo se cobra cuando la plataforma resuelve el caso automáticamente. | HC-009: Ambigüedad y falta de definición sobre cómo contabilizar las reevaluaciones de un mismo caso (si cuenta como una o dos validaciones) para efectos de cobro, existiendo opiniones divergentes y la necesidad de una definición escrita antes de la marcha blanca.",
+      "fuentes": [
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.2",
+        "Sección 2.3",
+        "ENT1 [00:05:55]",
+        "ENT8 [00:04:46]",
+        "ENT8 [00:07:26]",
+        "ENT8 [00:12:36]"
+      ],
+      "seleccionado": true
+    },
+    {
       "caso_de_uso_candidato": "Tratamiento normativo y eliminación de datos a solicitud del titular",
       "actor_probable": "Usuario (Administrador / Oficial de cumplimiento)",
       "objetivo": "Ejecutar y gestionar el borrado de evidencia e información biométrica de un individuo, conciliando los requerimientos de inalterabilidad algorítmica con las imposiciones legales.",
