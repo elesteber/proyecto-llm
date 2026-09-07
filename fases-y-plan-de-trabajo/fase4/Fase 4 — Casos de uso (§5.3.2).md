@@ -4,33 +4,85 @@
 
 ---
 
-## Diagrama de casos de uso (PlantUML)
+## Texto para el informe (versión condensada, lista para pegar en §5.3.2)
 
-Incluye el set completo de casos de uso identificados en el inventario, aunque solo 3 se especifican en formato extendido más abajo (criterio de selección: riesgo).
+> Esta sección es la versión resumida para el documento final. El detalle completo (citas extendidas por frase, preguntas pendientes desarrolladas) queda más abajo en este mismo archivo como respaldo/anexo — no debe copiarse tal cual: la sección Análisis de requisitos completa (7 artefactos) tiene un máximo de 8 planas, y esta es solo una de sus siete partes.
+
+### 5.3.2 Casos de uso
+
+Se presentan tres diagramas de casos de uso (PlantUML), agrupados por rol para mantener la legibilidad. Entre los tres cubren los 11 casos de uso identificados, sin repeticiones.
+
+**Figura 1 — Operador y Administrador** (incluye Sistema del Cliente y Proveedor de Modelos, externo, por su relación directa con UC-01/UC-02): UC-01 Evaluar caso automáticamente, UC-02 Integrar caso vía interfaz de programación, UC-03 Resolver caso en revisión asistida, UC-06 Consultar registro de auditoría, UC-08 Medir consumo y generar detalle de facturación.
+
+**Figura 2 — Diseñador de Flujos:** UC-04 Diseñar y publicar un flujo, UC-05 Configurar umbrales de decisión, UC-10 Incorporar cliente nuevo desde plantilla.
+
+**Figura 3 — Supervisor y Equipo DPRIME:** UC-07 Consultar paneles e indicadores, UC-09 Recibir notificaciones y alertas, UC-11 Comparar versión de módulo antes de activarla.
+
+*(Imágenes ya renderizadas en `fase4/diagramasCU/diagrama1CU.png`, `diagrama2CU.png`, `diagrama3CU.png`.)*
+
+**Selección de los 3 casos de uso críticos.** Criterio: riesgo de que una especificación equivocada obligue a rehacer trabajo.
+
+| Caso de uso | Riesgo |
+|---|---|
+| UC-01 Evaluar caso automáticamente | El umbral bajo 60 puntos queda sin resolver (H-01); especificarlo mal obliga a rehacer el motor de decisión completo. |
+| UC-02 Integrar caso vía interfaz de programación | La arquitectura síncrona vs. asíncrona era el riesgo al momento de elegir este UC (H-13, ya resuelto: rige Flujo B para el cliente piloto); es el contrato con el sistema del cliente, no un detalle interno. |
+| UC-03 Resolver caso en revisión asistida | El orden de despliegue del puntaje frente a la evidencia queda sin resolver (H-12); cambia el layout de la pantalla que decide si la plataforma se usa o no. |
+
+---
+
+**UC-01 — Evaluar caso automáticamente**
+Actor principal: Cliente, vía interfaz de programación, carga manual de un operador o carpeta compartida (§2.4). Actor secundario: Proveedor de modelos externo.
+Precondiciones: flujo publicado con al menos un módulo de análisis activo; umbrales de decisión configurados para el tipo de proceso (§3).
+Flujo principal: (1) llega evidencia de un caso nuevo o existente (§2.4); (2) se asigna/reutiliza un identificador único y permanente (§3); (3) se verifica que la evidencia sea legible (§2.4); (4) se ejecutan los módulos de análisis activos, generando una señal por módulo (§2.5, §2.9); (5) se cruzan las señales y se calcula un puntaje de confianza 0-100 con su desglose (§2.5-§2.6); (6) se aplican los umbrales del cliente para traducir el puntaje en una decisión (§2.6); (7) si el puntaje supera el umbral de aprobación automática y ninguna señal está bajo su mínimo, se aprueba automáticamente (§2.6); (8) se registra en auditoría evidencia, módulos, señales, puntaje y decisión (§2.11); (9) el caso queda resuelto y no se vuelve a revisar (§3).
+Alternativos: (4a) falla un módulo → se deriva a revisión asistida, UC-03, nunca se aprueba con información parcial (§3); (6a) puntaje en rango de derivación → se deriva a UC-03 (§2.6); (6b) señal de fraude activa → se deriva o escala sin importar el puntaje (§3); (6c) evidencia nueva sobre caso cerrado → se abre un caso nuevo vinculado al anterior (§3).
+Excepción: (3a) evidencia no legible → se informa el motivo en lenguaje no técnico (§2.4); (4a-exc) proveedor externo no responde → el caso queda en cola, nunca se descarta (§3, §2.17).
+Postcondiciones: caso resuelto o en cola, nunca sin resolución (§3); registro de auditoría inalterable asociado (§2.11); los casos del mismo asegurado o prestador dentro de una ventana breve quedan habilitados para relacionarse (§3).
+
+**UC-02 — Integrar caso vía interfaz de programación**
+Actor principal: Sistema del Cliente, operado por su equipo de tecnología (§2.3). Actor secundario: Sistema de siniestros del cliente. Incluye: UC-01.
+Precondiciones: el cliente tiene un flujo con un punto de acceso autenticado y con límite de llamadas, generado automáticamente (§2.10).
+*Resuelto (H-13, informe §5.1): la plataforma soporta ambos patrones de integración, según el cliente. Para el cliente piloto (su sistema central no expone servicios web, ENT7) rige el Flujo B; Flujo A queda como el patrón general para clientes que sí exponen servicios web.*
+Flujo principal A — vía interfaz de programación, síncrona (§2.10): (1) el sistema del cliente invoca el punto de acceso enviando la evidencia en la misma llamada; (2) se valida autenticación y límite de llamadas; (3) se acepta el caso y se responde de inmediato confirmando recepción (ENT3); (4) se ejecuta UC-01; (5) al tener resultado, se notifica al cliente con identificador, puntaje, decisión, desglose y enlace a auditoría.
+Flujo principal B — vía archivo compartido, asíncrona (ENT7) — **rige para el cliente piloto**: (1) el sistema del cliente deposita la evidencia en una carpeta compartida que la plataforma revisa periódicamente, porque su sistema central no expone servicios web; (2) se ejecuta UC-01; (3) se entrega el resultado al sistema de siniestros del cliente por archivo, de forma automática, porque ese sistema solo recibe información por esa vía.
+Alternativos: (B3a) **resuelto (H-07, informe §5.1) — se descarta.** La escritura del resultado es siempre automática, no por transcripción manual de un operador.
+Excepción: (A2a) se supera el límite de llamadas → **mecanismo resuelto (H-03, informe §5.1): rechazo con cabecera Retry-After para tráfico estándar; modo de carga por lote (bulk) con límite propio para cargas masivas predecibles (histórico inicial, catch-up).** Sigue sin definirse el valor numérico exacto de ambos límites, y si este mecanismo (pensado para llamadas a una API) aplica igual al canal de archivos del Flujo B, que no tiene respuesta síncrona — ver preguntas pendientes. (A3a) plataforma no disponible → las llamadas quedan encoladas y se procesan después, sin pérdida (ENT7, §2.17).
+Postcondiciones: caso registrado con identificador único, trazable en auditoría; resultado disponible para el sistema del cliente por el canal acordado.
+
+**UC-03 — Resolver caso en revisión asistida**
+Actor principal: Operador. Actores secundarios: Supervisor (alerta por demora), Equipo de modelos DPRIME (revisa discrepancias).
+Precondiciones: el caso fue derivado a la bandeja de trabajo del operador (§2.7).
+Flujo principal: (1) el operador abre un caso de su bandeja (§2.7); (2) se muestra en una sola pantalla la evidencia, el puntaje, su desglose y el motivo de derivación (§2.7); (3) el operador abre cada evidencia y ve qué encontró la plataforma y dónde (§2.7, ENT5); (4) el operador resuelve: aprueba, rechaza o solicita antecedentes adicionales (§2.7); (5) se registra la decisión y su motivo (§2.7); (6) el caso queda resuelto (§3).
+*Sobre el paso 2: el orden de despliegue del puntaje frente a la evidencia queda sin resolver (H-12) — §2.7 exige mostrarlo junto a la evidencia, mientras que ENT5 [00:15:16] reporta preferencia por ocultarlo hasta el final para evitar sesgo de anclaje. Ambas fuentes son válidas y se contradicen; queda pendiente de decisión del equipo, a registrar en bitácora.*
+Alternativos: (3a) dato mal leído → el operador lo corrige; la corrección queda registrada junto al valor original, sin sobrescribirlo (§3, ENT5); (4a) la decisión del operador difiere de la sugerencia automática → se marca la discrepancia para revisión del equipo de modelos, y prevalece la decisión del operador (§2.7, §3).
+Excepción: (1a) el caso se acerca al plazo comprometido sin resolverse → se muestra el tiempo restante y se genera una alerta (§2.7, ENT4).
+Postcondiciones: caso resuelto con decisión, motivo y (si corresponde) discrepancia marcada, todo en auditoría (§2.11).
+
+*Las preguntas abiertas H-01, H-10, H-11 y H-12 no se repiten aquí: van en la sección 5.5 (Inconsistencias detectadas y su resolución), con su cita y su resolución/decisión.*
+
+---
+
+## Diagramas de casos de uso (PlantUML)
+
+Incluyen el set completo de casos de uso identificados en el inventario, separados en tres diagramas por grupo de actores para facilitar la lectura por rol. Solo 3 casos de uso se especifican en formato extendido más abajo (criterio de selección: riesgo).
+
+### Diagrama 1 — Operador y Administrador
+
+Incluye también Sistema del Cliente y Proveedor de Modelos (externo), ya que ambos participan de UC-01/UC-02, que viven en este mismo diagrama.
 
 ```plantuml
 @startuml
 left to right direction
 actor "Operador" as Operador
-actor "Diseñador de Flujos" as Disenador
-actor "Supervisor" as Supervisor
 actor "Administrador" as Admin
 actor "Sistema del Cliente" as SistemaCliente
 actor "Proveedor de Modelos\n(externo)" as Proveedor
-actor "Equipo DPRIME" as DPRIME
 
 rectangle "MIRA" {
   usecase "UC-01 Evaluar caso\nautomáticamente" as UC1
   usecase "UC-02 Integrar caso vía\ninterfaz de programación" as UC2
   usecase "UC-03 Resolver caso en\nrevisión asistida" as UC3
-  usecase "UC-04 Diseñar y publicar\nun flujo" as UC4
-  usecase "UC-05 Configurar umbrales\nde decisión" as UC5
   usecase "UC-06 Consultar registro\nde auditoría" as UC6
-  usecase "UC-07 Consultar paneles\ne indicadores" as UC7
   usecase "UC-08 Medir consumo y generar\ndetalle de facturación" as UC8
-  usecase "UC-09 Recibir notificaciones\ny alertas" as UC9
-  usecase "UC-10 Incorporar cliente nuevo\ndesde plantilla" as UC10
-  usecase "UC-11 Comparar versión de\nmódulo antes de activarla" as UC11
 }
 
 SistemaCliente --> UC2
@@ -38,18 +90,51 @@ UC2 ..> UC1 : <<include>>
 Operador --> UC1 : (carga manual)
 Operador --> UC3
 Operador --> UC6
-Disenador --> UC4
-Disenador --> UC5
-Disenador --> UC10
-Supervisor --> UC7
-Supervisor --> UC9
 Admin --> UC6
 Admin --> UC8
-DPRIME --> UC9
-DPRIME --> UC11
 Proveedor --> UC1 : (provee señales)
 
 UC1 ..> UC3 : <<extend>> (si el caso se deriva)
+@enduml
+```
+
+### Diagrama 2 — Diseñador de Flujos
+
+```plantuml
+@startuml
+left to right direction
+actor "Diseñador de Flujos" as Disenador
+
+rectangle "MIRA" {
+  usecase "UC-04 Diseñar y publicar\nun flujo" as UC4
+  usecase "UC-05 Configurar umbrales\nde decisión" as UC5
+  usecase "UC-10 Incorporar cliente nuevo\ndesde plantilla" as UC10
+}
+
+Disenador --> UC4
+Disenador --> UC5
+Disenador --> UC10
+@enduml
+```
+
+### Diagrama 3 — Supervisor y Equipo DPRIME
+
+```plantuml
+@startuml
+left to right direction
+actor "Supervisor" as Supervisor
+actor "Equipo DPRIME" as DPRIME
+
+rectangle "MIRA" {
+  usecase "UC-07 Consultar paneles\ne indicadores" as UC7
+  usecase "UC-09 Recibir notificaciones\ny alertas" as UC9
+  usecase "UC-11 Comparar versión de\nmódulo antes de activarla" as UC11
+}
+
+Supervisor --> UC7
+Supervisor --> UC9
+DPRIME --> UC9
+DPRIME --> UC11
 @enduml
 ```
 
@@ -102,7 +187,7 @@ Criterio (según enunciado): riesgo de que una especificación equivocada obligu
 | Caso de uso | Justificación de riesgo (1 línea) |
 |---|---|
 | **UC-01 Evaluar caso automáticamente** | H-01 deja sin resolver qué ocurre bajo 60 puntos (§2.6 dice "se escala o se rechaza"; ENT6 exige eliminar la opción de rechazo automático) — especificarlo mal implica reconstruir el motor de decisión completo. |
-| **UC-02 Integrar caso vía interfaz de programación** | H-10 y H-11 (§2.10 vs. ENT7) dejan sin resolver tanto el límite de llamadas real como si la arquitectura es síncrona-web o asíncrona-por-archivo — es el contrato con el sistema del cliente, no un detalle interno. |
+| **UC-02 Integrar caso vía interfaz de programación** | Al momento de elegir este UC, §2.10 vs. ENT7 dejaban sin resolver el límite de llamadas real y la arquitectura (síncrona-web vs. asíncrona-por-archivo) — es el contrato con el sistema del cliente, no un detalle interno. Ambas quedaron resueltas después (H-13 arquitectura, H-03 mecanismo de límite — ver CU-02 más abajo); el valor numérico exacto del límite sigue abierto. |
 | **UC-03 Resolver caso en revisión asistida** | H-12 (§2.7 vs. ENT5) deja sin resolver si se muestra el puntaje antes o después de la evidencia — cambia el layout de la pantalla que, según el propio documento (§2.7), "decide si la plataforma se usa o no". |
 
 Se descartó "Diseñar y publicar un flujo con umbrales" del top-3 (decisión del equipo).
@@ -142,6 +227,7 @@ Se descartó "Diseñar y publicar un flujo con umbrales" del top-3 (decisión de
 **Postcondiciones:**
 - El caso queda en estado resuelto (aprobado/rechazado/derivado) o en cola — nunca sin resolución (§3: "Ningún caso puede quedar sin resolución").
 - Existe un registro de auditoría inalterable asociado al caso (§2.11).
+- Los casos provenientes de un mismo asegurado o de un mismo prestador dentro de una ventana breve quedan habilitados para relacionarse entre sí (§3: "Los casos provenientes de un mismo asegurado o de un mismo prestador dentro de una ventana breve deben poder relacionarse").
 
 **Preguntas pendientes para el representante del cliente:**
 - **H-01 (sin resolver):** ¿bajo 60 puntos el sistema puede rechazar automáticamente (§2.6) o esa opción debe eliminarse y exigir siempre intervención humana (ENT6)?
@@ -159,29 +245,35 @@ Se descartó "Diseñar y publicar un flujo con umbrales" del top-3 (decisión de
 **Precondiciones:**
 - El cliente tiene un flujo guardado, para el cual el sistema generó automáticamente un punto de acceso con autenticación y límite de llamadas (§2.10: "genera automáticamente la configuración ejecutable, un punto de acceso propio para ese flujo... Cada punto de acceso incorpora autenticación y un límite de llamadas por unidad de tiempo").
 
-**Flujo principal:**
+**Flujo principal — Resuelto (H-13, informe §5.1):** el documento describía dos arquitecturas de integración en apariencia incompatibles. La resolución de H-13 establece que **la plataforma soporta ambos patrones**, aplicados según el cliente: interfaz de programación (Flujo A) para clientes que exponen servicios web, e intercambio de archivos (Flujo B) para clientes cuyo core no los expone. **Para el cliente piloto (ENT7: "no expone servicios web") rige el Flujo B** — Flujo A queda documentado como el patrón general para el resto de los clientes, no como una alternativa todavía abierta para este caso.
+
+**Flujo principal A — vía interfaz de programación (síncrona-web, §2.10):**
 1. El sistema del cliente invoca el punto de acceso del flujo, enviando la evidencia en la misma llamada (§2.10: "El cliente integra ese punto de acceso desde sus sistemas y envía la evidencia en la misma llamada").
 2. El sistema valida la autenticación y el límite de llamadas del punto de acceso (§2.10).
 3. El sistema acepta el caso y responde de inmediato confirmando la recepción (§2.10: "la plataforma debe aceptar el caso, responder de inmediato y avisar el resultado después"; ENT3: "Asincrónico. El cliente manda el caso, nosotros respondemos 'recibido' en menos de un segundo").
 4. El sistema ejecuta CU-01 (Evaluar caso automáticamente) sobre la evidencia recibida.
 5. Cuando el resultado está disponible, el sistema notifica al cliente con el identificador del caso, el puntaje, la decisión, el desglose de señales y un enlace a la auditoría (§2.10: "La respuesta debe contener el identificador del caso, el puntaje, la decisión, el desglose de señales").
-6. El sistema entrega el resultado al sistema de siniestros del cliente por archivo, ya que ese sistema no expone servicios web (ENT7 [00:01:06]: "y no expone servicios web"; ENT7 [00:03:46]: "alguien tiene que escribirlo en el sistema de siniestros, y eso hoy solo se puede hacer por archivo").
+
+**Flujo principal B — vía archivo compartido (asíncrona, ENT7):**
+1. El sistema del cliente deposita la evidencia en una carpeta compartida que la plataforma revisa periódicamente, ya que el sistema central del cliente no expone servicios web (ENT7 [00:01:06]: "y no expone servicios web").
+2. El sistema ejecuta CU-01 (Evaluar caso automáticamente) sobre la evidencia recibida.
+3. El sistema entrega el resultado al sistema de siniestros del cliente por archivo, porque ese sistema solo puede recibir información por esa vía (ENT7 [00:03:46]: "alguien tiene que escribirlo en el sistema de siniestros, y eso hoy solo se puede hacer por archivo").
 
 **Flujos alternativos:**
-- **6a.** El cliente opta por que un operador transcriba manualmente el resultado en su sistema de siniestros, en vez de un proceso automático — decisión explícitamente abierta en la fuente (ENT7 [00:03:46]: "Hay que decidir si el resultado se escribe automático o si el operador lo transcribe").
+- **B3a — Resuelto (H-07, informe §5.1):** se descarta la transcripción manual. La escritura del resultado en el sistema de siniestros del cliente es siempre automática, por el mismo mecanismo de intercambio de archivos del Flujo B (fuente original de la duda: ENT7 [00:03:46]: "Hay que decidir si el resultado se escribe automático o si el operador lo transcribe").
 
 **Flujos de excepción:**
-- **2a.** Se supera el límite de llamadas por minuto del punto de acceso: comportamiento no definido en la fuente (ver preguntas pendientes).
-- **3a.** La plataforma no está disponible (caída o mantención programada): las llamadas quedan encoladas y se procesan después, sin pérdida (ENT7 [00:09:56]: "mis llamadas queden encoladas y se procesen después, no que se pierdan"; §2.17: "seguir aceptando casos, mantenerlos en cola y avisar").
+- **A2a — Mecanismo resuelto (H-03, informe §5.1):** para tráfico estándar, exceder el límite de llamadas produce **rechazo con cabecera `Retry-After`** (no encolamiento). Para cargas masivas predecibles (carga histórica inicial, catch-up tras caídas) existe un **modo de carga por lote (bulk)** con límite propio. Queda sin definir el **valor numérico exacto** de ambos límites y si este mecanismo, pensado originalmente para llamadas a una API, aplica igual al canal de archivos del Flujo B —que no tiene una respuesta síncrona por diseño— o si para ese canal el límite opera de otra forma (ver preguntas pendientes).
+- **A3a.** La plataforma no está disponible (caída o mantención programada): las llamadas quedan encoladas y se procesan después, sin pérdida (ENT7 [00:09:56]: "mis llamadas queden encoladas y se procesen después, no que se pierdan"; §2.17: "seguir aceptando casos, mantenerlos en cola y avisar").
 
 **Postcondiciones:**
 - El caso queda registrado con un identificador único, trazable en la auditoría (§2.11, §3).
 - El resultado queda disponible para el sistema del cliente por el canal acordado.
 
 **Preguntas pendientes para el representante del cliente:**
-- **H-10 (sin resolver):** ¿qué límite de llamadas por minuto rige para este cliente en la práctica: el general de 1.000/min (§2.10) o el de "ambientes de integración" de 100/min, que Hugo (ENT7) advierte que se supera en el primer minuto al cargar el histórico?
-- **H-11 (sin resolver):** ¿la arquitectura de este caso de uso es síncrona vía web (como asume §2.10 al describir una "respuesta" con puntaje y decisión) o debe ser asíncrona con escritura de resultados por archivo (como exige el sistema real del cliente, ENT7)? No pueden coexistir ambas sin definir cuál rige el diseño.
-- Comportamiento no definido al superar el límite de llamadas — rechazo o encolamiento: la propia fuente lo deja como pregunta abierta (ENT7: "Necesito saber qué pasa cuando lo supero: ¿me rechazan las llamadas?, ¿me encolan?").
+- **Arquitectura (antes H-11) — resuelta:** ver H-13 en el informe §5.1; para el cliente piloto rige el Flujo B.
+- **Mecanismo ante exceso de límite (antes H-10) — resuelto:** ver H-03 en el informe §5.1; rechazo con `Retry-After` en tráfico estándar, modo bulk aparte para cargas masivas.
+- **Lo que sigue realmente abierto:** (a) el valor numérico exacto de ambos límites — ¿rige el general de 1.000/min (§2.10) o el de "ambientes de integración" de 100/min que Hugo (ENT7) advierte que se supera en el primer minuto al cargar el histórico?, y cuál es el límite propio del modo bulk; (b) si el mecanismo de H-03 (pensado para llamadas a una API) aplica igual al canal de archivos del Flujo B, que no tiene una respuesta síncrona en la que devolver un rechazo — esto no quedó explícito al resolver H-03 y debe confirmarse antes de dar la especificación por cerrada.
 
 ---
 
@@ -212,5 +304,5 @@ Se descartó "Diseñar y publicar un flujo con umbrales" del top-3 (decisión de
 - El caso queda resuelto con una decisión, su motivo y (si corresponde) la discrepancia marcada, todo registrado en la auditoría (§2.11).
 
 **Preguntas pendientes para el representante del cliente:**
-- **H-12 (sin resolver):** ¿se muestra el puntaje junto con la evidencia desde el paso 2 (como exige literalmente §2.7) o se oculta hasta el final para evitar el sesgo de anclaje que reporta Marco/ENT5 ("Si me muestran ochenta y siete antes, yo ya estoy inclinado a aprobar")? Esto determina el layout de la pantalla del paso 2 — no es un detalle visual menor.
+- **H-12 (sin resolver — pendiente de decisión de equipo):** ¿se muestra el puntaje junto con la evidencia desde el paso 2 (como exige literalmente §2.7) o se oculta hasta el final para evitar el sesgo de anclaje que reporta Marco/ENT5 [00:15:16] ("Si me muestran ochenta y siete antes, yo ya estoy inclinado a aprobar")? Esto determina el layout de la pantalla del paso 2 — no es un detalle visual menor. Aunque la cita de Marco es verificable, sigue siendo una opinión de un entrevistado contra el texto explícito de §2.7: se deja para que el equipo lo decida y quede registrado en la bitácora de decisiones, en vez de resolverlo aquí por conveniencia.
 - ENT5 reporta que "uno corrige en el sistema de siniestros y la plataforma nunca se entera" — la fuente no especifica si sincronizar esas correcciones externas está dentro del alcance de este caso de uso o queda fuera.
