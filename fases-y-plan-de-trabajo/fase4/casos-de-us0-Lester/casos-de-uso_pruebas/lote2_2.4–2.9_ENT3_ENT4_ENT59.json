@@ -1,0 +1,93 @@
+{
+  "lote": "[2.4–2.9_ENT3_ENT4_ENT5]",
+  "candidatos": [
+    {
+      "caso_de_uso_candidato": "Configurar umbrales de decisión automática",
+      "actor_probable": "Administrador del cliente (Ej. Jefatura de operaciones)",
+      "objetivo": "Ajustar libremente los rangos de puntaje que determinan si un caso es aprobado automáticamente, derivado a revisión asistida o rechazado.",
+      "riesgo_estimado": "alto",
+      "por_que": "Existe una discrepancia directa entre la regla de negocio diseñada (80-85 puntos) y las expectativas operativas del cliente piloto (90 puntos). Especificar mal este proceso podría generar falsos positivos que asuma el cliente, impactando la adopción comercial.",
+      "toca_decision_pendiente": "HC-001",
+      "fuentes": [
+        "Sección 2.6",
+        "ENT4 [00:11:06]",
+        "Sección 3"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Ingresar evidencia e iniciar caso",
+      "actor_probable": "Sistema externo / Operador",
+      "objetivo": "Enviar archivos (PDF, imágenes, video, audio) a la plataforma mediante API, carpetas o carga manual para dar inicio formal al proceso de análisis y asignar un identificador único.",
+      "riesgo_estimado": "alto",
+      "por_que": "Hay múltiples vías de entrada exigidas que podrían chocar con las limitaciones técnicas del cliente. Un mal diseño aquí impide que el sistema reciba el insumo básico para operar o que se integre correctamente con el core del cliente.",
+      "toca_decision_pendiente": "HC-013",
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 3"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Realizar revisión asistida de caso derivado",
+      "actor_probable": "Operador / Analista Liquidador",
+      "objetivo": "Analizar en una única pantalla la evidencia, los datos subrayados, el puntaje y el motivo de derivación, para aprobar, rechazar o pedir más antecedentes antes de que venza el plazo.",
+      "riesgo_estimado": "alto",
+      "por_que": "Es la pantalla que decide si la plataforma se usa o no (según el cliente). Presenta altos riesgos si no se definen bien las reglas de resolución para tramos de alto riesgo (bajo 60 puntos) y la usabilidad de la evidencia extraída.",
+      "toca_decision_pendiente": "HC-008",
+      "fuentes": [
+        "Sección 2.7",
+        "ENT4 [00:16:26]",
+        "ENT5 [00:02:46]",
+        "ENT5 [00:07:36]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Añadir evidencia para reevaluación",
+      "actor_probable": "Sistema externo / Operador",
+      "objetivo": "Ingresar nueva información a un caso existente (abierto o cerrado), obligando al motor a reevaluarlo sin perder conclusiones previas o generando un caso nuevo vinculado.",
+      "riesgo_estimado": "medio",
+      "por_que": "Involucra la ejecución repetida del motor de análisis sobre un mismo siniestro. Si no se clarifica, puede impactar directamente el modelo de facturación generando disputas sobre si se cobra como una validación nueva o no.",
+      "toca_decision_pendiente": "HC-009",
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 3"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Eliminar datos personales de un titular",
+      "actor_probable": "Administrador / Oficial de cumplimiento",
+      "objetivo": "Borrar la información sensible de un individuo tras su requerimiento expreso, en cumplimiento con la normativa legal aplicable.",
+      "riesgo_estimado": "alto",
+      "por_que": "Choca frontalmente con la regla estricta del sistema de no eliminar evidencia de casos abiertos y con la inalterabilidad de los fundamentos (rastro de auditoría) de cada decisión tomada sobre una persona.",
+      "toca_decision_pendiente": "HC-012",
+      "fuentes": [
+        "Sección 3"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Corregir datos extraídos y registrar discrepancia",
+      "actor_probable": "Operador / Analista Liquidador",
+      "objetivo": "Modificar manualmente un dato mal leído por el sistema o tomar una decisión contraria a la sugerida, dejando registro de ambas versiones, el autor y el motivo.",
+      "riesgo_estimado": "medio",
+      "por_que": "Garantiza la trazabilidad legal de la decisión final humana y alimenta el mecanismo de mejora continua del motor. Una mala implementación provoca que las correcciones queden solo en el sistema del cliente y se pierda el rastro de auditoría algorítmica.",
+      "toca_decision_pendiente": null,
+      "fuentes": [
+        "Sección 2.7",
+        "ENT4 [00:19:06]",
+        "ENT5 [00:10:05]",
+        "Sección 3"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Diseñar y publicar flujo de evaluación",
+      "actor_probable": "Diseñador de procesos (Cliente)",
+      "objetivo": "Armar visualmente un proceso conectando entrada, reglas, módulos de análisis y decisiones, para luego probarlo y publicarlo en producción con control de versiones.",
+      "riesgo_estimado": "bajo",
+      "por_que": "Las reglas del diseñador están claras, modulares y no muestran expectativas contradictorias graves entre las fuentes analizadas, siendo una funcionalidad core técnica bien definida.",
+      "toca_decision_pendiente": null,
+      "fuentes": [
+        "Sección 2.8",
+        "Sección 3"
+      ]
+    }
+  ]
+}

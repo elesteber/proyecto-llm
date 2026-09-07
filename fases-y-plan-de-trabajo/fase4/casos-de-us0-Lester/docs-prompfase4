@@ -1,0 +1,226 @@
+## Fase 4 — Casos de uso
+### Técnica: Plan-and-Solve Prompting (selección de candidatos) + Grounded Prompting (especificación detallada)
+
+Igual que en la Fase 3, el límite de 10 archivos adjuntos obligó a dividir el trabajo en dos etapas: identificación de candidatos por lote (sin el modelo de dominio, que no cabía) y una consolidación final donde recién se agrega el modelo de dominio completo.
+
+---
+
+### Etapa 1 — Identificación de candidatos por lote (Plan-and-Solve)
+
+Se usó una vez por cada uno de los 4 lotes ya definidos en la Fase 3 (mismos lotes, sin repetir la división).
+
+```text
+Tienes un subconjunto de las fuentes del inventario (no todas). Vas a
+identificar candidatos a caso de uso — no vas a redactar ningún caso de
+uso todavía, solo detectarlos y estimar su riesgo.
+
+Trabaja ÚNICAMENTE con estas fuentes. No agregues casos de uso típicos
+de este tipo de plataformas si no hay una entrada que los respalde.
+
+Tu tarea:
+1. A partir de las entradas de tipo "necesidad" y "regla_de_negocio"
+   principalmente, identifica candidatos a caso de uso: una
+   interacción entre un actor y el sistema para lograr un objetivo de
+   negocio.
+2. Para cada candidato, estima su riesgo: ¿qué tan costoso sería
+   especificarlo mal? Considera si toca una decisión de negocio aún no
+   resuelta, si involucra plazos o montos, o si aparece mencionado por
+   más de un entrevistado con expectativas distintas.
+3. Cita, para cada candidato, el campo "fuente" exacto de las entradas
+   que lo respaldan.
+
+Formato de salida:
+{
+  "lote": "[nombre del lote]",
+  "candidatos": [
+    {
+      "caso_de_uso_candidato": "...",
+      "actor_probable": "...",
+      "objetivo": "...",
+      "riesgo_estimado": "alto | medio | bajo",
+      "por_que": "...",
+      "toca_decision_pendiente": "H-0X / HC-00X o null",
+      "fuentes": ["..."]
+    }
+  ]
+}
+
+BARRERA DE FORMATO (CRÍTICO): entrega el resultado ÚNICAMENTE dentro de
+un bloque de código json puro, sin marcadores de cita automáticos
+(tipo "[cite: n]"). Si tu sistema los inyecta igual, ponlos en un
+párrafo después del bloque de código, nunca dentro del JSON.
+
+Fuentes adjuntas: [adjuntar los archivos del lote]
+```
+
+**Nota:** `"toca_decision_pendiente": "null"` salió como string literal (no como `null` real de JSON) en la primera corrida. No volvió a repetirse en chats nuevos con el mismo prompt — se dejó como una anomalía puntual, no ameritó cambiar el prompt.
+
+---
+
+### Etapa 2 — Consolidación de candidatos (Grounded Prompting)
+
+Se corrió una vez, con los 4 borradores de candidatos y el modelo de dominio completo (pegado como texto, no adjuntado — para evitar el mismo problema de citas automáticas de la Fase 3).
+
+**v1 (primera corrida):**
+
+```text
+Tienes 4 listas de candidatos a caso de uso (una por lote de fuentes) y
+el modelo de dominio consolidado del proyecto. Vas a unificarlos y
+elegir los 3 candidatos de mayor riesgo.
+
+Tu tarea:
+1. Si el mismo candidato aparece en más de un lote (mismo objetivo o
+   actor, aunque esté nombrado distinto), fusiónalo en una sola
+   entrada, combinando sus fuentes.
+2. Para cada candidato final, indica qué entidades y relaciones del
+   modelo de dominio están directamente involucradas.
+3. Ordena todos los candidatos por riesgo estimado (de las 4 listas) de
+   mayor a menor, y marca los 3 de mayor riesgo como "seleccionado".
+4. No agregues ningún candidato nuevo que no venga de alguna de las 4
+   listas.
+5. No resuelvas ni asumas nada sobre los candidatos marcados con
+   "toca_decision_pendiente" — solo repórtalos tal cual.
+
+[formato de salida: candidatos_consolidados con entidades_relacionadas,
+riesgo_estimado, toca_decision_pendiente, fuentes, seleccionado]
+```
+
+**Problema detectado en v1:** el campo `"riesgo_estimado": "alto"` no alcanza para desempatar cuando hay más de 3 candidatos en "alto" — el modelo eligió los 3 finales sin mostrar ningún criterio de corte, y el texto de justificación (cuando lo pedimos en la v2) salió idéntico y copiado en los tres candidatos seleccionados, sin comparación real entre ellos.
+
+**v2 (versión validada, con las dos correcciones):**
+
+```text
+[... mismas reglas 1, 2, 5 de la v1, más: ...]
+
+3. Antes de elegir los 3 finales, resuelve las "fusiones_dudosas" que
+   trae el modelo de dominio, si afectan a algún candidato: decide si
+   las entidades en duda se tratan como una sola o se mantienen
+   separadas, y dilo explícito en el campo "fusion_aplicada" del
+   candidato afectado.
+4. Ordena TODOS los candidatos por riesgo de mayor a menor, asignando
+   un número de posición explícito ("posicion_riesgo": 1, 2, 3...) —
+   no uses solo la etiqueta "alto/medio/bajo". Marca "seleccionado":
+   true solo a las posiciones 1, 2 y 3, y explica en
+   "por_que_este_orden" por qué el corte quedó ahí (comparando el
+   candidato de la posición N contra el de la posición N+1, con algo
+   concreto — montos, plazos, cuántos interesados en conflicto, si
+   depende de una decisión pendiente o de una limitación técnica).
+6. Sobre "toca_decision_pendiente": estos IDs todavía no se han
+   verificado contra la tabla real de decisiones del equipo. Marca
+   cada uno con "verificado": false.
+7. BARRERA DE FORMATO (CRÍTICO): [misma barrera completa de la Fase 3,
+   con autolimpieza y válvula de escape]
+
+Modelo de dominio: [pegar como texto]
+Lista Lote 1-4: [pegar]
+```
+
+**Resultado v2, primera pasada:** aunque se pidió comparación por pares, `por_que_este_orden` volvió a salir idéntico en los 3 seleccionados (mismo problema de v1, no resuelto del todo por la instrucción).
+
+**Corrección puntual (sin reescribir todo el prompt) — Etapa 2b, verificación cruzada:**
+
+```text
+Tienes dos correcciones que hacer sobre tu consolidación anterior.
+
+CORRECCIÓN 1 — "por_que_este_orden" repetido:
+Reemplázalo por una comparación específica entre cada candidato y el
+siguiente en la lista (posición N vs. N+1): compara algo concreto
+entre ambos. El candidato en la última posición seleccionada (3) debe
+compararse contra el primero NO seleccionado (4).
+
+CORRECCIÓN 2 — Verificación de IDs contra la tabla real:
+Te adjunto la tabla real de decisiones del equipo. Para cada candidato
+con valor en "toca_decision_pendiente":
+1. Si el ID existe literalmente en la tabla, cambia "verificado" a
+   true y copia el "Asunto"/"Hallazgo" exacto en "resumen_decision".
+2. Si no existe con ese ID pero el tema coincide con otra fila, corrige
+   el ID y dilo en "correccion_aplicada".
+3. Si no hay ninguna fila que corresponda, deja "verificado": false y
+   agrega "sin_hallazgo_formal": true.
+
+No modifiques ningún otro campo. No agregues ni quites candidatos.
+
+BARRERA DE FORMATO (CRÍTICO): [misma de siempre]
+
+Tabla real de decisiones: [pegar o adjuntar]
+```
+
+**Resultado final validado:** 16 candidatos consolidados, con `por_que_este_orden` diferenciado para las posiciones 1-3 (comparando contra la posición siguiente), y `verificado: true` con `resumen_decision` específico para todos los que sí tenían una fila real en la tabla — se descubrieron además hallazgos nuevos (HC-006, HC-007, HC-015) que el equipo había formalizado en la validación pero que no estaban entre los 10 grupos originales de la Fase 2.
+
+**Pendiente para el equipo:** el conflicto de la modalidad de audio (H-13/H-16 de la Fase 2) no generó ningún candidato a caso de uso — confirmar si es correcto (la decisión se resuelve como restricción de alcance, sin caso de uso propio) o si se perdió en el camino.
+
+---
+
+### Etapa 3 — Especificación detallada de los 3 seleccionados (Grounded Prompting, uno por prompt)
+
+Se corrió una vez por cada caso de uso seleccionado, adjuntando solo las entradas del inventario y las entidades del modelo de dominio citadas en ese candidato específico (no el inventario completo).
+
+```text
+Vas a especificar en detalle el siguiente caso de uso, usando el
+formato extendido: actor principal, precondiciones, flujo principal
+numerado, flujos alternativos, flujos de excepción, postcondiciones.
+
+Caso de uso: [nombre]
+Actor probable: [actor]
+Objetivo: [objetivo]
+
+Trabaja ÚNICAMENTE con las entradas del inventario y las entidades del
+modelo de dominio que te adjunto.
+
+Reglas estrictas:
+1. Cada paso y extensión debe citar la entrada del inventario que la
+   respalda (campo "fuente" exacto, copiado literal).
+2. Si no encuentras una fuente que respalde una extensión que
+   "debería" existir, NO la inventes — inclúyela en
+   "preguntas_pendientes" en vez de forzarla.
+3. No generes una extensión genérica sin contenido específico (relleno).
+4. [Regla específica por caso — ver adaptaciones abajo]
+5. No conviertas atributos técnicos de las entidades en pasos nuevos
+   sin respaldo en el inventario.
+
+BARRERA DE FORMATO (CRÍTICO): [la de siempre]
+
+Inventario relevante: [pegar solo las entradas citadas por este candidato]
+Entidades del modelo de dominio relevantes: [pegar solo las entidades citadas]
+```
+
+**Adaptaciones de la regla 4 por caso de uso (esto varió según cuántas decisiones pendientes tocaba cada uno):**
+
+- **CU-01 (Ingresar evidencia y encolar peticiones)** — dependía de HC-003 y HC-013 a la vez. Instrucción: marcar cada paso dependiente con 🚩, y advertir que probablemente necesite bifurcarse en dos flujos completos, no uno solo.
+- **CU-02 (Resolver caso derivado con intervención manual)** — dependía solo de HC-008, pero se agregó una regla adicional (no numerada como "decisión pendiente", sino de orden): *"si alguna fuente indica que el puntaje no debe mostrarse antes de que el operador revise la evidencia (para evitar sesgo), refleja ese orden exacto en la numeración de los pasos"* — esto explota directamente el hallazgo H-12 de la Fase 2 (Marco no quiere ver el puntaje antes de analizar).
+- **CU-03 (Facturación automatizada)** — dependía de HC-004 y HC-009 simultáneamente, con instrucción explícita de tratarlas por separado y no mezclarlas en un solo punto pendiente.
+
+**Corrección aplicada solo a CU-01, después de la primera especificación:**
+
+La primera salida mezcló tres canales de entrada (API, carga manual, archivos) en un único flujo principal, cuando en realidad son caminos con pasos distintos (ej. "respuesta inmediata" no aplica al canal de archivos). Se pidió una corrección puntual (sin rehacer todo):
+
+```text
+Divide esto en DOS flujos principales completos y paralelos:
+- "flujo_principal_A_api"
+- "flujo_principal_B_archivos"
+Cada extensión existente debe indicar "aplica_a": "A", "B", o "ambos".
+Agrega además la extensión 5b faltante (rama de rechazo del límite de
+tasa, HC-003) si hay fuente que la respalde; si no la hay, decláralo
+explícitamente en "preguntas_pendientes" en vez de inventar el
+comportamiento.
+```
+
+**Resultado:** el modelo dividió correctamente en dos flujos de distinto largo (8 pasos para API, 4 para archivos, reflejando que el canal asíncrono no necesita los pasos de respuesta inmediata), y en vez de inventar la extensión 5b reconoció la falta de fuente y la movió a `preguntas_pendientes` — además surgió una pregunta nueva, no anticipada, sobre si el límite de tasa aplica también al flujo de archivos.
+
+---
+
+### Etapa 4 — Consolidación de preguntas pendientes (sin prompt adicional)
+
+Las `preguntas_pendientes` de los 3 casos de uso ya especificados se consolidaron directamente (sin una nueva llamada al modelo, ya que el contenido ya estaba disponible) en una sola lista para el representante del cliente, separando las preguntas de detalle de implementación de las 5 decisiones de negocio de fondo (HC-003, HC-013, HC-008, HC-004, HC-009) que ya estaban en la bitácora.
+
+---
+
+## Resumen de casos de uso especificados
+
+| Caso de uso | Posición riesgo | Decisión(es) pendiente(s) | Hallazgo destacado |
+|---|---|---|---|
+| CU-01 — Ingresar evidencia y encolar peticiones | 1 | HC-003, HC-013 | Se dividió en 2 flujos (API/archivos); surgió pregunta nueva sobre alcance del rate limit |
+| CU-02 — Resolver caso derivado con intervención manual | 2 | HC-008 | Se aplicó el orden anti-sesgo de H-12 (puntaje al final); apareció extensión 6b no anticipada (evidencia falsificada → investigación) |
+| CU-03 — Facturación automatizada y validaciones útiles | 3 | HC-004, HC-009 (simultáneas) | Las dos decisiones se mantuvieron separadas correctamente; pendiente de forma: los pasos 3/4 (variantes de HC-004) deberían presentarse como bifurcación explícita, no como pasos secuenciales — ajuste de forma anotado, no aplicado aún |
+
+**Pendiente general de la fase:** confirmar con el equipo si el candidato #4 (riesgo "alto", eliminación de datos a solicitud del titular — HC-002/HC-012) debería reconsiderarse dentro de los 3 críticos, dado que compliance tiene poder de veto según otro candidato (HC-014).

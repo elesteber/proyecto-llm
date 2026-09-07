@@ -1,0 +1,50 @@
+{
+  "lote": "1.1–1.6_2.1–2.3",
+  "candidatos": [
+    {
+      "caso_de_uso_candidato": "Facturación automatizada de validaciones útiles",
+      "actor_probable": "Sistema (Automatizado) / Área Comercial",
+      "objetivo": "Identificar caso a caso qué validaciones fueron útiles, medir el uso por cliente y generar la facturación sin requerir intervención manual.",
+      "riesgo_estimado": "alto",
+      "por_que": "Involucra el modelo de ingresos principal del sistema. Actualmente, existe una indefinición operativa sobre qué constituye una validación útil y no hay acuerdo entre finanzas y producto sobre cuáles deben cobrarse, lo que hace inviable operar con volumen.",
+      "toca_decision_pendiente": "HC-004",
+      "fuentes": ["Sección 1.4", "Sección 1.5", "Sección 2.2", "Sección 2.3"]
+    },
+    {
+      "caso_de_uso_candidato": "Auditoría y reconstrucción de decisiones pasadas",
+      "actor_probable": "Área de cumplimiento / Auditor interno o externo",
+      "objetivo": "Consultar los registros de trazabilidad de la plataforma para reconstruir y justificar formalmente el razonamiento exacto detrás de una decisión automática.",
+      "riesgo_estimado": "alto",
+      "por_que": "Representa un requisito habilitante crítico: si el sistema no puede explicar y justificar sus decisiones para sostener una fiscalización, el área de cumplimiento aplicará su poder de veto y la plataforma no se podrá comercializar.",
+      "toca_decision_pendiente": "HC-014",
+      "fuentes": ["Sección 1.4", "Sección 1.5", "Sección 2.1", "Sección 2.2", "Sección 2.3"]
+    },
+    {
+      "caso_de_uso_candidato": "Tratamiento normativo y retención de evidencia",
+      "actor_probable": "Sistema (Automatizado) / Área de cumplimiento",
+      "objetivo": "Procesar, almacenar y eliminar evidencias sensibles (como imágenes biométricas) asegurando la conformidad legal y respetando los derechos de los titulares sobre su información personal.",
+      "riesgo_estimado": "alto",
+      "por_que": "Implica riesgos legales y de cumplimiento normativo severos. El diseño técnico está condicionado por los derechos de privacidad sobre datos personales y la falta de claridad en los plazos de retención.",
+      "toca_decision_pendiente": "HC-002",
+      "fuentes": ["Sección 1.6", "Sección 2.3"]
+    },
+    {
+      "caso_de_uso_candidato": "Revisión integral de caso derivado y reporte de fallo",
+      "actor_probable": "Operador del proceso",
+      "objetivo": "Evaluar un caso que la IA no resolvió, visualizando toda la evidencia en una única interfaz unificada, y retroalimentar a la plataforma en caso de errores en la derivación.",
+      "riesgo_estimado": "medio",
+      "por_que": "Impacta directamente los acuerdos de nivel de servicio (SLA). Si el operador no cuenta con el contexto de derivación adecuado o tiene que navegar múltiples sistemas, no podrá cumplir con sus tiempos de respuesta comprometidos.",
+      "toca_decision_pendiente": null,
+      "fuentes": ["Sección 1.5", "Sección 2.3"]
+    },
+    {
+      "caso_de_uso_candidato": "Gestión, diseño y versionado de flujos",
+      "actor_probable": "Perfil de diseño del flujo (Usuario de negocio)",
+      "objetivo": "Armar, modificar y guardar versiones específicas de las secuencias de validación de manera autónoma, sin alterar los flujos productivos de otros clientes.",
+      "riesgo_estimado": "medio",
+      "por_que": "Mitiga un riesgo técnico activo (actualmente los módulos comparten estado de forma oculta y los cambios dañan a otros clientes en cascada). Además, recae sobre un usuario (de negocio) cuya existencia técnica en todos los clientes todavía es incierta.",
+      "toca_decision_pendiente": null,
+      "fuentes": ["Sección 1.3", "Sección 1.5", "Sección 2.3"]
+    }
+  ]
+}

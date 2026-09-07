@@ -1,0 +1,98 @@
+{
+  "caso_de_uso": "Resolver caso derivado con intervención manual y visualización integral",
+  "actor_principal": "Usuario (Rol: Operador / Analista)",
+  "precondiciones": [
+    "Los casos que no obtienen una resolución automática son dirigidos hacia una bandeja de trabajo (fuente: Sección 2.7).",
+    "El operador del proceso trabaja contra un tiempo de respuesta comprometido con sus propios clientes (fuente: Sección 2.3)."
+  ],
+  "flujo_principal": [
+    {
+      "paso": 1,
+      "texto": "El sistema despliega la bandeja de trabajo para el operador, la cual debe mostrar el tiempo restante y alertar cuando un caso lleve demasiado tiempo detenido.",
+      "fuente": "Sección 2.7"
+    },
+    {
+      "paso": 2,
+      "texto": "El operador selecciona un caso; el sistema muestra en una sola pantalla la evidencia del caso y las alertas, dejando el puntaje total oculto para el final a fin de evitar predisposiciones.",
+      "fuente": "ENT5 [00:15:16]"
+    },
+    {
+      "paso": 3,
+      "texto": "El operador examina cada pieza de evidencia; el sistema subraya la ubicación exacta de los datos y permite hacer clic para ver exactamente qué encontró la plataforma y en qué parte.",
+      "fuente": "Sección 2.7"
+    },
+    {
+      "paso": 4,
+      "texto": "El sistema muestra claramente por qué se derivó el caso, indicando la razón o motivo exacto, no solo un número.",
+      "fuente": "ENT5 [00:05:07]"
+    },
+    {
+      "paso": 5,
+      "texto": "Finalmente, una vez evaluada la evidencia y el motivo, el sistema revela el puntaje obtenido y el desglose de señales.",
+      "fuente": "Sección 2.7"
+    },
+    {
+      "paso": 6,
+      "texto": "El operador evalúa toda la información y resuelve el caso: aprueba, rechaza o solicita antecedentes adicionales.",
+      "fuente": "Sección 2.7"
+    },
+    {
+      "paso": 7,
+      "texto": "El sistema guarda un rastro inalterable donde su decisión y el motivo quedan registrados de manera comprensible para auditoría.",
+      "fuente": "Sección 2.7"
+    }
+  ],
+  "extensiones": [
+    {
+      "id": "1a",
+      "condicion": "Si el caso ingresado a la bandeja corresponde al tramo bajo sesenta puntos",
+      "texto": "🚩 pendiente: HC-008. Según el documento procede el escalamiento o rechazo automático, pero el área de cumplimiento exige que no ocurra un rechazo automático y que siempre una persona decida y explique.",
+      "fuente": "ENT6 [00:04:06]",
+      "pendiente_decision": "HC-008"
+    },
+    {
+      "id": "3a",
+      "condicion": "Si el operador detecta que la máquina leyó mal un dato extraído",
+      "texto": "El operador marca \"esto está mal leído\" y lo corrige manualmente; la corrección queda registrada junto al valor original y no se sobrescribe.",
+      "fuente": "Sección 3",
+      "pendiente_decision": null
+    },
+    {
+      "id": "4a",
+      "condicion": "Si el motivo de derivación es que un módulo de análisis falla o no está disponible",
+      "texto": "El sistema prohíbe explícitamente la aprobación con la información parcial y detalla la ausencia del módulo.",
+      "fuente": "Sección 3",
+      "pendiente_decision": null
+    },
+    {
+      "id": "4b",
+      "condicion": "Si el motivo de derivación es la presencia de una alerta de fraude activa",
+      "texto": "La plataforma impone la derivación o escalamiento, ya que las señales de fraude tienen precedencia obligatoria sobre el puntaje total.",
+      "fuente": "Sección 3",
+      "pendiente_decision": null
+    },
+    {
+      "id": "6a",
+      "condicion": "Si la decisión final del operador difiere de lo que la plataforma sugería",
+      "texto": "Manda el analista humano, pero esa discrepancia debe quedar marcada para revisión algorítmica del equipo de modelos.",
+      "fuente": "Sección 2.7",
+      "pendiente_decision": null
+    },
+    {
+      "id": "6b",
+      "condicion": "Si el operador determina que la evidencia suministrada constituye una falsificación o mentira",
+      "texto": "El operador resuelve mandar el caso a investigación en lugar de solicitar que envíen el documento de nuevo.",
+      "fuente": "ENT5 [00:05:07]",
+      "pendiente_decision": null
+    }
+  ],
+  "postcondiciones": [
+    "Un caso está resuelto cuando se aprobó, se rechazó, se derivó y un operador decidió (Sección 3).",
+    "El caso derivado a revisión queda resuelto dentro del plazo comprometido por el cliente, dejando constancia de los elementos que sustentaron la decisión (Sección 2.7)."
+  ],
+  "preguntas_pendientes": [
+    "Cuando el operador 'solicita antecedentes adicionales' (Sección 2.7), ¿el caso queda retenido en la bandeja congelando el tiempo de respuesta, se cierra temporalmente, o se devuelve al sistema core del cliente para que gestione el contacto con el asegurado?",
+    "¿Hacia qué módulo, estado o rol se envía un caso cuando el analista liquidador decide mandarlo a 'investigación' (ENT5 [00:05:07])? ¿Existe una bandeja de segundo nivel especializada en fraude?",
+    "Si el operador debe poder decidir en una sola pantalla 'sin abrir cinco sistemas más' (Sección 2.3), ¿existe información histórica del asegurado (coberturas, topes, siniestros previos) que MIRA deba consultar e integrar visualmente en esta bandeja, y que no viaja adjunta en la evidencia actual?"
+  ]
+}

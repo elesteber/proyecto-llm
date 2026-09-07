@@ -1,0 +1,322 @@
+{
+  "fusiones_resueltas": [
+    {
+      "entidad_A": "Decisión",
+      "entidad_B": "Decisión del Operador",
+      "resultado": "mantenidas separadas",
+      "justificacion": "Es imperativo distinguir la resolución automática original (Decisión) de la resolución humana (Decisión del Operador) para asegurar la correcta trazabilidad legal y el registro de discrepancias."
+    },
+    {
+      "entidad_A": "Flujo",
+      "entidad_B": "Plantilla de flujo",
+      "resultado": "fusionadas",
+      "justificacion": "La plantilla actúa estructuralmente como un flujo base con estado preconfigurado, compartiendo atributos y comportamiento técnico en la plataforma, diferenciándose únicamente por su etapa de uso."
+    },
+    {
+      "entidad_A": "Usuario",
+      "entidad_B": "Operador",
+      "resultado": "fusionadas",
+      "justificacion": "El concepto de Operador, Diseñador o Analista son roles de acceso que recaen íntegramente sobre el modelo central de Usuario, compartiendo la lógica de credenciales y autenticación."
+    }
+  ],
+  "candidatos_consolidados": [
+    {
+      "caso_de_uso_candidato": "Tratamiento normativo y eliminación de datos a solicitud del titular",
+      "actor_probable": "Usuario (Administrador / Oficial de cumplimiento)",
+      "objetivo": "Ejecutar y gestionar el borrado de evidencia e información biométrica de un individuo, conciliando los requerimientos de inalterabilidad algorítmica con las imposiciones legales.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 4,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Evidencia",
+        "Caso",
+        "Registro de auditoría y trazabilidad",
+        "Usuario"
+      ],
+      "fusion_aplicada": "Usuario y Operador fusionadas. Tratamiento general de usuarios administrativos.",
+      "toca_decision_pendiente": "HC-002, HC-012",
+      "verificado": true,
+      "resumen_decision": "HC-002: Contradicción entre la regla de conservación de evidencia de 90 días establecida en la plataforma y el requerimiento de la aseguradora de conservar expedientes por 5 años (y hasta 10), así como la necesidad de contar con respaldo ante reclamos que ocurren después de ese plazo. | HC-012: El documento afirma simultáneamente que el rastro de auditoría es inalterable y que los datos personales deben eliminarse cuando el titular lo solicite, sin resolver cómo compatibilizar ambas exigencias. La entrevista con cumplimiento señala explícitamente que esta tensión no está resuelta.",
+      "fuentes": [
+        "Sección 1.6",
+        "Sección 2.3",
+        "Sección 3",
+        "ENT6 [00:10:08]"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Auditoría y reconstrucción trazable de decisiones pasadas",
+      "actor_probable": "Auditor interno o externo / Administrador del Cliente",
+      "objetivo": "Consultar historiales inalterables para reproducir con exactitud el comportamiento, las evidencias y las reglas tras resoluciones del sistema.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 5,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Caso",
+        "Registro de auditoría y trazabilidad",
+        "Evidencia"
+      ],
+      "fusion_aplicada": null,
+      "toca_decision_pendiente": "HC-014, HC-002",
+      "verificado": true,
+      "resumen_decision": "HC-014: Se exige que la plataforma pueda reconstruir una decisión pasada tal como se tomó, lo que el líder de ingeniería interpreta como reproducibilidad exacta. Sin embargo, señala que los modelos generativos subyacentes no son deterministas y los proveedores actualizan sus modelos sin previo aviso, haciendo imposible garantizar la reproducibilidad en el sentido estricto. | HC-002: Contradicción entre la regla de conservación de evidencia de 90 días establecida en la plataforma y el requerimiento de la aseguradora de conservar expedientes por 5 años (y hasta 10), así como la necesidad de contar con respaldo ante reclamos que ocurren después de ese plazo.",
+      "fuentes": [
+        "Sección 1.4",
+        "Sección 1.5",
+        "Sección 2.1",
+        "Sección 2.2",
+        "Sección 2.3",
+        "Sección 2.11"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Registrar resultado y veredicto en sistema core del cliente",
+      "actor_probable": "Plataforma DPRIME / Usuario (Operador manual)",
+      "objetivo": "Sincronizar y plasmar la resolución, ya sea algorítmica o de revisión humana, en el sistema transaccional histórico de la aseguradora.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 6,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Decisión",
+        "Caso",
+        "Sistema de siniestros"
+      ],
+      "fusion_aplicada": "Decisión mantenida separada de Decisión del Operador; aquí se impacta el concepto universal abstracto hacia el sistema core.",
+      "toca_decision_pendiente": "HC-007",
+      "verificado": true,
+      "resumen_decision": "Se declara explícitamente que es necesario definir si la escritura de resultados en el sistema de siniestros será un proceso automático o mediante transcripción manual, sin que se haya tomado una decisión al respecto en los documentos.",
+      "fuentes": [
+        "ENT7 [00:03:46]"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Autenticar usuario cliente y federar acceso corporativo (SSO)",
+      "actor_probable": "Usuario",
+      "objetivo": "Acceder a las herramientas, paneles y bandejas de la plataforma recurriendo a la central de identidades y directorio del propio cliente, evitando credenciales dobles.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 7,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Usuario",
+        "Cliente",
+        "Plataforma"
+      ],
+      "fusion_aplicada": "Usuario centralizado absorbe todos los perfiles autenticables.",
+      "toca_decision_pendiente": "HC-006",
+      "verificado": true,
+      "resumen_decision": "Contradicción entre la solución decidida actual (autenticación con usuarios propios de la plataforma) y la necesidad expresada por el cliente piloto (autenticación contra directorio corporativo, sin administrar credenciales adicionales).",
+      "fuentes": [
+        "Sección 2.13",
+        "ENT7 [00:18:26]"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Modificar, configurar y aprobar umbrales de decisión algorítmica",
+      "actor_probable": "Usuario (Administrador del cliente)",
+      "objetivo": "Ajustar operativamente las cuotas y puntajes mínimos que rigen automatizaciones, gestionando su despliegue a través de circuitos de doble aprobación.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 8,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Umbral",
+        "Cliente",
+        "Usuario"
+      ],
+      "fusion_aplicada": "Usuario asume rol administrador.",
+      "toca_decision_pendiente": "HC-001",
+      "verificado": true,
+      "resumen_decision": "Existen contradicciones en los umbrales de decisión para aprobación automática: una declaración establece que los casos con puntaje sobre 85 se aprueban automáticamente, mientras que otra indica que la aprobación automática se aplica a partir de 80 puntos cuando no hay señales de fraude. Además, se menciona que los valores son referenciales y sin base científica, y el cliente piloto sugiere un umbral de 90.",
+      "fuentes": [
+        "Sección 2.6",
+        "ENT4 [00:11:06]",
+        "Sección 3",
+        "ENT6 [00:21:16]"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Configurar e incorporar despliegue de cliente nuevo (Onboarding)",
+      "actor_probable": "Usuario (Consultor DPRIME)",
+      "objetivo": "Acelerar el levantamiento y acondicionamiento inicial de la plataforma utilizando plantillas y mapeos preconfigurados para reducir cuellos de botella comerciales.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 9,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Cliente",
+        "Flujo",
+        "Usuario"
+      ],
+      "fusion_aplicada": "Plantilla de flujo asimilada y empleada como Flujo base con configuración inicial.",
+      "toca_decision_pendiente": "HC-015",
+      "verificado": true,
+      "resumen_decision": "La meta de incorporación de un cliente nuevo en producción dentro de dos semanas contradice la estimación de la directora de producto, quien indica que solo ajustar un formulario personalizado de un cliente toma entre dos y tres semanas, sin considerar el resto de la configuración.",
+      "fuentes": [
+        "Sección 2.16"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Reprocesar casos atascados y caídas de servicio",
+      "actor_probable": "Usuario (Personal de Soporte)",
+      "objetivo": "Intervenir e inyectar dinamismo a expedientes colgados por el proveedor algorítmico o errores técnicos sin recurrir a ediciones de código profundo.",
+      "riesgo_estimado": "alto",
+      "posicion_riesgo": 10,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Caso",
+        "Evidencia",
+        "Incidente",
+        "Usuario"
+      ],
+      "fusion_aplicada": "El soporte técnico asume rol dentro del modelo de Usuario unificado.",
+      "toca_decision_pendiente": null,
+      "verificado": false,
+      "sin_hallazgo_formal": true,
+      "fuentes": [
+        "ENT9 [00:16:46]",
+        "ENT9 [00:12:21]"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Corregir datos extraídos erróneamente y asentar discrepancia algorítmica",
+      "actor_probable": "Usuario (Operador liquidador)",
+      "objetivo": "Enmendar campos leídos de forma deficiente por la máquina, dejando una estela en el historial que distinga la voluntad del revisor de la imposición matemática.",
+      "riesgo_estimado": "medio",
+      "posicion_riesgo": 11,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Dato",
+        "Decisión del Operador",
+        "Caso",
+        "Decisión"
+      ],
+      "fusion_aplicada": "Decisión algorítmica y Decisión del Operador mantenidas separadas para contrastar los resultados.",
+      "toca_decision_pendiente": null,
+      "verificado": false,
+      "sin_hallazgo_formal": true,
+      "fuentes": [
+        "Sección 2.7",
+        "ENT4 [00:19:06]",
+        "ENT5 [00:10:05]",
+        "Sección 3"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Añadir evidencia fragmentada para forzar reevaluación",
+      "actor_probable": "Sistema Externo / Usuario",
+      "objetivo": "Anexar materiales y reportes posteriores a la radicación que requieran que el motor de inferencia corra nuevamente sin destruir las bases del análisis inicial.",
+      "riesgo_estimado": "medio",
+      "posicion_riesgo": 12,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Caso",
+        "Evidencia",
+        "Validación"
+      ],
+      "fusion_aplicada": null,
+      "toca_decision_pendiente": "HC-009",
+      "verificado": true,
+      "resumen_decision": "Ambigüedad y falta de definición sobre cómo contabilizar las reevaluaciones de un mismo caso (si cuenta como una o dos validaciones) para efectos de cobro, existiendo opiniones divergentes y la necesidad de una definición escrita antes de la marcha blanca.",
+      "fuentes": [
+        "Sección 2.4",
+        "Sección 3"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Diseño, control y versionado visual de flujos lógicos",
+      "actor_probable": "Usuario (Diseñador de procesos / Negocio)",
+      "objetivo": "Estructurar cajas conectadas, asignar módulos y gobernar las variantes de las decisiones automatizadas evitando roturas transversales en el servicio de otros clientes.",
+      "riesgo_estimado": "medio",
+      "posicion_riesgo": 13,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Flujo",
+        "Bloque",
+        "Módulo de análisis",
+        "Usuario"
+      ],
+      "fusion_aplicada": "Plantillas tratadas como subtipos del Flujo universal unificado.",
+      "toca_decision_pendiente": null,
+      "verificado": false,
+      "sin_hallazgo_formal": true,
+      "fuentes": [
+        "Sección 1.3",
+        "Sección 1.5",
+        "Sección 2.3",
+        "Sección 2.8",
+        "Sección 3"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Gestionar autorizaciones y licenciamiento de uso de datos",
+      "actor_probable": "Cliente",
+      "objetivo": "Otorgar o revocar activamente la potestad de la plataforma central para nutrir y adiestrar sus modelos compartidos con la data propietaria de siniestros y resoluciones.",
+      "riesgo_estimado": "medio",
+      "posicion_riesgo": 14,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Cliente",
+        "Plataforma"
+      ],
+      "fusion_aplicada": null,
+      "toca_decision_pendiente": null,
+      "verificado": false,
+      "sin_hallazgo_formal": true,
+      "fuentes": [
+        "Sección 2.18"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Simular retrospectivamente impacto de módulos actualizados",
+      "actor_probable": "Usuario (Equipo DPRIME interno)",
+      "objetivo": "Someter el algoritmo re-entrenado a simulaciones sombra contra el registro histórico para medir variaciones en resultados, fallos y sesgos antes del despliegue productivo.",
+      "riesgo_estimado": "medio",
+      "posicion_riesgo": 15,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Módulo de análisis",
+        "Caso",
+        "Puntaje",
+        "Usuario"
+      ],
+      "fusion_aplicada": "Equipo interno unificado bajo abstracción de Usuario con accesos administrativos.",
+      "toca_decision_pendiente": null,
+      "verificado": false,
+      "sin_hallazgo_formal": true,
+      "fuentes": [
+        "Sección 2.18"
+      ],
+      "seleccionado": false
+    },
+    {
+      "caso_de_uso_candidato": "Exportar y extraer información portabilidad del cliente",
+      "actor_probable": "Cliente",
+      "objetivo": "Reunir, transformar y descargar un vaciado de flujos y operaciones consumadas para uso, migración, respaldo offline o estudios analíticos fuera de las herramientas de DPRIME.",
+      "riesgo_estimado": "bajo",
+      "posicion_riesgo": 16,
+      "por_que_este_orden": null,
+      "entidades_relacionadas": [
+        "Caso",
+        "Flujo",
+        "Cliente"
+      ],
+      "fusion_aplicada": null,
+      "toca_decision_pendiente": null,
+      "verificado": false,
+      "sin_hallazgo_formal": true,
+      "fuentes": [
+        "Sección 3"
+      ],
+      "seleccionado": false
+    }
+  ]
+}

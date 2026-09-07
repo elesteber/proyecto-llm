@@ -1,0 +1,59 @@
+{
+  "lote": "[2.10–2.17_ENT7_ENT9]",
+  "candidatos": [
+    {
+      "caso_de_uso_candidato": "Enviar caso para evaluación",
+      "actor_probable": "Sistema del Cliente",
+      "objetivo": "Ingresar evidencia para evaluación y obtener una decisión inmediata o notificada de forma asíncrona",
+      "riesgo_estimado": "alto",
+      "por_que": "Existe un conflicto entre el límite estricto de llamadas (100/1000 por minuto) y la carga de históricos, sin estar definido si el sistema rechaza o encola los casos excedentes, lo que arriesga pérdida de información.",
+      "toca_decision_pendiente": "HC-003 — Comportamiento del sistema ante exceso de límite de llamadas (rate limit) no definido",
+      "fuentes": ["Sección 2.10", "ENT7 [00:06:37]", "ENT7 [00:09:56]"]
+    },
+    {
+      "caso_de_uso_candidato": "Autenticar usuario en la plataforma",
+      "actor_probable": "Usuario del Cliente / Analista",
+      "objetivo": "Acceder a la plataforma con los permisos correspondientes para operar casos o consultar paneles",
+      "riesgo_estimado": "alto",
+      "por_que": "Choca directamente la implementación actual (usuarios propios de la plataforma) con la exigencia estricta de grandes clientes (aseguradora) de no administrar contraseñas secundarias y usar su directorio corporativo.",
+      "toca_decision_pendiente": "HC-006 — Autenticación de usuarios: propia de la plataforma vs directorio corporativo del cliente (SSO)",
+      "fuentes": ["Sección 2.13", "ENT7 [00:18:26]"]
+    },
+    {
+      "caso_de_uso_candidato": "Escribir resultado de validación en sistema core",
+      "actor_probable": "Plataforma DPRIME / Operador",
+      "objetivo": "Registrar la decisión y los datos del siniestro finalizado en el sistema central del cliente",
+      "riesgo_estimado": "alto",
+      "por_que": "El core del cliente no expone servicios web, lo que requiere definir un mecanismo alternativo (archivos) o definir si el proceso dependerá de una transcripción manual del operador, afectando los tiempos de operación.",
+      "toca_decision_pendiente": "HC-007 — Escritura de resultados en el sistema de siniestros: automática vs transcripción manual",
+      "fuentes": ["ENT7 [00:03:46]"]
+    },
+    {
+      "caso_de_uso_candidato": "Consultar rastro de auditoría",
+      "actor_probable": "Auditor / Administrador del Cliente",
+      "objetivo": "Revisar la evidencia, reglas ejecutadas y reproducir exactamente una decisión pasada",
+      "riesgo_estimado": "medio",
+      "por_que": "Se exige retener la evidencia por un plazo específico (90 días tras los cuales se elimina), lo que podría entrar en conflicto con normativas externas de retención documental de los clientes.",
+      "toca_decision_pendiente": "HC-002 — Plazo de retención de evidencia (90 días vs 5-10 años exigidos por la aseguradora)",
+      "fuentes": ["Sección 2.11"]
+    },
+    {
+      "caso_de_uso_candidato": "Configurar e incorporar cliente nuevo (Onboarding)",
+      "actor_probable": "Consultor DPRIME",
+      "objetivo": "Habilitar flujos, reglas y un entorno productivo para que el cliente comience a operar",
+      "riesgo_estimado": "alto",
+      "por_que": "Existe una enorme brecha entre la meta comercial (2 semanas para salir a producción) y la realidad operativa actual (6 a 8 semanas por tareas repetitivas).",
+      "toca_decision_pendiente": "HC-015 — Plazo de incorporación de un cliente nuevo (2 semanas prometidas vs 2-3 semanas solo para el formulario)",
+      "fuentes": ["Sección 2.16"]
+    },
+    {
+      "caso_de_uso_candidato": "Reprocesar casos fallidos o atascados",
+      "actor_probable": "Personal de Soporte DPRIME",
+      "objetivo": "Reanudar la evaluación de un caso desde la interfaz sin requerir intervención de ingeniería ni código",
+      "riesgo_estimado": "alto",
+      "por_que": "Actualmente el soporte visualiza evidencia del cliente sin autorización expresa ni rastro auditable para destrabar casos, lo que incumple reglas de negocio documentadas de privacidad.",
+      "toca_decision_pendiente": null,
+      "fuentes": ["ENT9 [00:16:46]", "ENT9 [00:12:21]"]
+    }
+  ]
+}

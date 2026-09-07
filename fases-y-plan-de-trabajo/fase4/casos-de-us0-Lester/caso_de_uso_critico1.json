@@ -1,0 +1,124 @@
+{
+  "caso_de_uso": "Ingresar evidencia y encolar peticiones por límite de tasa",
+  "actor_principal": "Sistema Externo / Cliente / Operador",
+  "precondiciones": [
+    "El cliente o actor que realiza la petición debe estar integrado y autenticado en el punto de acceso, el cual incorpora un límite de llamadas por unidad de tiempo asociado (Sección 2.10)."
+  ],
+  "flujo_principal_A_api": [
+    {
+      "paso": 1,
+      "texto": "El Actor inicia el caso enviando una o múltiples piezas de evidencia a la plataforma (documentos en formato PDF, imágenes, video o audio).",
+      "fuente": "Sección 2.4"
+    },
+    {
+      "paso": 2,
+      "texto": "🚩 pendiente: HC-013. El envío de la evidencia se efectúa a través de una interfaz de programación.",
+      "fuente": "Sección 2.4"
+    },
+    {
+      "paso": 3,
+      "texto": "🚩 pendiente: HC-013. El cliente integra el punto de acceso desde sus sistemas y envía la evidencia en la misma llamada.",
+      "fuente": "Sección 2.10"
+    },
+    {
+      "paso": 4,
+      "texto": "🚩 pendiente: HC-003. El sistema valida si el flujo de entrada excede el límite general de mil llamadas por minuto por cliente, o el límite específico de cien llamadas por minuto para ambientes de integración.",
+      "fuente": "Sección 2.10"
+    },
+    {
+      "paso": 5,
+      "texto": "🚩 pendiente: HC-003. En caso de superarse el límite, el sistema procede según la estrategia definida, debiendo resolver si rechaza las llamadas o las encola.",
+      "fuente": "ENT7 [00:06:37]"
+    },
+    {
+      "paso": 6,
+      "texto": "Antes de analizar el contenido, la plataforma verifica que el archivo de la evidencia recibida sea legible y utilizable.",
+      "fuente": "Sección 2.4"
+    },
+    {
+      "paso": 7,
+      "texto": "La plataforma recibe exitosamente la petición y le asigna al caso un identificador propio, único y permanente.",
+      "fuente": "Sección 3"
+    },
+    {
+      "paso": 8,
+      "texto": "La plataforma acepta el caso, responde de inmediato al Actor y avisa el resultado después, tras finalizar el análisis asíncrono.",
+      "fuente": "Sección 2.10"
+    }
+  ],
+  "flujo_principal_B_archivos": [
+    {
+      "paso": 1,
+      "texto": "El Actor inicia el caso enviando una o múltiples piezas de evidencia a la plataforma (documentos en formato PDF, imágenes, video o audio).",
+      "fuente": "Sección 2.4"
+    },
+    {
+      "paso": 2,
+      "texto": "🚩 pendiente: HC-013. La integración funciona intercambiando archivos en una carpeta mediante procesos que se ejecutan cada media hora.",
+      "fuente": "ENT7 [00:01:06]"
+    },
+    {
+      "paso": 3,
+      "texto": "Antes de analizar el contenido, la plataforma verifica que el archivo de la evidencia recibida sea legible y utilizable.",
+      "fuente": "Sección 2.4"
+    },
+    {
+      "paso": 4,
+      "texto": "La plataforma recibe exitosamente la petición y le asigna al caso un identificador propio, único y permanente.",
+      "fuente": "Sección 3"
+    }
+  ],
+  "extensiones": [
+    {
+      "id": "1a",
+      "aplica_a": "ambos",
+      "condicion": "Si el envío de nueva evidencia corresponde a un caso existente (abierto)",
+      "texto": "La plataforma tiene que entender que eso sigue siendo el mismo caso, asocia la nueva información y vuelve a evaluarlo sin perder conclusiones.",
+      "fuente": "Sección 2.4",
+      "pendiente_decision": null
+    },
+    {
+      "id": "1b",
+      "aplica_a": "ambos",
+      "condicion": "Si llega evidencia nueva sobre un caso ya cerrado",
+      "texto": "La plataforma abre un caso nuevo vinculado al anterior para procesar la nueva evidencia.",
+      "fuente": "Sección 3",
+      "pendiente_decision": null
+    },
+    {
+      "id": "5a",
+      "aplica_a": "A",
+      "condicion": "Si se supera el límite de llamadas y la decisión final del negocio determina retenerlas",
+      "texto": "🚩 pendiente: HC-003. Las llamadas quedan encoladas y se procesan después, garantizando que no se pierdan los casos.",
+      "fuente": "ENT7 [00:09:56]",
+      "pendiente_decision": "HC-003"
+    },
+    {
+      "id": "6a",
+      "aplica_a": "ambos",
+      "condicion": "Si el sistema detecta que el archivo no es legible o utilizable",
+      "texto": "El análisis se interrumpe y el sistema informa el motivo de forma clara para un usuario no técnica.",
+      "fuente": "Sección 2.4",
+      "pendiente_decision": null
+    },
+    {
+      "id": "8a",
+      "aplica_a": "A",
+      "condicion": "Si la plataforma resuelve el caso de manera rápida y sincrónica sin requerir aviso posterior",
+      "texto": "La respuesta entregada de inmediato debe contener el identificador del caso, el puntaje, la decisión y el desglose de señales.",
+      "fuente": "Sección 2.10",
+      "pendiente_decision": null
+    }
+  ],
+  "postcondiciones": [
+    "El caso queda registrado con un identificador único que usan el cliente, el operador y el rastro de auditoría (Sección 3).",
+    "Los expedientes que se hayan generado en una ventana breve bajo un mismo asegurado o prestador quedan habilitados para relacionarse (Sección 3)."
+  ],
+  "preguntas_pendientes": [
+    "Extensión 5b faltante: No se agregó la extensión 5b explícitamente al JSON porque no existe una entrada en el inventario que respalde el comportamiento exacto del sistema cuando se rechazan las llamadas (ej. qué código o mensaje de error se retorna a la API). Queda como definición de negocio pendiente.",
+    "Al dividir los flujos, no queda claro en el inventario si el límite de llamadas por unidad de tiempo (HC-003) aplica también al flujo B (lectura de archivos en carpetas) o es exclusivo del flujo A (API). Por ahora se omitió la validación de tasa en el flujo B para no inventar comportamiento.",
+    "Si la integración oficial para el flujo B se realiza por intercambio de archivos (HC-013), ¿qué archivo de metadatos o convención de nombres acompañará a la evidencia para asegurar que el sistema asocie la data al emisor correspondiente, dado que no hay respuesta inmediata?",
+    "Si el comportamiento ante el exceso de límite de tasa resulta ser el rechazo (HC-003), ¿qué código HTTP u objeto de error exacto debe devolver la API para que el sistema emisor comprenda que debe reintentar?",
+    "En caso de que el cliente realice una carga masiva histórica (bulk), ¿existe un límite máximo de encolamiento seguro (timeout) que la plataforma deba respetar para no saturar su infraestructura?"
+  ]
+}

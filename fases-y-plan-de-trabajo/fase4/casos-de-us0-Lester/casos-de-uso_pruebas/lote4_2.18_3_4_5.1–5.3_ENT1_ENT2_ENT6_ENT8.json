@@ -1,0 +1,122 @@
+{
+  "lote": "[2.18_3_4_5.1–5.3_ENT1_ENT2_ENT6_ENT8]",
+  "candidatos": [
+    {
+      "caso_de_uso_candidato": "Gestionar autorización de uso de datos",
+      "actor_probable": "Cliente / Administrador",
+      "objetivo": "Otorgar o retirar el permiso para que la plataforma utilice los datos del cliente en su propia mejora continua.",
+      "riesgo_estimado": "medio",
+      "por_que": "Involucra el cumplimiento de una regla de negocio sobre privacidad. Si no se diseña, se podrían utilizar datos sin consentimiento, acarreando riesgos regulatorios para el equipo de DPRIME.",
+      "toca_decision_pendiente": null,
+      "fuentes": [
+        "Sección 2.18"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Simular impacto de nueva versión de módulo",
+      "actor_probable": "Equipo DPRIME / Administrador",
+      "objetivo": "Comparar el comportamiento de una nueva versión de un módulo de análisis contra la versión vigente antes de activarla.",
+      "riesgo_estimado": "medio",
+      "por_que": "Un error al implementar esta simulación impediría visibilizar en cuántos casos habría cambiado la decisión, aumentando el riesgo de activar modelos con sesgos o fallos en producción.",
+      "toca_decision_pendiente": null,
+      "fuentes": [
+        "Sección 2.18"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Registrar resultados en el sistema de siniestros",
+      "actor_probable": "Sistema MIRA / Operador manual",
+      "objetivo": "Escribir el veredicto y resultado del caso procesado en el sistema core de la aseguradora (mediante archivo o transcripción).",
+      "riesgo_estimado": "alto",
+      "por_que": "El sistema core no posee servicios web. Existe una necesidad explícita de definir cómo ocurre la escritura, afectando los tiempos operativos, costos y el nivel real de automatización.",
+      "toca_decision_pendiente": "HC-007",
+      "fuentes": [
+        "ENT7 [00:03:46]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Autenticar usuario cliente (SSO)",
+      "actor_probable": "Usuario cliente (Analista / Operador)",
+      "objetivo": "Iniciar sesión en la plataforma utilizando el directorio corporativo de la organización, sin requerir credenciales locales.",
+      "riesgo_estimado": "alto",
+      "por_que": "Cambia radicalmente el modelo actual (usuarios propios). Según las opiniones, el área de seguridad y la gerencia rechazarán la herramienta si obliga a administrar contraseñas paralelas.",
+      "toca_decision_pendiente": "HC-006",
+      "fuentes": [
+        "ENT7 [00:18:26]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Encolar llamadas por límite de tasa (Rate Limit)",
+      "actor_probable": "Sistema MIRA (API)",
+      "objetivo": "Recibir y encolar las peticiones del cliente cuando se superan los límites de procesamiento, para procesarlas una vez estabilizado el flujo.",
+      "riesgo_estimado": "alto",
+      "por_que": "El cliente anticipa envíos masivos históricos que superarán el límite en el primer minuto. Si el sistema rechaza llamadas o no encola predeciblemente, se perderán casos y se generará duplicidad.",
+      "toca_decision_pendiente": "HC-003",
+      "fuentes": [
+        "ENT7 [00:06:37]",
+        "ENT7 [00:09:56]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Resolver caso derivado con intervención manual",
+      "actor_probable": "Operador / Analista humano",
+      "objetivo": "Evaluar la evidencia de un caso que presentó alertas de fraude o puntaje inferior al umbral automático, para emitir un rechazo o aprobación fundamentada.",
+      "riesgo_estimado": "alto",
+      "por_que": "Choca frontalmente con la prohibición legal de realizar rechazos puramente automáticos. No definir claramente cuándo interviene el humano puede derivar en multas normativas y conflictos de facturación.",
+      "toca_decision_pendiente": "HC-008",
+      "fuentes": [
+        "Sección 3",
+        "ENT6 [00:04:06]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Visualizar contador de validaciones cobrables",
+      "actor_probable": "Cliente / Administrador de plataforma",
+      "objetivo": "Consultar un contador detallado por caso para auditar qué procesos generaron validaciones que formarán parte de la facturación.",
+      "riesgo_estimado": "alto",
+      "por_que": "Toca directamente el modelo de ingresos. Hay expectativas cruzadas sobre si se cobran reevaluaciones (1 vs 2 validaciones), así como disputas sobre el cobro de derivaciones manuales.",
+      "toca_decision_pendiente": "HC-009",
+      "fuentes": [
+        "ENT1 [00:05:55]",
+        "ENT8 [00:04:46]",
+        "ENT8 [00:07:26]",
+        "ENT8 [00:12:36]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Eliminar evidencia a solicitud del titular",
+      "actor_probable": "Administrador / Sistema",
+      "objetivo": "Borrar los datos sensibles y evidencia asociada a un usuario que demanda su derecho de eliminación, validando excepciones legales.",
+      "riesgo_estimado": "alto",
+      "por_que": "Existe una contradicción grave: por un lado se exige borrar datos a petición y mantener el rastro de auditoría; por otro, la aseguradora tiene la obligación legal de conservar respaldos hasta por 10 años.",
+      "toca_decision_pendiente": "HC-012",
+      "fuentes": [
+        "Sección 3",
+        "ENT6 [00:10:08]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Modificar y aprobar umbrales de decisión",
+      "actor_probable": "Cliente",
+      "objetivo": "Ajustar los umbrales de riesgo mediante un procedimiento de doble aprobación que deje un rastro formal de auditoría.",
+      "riesgo_estimado": "alto",
+      "por_que": "No es una simple configuración técnica. Mover un umbral cambia el nivel de riesgo financiero de la compañía de seguros; si se hace sin los flujos de autorización correcta, la responsabilidad caerá en la plataforma.",
+      "toca_decision_pendiente": null,
+      "fuentes": [
+        "Sección 3",
+        "ENT6 [00:21:16]"
+      ]
+    },
+    {
+      "caso_de_uso_candidato": "Exportar información del cliente",
+      "actor_probable": "Cliente",
+      "objetivo": "Exportar flujos, historial de resultados y casos en un formato independiente a la tecnología interna de MIRA.",
+      "riesgo_estimado": "bajo",
+      "por_que": "Es un requisito de portabilidad estándar o 'salida' para el cliente que no implica lógicas de decisión ni de facturación complejas.",
+      "toca_decision_pendiente": null,
+      "fuentes": [
+        "Sección 3"
+      ]
+    }
+  ]
+}

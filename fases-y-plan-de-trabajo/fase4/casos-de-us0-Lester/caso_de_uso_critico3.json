@@ -1,0 +1,90 @@
+{
+  "caso_de_uso": "Facturación automatizada y visualización de validaciones útiles",
+  "actor_principal": "Sistema Automatizado / Área Comercial / Cliente",
+  "precondiciones": [
+    "El sistema debe tener la capacidad de identificar individualmente si cada validación entregada fue de utilidad (Sección 1.4).",
+    "El caso ha finalizado su procesamiento en la plataforma y cuenta con un resultado o veredicto (ENT1 [00:05:55])."
+  ],
+  "flujo_principal": [
+    {
+      "paso": 1,
+      "texto": "El Sistema Automatizado procesa el caso y entrega un veredicto o resultado con puntaje para su contabilización.",
+      "fuente": "Sección 3"
+    },
+    {
+      "paso": 2,
+      "texto": "El sistema evalúa la ejecución para determinar si constituye una validación útil por la que el cliente deba pagar.",
+      "fuente": "Sección 1.4"
+    },
+    {
+      "paso": 3,
+      "texto": "🚩 pendiente: HC-004. Variante A: El sistema marca la validación como cobrable únicamente si la plataforma resolvió el caso sola, de forma automática, sin terminar en el escritorio de un analista.",
+      "fuente": "ENT8 [00:02:36]"
+    },
+    {
+      "paso": 4,
+      "texto": "🚩 pendiente: HC-004. Variante B: El sistema marca la validación como cobrable independientemente de su derivación a revisión humana, asumiendo que hubo procesamiento y el análisis se hizo igual.",
+      "fuente": "ENT1 [00:06:26]"
+    },
+    {
+      "paso": 5,
+      "texto": "El sistema actualiza un contador confiable, visible para el cliente en línea, mostrando el detalle caso por caso y el criterio de cobro aplicado.",
+      "fuente": "ENT8 [00:12:36]"
+    },
+    {
+      "paso": 6,
+      "texto": "El Área Comercial y de administración acceden a la plataforma para ver simultáneamente el mismo número de validaciones que mira el cliente, determinando el consumo mensual.",
+      "fuente": "ENT8 [00:12:36]"
+    },
+    {
+      "paso": 7,
+      "texto": "El sistema permite que el uso total acumulado se mida y se facture directamente sin intervención manual.",
+      "fuente": "Sección 2.2"
+    }
+  ],
+  "extensiones": [
+    {
+      "id": "1a",
+      "condicion": "Si ocurren repeticiones del proceso motivadas por errores internos de la plataforma",
+      "texto": "El sistema omite estas ejecuciones; los reintentos por error interno de la plataforma no se contabilizan.",
+      "fuente": "Sección 3",
+      "pendiente_decision": null
+    },
+    {
+      "id": "2a",
+      "condicion": "Si el caso procesado corresponde a una reevaluación del mismo siniestro a causa de nueva evidencia",
+      "texto": "🚩 pendiente: HC-009. Variante A: El sistema incrementa el contador registrando dos validaciones en total, asumiendo que hubo dos análisis.",
+      "fuente": "ENT8 [00:07:26]",
+      "pendiente_decision": "HC-009"
+    },
+    {
+      "id": "2b",
+      "condicion": "Si el caso procesado corresponde a una reevaluación del mismo siniestro a causa de nueva evidencia",
+      "texto": "🚩 pendiente: HC-009. Variante B: El sistema no incrementa el contador para la reevaluación, asumiendo que es una sola validación porque es un solo siniestro.",
+      "fuente": "ENT8 [00:07:26]",
+      "pendiente_decision": "HC-009"
+    },
+    {
+      "id": "3a",
+      "condicion": "Si la plataforma determina que el archivo es ilegible o no puede procesar la evidencia",
+      "texto": "El caso queda exento; según la propuesta formal no se cobra lo que no se pudo procesar.",
+      "fuente": "ENT8 [00:10:06]",
+      "pendiente_decision": null
+    },
+    {
+      "id": "7a",
+      "condicion": "Si al momento de facturar el volumen del cliente escala a diez mil validaciones o más",
+      "texto": "El sistema carece de una tarifa asignada para aplicar automáticamente, ya que existe un tramo que dice 'diez mil o más' sin precio.",
+      "fuente": "ENT8 [00:15:16]",
+      "pendiente_decision": null
+    }
+  ],
+  "postcondiciones": [
+    "El proceso asegura un modelo donde se cobra por resultado, garantizando que el cliente pague exclusivamente por las validaciones que efectivamente le sirvieron (Sección 1.4).",
+    "Queda establecido un registro certero y compartido entre cliente, finanzas y producto sobre cuáles validaciones se cobrarán, eliminando el uso de planillas (Sección 1.5)."
+  ],
+  "preguntas_pendientes": [
+    "¿Cómo debe proceder técnicamente la automatización de la factura (Paso 7) cuando el consumo del cliente entra en el tramo de 'diez mil o más' validaciones que no tiene un precio configurado?",
+    "Si prevalece la regla comercial de que 'no se cobra lo que no se pudo procesar' (Extensión 3a), ¿los casos ilegibles deben de todos modos aparecer en el contador del cliente con un costo explícito de $0 para demostrar el 'servicio prestado' de detección de error que menciona Valentina, o se ocultan del panel de facturación por completo?"
+  ]
+}
