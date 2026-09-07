@@ -1,0 +1,209 @@
+[
+  {
+    "id_temporal": "RQF-001",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe procesar la eliminación de la evidencia e información biométrica de un individuo cuando lo solicite el titular, ajustándose a la resolución normativa sobre inalterabilidad.",
+    "candidato_origen": "Tratamiento normativo y eliminación de datos a solicitud del titular",
+    "fuente": "entender qué se hacía con las imágenes biométricas, dónde se almacenaban y por cuánto tiempo., que los datos personales se traten conforme a la normativa, tiene derechos sobre lo que hacemos con su información, y ese hecho impone condiciones al diseño.",
+    "criterio_verificacion": "Se emite una solicitud de borrado de datos de un titular y el sistema ejecuta la acción correspondiente (borrado o retención) según el comportamiento definido finalmente por el área de cumplimiento.",
+    "pendiente_decision": "HC-012"
+  },
+  {
+    "id_temporal": "RQNF-001",
+    "tipo": "no_funcional",
+    "enunciado": "El sistema debe conservar los expedientes y la evidencia por el período temporal que se defina en el rango de 90 días a 10 años.",
+    "candidato_origen": "Tratamiento normativo y eliminación de datos a solicitud del titular",
+    "fuente": "entender qué se hacía con las imágenes biométricas, dónde se almacenaban y por cuánto tiempo., que los datos personales se traten conforme a la normativa",
+    "criterio_verificacion": "Se verifica en la base de datos o almacenamiento que un expediente y sus evidencias persisten sin degradación ni eliminación automática hasta cumplirse el plazo definitivo acordado.",
+    "pendiente_decision": "HC-002"
+  },
+  {
+    "id_temporal": "RQNF-002",
+    "tipo": "no_funcional",
+    "enunciado": "El sistema debe reconstruir el comportamiento, las evidencias y las reglas de una decisión pasada basándose en su historial, con la exactitud técnica que se acuerde para los modelos generativos.",
+    "candidato_origen": "Auditoría y reconstrucción trazable de decisiones pasadas",
+    "fuente": "lo que hace imposible reconstruir una decisión pasada., Y queremos que sean auditables, es decir, que un tercero pueda reconstruir el razonamiento meses después.",
+    "criterio_verificacion": "Se consulta el historial de un caso cerrado y el sistema despliega las reglas, evidencias y componentes matemáticos exactos (o el equivalente de simulación pactado) que motivaron el veredicto en su momento.",
+    "pendiente_decision": "HC-014"
+  },
+  {
+    "id_temporal": "RQF-002",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe bloquear cualquier intento de los administradores del cliente o del personal propio para modificar o borrar el registro de auditoría y trazabilidad.",
+    "candidato_origen": "Auditoría y reconstrucción trazable de decisiones pasadas",
+    "fuente": "El rastro es inalterable, y ni los administradores de cuenta del cliente ni el personal de DPRIME pueden modificarlo o borrarlo.",
+    "criterio_verificacion": "Un usuario con rol de Administrador o personal de DPRIME intenta editar o eliminar un log del rastro de auditoría y el sistema rechaza la transacción con un error de permisos absolutos.",
+    "pendiente_decision": null
+  },
+  {
+    "id_temporal": "RQF-003",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe sincronizar el resultado y veredicto del caso hacia el sistema central de siniestros mediante un flujo automatizado o de transcripción, según se defina.",
+    "candidato_origen": "Registrar resultado y veredicto en sistema core del cliente",
+    "fuente": "el equipo de tecnología del cliente, que conecta MIRA con los sistemas centrales",
+    "criterio_verificacion": "Una vez un caso pasa a estado cerrado, la resolución impacta en el sistema core del cliente a través de la vía de integración tecnológica o bandeja de transcripción determinada.",
+    "pendiente_decision": "HC-007"
+  },
+  {
+    "id_temporal": "RQF-004",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe autenticar el inicio de sesión de los usuarios del cliente utilizando el directorio corporativo federado o las credenciales nativas de plataforma, conforme a la arquitectura que se resuelva.",
+    "candidato_origen": "Autenticar usuario cliente y federar acceso corporativo (SSO)",
+    "fuente": "Por lo general se utilizan credenciales administradas por la plataforma, pero clientes grandes exigen federar la autenticación contra su propio directorio corporativo.",
+    "criterio_verificacion": "Un usuario intenta acceder a su bandeja y el sistema valida sus credenciales exitosamente empleando el mecanismo (nativo o federado) definido en el acuerdo comercial.",
+    "pendiente_decision": "HC-006"
+  },
+  {
+    "id_temporal": "RQNF-003",
+    "tipo": "no_funcional",
+    "enunciado": "El sistema debe limitar el tráfico en los ambientes de integración a un máximo de 100 llamadas por minuto por cliente.",
+    "candidato_origen": "Autenticar usuario cliente y federar acceso corporativo (SSO)",
+    "fuente": "El límite general es 1000 llamadas por minuto por cliente, pero existe un límite de 100 llamadas por minuto para los ambientes de integración.",
+    "criterio_verificacion": "Se ejecutan 101 llamadas en menos de 60 segundos hacia un punto de acceso en el entorno de integración y el sistema devuelve un error HTTP 429 (Too Many Requests).",
+    "pendiente_decision": null
+  },
+  {
+    "id_temporal": "RQF-005",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe exigir la autorización mediante dos aprobaciones separadas antes de guardar y aplicar cualquier modificación sobre los umbrales de decisión.",
+    "candidato_origen": "Modificar, configurar y aprobar umbrales de decisión algorítmica",
+    "fuente": "El cliente tiene la facultad de fijar los umbrales, pero cualquier modificación debe exigir imperativamente la autorización mediante dos aprobaciones separadas y registrarse como cambio de política.",
+    "criterio_verificacion": "Un administrador ajusta un umbral y el sistema lo mantiene en estado pendiente (sin aplicar) hasta que un segundo administrador distinto emite su aprobación en el panel.",
+    "pendiente_decision": null
+  },
+  {
+    "id_temporal": "RQF-006",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe aprobar automáticamente los casos cuyo puntaje iguale o supere el valor umbral a definir entre 80, 85 y 90, siempre que no existan señales de fraude.",
+    "candidato_origen": "Modificar, configurar y aprobar umbrales de decisión algorítmica",
+    "fuente": "para partir, yo automatizaría solo sobre noventa puntos, no sobre ochenta y cinco., Un caso con una señal de fraude activa se deriva o se escala, cualquiera sea su puntaje.",
+    "criterio_verificacion": "Se inyecta un caso sin señales de fraude con puntaje evaluado por encima del umbral final acordado, y el sistema cambia su estado a 'aprobado' sin asignarlo a la bandeja de un operador.",
+    "pendiente_decision": "HC-001"
+  },
+  {
+    "id_temporal": "RQF-007",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe derivar o rechazar un caso ignorando su puntaje aprobatorio cuando identifique una alerta de fraude activa o una señal individual por debajo de su mínimo.",
+    "candidato_origen": "Modificar, configurar y aprobar umbrales de decisión algorítmica",
+    "fuente": "Aunque el puntaje sea aprobatorio (ej. mayor a 80/85), si una señal de fraude está activa o una señal individual no alcanza su mínimo propio, se ignora el puntaje y se deriva o rechaza el caso.",
+    "criterio_verificacion": "Se inyecta un caso con puntaje perfecto (100) pero con una alerta de fraude activa en sus atributos, y el sistema emite una resolución de rechazo o derivación en lugar de una aprobación.",
+    "pendiente_decision": null
+  },
+  {
+    "id_temporal": "RQF-008",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe instanciar la configuración de un cliente nuevo copiando una plantilla preconfigurada que incluya un caso de uso, módulos, reglas y umbrales base.",
+    "candidato_origen": "Configurar e incorporar despliegue de cliente nuevo (Onboarding)",
+    "sin_fuente_original": true,
+    "criterio_verificacion": "Al dar de alta un nuevo cliente desde el panel, el sistema aplica una plantilla y genera automáticamente un flujo publicable con módulos y umbrales sin requerir configuración manual desde cero.",
+    "pendiente_decision": null
+  },
+  {
+    "id_temporal": "RQNF-004",
+    "tipo": "no_funcional",
+    "enunciado": "El sistema debe completar los procesos sistémicos para el alta en producción de un cliente nuevo dentro del plazo que se defina frente a la brecha estimada de 2 a 3 semanas.",
+    "candidato_origen": "Configurar e incorporar despliegue de cliente nuevo (Onboarding)",
+    "sin_fuente_original": true,
+    "criterio_verificacion": "Se mide el tiempo total de procesamiento en la plataforma desde la creación del tenant hasta su disponibilidad en producción, verificando que no exceda el tiempo límite estipulado comercial y operativamente.",
+    "pendiente_decision": "HC-015"
+  },
+  {
+    "id_temporal": "RQF-009",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe encolar en estado de espera los casos procesados ante la falta de respuesta de un servicio de terceros, impidiendo estrictamente su descarte.",
+    "candidato_origen": "Reprocesar casos atascados y caídas de servicio",
+    "fuente": "La falta de respuesta de un servicio ajeno sitúa al caso en espera, prohibiéndose descartarlo bajo ninguna circunstancia. Los casos que no se resuelven de forma automática caen a una bandeja no diseñada para ese fin, sin que la plataforma explique su falla.",
+    "criterio_verificacion": "Se simula un timeout de red hacia el proveedor del modelo externo; el sistema mantiene el caso retenido en su base de datos bajo un estado en curso y no lo marca como fallido o perdido.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-010",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe alojar los casos no resueltos por errores de automatización en una bandeja específica para posibilitar su intervención por parte de usuarios de soporte.",
+    "candidato_origen": "Reprocesar casos atascados y caídas de servicio",
+    "fuente": "La falta de respuesta de un servicio ajeno sitúa al caso en espera, prohibiéndose descartarlo bajo ninguna circunstancia. Los casos que no se resuelven de forma automática caen a una bandeja no diseñada para ese fin, sin que la plataforma explique su falla.",
+    "criterio_verificacion": "Ante una excepción técnica del motor de análisis, el expediente se despliega en una bandeja accesible por el soporte técnico con opciones para forzar el reprocesamiento manual.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-011",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe sobreescribir la recomendación algorítmica y asentar como resolución activa la decisión ingresada por el revisor humano cuando exista una discrepancia.",
+    "candidato_origen": "Corregir datos extraídos erróneamente y asentar discrepancia algorítmica",
+    "fuente": "Ante cualquier discrepancia, la decisión del analista humano manda sobre la sugerencia de la plataforma, pero marca el caso para revisión algorítmica.",
+    "criterio_verificacion": "Un operador modifica un campo extraído erróneamente que cambiaba el puntaje de aprobado a rechazado. El sistema guarda la decisión y el caso se cierra con el estado humano sin revertirlo por el motor.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-012",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe marcar automáticamente un caso con una etiqueta de revisión algorítmica obligatoria posterior cuando el operador ingrese una decisión contraria al veredicto sugerido.",
+    "candidato_origen": "Corregir datos extraídos erróneamente y asentar discrepancia algorítmica",
+    "fuente": "Las decisiones de operadores que sean contrarias a las sugerencias del sistema disparan una revisión algorítmica obligatoria pero mantienen la postura humana.",
+    "criterio_verificacion": "Un operador aprueba un caso que el sistema había sugerido rechazar. Al guardar, el sistema anexa un flag interno al caso ordenando su envío a la cola de validación y re-entrenamiento del modelo.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-013",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe instanciar un expediente nuevo vinculado al identificador histórico cuando se reciba y anexe nueva evidencia sobre un caso previamente cerrado.",
+    "candidato_origen": "Añadir evidencia fragmentada para forzar reevaluación",
+    "fuente": "Si ingresa nueva evidencia a un caso que ya está cerrado, no se asocia directamente a ese caso, sino que se abre un caso nuevo vinculado al anterior. La evidencia original se elimina tras 90 días, conservándose únicamente el registro de la decisión. La evidencia enviada suele tener una calidad sumamente deficiente, lo que exige esfuerzo previo para saber si un archivo es siquiera útil.",
+    "criterio_verificacion": "Se inyecta un documento a través del punto de acceso apuntando a un ID de caso en estado 'cerrado'. El sistema no altera el caso viejo, sino que crea uno nuevo con su propio ID y relaciona ambos registros.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-014",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe ejecutar el motor de inferencia nuevamente al anexar materiales posteriores y contabilizar la reevaluación conforme a las políticas comerciales que se establezcan.",
+    "candidato_origen": "Añadir evidencia fragmentada para forzar reevaluación",
+    "fuente": "Una validación se contabiliza cuando la plataforma entrega un resultado con puntaje.",
+    "criterio_verificacion": "Se procesa evidencia complementaria para forzar una reevaluación. El sistema registra el evento en el panel de consumo sumando cero o un crédito según la regla de negocio implantada tras resolver HC-009.",
+    "pendiente_decision": "HC-009"
+  },
+  {
+    "id_temporal": "RQF-015",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe rechazar la publicación productiva de un flujo lógico si su configuración carece de al menos un módulo de análisis en estado activo.",
+    "candidato_origen": "Diseño, control y versionado visual de flujos lógicos",
+    "fuente": "Es requisito indispensable contar con al menos un módulo activo para que el sistema consienta la publicación de un flujo.",
+    "criterio_verificacion": "Un usuario diseña un flujo usando bloques conectores pero apaga u omite la inclusión de un módulo de análisis. Al presionar 'Publicar', el sistema muestra una restricción dura y mantiene el flujo en borrador.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-016",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe procesar un caso en curso rigiéndose exclusivamente por la versión del flujo vigente en el momento de su radicación, omitiendo cambios publicados a posteriori.",
+    "candidato_origen": "Diseño, control y versionado visual de flujos lógicos",
+    "fuente": "Todo caso en curso debe completar su proceso rigiéndose estrictamente por la versión del flujo con la que comenzó.",
+    "criterio_verificacion": "Se inicia un caso bajo el Flujo v1. Mientras se procesa, un administrador publica el Flujo v2. El sistema finaliza el caso utilizando exclusivamente los nodos y umbrales definidos en la v1.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-017",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe registrar la autorización activa o revocación del cliente para permitir el uso de su data propietaria de siniestros en el entrenamiento de los modelos de la plataforma.",
+    "candidato_origen": "Gestionar autorizaciones y licenciamiento de uso de datos",
+    "fuente": "El uso de los datos de un cliente para mejorar el servicio requiere su autorización, y esa autorización debe poder otorgarse o retirarse por cliente.",
+    "criterio_verificacion": "El cliente presiona el toggle de 'Revocar uso de datos'. A partir de ese momento, el sistema excluye automáticamente los datos resultantes de ese tenant de cualquier pipeline de extracción para entrenamiento.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-018",
+    "tipo": "funcional",
+    "enunciado": "no verificable_tal_como_esta",
+    "candidato_origen": "Simular retrospectivamente impacto de módulos actualizados",
+    "fuente": "Antes de activar una versión nueva de un módulo para un cliente, debe poder compararse su comportamiento, mostrando en cuántos casos la decisión habría cambiado.",
+    "criterio_verificacion": "La entrada exige simular contra el registro para medir 'fallos y sesgos' pero no existe una definición de qué constituye un sesgo ni un umbral matemático para el fallo, haciendo imposible crear un caso de prueba binario sin especificar dichas métricas.",
+    "pendiente_decision": "sin ID formal"
+  },
+  {
+    "id_temporal": "RQF-019",
+    "tipo": "funcional",
+    "enunciado": "El sistema debe exportar un vaciado empaquetado de los flujos y las operaciones históricas consumadas bajo petición del cliente.",
+    "candidato_origen": "Exportar y extraer información portabilidad del cliente",
+    "fuente": "El cliente puede exportar en cualquier momento sus flujos, sus resultados y su historial, en un formato",
+    "criterio_verificacion": "Un usuario administrador del cliente solicita extraer su información y el sistema gatilla la generación de un archivo de volcado estructurado con todos sus historiales y parámetros.",
+    "pendiente_decision": "sin ID formal"
+  }
+]
