@@ -44,7 +44,7 @@ A continuación se registran formalmente las decisiones iniciales del proyecto b
 | **Decisión** | Se adopta formalmente la **Opción A (SDD con Spec Kit sobre Antigravity)**. Decisión confirmada por el equipo el 12-10-2026. |
 | **Justificación** | Los artefactos heredados de la Entrega 1 presentan una estructura *spec-first*: los flujos primarios y alternativos de UC-01/02/03 y las tablas de requisitos y pruebas ya contienen especificaciones operativas densas. SDD aprovecha directamente estos insumos lineales sin requerir la sobrecarga ceremonial de simular un ciclo multi-rol completo. |
 | **Insumo para Discusión 6.7 ("Qué esperaríamos haber encontrado con BMAD")** | Si se hubiese elegido BMAD, se habría contado con roles especializados de software (Mary/Analyst, John/PM, Winston/Architect, Amelia/Dev, Sally/UX) con compuertas estructuradas (`bmad-sprint-planning` emitiendo veredicto *PASS/CONCERNS/FAIL*) y checkpoints humanos obligatorios en el diff durante `bmad-build`. Asimismo, para conciliar las tensiones de las áreas de negocio levantadas en las entrevistas (Daniela, Valentina, Hugo, Sebastián), se habría requerido simular mesas de trabajo mediante `bmad-party-mode`, lo que habría demandado mayor esfuerzo en prompts de personalización de roles antes de iniciar la implementación. |
-| **Impacto** | Obligatoriedad de generar los artefactos exigidos: `constitution.md`, `spec.md`, registro de clarificación, `plan.md`, `tasks.md`, reporte de consistencia y commits trazables por tarea. |
+| **Impacto** | Obligatoriedad de generar los artefactos exigidos: `.specify/memory/constitution.md`, `spec.md`, registro de clarificación, `plan.md`, `tasks.md`, reporte de consistencia y commits trazables por tarea. |
 
 ---
 
@@ -271,28 +271,47 @@ Por convención formal (**DEC-E2-02**), la presente guía adopta como numeració
 ### 2.f Instalación y Verificación de Spec Kit sobre Antigravity
 - **Responsable:** Lester Gonzalez.
 - **Ubicación obligatoria de instalación:** En la **raíz del repositorio** (`/home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm`), NO dentro de `entregable2/`. Antigravity debe abrirse en la raíz para que el agente tenga visibilidad completa de `fases-y-plan-de-trabajo/`, `README.md` y `data/`.
+- **Estado de la instalación:** **REALIZADA EXITOSAMENTE el 12-10-2026 (~23:30 CLT)** en la rama `feat/setup-speckit` (commit `18bbb67`).
+- **Versión oficial instalada de la CLI:** `1.0.2.dev0`, registrada formalmente en `docs/entregable2/specify-version.txt`.
 
-#### Procedimiento Seguro de Inicialización
+#### Procedimiento Ejecutado y Verificación
 ```bash
-# 1. Crear y cambiarse a una rama de setup para proteger main
+# 1. Crear y cambiarse a la rama de setup para proteger main
 git checkout -b feat/setup-speckit
 
-# 2. Verificar opciones de inicialización en el lugar (revisar si la versión instalada soporta --here o .)
-specify init --help
-
-# 3. Inicializar en la raíz del repositorio vinculando la integración de Antigravity ("agy")
-#    (Usar --here o . según lo indicado por specify init --help)
+# 2. Inicializar en la raíz del repositorio vinculando la integración de Antigravity ("agy")
 specify init --here --integration agy
 
-# 4. Registrar versión oficial de la herramienta para la portada del informe (6.2)
+# 3. Registrar versión oficial de la herramienta para trazabilidad e informe (6.2)
 specify version > docs/entregable2/specify-version.txt
 
-# 5. VERIFICACIÓN CRÍTICA: Asegurar que la inicialización no pisó README.md ni archivos de E1
+# 4. Verificación de integridad: se constató que README.md y los archivos de E1 no sufrieron modificaciones
 git status
-# Comprobar que solo se agregaron .specify/ y .agents/skills/
 ```
 
-- **Rutas generadas por la herramienta:** Las ubicaciones exactas de `constitution.md` y de las specs quedan marcadas `[POR VERIFICAR tras el init]` (típicamente `memory/constitution.md` o `.specify/memory/constitution.md`, y `specs/FEAT-001/` o `specs/F5-F4/`).
+#### Artefactos y Rutas Verificadas tras la Inicialización
+1. **Constitución:** Ubicada exactamente en **`.specify/memory/constitution.md`** (copiada automáticamente a partir de la plantilla `.specify/templates/constitution-template.md`, actualmente en estado inicial pendiente de completar con las DEC del equipo).
+2. **Directorio `.specify/`:** Contiene la configuración (`init-options.json`, `integration.json`) y las subcarpetas `.specify/memory/`, `.specify/scripts/bash/`, `.specify/templates/`, `.specify/workflows/` e `.specify/integrations/`.
+3. **Skills instaladas en `.agents/skills/` (10 skills operativas):**
+   - `/speckit-constitution`: Creación y actualización de la constitución del proyecto.
+   - `/speckit-specify`: Creación de la especificación técnica ejecutable.
+   - `/speckit-clarify`: Sesión estructurada de clarificación con el cliente.
+   - `/speckit-checklist`: Generación de listas de chequeo de calidad.
+   - `/speckit-plan`: Planificación técnica, arquitectura y contratos de datos.
+   - `/speckit-tasks`: Desglose de tareas atómicas y ordenamiento de dependencias.
+   - `/speckit-analyze`: Auditoría no destructiva de consistencia cruzada entre artefactos.
+   - `/speckit-implement`: Ejecución de la implementación guiada por tareas y tests.
+   - `/speckit-converge`: Evaluación del estado del código contra la spec y adición de tareas pendientes.
+   - `/speckit-taskstoissues`: Conversión de tareas a GitHub Issues para seguimiento.
+4. **Carpeta de specs:** Actualmente **no existe**. La ruta exacta donde se alojarán los artefactos de especificación queda marcada como **`[POR VERIFICAR tras /speckit-specify]`**, ya que será generada dinámicamente al correr el comando de especificación.
+
+#### Habilidades Adicionales y Gobernanza de Issues
+- **Uso de `/speckit-converge`:** Disponible en esta versión para auditar el estado del código contra la spec y generar tareas para trabajo faltante.
+- **Uso de `/speckit-taskstoissues`:** Quien ejecute `/speckit-taskstoissues` debe **revisar minuciosamente el borrador de issues antes de aceptar su publicación remota** en GitHub. El equipo decidirá si se utiliza para la gestión del sprint; queda `[POR VERIFICAR]` qué permisos de API o token de GitHub (`GITHUB_TOKEN` o autenticación CLI `gh`) requiere en el entorno local.
+
+> ⚠️ **ADVERTENCIA DE SEGURIDAD CRÍTICA DE SPEC KIT:**  
+> El directorio `.agents/` puede almacenar datos temporales, cachés o credenciales locales del entorno de desarrollo. Por directriz de seguridad estricta, **únicamente debe versionarse en git el subdirectorio `.agents/skills/`** (y sus archivos `SKILL.md`). El resto de archivos dentro de `.agents/` no debe incluirse en commits.
+
 - **Principio no negociable a registrar en la constitución:** Los artefactos de la Entrega 1 (`fases-y-plan-de-trabajo/`) son de solo lectura histórica; ningún comando de Spec Kit puede modificarlos directamente. Cualquier cambio o resolución se formaliza mediante una nueva ficha DEC en `docs/entregable2/decisiones/`.
 
 ---
@@ -309,12 +328,12 @@ git status
 ### 3.1 Matriz Operativa de Fases SDD
 | Fase | Comando / Skill | Conductor | Insumos desde Entrega 1 | Artefacto Generado y Ruta | Condición Específica de la Pauta | 👤 Revisión Humana Obligatoria | Criterio Objetivo de Término |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **0. Constitución** | `/speckit-constitution` | Humano (Lester ejecuta, Angel custodia) | `DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`. | `constitution.md` `[POR VERIFICAR ruta tras init]` | Incorporar como principios las DEC de E1 que aplican. Prohibir mock de datos en producción y tests circulares. Artefactos E1 de solo lectura. | 👤 Revisión del equipo completo. | Archivo validado y commiteado en rama de setup. |
-| **1. Especificación** | `/speckit-specify` | Humano (el equipo redacta) | `UC-01`, `RQF-040 [fase5-lester]`, `RQF-041 [fase5-lester]`, `RQF-020 [fase5-lester]`, `RQF-023 [fase5-lester]`, `RQF-039 [fase5-lester]`, `data/casos_prueba.json`. | `specs/.../spec.md` `[POR VERIFICAR ruta tras init]` | Requisitos citan archivo fuente (`RQF-xxx [fase5-lester]`). Se fija en la spec que el umbral de aprobación automática es ≥ 90 como decisión del equipo (formalizando el "sobre noventa" de ENT4 [00:11:06]). Cero mención a tecnologías. | 👤 Validación por Representante del Cliente (Rodrigo). | Spec con criterios `AC-1` a `AC-6` y sección `[NEEDS CLARIFICATION]`. |
+| **0. Constitución** | `/speckit-constitution` | Humano (Lester ejecuta, Angel custodia) | `DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`. | `.specify/memory/constitution.md` (ruta verificada; copiada de plantilla, pendiente de completar) | Incorporar como principios las DEC de E1 que aplican. Prohibir mock de datos en producción y tests circulares. Artefactos E1 de solo lectura. | 👤 Revisión del equipo completo. | Archivo validado y commiteado en rama de setup. |
+| **1. Especificación** | `/speckit-specify` | Humano (el equipo redacta) | `UC-01`, `RQF-040 [fase5-lester]`, `RQF-041 [fase5-lester]`, `RQF-020 [fase5-lester]`, `RQF-023 [fase5-lester]`, `RQF-039 [fase5-lester]`, `data/casos_prueba.json`. | `spec.md` (en carpeta de specs `[POR VERIFICAR ruta tras /speckit-specify]`) | Requisitos citan archivo fuente (`RQF-xxx [fase5-lester]`). Se fija en la spec que el umbral de aprobación automática es ≥ 90 como decisión del equipo (formalizando el "sobre noventa" de ENT4 [00:11:06]). Cero mención a tecnologías. | 👤 Validación por Representante del Cliente (Rodrigo). | Spec con criterios `AC-1` a `AC-6` y sección `[NEEDS CLARIFICATION]`. |
 | **2. Aclaración** | `/speckit-clarify` | Humano (Rodrigo responde como cliente) | Entrevistas ENT1..ENT9, `inconsistencias-revisadas.md`, supuestos de señales. | `spec.md` actualizado + `docs/entregable2/clarificaciones.md` | Toda duda se responde con fuente de E1 o se declara y registra como supuesto del equipo. | 👤 Rodrigo responde; Jorge y Lester auditan que no asuma soluciones técnicas. | Cero marcas `[NEEDS CLARIFICATION]` pendientes. |
 | **3. Plan Técnico** | `/speckit-plan` | Agente propone, Humano corrige | `spec.md`, `modelo_dominio.json`, `RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]` (reproducibilidad), `DEC-E2-05`. | `plan.md`, `data-model.md`, `research.md` | Declara qué RQNF atiende (reproducibilidad H-14) y cómo se verifica. Define contrato TypeScript `src/shared/types.ts`. | 👤 **COMPUERTA CRÍTICA:** Revisión exhaustiva de arquitectura de datos y contratos antes de tareas. | Plan aprobado por Rodrigo y Jorge; contrato F5↔F4 formalizado. |
 | **4. Tareas** | `/speckit-tasks` | Agente genera, Humano refina | `plan.md`, `spec.md`, `backlog.md` (`HU-xxx`). | `tasks.md` | Cada tarea referencia al menos un `RQF-xxx` y un `AC-N`. Tareas atómicas de <2 horas. | 👤 Lester y Rodrigo revisan orden de dependencias. | `tasks.md` ordenado por fases lógicas. |
-| **5. Análisis Consistencia** | `/speckit-analyze` (o Plan B prompt) | Agente audita, Humano evalúa | `constitution.md`, `spec.md`, `plan.md`, `tasks.md`. | `docs/entregable2/reporte-analisis-consistencia.md` | Reporte formal de coherencia entre artefactos. Si no está en agy, usar prompt propio y adjuntar. | 👤 Angel y Lester revisan discrepancias y corrigen spec o tareas. | Reporte sin inconsistencias críticas. |
+| **5. Análisis Consistencia** | `/speckit-analyze` (verificada en `.agents/skills/speckit-analyze`) | Agente audita, Humano evalúa | `.specify/memory/constitution.md`, `spec.md`, `plan.md`, `tasks.md`. | `docs/entregable2/reporte-analisis-consistencia.md` | Reporte formal de coherencia entre artefactos. Skills complementarias disponibles: `/speckit-converge` (auditoría de cobertura) y `/speckit-taskstoissues` (conversión opcional a issues previa revisión). | 👤 Angel y Lester revisan discrepancias y corrigen spec o tareas. | Reporte sin inconsistencias críticas. |
 | **6. Implementación** | `/speckit-implement` | Agente propone código, Humano prueba y commitea | `tasks.md`, `plan.md`, suites de pruebas. | `src/` (backend, frontend) y `tests/` | Un commit por tarea. Dos estados de salida (`APROBADO_AUTOMATICO` / `DERIVADO_REVISION`). Comentarios de trazabilidad obligatorios. | 👤 **COMPUERTA DEL DIFF:** El humano corre tests, revisa diff y commitea. | 100% de tests unitarios, E2E y reproducibilidad pasando (`PASS`). |
 
 - **Regla de precedencia estricta del motivo de evaluación (F4):**
@@ -355,8 +374,8 @@ Toda propuesta del agente que agregue campos, rutas o reglas no solicitadas en `
 ### 5.1 Frentes de Responsabilidad y Dueños de Artefactos
 - **Frente 1: Backend y Motor de Reglas (Rodrigo Guerrero):** Código en `src/backend/`, lógica de F5/F4, Representante del Cliente en fases SDD y aceptación.
 - **Frente 2: Frontend y Experiencia de Usuario (Jorge Alvarez):** Código en `src/frontend/`, componentes React de F5/F4 en español, capturas de interfaz.
-- **Frente 3: Testing y Aseguramiento de Calidad (Lester Gonzalez):** Setup inicial de Spec Kit en raíz, tests en `tests/` (Vitest, Playwright, reproducibilidad determinista), análisis de consistencia.
-- **Frente 4: Informe, Trazabilidad y Gobernanza SDD (Angel Salgado):** Informe PDF (6.1 a 6.8), matriz de trazabilidad, log de prompts, bitácora DEC, diapositivas PPT.
+- **Frente 3: Testing y Aseguramiento de Calidad (Lester Gonzalez):** Setup inicial de Spec Kit en raíz (realizado 12-10-2026 v1.0.2.dev0 en rama `feat/setup-speckit`), custodia técnica de `.specify/` y `.agents/skills/`, tests en `tests/` (Vitest, Playwright, reproducibilidad determinista), análisis de consistencia.
+- **Frente 4: Informe, Trazabilidad y Gobernanza SDD (Angel Salgado):** Informe PDF (6.1 a 6.8), matriz de trazabilidad, log de prompts, bitácora DEC, custodia de `.specify/memory/constitution.md`, diapositivas PPT.
 
 ### 5.2 Contrato de Datos Temprano F5 ↔ F4 (`src/shared/types.ts`)
 Congelado el **Martes 13 de Octubre (Día 1 de desarrollo)** para desacoplar el trabajo de interfaz y backend:
@@ -410,10 +429,10 @@ export interface ResultadoEvaluacion {
 - PRs Documentación/Spec (Angel) → Revisa Rodrigo y Lester.
 
 ### 5.4 Gestión de Cuotas de Antigravity
-- **Lester:** Ejecuta `specify init` en raíz, `/speckit-constitution` y el análisis de consistencia.
+- **Lester:** Ejecuta `specify init` en raíz (completado el 12-10-2026 v1.0.2.dev0), `/speckit-constitution` (en `.specify/memory/constitution.md`) y el análisis de consistencia (`/speckit-analyze`).
 - **Rodrigo:** Ejecuta sesiones de generación backend.
 - **Jorge:** Ejecuta sesiones de generación frontend.
-- **Angel:** Custodia la gobernanza de `constitution.md`, ejecuta prompts de auditoría documental y comparativa E1.
+- **Angel:** Custodia la gobernanza de `.specify/memory/constitution.md`, ejecuta prompts de auditoría documental y comparativa E1.
 
 ### 5.5 Matriz RACI
 | Actividad / Entregable | Rodrigo (Backend / Cliente) | Jorge (Frontend) | Lester (QA / Testing) | Angel (Informe / Trazab.) |
@@ -422,8 +441,8 @@ export interface ResultadoEvaluacion {
 | Exportar `backlog.md` desde GitHub Projects | I | I | **R / A** | C |
 | Preparar datos de prueba ficticios | **R / A** | C | C | I |
 | Onboarding técnico de Jorge | C | **R / A** | C | I |
-| Inicialización Spec Kit en raíz (`agy`) | I | I | **R / A** | I |
-| Redacción y custodia de `constitution.md` | C | C | **R** (ejecuta) | **A** (custodia) |
+| Inicialización Spec Kit en raíz (`agy` v1.0.2.dev0) | I | I | **R / A** (completado) | I |
+| Redacción y custodia de `.specify/memory/constitution.md` | C | C | **R** (ejecuta) | **A** (custodia) |
 | Redacción de `spec.md` | **A** | C | C | **R** |
 | Sesión de Aclaración (`clarify`) | **R / A** | C | C | I |
 | Plan Técnico (`plan.md`) y Contrato de Datos | **R / A** | **R** | C | I |
@@ -445,8 +464,8 @@ export interface ResultadoEvaluacion {
 Cronograma operativo recalculado a partir de hoy **lunes 12 de octubre a las 16:30 CLT**:
 
 ```
-Lun 12 (16:30+): Setup Spec Kit en raíz, Constitution, Onboarding Jorge
-Mar 13:          Specify F5+F4, Contrato Datos src/shared/types.ts, Clarify
+Lun 12 (~23:30): Setup Spec Kit en raíz REALIZADO (v1.0.2.dev0 en feat/setup-speckit)
+Lun 12 n./Mar 13: Firma DEC-E2-02, Alineación Caso 4 y mínimos 70/70/60, Constitution, Specify F5+F4, Types
 Mié 14:          Plan Técnico, Tasks, Análisis de Consistencia, Arranque Código
 Jue 15:          Sprint Implementación Backend (F5/F4) + Frontend (F5/F4)
 Vie 16:          Integración, E2E Playwright, Test Reproducibilidad (H-14)
@@ -456,15 +475,18 @@ Lun 19:          Ensayo Demo (v2.0), Entrega 14:00 CLT, Exposición Oral
 ```
 
 ### 6.1 Detalle Diario de Tareas
-- **Lunes 12 de Octubre (Día 0 — Setup y Arranque SDD, desde 16:30 CLT):**
-  - [ ] Lester inicializa Spec Kit en la raíz en rama `feat/setup-speckit` (`specify init --here --integration agy`). Verifica que `README.md` y archivos de E1 no fueron tocados.
-  - [ ] Lester ejecuta `/speckit-constitution`. Se incorporan las DEC críticas que rigen la constitución (`DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`).
-  - [ ] En paralelo, Angel y Lester avanzan en el resto de fichas DEC y en la exportación de `docs/entregable2/backlog.md`.
-  - [ ] Jorge completa la lectura guiada de onboarding (4,5 hrs).
-- **Martes 13 de Octubre (Día 1 — Especificación, Contrato y Clarificación):**
-  - [ ] Redactar `/speckit-specify` para F5 y F4 con los 5 casos de prueba de gastos médicos.
+- **Lunes 12 de Octubre (Día 0 — Setup Inicial Realizado, ~23:30 CLT):**
+  - [x] **Setup Spec Kit en raíz:** Lester inicializó Spec Kit con `specify init --here --integration agy` en la rama `feat/setup-speckit` (CLI v1.0.2.dev0 registrada en `docs/entregable2/specify-version.txt`, commit `18bbb67`). Se verificó que `README.md` y archivos de E1 no fueron tocados.
+  - [ ] Jorge avanza en la lectura guiada de onboarding (4,5 hrs).
+- **Lunes 12 Noche / Martes 13 de Octubre (Día 1 — Alineación Previa, Constitución y Especificación):**
+  - [ ] **Alineación del equipo previa a la constitución:**
+    1. Firma y confirmación de `DEC-E2-02` (adopción de nomenclatura rectora `fase5-lester` y convención de citar archivo fuente).
+    2. Aviso y validación con Rodrigo y Jorge sobre el Caso 4 (redefinido como prueba de H-08 sin rechazo: puntaje 44, `motivo: 'senal_bajo_minimo'`, derivado a revisión asistida) y los supuestos unificados de mínimos individuales 70/70/60 (`[SUPUESTO del equipo]`).
+  - [ ] **Ejecución de `/speckit-constitution`:** Lester ejecuta el comando y completa `.specify/memory/constitution.md` (copiado de `.specify/templates/constitution-template.md`), incorporando las DEC críticas de E1 (`DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`), prohibición de mock de datos en producción, prohibición de tests circulares y solo lectura estricta de E1.
+  - [ ] Redactar `/speckit-specify` para F5 y F4 con los 5 casos de prueba de gastos médicos (creará la carpeta de specs).
   - [ ] Rodrigo y Jorge definen y commitean `src/shared/types.ts`.
   - [ ] Ejecutar `/speckit-clarify` con Rodrigo (resolver supuesto H-05 y confirmar función del umbral 60).
+  - [ ] En paralelo, Angel y Lester avanzan en el resto de fichas DEC y en la exportación de `docs/entregable2/backlog.md`.
 - **Miércoles 14 de Octubre (Día 2 — Planificación, Consistencia y Arranque):**
   - [ ] Ejecutar `/speckit-plan` (arquitectura SQLite, Express, React, declaración de reproducibilidad).
   - [ ] 👤 **Revisión humana del plan técnico.**
@@ -516,10 +538,16 @@ Si se presentan atrasos durante el desarrollo:
 ### 7.1 Estructura de Carpetas en el Repositorio
 ```
 proyecto-llm/
-├── .specify/                         # Plantillas de Spec Kit
-├── memory/constitution.md            # Principios no negociables [POR VERIFICAR ruta]
-├── specs/FEAT-001/                   # Especificación de F5+F4 [POR VERIFICAR ruta]
+├── .agents/
+│   └── skills/                       # 10 skills de Spec Kit (solo se versiona skills/)
+├── .specify/                         # Configuración, scripts, templates y workflows
+│   ├── memory/
+│   │   └── constitution.md           # Principios no negociables (verificado en .specify/memory/)
+│   ├── scripts/bash/                 # Scripts auxiliares de inicialización y plantillas
+│   └── templates/                    # Plantillas oficiales (constitution, spec, plan, tasks)
+├── specs/                            # Carpeta de specs [POR VERIFICAR ruta tras /speckit-specify]
 ├── docs/entregable2/
+│   ├── specify-version.txt           # Registro oficial CLI v1.0.2.dev0 (12-10-2026)
 │   ├── equivalencias-requisitos.md   # Mapeo de IDs
 │   ├── backlog.md                    # Historias HU-xxx exportadas
 │   ├── clarificaciones.md            # Q&A formal con Representante del Cliente
@@ -582,7 +610,7 @@ Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y co
 ### 8.1 Alineación con los Criterios de Evaluación y Descuentos
 - **C1: Resumen ejecutivo (5%):** Máximo 1/2 plana; responde qué se construyó, método, 3 cambios y recomendaciones; cero jerga.
 - **C2: Introducción y selección (5%):** Máximo 1 plana; justifica F5+F4 por criterio de riesgo, conexión de datos y cruce con H-05/DEC-01.
-- **C3: Aplicación del método SDD (10%):** Fases completas en git; DEC en constitution; antes/después en log de prompts; balance costo/valor.
+- **C3: Aplicación del método SDD (10%):** Fases completas en git; DEC en `.specify/memory/constitution.md`; antes/después en log de prompts; balance costo/valor.
 - **C4: Implementación (20%):** Repo levantable en menos de 15 min desde README; ambas funcionalidades operando en español; interfaz de punta a punta.
 - **C5: Pruebas y verificación (5%):** Cobertura Must; al menos 1 prueba E2E (Playwright); 1 prueba extra-funcional medible (reproducibilidad determinista 100%); usabilidad externa y aceptación registradas.
 - **C6: Comparativa con E1 (30%):** Tablas 6.6.1 y 6.6.2; 3 indicadores calculados; respuestas fundadas en evidencia a bloques A y B, y al menos 4 de C, D, E.
@@ -610,7 +638,7 @@ Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y co
 | # | Riesgo Identificado | Prob. | Impacto | Señal Temprana de Alerta | Protocolo de Mitigación Inmediata |
 | :--- | :--- | :---: | :---: | :--- | :--- |
 | **R-01** | **Tests circulares generados por el agente** | Alto | Crítico | El test pasa de inmediato sin haber fallado antes. | Tests derivados de criterios `AC-N` de la Entrega 1. Lester revisa que verifiquen entradas/salidas de negocio. |
-| **R-02** | **Requisitos inventados fuera de alcance** | Alto | Alto | Agente propone endpoints o features no solicitadas en `spec.md`. | `constitution.md` prohíbe inventar requisitos; sección "Fuera de alcance" explícita; veto inmediato del diff. |
+| **R-02** | **Requisitos inventados fuera de alcance** | Alto | Alto | Agente propone endpoints o features no solicitadas en `spec.md`. | `.specify/memory/constitution.md` prohíbe inventar requisitos; sección "Fuera de alcance" explícita; veto inmediato del diff. |
 | **R-03** | **Deriva de IDs entre RQF-xxx y RQF-Bxx** | Medio | Alto | El agente mezcla nomenclaturas en commits o tests. | Aplicar `DEC-E2-02`. Prompts exigen estrictamente la nomenclatura `RQF-xxx` de la Entrega 1. |
 | **R-04** | **Agotamiento de cuota de Antigravity** | Medio | Alto | Rate limits o truncado en sesiones de plan/implement. | Rotación de cuentas según [§5.4](#54-gestión-de-cuotas-de-antigravity); prompts modulares de <100 líneas. |
 | **R-05** | **Bloqueo entre Frontend y Backend** | Alto | Medio | Jorge no puede avanzar por falta de endpoints. | Contrato `src/shared/types.ts` congelado el Martes 13; Jorge usa mocks locales para desarrollar la UI. |
@@ -668,9 +696,10 @@ Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y co
 3. `[pendiente de decisión del equipo]`: Resolución de la tensión de H-10 (HC-010) entre el cronograma formal de MIRA §5.2 (producción a fines de abril de 2027 y marcha blanca a fines de febrero) y el compromiso comercial expresado en ENT1 [00:11:05] (casos reales en enero de 2027 y feria a fines de marzo).
 4. `[POR CONFIRMAR universo y numeración oficial de requisitos]`: Confirmación del docente en Consulta 4 sobre cuál numeración y universo rige formalmente la evaluación: `final-final.md` (81 requisitos, verificados con grep), `fase5-lester` (57 requisitos, verificados con grep) o el PDF consolidado (49 requisitos verificados en PDF: 36 RQF y 13 RQNF).
 5. `[POR CONFIRMAR rol en PF-033 vs MIRA §2.13]`: `PF-033` exige que la segunda aprobación sea de un "administrador", mientras que MIRA §2.13 asigna la configuración de flujos y umbrales a quien diseña flujos (*Diseñador*).
-6. `[POR VERIFICAR tras el init]`: Rutas relativas exactas generadas por Spec Kit al inicializar en la raíz (`memory/constitution.md` y `specs/...`).
+6. `[POR VERIFICAR tras /speckit-specify]`: Ruta relativa exacta que generará Spec Kit para la carpeta de especificación de la funcionalidad (`specs/...`). La ruta de la constitución quedó verificada en `.specify/memory/constitution.md`.
 7. `[SUPUESTO del equipo]`: Nombres de señales concretas alineadas conceptualmente con MIRA §2.6 (`autenticidad_documentos`, `cruce_fuentes`, `coherencia_solicitud` [biométrica solo si aplica]), bandera de fraude aparte (`alertaFraudeActiva`), umbrales mínimos (70, 70, 60), ponderaciones (40%, 40%, 20%), y roles simulados para autenticación (*Riesgo* y *Auditor* en D-04).
 8. `[SUPUESTO: pendiente de consulta al profesor]`: Estructura tentativa de las tablas 6.6.1, 6.6.2 y los tres indicadores TPR, TIH e IRF.
+9. `[POR VERIFICAR]`: Permisos y credenciales requeridas para ejecutar `/speckit-taskstoissues` contra el repositorio GitHub (`GITHUB_TOKEN` o autenticación CLI `gh`), en caso de que el equipo decida utilizarlo para crear issues automáticamente.
 
 ---
 *Fin de la Guía Operativa. Archivo de control versionado para la Entrega 2 de MIRA.*
