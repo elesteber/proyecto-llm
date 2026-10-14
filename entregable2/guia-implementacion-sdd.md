@@ -3,7 +3,7 @@
 **Taller de Desarrollo de Software Conducido por Agentes de IA**  
 **Facultad de Ingeniería, Escuela de Ingeniería Informática — Universidad de Valparaíso**  
 **Caso:** MIRA — Plataforma de Inteligencia Multimodal para Decisiones Empresariales (DPRIME SpA)  
-**Fecha de actualización:** Lunes 12 de octubre de 2026 (16:30 CLT)  
+**Fecha de actualización:** Martes 13 de octubre de 2026  
 **Fecha límite de entrega:** Lunes 19 de octubre de 2026, 14:00 hrs (tag `v2.0`)  
 **Método seleccionado:** Opción A — Spec-Driven Development (SDD) con GitHub Spec Kit sobre Antigravity  
 
@@ -12,13 +12,14 @@
 ## 0. Contexto y Reglas de Juego del Equipo
 
 ### 0.1 Parámetros Generales de la Entrega
-- **Plazo final:** Lunes 19 de octubre de 2026, 14:00 CLT. Todo commit posterior queda fuera de evaluación según reglamento.
+- **Número de grupo:** Grupo 4.
+- **Plazo final:** Lunes 19 de octubre de 2026, antes de las 14:00 CLT (con la etiqueta git `v2.0`). Todo commit posterior queda fuera de evaluación según reglamento.
 - **Entregables obligatorios:**
-  1. Informe escrito en formato PDF (`NUMEROGRUPO-MIRA-Alvarez-Gonzalez-Guerrero-Salgado.pdf`) con extensiones máximas estrictas por sección (ver [§8](#8-puertas-de-calidad-y-definición-de-terminado-dod)).
-  2. Repositorio de código fuente con historial versionado, artefactos del framework SDD, datos de prueba ficticios, suite automatizada y `README.md` operativo (tag git `v2.0`).
+  1. Informe escrito en formato PDF (`4-MIRA-Alvarez-Gonzalez-Guerrero-Salgado.pdf`) con extensiones máximas estrictas por sección (ver [§8](#8-puertas-de-calidad-y-definición-de-terminado-dod)).
+  2. Repositorio de código fuente con historial versionado, artefactos del framework SDD, datos de prueba ficticios, suite automatizada y `README.md` operativo (entrega antes de las 14:00 con la etiqueta `v2.0`).
   3. Presentación en PPT de soporte.
-  4. Exposición oral de 15 minutos (incluye demostración en vivo del software corriendo sobre el tag `v2.0`) + 5 minutos de preguntas individuales. Fecha y hora exacta de la defensa: `[POR CONFIRMAR fecha y hora]`.
-- **Antecedentes de la Entrega 1:** Calificación `67 [POR CONFIRMAR escala, probablemente 6,7 sobre 7,0]`. Dictamen docente: artefactos de análisis aprobados sin solicitud de modificaciones retroactivas; observaciones focalizadas exclusivamente en detalles de la presentación oral.
+  4. Exposición oral de 15 minutos (incluye demostración en vivo del software corriendo sobre el tag `v2.0`) + 5 minutos de preguntas individuales. Presentación a las 14:30 o en otro día `[POR CONFIRMAR en clase]`.
+- **Antecedentes de la Entrega 1:** Calificación 6,7 (no se cita en el informe). Dictamen docente: retroalimentación del profesor fue *"todo bien, solo detalles en la presentación"*; no modifica ningún requisito, y se registra así en la bitácora.
 - **Regla de oro de diseño:** Las decisiones de diseño de software las toman los ingenieros humanos, no el agente. El agente propone alternativas y redacta; nunca elige ni impone soluciones.
 
 ### 0.2 Integrantes y Roles Base del Equipo
@@ -44,7 +45,7 @@ A continuación se registran formalmente las decisiones iniciales del proyecto b
 | **Decisión** | Se adopta formalmente la **Opción A (SDD con Spec Kit sobre Antigravity)**. Decisión confirmada por el equipo el 12-10-2026. |
 | **Justificación** | Los artefactos heredados de la Entrega 1 presentan una estructura *spec-first*: los flujos primarios y alternativos de UC-01/02/03 y las tablas de requisitos y pruebas ya contienen especificaciones operativas densas. SDD aprovecha directamente estos insumos lineales sin requerir la sobrecarga ceremonial de simular un ciclo multi-rol completo. |
 | **Insumo para Discusión 6.7 ("Qué esperaríamos haber encontrado con BMAD")** | Si se hubiese elegido BMAD, se habría contado con roles especializados de software (Mary/Analyst, John/PM, Winston/Architect, Amelia/Dev, Sally/UX) con compuertas estructuradas (`bmad-sprint-planning` emitiendo veredicto *PASS/CONCERNS/FAIL*) y checkpoints humanos obligatorios en el diff durante `bmad-build`. Asimismo, para conciliar las tensiones de las áreas de negocio levantadas en las entrevistas (Daniela, Valentina, Hugo, Sebastián), se habría requerido simular mesas de trabajo mediante `bmad-party-mode`, lo que habría demandado mayor esfuerzo en prompts de personalización de roles antes de iniciar la implementación. |
-| **Impacto** | Obligatoriedad de generar los artefactos exigidos: `constitution.md`, `spec.md`, registro de clarificación, `plan.md`, `tasks.md`, reporte de consistencia y commits trazables por tarea. |
+| **Impacto** | Obligatoriedad de generar los artefactos exigidos: `.specify/memory/constitution.md`, `spec.md`, registro de clarificación, `plan.md`, `tasks.md`, reporte de consistencia y commits trazables por tarea. |
 
 ---
 
@@ -53,13 +54,14 @@ A continuación se registran formalmente las decisiones iniciales del proyecto b
 | :--- | :--- |
 | **ID** | `DEC-E2-02` |
 | **Fecha** | 12-10-2026 |
-| **Asunto** | Nomenclatura canónica de requisitos y tratamiento de la discrepancia de IDs entre fuentes de la Entrega 1 |
-| **Contexto** | En la Entrega 1 conviven dos numeraciones: en los archivos de trabajo en Markdown ([`fase5/requisitos-funcionales-y-no-funcionales-final-final.md`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md)) y en las pruebas ([`fase6/pruebas-funcionales.md`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md)) rige la nomenclatura `RQF-xxx` y `RQNF-xxx`. En el informe final ([`Informe Mira - LLM.pdf`](../informe%20proyecto/Informe%20Mira%20-%20LLM.pdf), págs. 9-12) se utilizó `RQF-Bxx` (36 funcionales) y `RQNF-Bxx` (13 no funcionales). |
-| **Alternativas** | **(a)** Migrar todo el código, specs y tests a `RQF-Bxx`.<br>**(b)** Mantener `RQF-xxx` / `RQNF-xxx` como identificador rector interno en el repositorio y construir una tabla de equivalencias hacia `RQF-Bxx` para el informe final.<br>**(c)** Crear una nomenclatura nueva exclusiva para la Entrega 2. |
-| **Decisión** | Se adopta la **Alternativa (b)**: la nomenclatura rectora en código, specs, tareas y pruebas automatizadas es **`RQF-xxx`** y **`RQNF-xxx`**. La correlación con el PDF de la Entrega 1 se documenta mediante tabla de equivalencias oficial. Decisión confirmada por el equipo el 12-10-2026. |
-| **Justificación** | Las pruebas funcionales existentes (`PF-001` a `PF-045`) y el modelo conceptual fueron programados y auditados sobre `RQF-xxx`. Modificar los IDs en código generaría desalineación con las pruebas unitarias heredadas. |
-| **Pendiente por confirmar** | `[POR CONFIRMAR universo de requisitos]`: Se debe contrastar con el docente si el universo cerrado del proyecto son los 49 requisitos del PDF consolidado o los del archivo Markdown de trabajo. Mientras tanto, rige el subconjunto de requisitos Must de la Entrega 1 que caiga dentro de las funcionalidades elegidas. |
-| **Impacto** | Todas las etiquetas en código fuente, comentarios de tests (`// RQF-040`) y nombres de tareas deben utilizar `RQF-xxx` / `RQNF-xxx`. |
+| **Asunto** | Nomenclatura canónica de requisitos, convención de citación con archivo fuente y gestión de colisión de IDs |
+| **Contexto** | En la Entrega 1 conviven múltiples numeraciones y una colisión crítica de identificadores entre fuentes:<br>1. **Colisión interna en Markdown:** Entre [`fase5/requisitos-funcionales-y-no-funcionales-final-final.md`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md) y [`fase5/fase5-lester/requisitos_formato_final.md`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md), los IDs `RQF-020`, `RQF-023`, `RQF-039`, `RQF-040`, `RQF-041` y `RQNF-002` significan conceptos completamente distintos.<br>2. **Discrepancia con el informe PDF:** En [`Informe Mira - LLM.pdf`](../informe%20proyecto/Informe%20Mira%20-%20LLM.pdf) (págs. 9-12) se utilizó `RQF-Bxx` (36 requisitos funcionales) y `RQNF-Bxx` (13 no funcionales).<br><br>⚠️ **Tabla de Advertencia: Colisión de IDs entre archivos de Fase 5:**<br>• `RQF-020`: en `final-final.md` = encolar peticiones excedentes; en `fase5-lester` = derivar a bandeja humana o rechazar automáticamente casos bajo 60.<br>• `RQF-023`: en `final-final.md` = crear caso nuevo vinculado al recibir evidencia de caso cerrado; en `fase5-lester` = imponer derivación sobre puntaje automático si alerta de fraude.<br>• `RQF-039`: en `final-final.md` = carga manual por formulario web; en `fase5-lester` = exigir dos aprobaciones separadas antes de modificar umbrales.<br>• `RQF-040`: en `final-final.md` = extraer texto y firmas contenidos en documentos cargados; en `fase5-lester` = aprobar automáticamente según umbral definido (80, 85, 90) sin fraude.<br>• `RQF-041`: en `final-final.md` = detectar objetos y daños en fotos y extraer metadatos; en `fase5-lester` = derivar o rechazar ignorando puntaje si alerta de fraude o señal bajo mínimo.<br>• `RQNF-002`: en `final-final.md` = conservar expedientes de 90 días a 10 años; en `fase5-lester` = reconstruir comportamiento, evidencias y reglas de decisión pasada basándose en historial. |
+| **Alternativas** | **(a)** Migrar todo el código, specs y tests a `RQF-Bxx`.<br>**(b)** Adoptar la numeración de `fase5/fase5-lester/requisitos_formato_final.md` como convención rectora (dado que la suite de pruebas de `fase6/pruebas-funcionales.md` apunta directamente a ella) y construir una tabla de equivalencias verificada por contenido hacia `final-final.md` y hacia el PDF.<br>**(c)** Crear una nomenclatura nueva exclusiva para la Entrega 2. |
+| **Decisión** | Se adopta la **Alternativa (b)**: **la guía usa la numeración de `fase5/fase5-lester/requisitos_formato_final.md`** (versión final cruzada con las pruebas de [`fase6/pruebas-funcionales.md`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md)), porque las pruebas apuntan directamente a ella. Se establece la **exigencia formal de que la spec (`spec.md`), la matriz de trazabilidad (`matriz-trazabilidad.md`) y el informe final citen cada requisito con su archivo fuente** (por ejemplo: `RQF-040 [fase5-lester]`, `RQF-028 [final-final]`) **y con el identificador `RQF-Bxx` del PDF como referencia cruzada** (ej. `RQF-B10 [PDF pág. 9]`), agregando una columna "Fuente" a la matriz de trazabilidad. |
+| **Firma** | Confirmada por el equipo completo el 13-10-2026. |
+| **Justificación** | Las pruebas funcionales existentes (`PF-001` a `PF-045`) fueron programadas y auditadas sobre `fase5-lester/requisitos_formato_final.md`. Modificar los IDs sin trazabilidad de archivo fuente generaría desalineación crítica con la suite de pruebas heredada. |
+| **Estado de confirmación** | Decisión interna que resuelve la ambigüedad del universo de requisitos (ver Consulta 4 en [§10.1](#101-resoluciones-internas-de-ambigüedades-del-enunciado-dec-e2-07-08-09-y-dec-e2-02)): confirmada por el equipo completo el 13-10-2026. |
+| **Impacto** | Todas las referencias en código fuente, comentarios de tests (`// RQF-040 [fase5-lester]`), especificaciones, matriz de trazabilidad e informe escrito deben utilizar la nomenclatura rectora acompañada explícitamente de su archivo fuente y referencia al PDF. |
 
 ---
 
@@ -115,7 +117,7 @@ A continuación se registran formalmente las decisiones iniciales del proyecto b
 | **Alternativas** | **(a)** Adoptar 80 puntos.<br>**(b)** Adoptar 85 puntos.<br>**(c)** Adoptar 90 puntos rígidos.<br>**(d)** Adoptar umbral **≥ 90 puntos** como valor por defecto, configurable por cliente y flujo en la base de datos. |
 | **Decisión** | Se adopta la **Alternativa (d)**: se fija en la especificación que el umbral de aprobación automática es **≥ 90 puntos** como decisión del equipo (operativizando la exigencia de Francisca Leiva en ENT4: "sobre noventa"), parametrizable mediante la funcionalidad F5. Se adopta el valor más alto y conservador entre los valores en conflicto y se deja configurable para ajustarlo empíricamente durante la marcha blanca. Decisión confirmada por el equipo el 12-10-2026. |
 | **Justificación** | Se respeta el principio de adoptar el valor más conservador y exigido por el cliente piloto, dejando el motor desacoplado de constantes "quemadas" en código. Esta decisión formaliza y resuelve la nota "85 vs 80 sin resolver" de la Entrega 1, sin alterar retroactivamente los documentos históricos. |
-| **Impacto** | Requisitos `RQF-040` (en `requisitos_formato_final.md`), `RQF-044` / `RQF-005` (en `final-final.md`), caso de uso `UC-01`, caso de prueba `PF-020` y lógica de evaluación de F4. |
+| **Impacto** | Requisitos `RQF-040 [fase5-lester]` (cuyo equivalente verificado por contenido en `final-final.md` es `RQF-005`, y en el PDF es `RQF-B10 [pág. 9]`; mientras que `RQF-044` en `final-final.md` corresponde a configuración de umbrales por cliente/flujo y no a la aprobación automática), caso de uso `UC-01`, caso de prueba `PF-020` (cuya precondición textual en el PDF y en Fase 6 dice "sobre 90", formalizada como "≥ 90" por el equipo) y lógica de evaluación de F4. |
 
 ---
 
@@ -125,11 +127,67 @@ A continuación se registran formalmente las decisiones iniciales del proyecto b
 | **ID** | `DEC-E2-06` |
 | **Fecha** | 12-10-2026 |
 | **Asunto** | Regla de precedencia de señales de fraude y destino exclusivo de derivación manual |
-| **Contexto** | En MIRA §3 se establece como regla de negocio textual: *"Las señales de fraude tienen precedencia sobre el puntaje total… Un caso con una señal de fraude activa se deriva o se escala, cualquiera sea su puntaje"*. Asimismo, en la Entrega 1, en la relación `Puntaje` ↔ `Umbral` de `modelo_dominio.json` ([`líneas 615-619`](../fases-y-plan-de-trabajo/fase3/modelo_dominio.json#L615-L619)), se ratifica en su excepción detectada: *"Aunque el puntaje sea aprobatorio (ej. mayor a 80/85), si una señal de fraude está activa o una señal individual no alcanza su mínimo propio, se ignora el puntaje y se deriva o rechaza el caso"*. Por su parte, en ENT6 [00:04:06], Daniela Cortés (Cumplimiento) exige que decida una persona: *"En el documento, el tramo bajo sesenta dice 'escalamiento o rechazo'... ese 'o rechazo' es exactamente lo que no puede quedar así... Lo que no puede ocurrir es un rechazo automático. Ahí necesito una persona que decida y que pueda explicar"*. Los requisitos `RQF-023` ([`fase5/fase5-lester/requisitos_formato_final.md:L25`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L25)) y `RQF-028` ([`fase5/requisitos-funcionales-y-no-funcionales-final-final.md:L30`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md#L30)) exigen imponer la derivación sobre el puntaje automático ante alerta de fraude activa. |
+| **Contexto** | En MIRA §3 se establece como regla de negocio textual: *"Las señales de fraude tienen precedencia sobre el puntaje total… Un caso con una señal de fraude activa se deriva o se escala, cualquiera sea su puntaje"*. Asimismo, en la Entrega 1, en la relación `Puntaje` ↔ `Umbral` de `modelo_dominio.json` ([`líneas 615-619`](../fases-y-plan-de-trabajo/fase3/modelo_dominio.json#L615-L619)), se ratifica en su excepción detectada: *"Aunque el puntaje sea aprobatorio (ej. mayor a 80/85), si una señal de fraude está activa o una señal individual no alcanza su mínimo propio, se ignora el puntaje y se deriva o rechaza el caso"*. Por su parte, en ENT6 [00:04:06], Daniela Cortés (Cumplimiento) exige que decida una persona: *"En el documento, el tramo bajo sesenta dice 'escalamiento o rechazo'... ese 'o rechazo' es exactamente lo que no puede quedar así... Lo que no puede ocurrir es un rechazo automático. Ahí necesito una persona que decida y que pueda explicar"*. Los requisitos `RQF-023 [fase5-lester]` ([`fase5/fase5-lester/requisitos_formato_final.md:L25`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L25)) y `RQF-028 [final-final]` ([`fase5/requisitos-funcionales-y-no-funcionales-final-final.md:L30`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md#L30)) exigen imponer la derivación sobre el puntaje automático ante alerta de fraude activa (en el PDF de la Entrega 1 su cobertura es parcial por contenido bajo `RQF-B12 [pág. 9]`, donde el PDF estipula resolución de "Rechazado, ignorando el puntaje total", regla que queda formalmente superada por DEC-08 / DEC-E2-06 al exigir derivación a revisión asistida sin rechazo; además, la tabla de pruebas del PDF en pág. 13 incluye `PF-018` que verifica textualmente `RQF-023`). |
 | **Alternativas** | **(a)** Permitir que un puntaje perfecto (100) apruebe un caso aunque tenga sospecha de fraude.<br>**(b)** Rechazar automáticamente el caso ante fraude.<br>**(c)** Una señal de fraude activa siempre deriva obligatoriamente a revisión asistida (bandeja manual), independientemente de que el puntaje sea 100 y de que los mínimos individuales se cumplan. |
 | **Decisión** | Se adopta la **Alternativa (c)**: **una señal de fraude activa siempre deriva a revisión asistida manual, sin importar el puntaje y sin rechazo automático.** Lo nuevo que aporta esta decisión es únicamente **fijar "siempre derivar"** (a revisión asistida), eliminando las alternativas históricas de escalamiento no asistido o rechazo automático contempladas en MIRA §3 y en `modelo_dominio.json:L618`. Decisión confirmada por el equipo el 12-10-2026. |
 | **Justificación** | Concilia armónicamente la regla de precedencia de fraude de MIRA §3 con la prohibición expresa de rechazos automáticos dictada por Cumplimiento (Daniela Cortés, ENT6 [00:04:06] / H-08 / DEC-08). |
-| **Impacto** | Lógica de evaluación de F4, caso de prueba `PF-018` y Caso de Prueba 3 del incremento. |
+| **Impacto** | Lógica de evaluación de F4, requisitos `RQF-023 [fase5-lester]` / `RQF-028 [final-final]` (en PDF cubierto parcialmente por `RQF-B12 [pág. 9]`, superando el rechazo automático), caso de prueba `PF-018` y Caso de Prueba 3 del incremento. |
+
+---
+
+### DEC-E2-07: Conformación del Equipo (4 Integrantes), Declaración en 6.2 y Delimitación de Tres Insumos Base
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-E2-07` |
+| **Fecha** | 13-10-2026 |
+| **Asunto** | Conformación del equipo de 4 integrantes, declaración de participación de Jorge Alvarez en sección 6.2 y delimitación de los tres insumos base |
+| **Contexto** | El equipo está compuesto por 4 integrantes (Rodrigo Guerrero, Jorge Alvarez, Lester Gonzalez, Angel Salgado). Jorge Alvarez no participó en la Entrega 1 (la realizaron tres personas), lo que requiere ser declarado explícitamente ante la evaluación docente. Ante la indicación del profesor de resolver internamente las ambigüedades del enunciado, el equipo establece la postura oficial. |
+| **Decisión** | 1. **Composición del equipo:** El equipo se ratifica formalmente en 4 integrantes. El informe declara explícitamente en la sección 6.2 que Jorge Alvarez no participó en la Entrega 1.<br>2. **Tres insumos base:** Se formalizan los tres insumos rectores para la Entrega 2:<br>• **Descripción de MIRA:** Documento de contexto y especificación del sistema DPRIME SpA.<br>• **Retroalimentación de la Entrega 1:** Dictamen docente recibido (*"todo bien, solo detalles en la presentación"*); se establece que no modifica ningún requisito y se registra así en la bitácora.<br>• **Análisis de la Entrega 1:** Informe consolidado y artefactos de las fases 1 a 6 heredados del sprint anterior.<br>Resolución interna confirmada por el equipo completo el 13-10-2026. |
+| **Firma** | Confirmada por el equipo completo el 13-10-2026. |
+| **Justificación** | Transparenta la situación del nuevo integrante ante la evaluación docente (sección 6.2) y delimita de forma cerrada los insumos de entrada, garantizando que la retroalimentación docente no altera los requisitos vigentes. |
+| **Impacto** | Sección 6.2 del informe escrito, bitácora de decisiones, definición del sprint y plan de trabajo de Jorge Alvarez. |
+
+---
+
+### DEC-E2-08: Estructura Canónica de Sección 6.6, Tablas de Evolución y Fórmulas de Indicadores
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-E2-08` |
+| **Fecha** | 13-10-2026 |
+| **Asunto** | Estructura formal de la sección 6.6 (Comparativa con Entrega 1), gobernanza de tablas 6.6-A y 6.6-B, y fórmulas de indicadores (TPR, TIH, IRF) |
+| **Contexto** | El criterio C6 de la rúbrica (30% de la evaluación) exige contrastar cuantitativa y cualitativamente la Entrega 2 frente a la Entrega 1. El profesor indicó que el equipo resuelva internamente las ambigüedades sobre la vinculación de tablas e indicadores. |
+| **Decisión** | Se fija formalmente la estructura, métricas y gobernanza de la sección 6.6:<br>1. **Estructura de la sección:**<br>• **Tabla 6.6-A: Evolución de requisitos:** Columnas obligatorias: `Requisito E1 con fuente`, `Clasificación` (*Sin cambio* / *Modificado* / *Diferido por alcance* / *Nuevo*), `Qué cambió`, `Origen` (*equipo* / *cliente* / *agente*), `Evidencia`.<br>• **Subsección 6.6.1:** Reservada exclusivamente para las preguntas guía de reflexión del enunciado.<br>• **Tabla 6.6-B: Hallazgos y supuestos:** Columnas obligatorias: `H-xx`, `Qué decía la E1`, `Estado en la E2`, `Quién lo detectó`, `Evidencia`.<br>2. **Fórmulas de los indicadores cuantitativos:**<br>• **TPR (Tasa de Preservación de Requisitos Must):** `Must de F4/F5 sin cambio ÷ Must de F4/F5 × 100`<br>• **TIH (Tasa de Intervención Humana en Código):** `Commits de corrección humana ÷ Commits de tareas × 100`<br>• **IRF (Índice de Retrabajo por Fase):** `Artefactos de fase con corrección humana sustantiva ÷ Artefactos de la fase`<br>3. **Gobernanza y llenado diario:** Las tablas se llenan cada día; Angel Salgado es el responsable de su actualización.<br>Resolución interna confirmada por el equipo completo el 13-10-2026. Reemplaza el contenido de §7.7 y quita `[SUPUESTO: pendiente de consulta al profesor]`. |
+| **Firma** | Confirmada por el equipo completo el 13-10-2026. |
+| **Justificación** | Estandariza un marco cuantitativo verificable y auditable para el criterio de mayor ponderación de la rúbrica (30%), garantizando evidencia acumulada día a día para el informe. |
+| **Impacto** | Reemplaza íntegramente §7.7, define los campos de seguimiento diario y rige la redacción de la sección 6.6 del informe final por Angel Salgado. |
+
+---
+
+### DEC-E2-09: Ponderaciones de Rúbrica, Límite de 11 Planas, Política de Citas y Verificación Pre-Entrega
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-E2-09` |
+| **Fecha** | 13-10-2026 |
+| **Asunto** | Aplicación estricta de la tabla de ponderaciones de la rúbrica, límite de 11 planas A4 más anexos, asunción de penalización −1,0 por cita inexistente y script de verificación en DoD |
+| **Contexto** | Existen ambigüedades en el enunciado respecto a si rige una división simétrica o la tabla de ponderaciones del capítulo 8, la equivalencia de 1 plana y el impacto de citas rotas. El profesor indicó que el equipo resuelva internamente estas definiciones. |
+| **Decisión** | Se adoptan internamente las siguientes reglas rectoras:<br>1. **Ponderaciones de evaluación:** Rige la tabla de ponderaciones de la rúbrica docente: C6 (30%), C4 (20%), C10 (15%), C3 (10%), y 5% para los demás criterios evaluados (C1, C2, C5, C8, C9; falta C7 en la pauta).<br>2. **Límite de extensión física:** 1 plana equivale a 1 página A4. Las tablas y figuras del cuerpo principal quedan contenidas dentro del límite, sumando un total de 11 planas más anexos. La trazabilidad (`matriz-trazabilidad.md`) y la bitácora de decisiones van como anexos (en el cuerpo mandan: 6.7 Discusión y 6.8 Conclusiones).<br>3. **Descuento por cita inexistente:** Se asume preventivamente el descuento de −1,0 punto por cada ocurrencia.<br>4. **Script de verificación pre-entrega:** Antes de entregar se corre obligatoriamente un script que verifique IDs, citas y hashes de commit en el repositorio, agregándose a la definición de terminado (§8.2).<br>5. **Artefactos obligatorios en DoD:** Se formaliza en §8.2 la lista obligatoria: constitución (`.specify/memory/constitution.md`), spec (`spec.md`), registro de clarificación (`clarificaciones.md`), plan (`plan.md`), tareas (`tasks.md`) y reporte de análisis de consistencia (`reporte-analisis-consistencia.md`).<br>Resolución interna confirmada por el equipo completo el 13-10-2026. |
+| **Firma** | Confirmada por el equipo completo el 13-10-2026. |
+| **Justificación** | Asegura foco operativo en los criterios de mayor ponderación (C6 30%, C4 20%), previene cortes de lectura por exceder 11 planas y elimina el riesgo de descuentos de −1,0 punto mediante verificación pre-entrega automatizada. |
+| **Impacto** | Modifica la Definición de Terminado (§8.2), rige la diagramación del informe por Angel Salgado y programa el script de verificación automatizado en QA a cargo de Lester Gonzalez. |
+
+---
+
+### DEC-E2-10: Decisiones Integrales de Diseño Funcional y Técnico para F5 (Gestión de Umbrales) y F4 (Motor de Decisión)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-E2-10` |
+| **Fecha** | 13-10-2026 |
+| **Asunto** | Parámetros de señales/pesos/mínimos (F5), tratamiento de riesgo de rechazo sin rechazo automático (F4), unificación de spec y gobernanza de roles |
+| **Contexto** | Tras el análisis de MIRA §2.6, §2.13, §3, las entrevistas (ENT1, ENT3, ENT5, ENT6) y la necesidad de acotar el incremento F5+F4 para la Entrega 2, el equipo resuelve integralmente en reunión del 13-10-2026 las definiciones pendientes de diseño y arquitectura de contratos. |
+| **Decisión** | El equipo completo adopta y confirma formalmente las siguientes cuatro decisiones:<br><br>**(a) Señales del dominio, pesos, mínimos y reglas de validación en F5:**<br>• Se mantienen como `[SUPUESTO del equipo]` las tres señales del flujo de reembolso médico: `autenticidad_documentos` (peso 0,40, mínimo 70), `cruce_fuentes` (peso 0,40, mínimo 70) y `coherencia_solicitud` (peso 0,20, mínimo 60). Fuente documental: MIRA §2.6 declara explícitamente que *"el detalle de qué señales tienen mínimo propio y cuáles son sus valores está pendiente de definir con el área de riesgo del cliente piloto"* y no fija fórmula de cálculo; asimismo se cita ENT3 [00:21:47] (VERIFICADO; fuente: MIRA docx, ENT3 [00:21:47], Sebastián: *"mínimos por señal… aunque nadie ha definido cuáles son"*).<br>• Pesos, mínimos y umbrales son modificables dinámicamente desde la interfaz web de F5 mediante flujo de doble control (Diseñador propone, Administrador aprueba) y quedan versionados con trazabilidad inmutable.<br>• Reglas de validación estrictas: la suma de los tres pesos debe ser exactamente 1,0 (suma de pesos = 1,0), y todos los mínimos y umbrales deben ser valores numéricos acotados entre 0 y 100 (0 <= x <= 100). Rodrigo Guerrero (representante del cliente en la E2) confirma o ajusta estos valores en la sesión formal de `/speckit-clarify`.<br><br>**(b) Opción A para gestión de riesgo de rechazo (se mantiene DEC-08 sin rechazo automático):**<br>• Se ratifica la **Opción A**: el sistema **NUNCA genera rechazo automático**, conservando estrictamente dos únicos resultados de salida: `APROBADO_AUTOMATICO` y `DERIVADO_REVISION`.<br>• Se incorpora en el contrato de datos el atributo booleano `riesgoAltoRechazo: boolean`, calculado estrictamente *después* de aplicar las reglas de decisión y sin alterar en ningún caso el resultado emitido. Es `true` si se cumple al menos una de dos condiciones:<br>&nbsp;&nbsp;1. Existen al menos dos señales individuales bajo su respectivo mínimo propio (conteo de señales bajo mínimo >= 2), O<br>&nbsp;&nbsp;2. El puntaje global es estrictamente menor que `umbralRiesgoAlto` (valor por defecto = 60, configurable y versionado desde F5).<br>• Interfaz de usuario: la vista de resultados de F4 despliega una advertencia visual destacada (*"Riesgo alto de rechazo: decide un operador"*), y **nunca utiliza la palabra "rechazado"** para una decisión emitida por el sistema.<br>• *Alternativas descartadas documentadas:*<br>&nbsp;&nbsp;• *Alternativa B (Rechazo propuesto con confirmación en un clic):* Descartada porque Daniela Cortés en ENT6 [00:01:21] advierte enfáticamente contra interfaces donde el operador simplemente *"apriete aceptar en tres segundos"*, y Marco en ENT5 [00:15:16] evidencia el sesgo de anclaje de predisponer al operador al ver un número antes que la evidencia clínica.<br>&nbsp;&nbsp;• *Alternativa C (Rechazo automático configurable, apagado por defecto):* Descartada porque en ENT6 [00:04:06] Daniela Cortés afirma que no se rechaza automáticamente y que la intervención humana es indelegable ante denegaciones, y su inclusión duplicaría innecesariamente la matriz de pruebas y el alcance del sprint.<br>*(Verificación de fuentes: ENT5 [00:15:16] verificada en HC-016 y H-12; ENT6 [00:04:06] verificada en HC-008; ENT6 [00:01:21] verificada en MIRA docx; MIRA §2.6 y §3 verificadas; ENT3 [00:21:47] VERIFICADO (fuente: MIRA docx, Sebastián: *"mínimos por señal… aunque nadie ha definido cuáles son"*)).*<br><br>**(c) Especificación unificada (Cierre de D-09):**<br>• Se redacta **una sola especificación técnica consolidada** (`spec.md`) para el incremento conjunto F5 + F4, estructurando las tareas de desarrollo en `tasks.md` con etiquetas explícitas `[F5]` o `[F4]` para preservar el orden productor → consumidor sin fragmentar la gobernanza de Spec Kit.<br><br>**(d) Protocolo de aprobación de cambios de umbral (Cierre de D-04 y `[POR CONFIRMAR rol en PF-033]`):**<br>• Un usuario con rol *Diseñador* propone la modificación de umbrales/mínimos (estado `BORRADOR`), y un usuario con rol *Administrador* distinto aprueba la propuesta (pasa a `APROBADO` y vigencia operativa). Quien propone nunca puede aprobar.<br>• Alineación documental: cubre simultáneamente MIRA §2.13 (que asigna el diseño y edición de flujos y umbrales al *Diseñador*), ENT6 [00:21:16] (que exige dos aprobaciones separadas) y la intención de la prueba funcional `PF-033` (que exige aprobación por un "administrador", documentándose la diferencia respecto a su redacción literal). Cierra formalmente la duda D-04, el criterio de aceptación de F5 y el pendiente `[POR CONFIRMAR rol en PF-033 vs MIRA §2.13]`. |
+| **Firma** | Confirmada por el equipo completo el 13-10-2026. |
+| **Justificación** | Resuelve de manera integral la tensión entre la prohibición normativa de rechazo automático y la necesidad de visibilizar casos de alta criticidad, armoniza los roles de MIRA con las pruebas de la Entrega 1, y consolida la arquitectura del incremento en un único contrato TypeScript desacoplado. |
+| **Impacto** | Contrato `src/shared/types.ts` (§5.2), especificación (`spec.md`), matriz de casos de prueba (§2.d), lógica del motor de decisión (§3.1), catálogo de decisiones D-04, D-07, D-08, D-09 (§4.1), y eliminación de pendientes en §11.2. |
 
 ---
 
@@ -149,38 +207,55 @@ Antes de invocar comandos de generación de Spec Kit, el equipo ejecuta los sigu
 - **Responsable:** Angel Salgado (con validación de Lester Gonzalez).
 - **Aclaración crítica sobre IDs verificados en Entrega 1:**
   1. **Existencia de `RQF-001`:** En los archivos Markdown de la Fase 5 ([`fase5/requisitos-funcionales-y-no-funcionales-final-final.md`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md) y [`fase5/fase5-lester/requisitos_formato_final.md`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md)) **SÍ EXISTE `RQF-001`** (corresponde a ingesta de evidencia). La nota del resumen de estado que afirmaba que arrancaba en `RQF-002` era una errata del análisis previo.
-  2. **Resolución de la fila `RQF-B13` ↔ `RQF-013` / `RQF-035`:** En [`fase5/fase5-lester/requisitos_formato_final.md:L15`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L15), `RQF-013` es estrictamente *"tiempo restante y alertas visuales por casos detenidos en bandeja"*, el cual fue **deliberadamente excluido de las pruebas en Fase 6** ([`fase6/pruebas-funcionales.md:L3`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L3)). La configuración de umbrales corresponde en realidad a `RQF-039` en dicho archivo (verificado por `PF-033`) y a `RQF-044` / `RQF-035` en `final-final.md`.
+  2. **Resolución de la fila `RQF-B13` ↔ `RQF-013` / `RQF-035`:** En [`fase5/fase5-lester/requisitos_formato_final.md:L15`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L15), `RQF-013` es estrictamente *"tiempo restante y alertas visuales por casos detenidos en bandeja"*, el cual fue **deliberadamente excluido de las pruebas en Fase 6** ([`fase6/pruebas-funcionales.md:L3`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L3)). La configuración de umbrales corresponde en realidad a `RQF-039 [fase5-lester]` (verificado por `PF-033`), a `RQF-035 [final-final]` / `RQF-044 [final-final]` y a `RQF-B09` en el PDF.
+  3. **Discrepancia interna en el PDF (mezcla de nomenclaturas):** El informe PDF de la Entrega 1 mezcla la nomenclatura `RQF-Bxx` (36 requisitos) y `RQNF-Bxx` (13 requisitos) en su tabla consolidada (§3.3, págs. 9-12) con identificadores `RQF-0xx` en su tabla de casos de prueba del set funcional (§3.4, págs. 12-15). Por ejemplo, el caso `PF-018` en la pág. 13 del PDF verifica textualmente `RQF-023` (*"la alerta de fraude tiene precedencia sobre el puntaje"*), confirmando que las pruebas se redactaron originalmente sobre la numeración de `fase5-lester` antes de la consolidación en `RQF-Bxx`.
+
+> ⚠️ **ADVERTENCIA CRÍTICA: Colisión de IDs entre archivos de Fase 5**  
+> En [`fase5/requisitos-funcionales-y-no-funcionales-final-final.md`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md) y en [`fase5/fase5-lester/requisitos_formato_final.md`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md), los mismos identificadores numéricos representan requisitos completamente distintos. La siguiente tabla documenta la colisión verificada en los archivos:
+
+| ID en conflicto | Significado en `final-final.md` | Significado en `fase5-lester/requisitos_formato_final.md` (adoptado en esta guía) |
+| :--- | :--- | :--- |
+| `RQF-020` | Encolar peticiones excedentes tras superar límite de tasa | Derivar a bandeja humana o rechazar automáticamente casos bajo 60 |
+| `RQF-023` | Crear caso nuevo vinculado al recibir evidencia de caso cerrado | Imponer derivación sobre puntaje automático si alerta de fraude |
+| `RQF-039` | Carga manual por formulario en interfaz web | Exigir dos aprobaciones separadas antes de modificar umbrales |
+| `RQF-040` | Extraer texto y firmas contenidos en documentos cargados | Aprobar automáticamente según umbral definido (80, 85, 90) sin fraude |
+| `RQF-041` | Detectar objetos y daños en fotos y extraer metadatos | Derivar o rechazar ignorando puntaje si alerta de fraude o señal bajo mínimo |
+| `RQNF-002` | Conservar expedientes de 90 días a 10 años | Reconstruir comportamiento, evidencias y reglas de decisión pasada basándose en historial |
+
+Por convención formal (**DEC-E2-02**), la presente guía adopta como numeración rectora la de **`requisitos_formato_final.md`**, debido a que la suite de pruebas de [`fase6/pruebas-funcionales.md`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md) apunta directamente a ella. Se exige que la especificación (`spec.md`), la matriz de trazabilidad y el informe citen cada requisito con su archivo fuente (ejemplo: `RQF-040 [fase5-lester]`).
 
 #### Tabla de Equivalencias Requisitos del Alcance (F5 y F4)
-| ID Repositorio Markdown (`fase5-lester/requisitos_formato_final.md`) | ID Alternativo (`final-final.md`) | ID PDF (`Informe Mira - LLM.pdf`, págs 9-12) | Nombre / Enunciado del Requisito | Prioridad MoSCoW | Funcionalidad E2 | Caso de Prueba E1 Asociado (`fase6/pruebas-funcionales.md`) | Estado Verificación ID |
+| ID Repositorio Markdown (`fase5-lester`) | ID Alternativo (`final-final.md`) | ID PDF (`Informe Mira - LLM.pdf`, págs 9-12) | Nombre / Enunciado del Requisito | Prioridad MoSCoW | Funcionalidad E2 | Caso de Prueba E1 Asociado (`fase6/pruebas-funcionales.md`) | Estado Verificación ID |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `RQF-040` | `RQF-005` | `[POR VERIFICAR cotejo PDF]` | Aprobación automática según umbral configurable (≥ 90 por defecto, decisión del equipo) sin fraude | Must | F4 | `PF-020` | **Verificado físicamente en repo** |
-| `RQF-041` | `RQF-004` | `[POR VERIFICAR cotejo PDF]` | Derivación a revisión ignorando puntaje si señal bajo mínimo o fraude | Must | F4 | `PF-021` (la opción "o rechaza" queda superada por DEC-08) | **Verificado físicamente en repo** |
-| `RQF-020` | `RQF-006` | `[POR VERIFICAR cotejo PDF]` | Derivación obligatoria bajo 60 puntos (redefinido por H-08 sin rechazo) | Must | F4 | `PF-015` | **Verificado físicamente en repo** |
-| `RQF-023` | `RQF-028` | `[POR VERIFICAR cotejo PDF]` | Precedencia de alerta de fraude activa derivando siempre a revisión manual | Must | F4 | `PF-018` | **Verificado físicamente en repo** |
-| `RQF-039` | `RQF-035` / `RQF-044` | `[POR VERIFICAR cotejo PDF]` | Configuración y aprobación de modificaciones sobre umbrales de decisión | Must | F5 | `PF-033` | **Verificado físicamente en repo** |
-| `RQNF-002` | `RQNF-003` | `[POR VERIFICAR cotejo PDF]` | Reconstrucción de decisiones pasadas basada en historial y versiones guardadas | Must | F4 / F5 | *(Derivado de H-14 / DEC-14)* | **Verificado físicamente en repo** |
+| `RQF-040 [fase5-lester]` | `RQF-005` | `RQF-B10 (pág. 9)` | Aprobación automática según umbral configurable (≥ 90 por defecto, decisión del equipo) sin fraude | Must | F4 | `PF-020` | **Verificado en repo y PDF** (prueba en PDF usa umbral 85) |
+| `RQF-041 [fase5-lester]` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (cobertura parcial por contenido; el PDF estipula rechazo automático, superado por DEC-08 / DEC-E2-06) | Derivación a revisión ignorando puntaje si señal bajo mínimo o fraude | Must | F4 | `PF-021` (la opción "o rechaza" queda superada por DEC-08) | **Verificado en repo y PDF (parcial)** |
+| `RQF-020 [fase5-lester]` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B11 (pág. 9) y RQF-B12 (pág. 9)` (cobertura parcial por contenido; RQF-B11 rango intermedio 60-84 y RQF-B12 rechazo bajo umbral mínimo, superado por DEC-08) | Derivación obligatoria bajo 60 puntos (redefinido por H-08 sin rechazo) | Must | F4 | `PF-015` | **Verificado en repo y PDF (parcial)** |
+| `RQF-023 [fase5-lester]` | `RQF-028` | `RQF-B12 (pág. 9)` (cobertura parcial por contenido; el PDF estipula rechazo automático ante fraude, superado por DEC-E2-06; prueba PF-018 en pág. 13 cita RQF-023) | Precedencia de alerta de fraude activa derivando siempre a revisión manual | Must | F4 | `PF-018` | **Verificado en repo y PDF (parcial)** |
+| `RQF-039 [fase5-lester]` | `RQF-035` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en el PDF; la configuración simple está en RQF-B09, pero la doble aprobación no existe en el PDF) | Exigir dos aprobaciones separadas antes de aplicar modificaciones sobre umbrales de decisión | Must | F5 | `PF-033` | **Verificado físicamente en repo** |
+| `[SIN EQUIVALENTE VERIFICADO en lester]` | `RQF-044` | `RQF-B09 (pág. 9)` | Configuración independiente de umbrales numéricos de decisión por cliente y flujo | Must | F5 | `PF-033` (asociado indirectamente a RQF-044 / RQF-B09) | **Verificado en final-final y PDF** |
+| `RQNF-002 [fase5-lester]` | `RQNF-003` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en el PDF) | Reconstrucción de decisiones pasadas basada en historial y versiones guardadas | Must | F4 / F5 | *(Derivado de H-14 / DEC-14)* | **Verificado físicamente en repo** |
 
+- **Nota de Trazabilidad sobre `PF-020`:** En `fase6/pruebas-funcionales.md:L45` y en el PDF (`Informe Mira - LLM.pdf`, pág. 13), el caso de prueba `PF-020` establece textualmente en su precondición y pasos: *"inyectar un caso con puntaje evaluado por sobre 90"*. La decisión formal del equipo (**DEC-01**) fija el umbral como **≥ 90 puntos**, operativizando el criterio inclusivo (un puntaje de exactamente 90.0 puntos aprueba automáticamente si cumple las restantes condiciones).
 - **Criterio de término:** Archivo `docs/entregable2/equivalencias-requisitos.md` commitenado en git.
 
 ---
 
 ### 2.b Formalización de DEC-01 a DEC-16 desde H-01 a H-16
-- **Responsable:** Angel Salgado (con revisión del Representante del Cliente, Rodrigo Guerrero).
-- **Estado de las Decisiones al 12-10-2026:**
-  - `DEC-01` (H-01): **Cerrada y confirmada hoy.** Umbral ≥ 90 parametrizable por flujo (decisión del equipo que fija "≥ 90" formalizando el "sobre noventa" de ENT4; adopta el valor más alto en conflicto y se deja configurable para ajustarlo durante la marcha blanca).
+- **Responsable:** Angel Salgado (con revisión de Rodrigo Guerrero (representante del cliente en la E2)).
+- **Estado de las Decisiones al 13-10-2026:**
+  - `DEC-01` (H-01): **Cerrada y confirmada.** Umbral ≥ 90 parametrizable por flujo (decisión del equipo que fija "≥ 90" formalizando el "sobre noventa" de ENT4; adopta el valor más alto en conflicto y se deja configurable para ajustarlo durante la marcha blanca).
   - `DEC-02` (H-02): Cerrada (retención 5-10 años: 90 días activo, luego frío).
   - `DEC-03` (H-03): Cerrada (rate limits con `Retry-After` y modo bulk).
   - `DEC-04` (H-04): Cerrada (cobro restringido a decisiones automáticas).
-  - **`DEC-05` (H-05): ⚠️ ABIERTA** (mínimos por señal individual; entra al alcance de F4 y se resuelve en `clarify` como supuesto documentado del equipo).
+  - **`DEC-05` (H-05): Cerrada como supuesto formal en DEC-E2-10** (mínimos 70/70/60 y pesos 0,40/0,40/0,20 como `[SUPUESTO del equipo]` ratificados para F5+F4; pendientes de confirmación en `clarify` con Rodrigo Guerrero (representante del cliente en la E2)).
   - `DEC-06` (H-06): Cerrada (SSO corporativo obligatorio en producción; en E2 se simula con selector de rol).
   - `DEC-07` (H-07): Cerrada (escritura automática en siniestros vía archivos).
-  - `DEC-08` (H-08): Cerrada (prohibición de rechazo automático bajo 60 puntos; siempre derivar a revisión asistida).
+  - `DEC-08` (H-08): Cerrada (prohibición de rechazo automático bajo 60 puntos; siempre derivar a revisión asistida, formalizado con `riesgoAltoRechazo` en DEC-E2-10).
   - `DEC-09` (H-09): Cerrada (cobro de 1 validación por siniestro salvo reanálisis sustantivo).
-  - **`DEC-10` (H-10): ⚠️ PARCIALMENTE ABIERTA (plan formal MIRA §5.2 adoptado; falta decidir si rige el compromiso de ENT1).** Se formaliza con el texto de **MIRA §5.2 (Plazos)**:  
+  - `DEC-10` (H-10): **Cerrada (rige el plan formal de MIRA §5.2; compromiso comercial registrado como riesgo en §9).** Se adopta formalmente el cronograma de **MIRA §5.2 (Plazos)**:  
     > *"El proyecto comienza el 1 de septiembre de 2026 y se organiza en cuatro entregas. La primera, a mediados de octubre, cubre la especificación, el modelo de datos y un prototipo navegable del diseñador de flujos y de la bandeja de revisión. La segunda, a mediados de diciembre, entrega la ingesta de evidencia, el motor sobre documentos e imágenes, el cálculo del puntaje y la interfaz de programación. La tercera, a fines de febrero de 2027, incorpora video y audio, el diseñador completo con versionamiento y la bandeja de revisión asistida, y comienza la marcha blanca con el cliente piloto. La cuarta, a fines de abril de 2027, cubre paneles, medición de consumo, aislamiento multicliente y el despliegue en producción. La marcha blanca se realiza con el proceso de reembolso de gastos médicos de la aseguradora piloto, por ser el de mayor volumen y menor riesgo unitario."* (Fuente: MIRA §5.2 Plazos).  
-    *Tensión con compromiso comercial (HC-010):* En ENT1 [00:11:05], Rodrigo Vergara señala que *"la aseguradora quiere estar operando con casos reales en enero, y hay una feria del sector a fines de marzo donde queremos mostrar la plataforma completa funcionando en vivo... No es lo mismo una marcha blanca en febrero que un cliente operando en enero"*. Esta exigencia comercial contradice el cronograma formal de MIRA §5.2 (producción a fines de abril de 2027 y marcha blanca a fines de febrero). Queda `[pendiente de decisión del equipo]` determinar cuál cronograma rige contractualmente el compromiso.  
-    *Relación con la configurabilidad del umbral (DEC-01):* De confirmarse el inicio de la marcha blanca en febrero de 2027 con reembolsos de gastos médicos de bajo riesgo unitario, la parametrización de umbrales (F5) permitiría operar inicialmente con un umbral conservador (≥ 90 puntos) y recalibrarlo empíricamente antes de la eventual salida masiva a producción en abril de 2027.
+    *Tensión con compromiso comercial (HC-010):* La declaración de Rodrigo Vergara (sponsor, ENT1 [00:11:05]) (*"la aseguradora quiere estar operando con casos reales en enero, y hay una feria del sector a fines de marzo donde queremos mostrar la plataforma completa funcionando en vivo..."*) contradice el plan formal. El equipo resuelve que rige el plan formal de MIRA §5.2, registrándose la tensión comercial como riesgo formal en la matriz de riesgos del proyecto ([R-11 en §9](#9-matriz-de-riesgos-y-mitigaciones-específicas)).  
+    *Relación con la configurabilidad del umbral (DEC-01):* Al ratificarse la marcha blanca en febrero de 2027 con reembolsos de gastos médicos, la parametrización de umbrales (F5) permite operar inicialmente con un umbral conservador (≥ 90 puntos) y recalibrarlo empíricamente antes de la eventual salida a producción en abril de 2027.
   - **`DEC-11` (H-11): ⚠️ PARCIALMENTE ABIERTA.** Estructura de SLA por tramos según tipo/tamaño definida por Sebastián Alarcón (ENT3); valores numéricos siguen abiertos por falta de pruebas de carga. La prueba extra-funcional de la Entrega 2 no usa latencia, sino reproducibilidad determinista (H-14).
   - `DEC-12` (H-12): Cerrada (rastro inalterable de decisión disociado de evidencia personal).
   - `DEC-13` (H-13): Cerrada (soporte dual: API REST y carpetas compartidas).
@@ -204,44 +279,59 @@ Antes de invocar comandos de generación de Spec Kit, el equipo ejecuta los sigu
   2. `cruce_fuentes` `[SUPUESTO del equipo]`: Cruce y concordancia entre fuentes de datos (boleta, prestador, afiliado) (peso: 40%, mínimo: 70) `[SUPUESTO del equipo]`.
   3. `coherencia_solicitud` `[SUPUESTO del equipo]`: Concordancia clínica y documental de la solicitud médica (la *coherencia biométrica* de MIRA §2.6 solo aplica si el caso incluye datos biométricos) (peso: 20%, mínimo: 60) `[SUPUESTO del equipo]`.
 - **Bandera de Fraude:** El **fraude es una bandera aparte** (`alertaFraudeActiva: boolean`), no una señal con ponderación continua (MIRA §2.6 / MIRA §3).
-- **Fórmula de agregación del puntaje global (D-08):**
+- **Fórmula de agregación del puntaje global (D-08 / DEC-E2-10):**
   Puntaje Global = (0.40 * autenticidad_documentos) + (0.40 * cruce_fuentes) + (0.20 * coherencia_solicitud) [SUPUESTO del equipo]
+- **Regla de cálculo de riesgo alto de rechazo (DEC-E2-10):**
+  `riesgoAltoRechazo = (conteoSenalesBajoMinimo >= 2) || (scoreGlobal < umbralRiesgoAlto)`
+  (donde `umbralRiesgoAlto = 60` por defecto, configurable en F5 y versionado).
 
 #### Especificación de los Casos de Prueba Ficticios (Aislando una Regla por Caso)
 1. **Caso 1 (`CASO-MED-001` — Aprobación Automática):**
-   - **Prestación:** Consulta médica de medicina general ($45.000 CLP).
+   - **Prestación:** Consulta médica de medicina general (45.000 CLP).
    - **Evidencia ficticia:** `boleta_consulta_001.pdf` y `receta_medica_001.jpg`.
    - **Señales:** Autenticidad documentos = 95; Cruce fuentes = 95; Coherencia solicitud = 90; Alerta fraude = Inactiva (false).
    - **Cálculo:** 0.40 * 95 + 0.40 * 95 + 0.20 * 90 = 38.0 + 38.0 + 18.0 = **94.0 puntos**.
-   - **Resultado esperado:** `decision: 'APROBADO_AUTOMATICO'`, `motivo: 'aprobado'` (puntaje ≥ 90, sin señales bajo mínimo, sin alerta de fraude).
+   - **Resultado esperado:** `decision: 'APROBADO_AUTOMATICO'`, `motivo: 'aprobado'`, `riesgoAltoRechazo: false` (puntaje 94.0 ≥ 90, sin señales bajo mínimo, sin alerta de fraude; puntaje ≥ 60).
 2. **Caso 2 (`CASO-MED-002` — Derivación por Señal Bajo Mínimo - Aislando H-05):**
-   - **Prestación:** Exámenes de laboratorio de sangre ($120.000 CLP).
+   - **Prestación:** Exámenes de laboratorio de sangre (120.000 CLP).
    - **Evidencia ficticia:** `orden_laboratorio_002.pdf` y `factura_clinica_002.pdf`.
    - **Señales:** Autenticidad documentos = 100; Cruce fuentes = 100; **Coherencia solicitud = 55** (mínimo exigido = 60 `[SUPUESTO del equipo]`); Alerta fraude = Inactiva (false).
    - **Cálculo:** 0.40 * 100 + 0.40 * 100 + 0.20 * 55 = 40.0 + 40.0 + 11.0 = **91.0 puntos**.
-   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'` (pese a tener 91 puntos ≥ 90, la señal coherencia [55] está bajo el mínimo [60]).
+   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'`, `riesgoAltoRechazo: false` (pese a tener 91 puntos ≥ 90, la señal coherencia [55 < 60] deriva a revisión; puntaje 91 ≥ 60 y solo una señal bajo mínimo, por lo que no activa advertencia de riesgo alto).
 3. **Caso 3 (`CASO-MED-003` — Derivación por Precedencia de Fraude - Aislando DEC-E2-06):**
-   - **Prestación:** Reembolso de medicamentos de alto costo ($280.000 CLP).
+   - **Prestación:** Reembolso de medicamentos de alto costo (280.000 CLP).
    - **Evidencia ficticia:** `boleta_farmacia_adulterada_003.jpg` (manipulación digital de montos simulada por el equipo).
    - **Señales:** Autenticidad documentos = 95; Cruce fuentes = 95; Coherencia solicitud = 90; **Alerta fraude = ACTIVA (true)** (bandera aparte de manipulación documental).
    - **Cálculo:** 0.40 * 95 + 0.40 * 95 + 0.20 * 90 = **94.0 puntos**.
-   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'alerta_fraude'` (la bandera de fraude precede al puntaje de 94; deriva a revisión manual asistida, sin rechazo automático).
-4. **Caso 4 (`CASO-MED-004` — Derivación por Señal Bajo Mínimo y Ausencia de Rechazo Automático - Aislando H-08 / DEC-08):**
-   - **Prestación:** Procedimiento ambulatorio ($60.000 CLP).
+   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'alerta_fraude'`, `riesgoAltoRechazo: false` (la bandera de fraude precede al puntaje de 94; deriva a revisión manual asistida sin rechazo automático; al no tener señales bajo mínimo ni puntaje < 60, no activa riesgoAltoRechazo).
+4. **Caso 4 (`CASO-MED-004` — Derivación con Advertencia de Riesgo Alto - Aislando H-08 / DEC-08 / DEC-E2-10):**
+   - **Prestación:** Procedimiento ambulatorio (60.000 CLP).
    - **Evidencia ficticia:** `recibo_ambulatorio_004.pdf`.
-   - **Señales:** Autenticidad documentos = 40; Cruce fuentes = 40; Coherencia solicitud = 60; Alerta fraude = Inactiva (false).
+   - **Señales:** Autenticidad documentos = 40 (mínimo 70); Cruce fuentes = 40 (mínimo 70); Coherencia solicitud = 60 (cumple mínimo 60); Alerta fraude = Inactiva (false).
    - **Cálculo:** 0.40 * 40 + 0.40 * 40 + 0.20 * 60 = 16.0 + 16.0 + 12.0 = **44.0 puntos**.
-   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'` (por precedencia de reglas: no hay fraude, pero autenticidad [40 < 70] y cruce de fuentes [40 < 70] están bajo sus mínimos).
-   - **Objetivo de verificación (H-08 / DEC-08):** El test verifica específicamente que ante un caso con puntaje crítico bajo 60 (44 puntos) **nunca se produce un rechazo automático**, sino que el caso se deriva obligatoriamente a revisión asistida.
+   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'`, `riesgoAltoRechazo: true` (se deriva obligatoriamente sin rechazo automático; activa advertencia destacada *"Riesgo alto de rechazo: decide un operador"* porque cumple ambas condiciones: puntaje 44 < 60 y dos señales bajo mínimo [autenticidad 40 < 70 y cruce 40 < 70]).
+   - **Objetivo de verificación (H-08 / DEC-08 / DEC-E2-10):** El test verifica específicamente que ante un caso con puntaje crítico bajo 60 y dos señales bajo mínimo, **el sistema nunca rechaza automáticamente**, sino que deriva con advertencia visual de riesgo alto.
 5. **Caso 5 (`CASO-MED-005` — Derivación por Rango Intermedio):**
-   - **Prestación:** Consulta médica con especialista ($50.000 CLP).
+   - **Prestación:** Consulta médica con especialista (50.000 CLP).
    - **Evidencia ficticia:** `bono_consulta_005.pdf`.
    - **Señales:** Autenticidad documentos = 75; Cruce fuentes = 75; Coherencia solicitud = 75; Alerta fraude = Inactiva (false).
-   - **Cálculo:** 0.40 * 75 + 0.40 * 75 + 0.20 * 75 = **75.0 puntos**.
-   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'puntaje_bajo_umbral'` (todas las señales cumplen mínimos [75>70, 75>70, 75>60], pero el puntaje de 75 no alcanza el umbral ≥ 90).
+   - **Cálculo:** 0.40 * 75 + 0.40 * 75 + 0.20 * 75 = 30.0 + 30.0 + 15.0 = **75.0 puntos**.
+   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'puntaje_bajo_umbral'`, `riesgoAltoRechazo: false` (todas las señales cumplen mínimos [75>70, 75>70, 75>60], puntaje 75 ≥ 60 pero 75 < 90; deriva a revisión sin alerta de riesgo alto).
+6. **Caso 6 (`CASO-MED-006` — Derivación con Riesgo Alto por Puntaje Crítico con Una Sola Señal Bajo Mínimo):**
+   - **Prestación:** Reembolso de exámenes complejos con documentación ilegible (95.000 CLP).
+   - **Evidencia ficticia:** `examen_complejo_006.pdf`.
+   - **Señales:** Autenticidad documentos = 0 (mínimo 70); Cruce fuentes = 70 (cumple mínimo 70); Coherencia solicitud = 60 (cumple mínimo 60); Alerta fraude = Inactiva (false).
+   - **Cálculo:** 0.40 * 0 + 0.40 * 70 + 0.20 * 60 = 0.0 + 28.0 + 12.0 = **40.0 puntos**.
+   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'`, `riesgoAltoRechazo: true` (deriva por autenticidad 0 < 70; activa advertencia de riesgo alto estrictamente por puntaje global crítico [40.0 < umbralRiesgoAlto de 60], demostrando que una sola señal bajo mínimo con puntaje < 60 activa la advertencia).
+7. **Prueba Unitaria Directa Complementaria (Aislando Regla de Dos Señales Bajo Mínimo con Puntaje Alto):**
+   - **Ámbito:** Prueba unitaria en `tests/unit/engine.test.ts` (no requiere caso adicional en `data/`).
+   - **Señales:** Autenticidad documentos = 65 (mínimo 70); Cruce fuentes = 65 (mínimo 70); Coherencia solicitud = 100 (cumple mínimo 60); Alerta fraude = Inactiva (false).
+   - **Cálculo:** 0.40 * 65 + 0.40 * 65 + 0.20 * 100 = 26.0 + 26.0 + 20.0 = **72.0 puntos**.
+   - **Resultado esperado:** `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'`, `riesgoAltoRechazo: true`.
+   - **Objetivo de verificación:** Aísla de forma independiente la condición de "al menos dos señales bajo su mínimo" (conteo = 2 >= 2), verificando que activa `riesgoAltoRechazo = true` a pesar de que el puntaje global (72.0) supera holgadamente el `umbralRiesgoAlto` (60).
 
-> **Nota técnica y matemática sobre la imposibilidad de puntaje < 60 sin señales bajo mínimo:**  
-> Con los umbrales mínimos asumidos (Autenticidad = 70, Cruce = 70, Coherencia = 60) y las ponderaciones vigentes (0.40, 0.40, 0.20), el puntaje mínimo alcanzable cuando ninguna señal está bajo su mínimo es exactamente 68 puntos (0.40 * 70 + 0.40 * 70 + 0.20 * 60 = 28 + 28 + 12 = 68). Por lo tanto, un caso con "puntaje < 60 sin señales bajo su mínimo" es matemáticamente imposible: cualquier caso con puntaje < 60 tiene forzosamente al menos una señal bajo su mínimo. Debido a la regla de precedencia estricta (`alerta_fraude` > `senal_bajo_minimo` > `puntaje_bajo_umbral`), todo caso con puntaje < 60 recibe el motivo `'senal_bajo_minimo'` (o `'alerta_fraude'`), y nunca `'puntaje_bajo_umbral'`.
+> **Nota técnica y matemática sobre el papel del umbral 60 (`umbralRiesgoAlto`):**  
+> Con los umbrales mínimos asumidos (Autenticidad = 70, Cruce = 70, Coherencia = 60) y las ponderaciones vigentes (0.40, 0.40, 0.20), el puntaje mínimo alcanzable cuando ninguna señal está bajo su mínimo es exactamente 68 puntos (0.40 * 70 + 0.40 * 70 + 0.20 * 60 = 28 + 28 + 12 = 68). Por lo tanto, cualquier caso con puntaje < 60 presenta forzosamente al menos una señal bajo su mínimo propio. En virtud de **DEC-E2-10**, el valor 60 no se retira, sino que se consagra operativamente como **`umbralRiesgoAlto`**: no genera rechazo automático (prohibido por DEC-08 / ENT6), sino que activa la bandera informativa `riesgoAltoRechazo: true` para advertir al operador humano en la bandeja de revisión asistida.
 
 ---
 
@@ -254,36 +344,56 @@ Antes de invocar comandos de generación de Spec Kit, el equipo ejecuta los sigu
 ### 2.f Instalación y Verificación de Spec Kit sobre Antigravity
 - **Responsable:** Lester Gonzalez.
 - **Ubicación obligatoria de instalación:** En la **raíz del repositorio** (`/home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm`), NO dentro de `entregable2/`. Antigravity debe abrirse en la raíz para que el agente tenga visibilidad completa de `fases-y-plan-de-trabajo/`, `README.md` y `data/`.
+- **Estado de la instalación:** **REALIZADA EXITOSAMENTE el 12-10-2026 (~23:30 CLT)** en la rama `feat/setup-speckit` (commit `18bbb67`).
+- **Versión oficial instalada de la CLI:** `1.0.2.dev0`, registrada formalmente en `docs/entregable2/specify-version.txt`.
 
-#### Procedimiento Seguro de Inicialización
+#### Procedimiento Ejecutado y Verificación
 ```bash
-# 1. Crear y cambiarse a una rama de setup para proteger main
+# 1. Crear y cambiarse a la rama de setup para proteger main
 git checkout -b feat/setup-speckit
 
-# 2. Verificar opciones de inicialización en el lugar (revisar si la versión instalada soporta --here o .)
-specify init --help
-
-# 3. Inicializar en la raíz del repositorio vinculando la integración de Antigravity ("agy")
-#    (Usar --here o . según lo indicado por specify init --help)
+# 2. Inicializar en la raíz del repositorio vinculando la integración de Antigravity ("agy")
 specify init --here --integration agy
 
-# 4. Registrar versión oficial de la herramienta para la portada del informe (6.2)
+# 3. Registrar versión oficial de la herramienta para trazabilidad e informe (6.2)
 specify version > docs/entregable2/specify-version.txt
 
-# 5. VERIFICACIÓN CRÍTICA: Asegurar que la inicialización no pisó README.md ni archivos de E1
+# 4. Verificación de integridad: se constató que README.md y los archivos de E1 no sufrieron modificaciones
 git status
-# Comprobar que solo se agregaron .specify/ y .agents/skills/
 ```
 
-- **Rutas generadas por la herramienta:** Las ubicaciones exactas de `constitution.md` y de las specs quedan marcadas `[POR VERIFICAR tras el init]` (típicamente `memory/constitution.md` o `.specify/memory/constitution.md`, y `specs/FEAT-001/` o `specs/F5-F4/`).
+#### Artefactos y Rutas Verificadas tras la Inicialización
+1. **Constitución:** Ubicada exactamente en **`.specify/memory/constitution.md`** (copiada automáticamente a partir de la plantilla `.specify/templates/constitution-template.md`, actualmente en estado inicial pendiente de completar con las DEC del equipo).
+2. **Directorio `.specify/`:** Contiene la configuración (`init-options.json`, `integration.json`) y las subcarpetas `.specify/memory/`, `.specify/scripts/bash/`, `.specify/templates/`, `.specify/workflows/` e `.specify/integrations/`.
+3. **Skills instaladas en `.agents/skills/` (10 skills operativas):**
+   - `/speckit-constitution`: Creación y actualización de la constitución del proyecto.
+   - `/speckit-specify`: Creación de la especificación técnica ejecutable.
+   - `/speckit-clarify`: Sesión estructurada de clarificación con el cliente.
+   - `/speckit-checklist`: Generación de listas de chequeo de calidad.
+   - `/speckit-plan`: Planificación técnica, arquitectura y contratos de datos.
+   - `/speckit-tasks`: Desglose de tareas atómicas y ordenamiento de dependencias.
+   - `/speckit-analyze`: Auditoría no destructiva de consistencia cruzada entre artefactos.
+   - `/speckit-implement`: Ejecución de la implementación guiada por tareas y tests.
+   - `/speckit-converge`: Evaluación del estado del código contra la spec y adición de tareas pendientes.
+   - `/speckit-taskstoissues`: Conversión de tareas a GitHub Issues para seguimiento.
+4. **Carpeta de specs:** Actualmente **no existe**. La ruta exacta donde se alojarán los artefactos de especificación queda marcada como **`[POR VERIFICAR tras /speckit-specify]`**, ya que será generada dinámicamente al correr el comando de especificación.
+
+#### Habilidades Adicionales y Gobernanza de Issues
+- **Uso de `/speckit-converge`:** Disponible en esta versión para auditar el estado del código contra la spec y generar tareas para trabajo faltante.
+- **Uso de `/speckit-taskstoissues`:** Quien ejecute `/speckit-taskstoissues` debe **revisar minuciosamente el borrador de issues antes de aceptar su publicación remota** en GitHub. El equipo decidirá si se utiliza para la gestión del sprint; queda `[POR VERIFICAR]` qué permisos de API o token de GitHub (`GITHUB_TOKEN` o autenticación CLI `gh`) requiere en el entorno local.
+
+> ⚠️ **ADVERTENCIA DE SEGURIDAD CRÍTICA DE SPEC KIT:**  
+> El directorio `.agents/` puede almacenar datos temporales, cachés o credenciales locales del entorno de desarrollo. Por directriz de seguridad estricta, **únicamente debe versionarse en git el subdirectorio `.agents/skills/`** (y sus archivos `SKILL.md`). El resto de archivos dentro de `.agents/` no debe incluirse en commits.
+
 - **Principio no negociable a registrar en la constitución:** Los artefactos de la Entrega 1 (`fases-y-plan-de-trabajo/`) son de solo lectura histórica; ningún comando de Spec Kit puede modificarlos directamente. Cualquier cambio o resolución se formaliza mediante una nueva ficha DEC en `docs/entregable2/decisiones/`.
+- **Principio rector del motor de decisión en la constitución (§2.f / §3.1 / DEC-08 / DEC-E2-10):** *"El sistema nunca rechaza automáticamente un caso; el máximo efecto es derivarlo, con advertencia de riesgo alto cuando corresponda"*.
 
 ---
 
 ### 2.g Ruta de Onboarding Técnico para Jorge Alvarez
 - **Responsable:** Jorge Alvarez (tutelado por Lester Gonzalez y Rodrigo Guerrero).
 - **Tiempo estimado:** 4 horas y 30 minutos (ejecutado durante la tarde del lunes 12 de octubre).
-- **Ruta:** Dominio MIRA (45 min) → Caso de uso UC-01 (60 min) → Requisitos F5/F4 y pruebas PF-015/018/020/021/033 (60 min) → DEC-01, DEC-06, DEC-08, DEC-E2-06 (45 min) → Cuestionario de validación con Rodrigo y Lester (60 min).
+- **Ruta:** Dominio MIRA (45 min) → Caso de uso UC-01 (60 min) → Requisitos F5/F4 y pruebas PF-015/018/020/021/033 (60 min) → DEC-01, DEC-06, DEC-08, DEC-E2-06, DEC-E2-10 (45 min) → Cuestionario de validación con Rodrigo y Lester (60 min).
 
 ---
 
@@ -292,24 +402,30 @@ git status
 ### 3.1 Matriz Operativa de Fases SDD
 | Fase | Comando / Skill | Conductor | Insumos desde Entrega 1 | Artefacto Generado y Ruta | Condición Específica de la Pauta | 👤 Revisión Humana Obligatoria | Criterio Objetivo de Término |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **0. Constitución** | `/speckit-constitution` | Humano (Lester ejecuta, Angel custodia) | `DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`. | `constitution.md` `[POR VERIFICAR ruta tras init]` | Incorporar como principios las DEC de E1 que aplican. Prohibir mock de datos en producción y tests circulares. Artefactos E1 de solo lectura. | 👤 Revisión del equipo completo. | Archivo validado y commiteado en rama de setup. |
-| **1. Especificación** | `/speckit-specify` | Humano (el equipo redacta) | `UC-01`, `RQF-040`, `RQF-041`, `RQF-020`, `RQF-023`, `RQF-039`, `data/casos_prueba.json`. | `specs/.../spec.md` `[POR VERIFICAR ruta tras init]` | Requisitos conservan IDs de E1 (`RQF-xxx`). Se fija en la spec que el umbral de aprobación automática es ≥ 90 como decisión del equipo (formalizando el "sobre noventa" de ENT4 [00:11:06]). Cero mención a tecnologías. | 👤 Validación por Representante del Cliente (Rodrigo). | Spec con criterios `AC-1` a `AC-6` y sección `[NEEDS CLARIFICATION]`. |
-| **2. Aclaración** | `/speckit-clarify` | Humano (Rodrigo responde como cliente) | Entrevistas ENT1..ENT9, `inconsistencias-revisadas.md`, supuestos de señales. | `spec.md` actualizado + `docs/entregable2/clarificaciones.md` | Toda duda se responde con fuente de E1 o se declara y registra como supuesto del equipo. | 👤 Rodrigo responde; Jorge y Lester auditan que no asuma soluciones técnicas. | Cero marcas `[NEEDS CLARIFICATION]` pendientes. |
-| **3. Plan Técnico** | `/speckit-plan` | Agente propone, Humano corrige | `spec.md`, `modelo_dominio.json`, `RQNF-002`/`003` (reproducibilidad), `DEC-E2-05`. | `plan.md`, `data-model.md`, `research.md` | Declara qué RQNF atiende (reproducibilidad H-14) y cómo se verifica. Define contrato TypeScript `src/shared/types.ts`. | 👤 **COMPUERTA CRÍTICA:** Revisión exhaustiva de arquitectura de datos y contratos antes de tareas. | Plan aprobado por Rodrigo y Jorge; contrato F5↔F4 formalizado. |
-| **4. Tareas** | `/speckit-tasks` | Agente genera, Humano refina | `plan.md`, `spec.md`, `backlog.md` (`HU-xxx`). | `tasks.md` | Cada tarea referencia al menos un `RQF-xxx` y un `AC-N`. Tareas atómicas de <2 horas. | 👤 Lester y Rodrigo revisan orden de dependencias. | `tasks.md` ordenado por fases lógicas. |
-| **5. Análisis Consistencia** | `/speckit-analyze` (o Plan B prompt) | Agente audita, Humano evalúa | `constitution.md`, `spec.md`, `plan.md`, `tasks.md`. | `docs/entregable2/reporte-analisis-consistencia.md` | Reporte formal de coherencia entre artefactos. Si no está en agy, usar prompt propio y adjuntar. | 👤 Angel y Lester revisan discrepancias y corrigen spec o tareas. | Reporte sin inconsistencias críticas. |
-| **6. Implementación** | `/speckit-implement` | Agente propone código, Humano prueba y commitea | `tasks.md`, `plan.md`, suites de pruebas. | `src/` (backend, frontend) y `tests/` | Un commit por tarea. Dos estados de salida (`APROBADO_AUTOMATICO` / `DERIVADO_REVISION`). Comentarios de trazabilidad obligatorios. | 👤 **COMPUERTA DEL DIFF:** El humano corre tests, revisa diff y commitea. | 100% de tests unitarios, E2E y reproducibilidad pasando (`PASS`). |
+| **0. Constitución** | `/speckit-constitution` | Humano (Lester ejecuta, Angel custodia) | `DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`, `DEC-E2-10`. | `.specify/memory/constitution.md` (ruta verificada; copiada de plantilla, pendiente de completar) | Incorporar como principios las DEC de E1 que aplican. Prohibir mock de datos en producción y tests circulares. Artefactos E1 de solo lectura. Registrar principio rector: *"El sistema nunca rechaza automáticamente un caso; el máximo efecto es derivarlo, con advertencia de riesgo alto cuando corresponda"*. | 👤 Revisión del equipo completo. | Archivo validado y commiteado en rama de setup. |
+| **1. Especificación** | `/speckit-specify` | Humano (el equipo redacta) | `UC-01`, `RQF-040 [fase5-lester]`, `RQF-041 [fase5-lester]`, `RQF-020 [fase5-lester]`, `RQF-023 [fase5-lester]`, `RQF-039 [fase5-lester]`, `data/casos_prueba.json`. | `spec.md` (en carpeta de specs `[POR VERIFICAR ruta tras /speckit-specify]`) | Una sola spec consolidada para F5 y F4 (DEC-E2-10(c)). Requisitos citan archivo fuente (`RQF-xxx [fase5-lester]`) y RQF-Bxx de referencia cruzada. Se fija en la spec que el umbral de aprobación automática es ≥ 90 (DEC-01 / ENT4 [00:11:06]) y umbral de riesgo alto es 60 (DEC-E2-10). Cero mención a tecnologías. | 👤 Validación por Rodrigo Guerrero (representante del cliente en la E2). | Spec con criterios `AC-1` a `AC-6` y sección `[NEEDS CLARIFICATION]`. |
+| **2. Aclaración** | `/speckit-clarify` | Humano (Rodrigo Guerrero (representante del cliente en la E2) responde como cliente) | Entrevistas ENT1..ENT9, `inconsistencias-revisadas.md`, supuestos de señales. | `spec.md` actualizado + `docs/entregable2/clarificaciones.md` | Toda duda se responde con fuente de E1 o se declara y registra como supuesto del equipo. Rodrigo confirma o ajusta mínimos 70/70/60 y pesos 0,40/0,40/0,20. | 👤 Rodrigo responde; Jorge y Lester auditan que no asuma soluciones técnicas. | Cero marcas `[NEEDS CLARIFICATION]` pendientes. |
+| **3. Plan Técnico** | `/speckit-plan` | Agente propone, Humano corrige | `spec.md`, `modelo_dominio.json`, `RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]` (reproducibilidad), `DEC-E2-05`, `DEC-E2-10`. | `plan.md`, `data-model.md`, `research.md` | Declara qué RQNF atiende (reproducibilidad H-14) y cómo se verifica. Define contrato TypeScript `src/shared/types.ts` con `umbralRiesgoAlto` y `riesgoAltoRechazo`. | 👤 **COMPUERTA CRÍTICA:** Revisión exhaustiva de arquitectura de datos y contratos antes de tareas. | Plan aprobado por Rodrigo y Jorge; contrato F5↔F4 formalizado. |
+| **4. Tareas** | `/speckit-tasks` | Agente genera, Humano refina | `plan.md`, `spec.md`, `backlog.md` (`HU-xxx`). | `tasks.md` | Cada tarea referencia al menos un `RQF-xxx` y un `AC-N`. Tareas etiquetadas como `[F5]` o `[F4]` (DEC-E2-10(c)). Tareas atómicas de <2 horas. | 👤 Lester y Rodrigo revisan orden de dependencias. | `tasks.md` ordenado por fases lógicas. |
+| **5. Análisis Consistencia** | `/speckit-analyze` (verificada en `.agents/skills/speckit-analyze`) | Agente audita, Humano evalúa | `.specify/memory/constitution.md`, `spec.md`, `plan.md`, `tasks.md`. | `docs/entregable2/reporte-analisis-consistencia.md` | Reporte formal de coherencia entre artefactos. Skills complementarias disponibles: `/speckit-converge` (auditoría de cobertura) y `/speckit-taskstoissues` (conversión opcional a issues previa revisión). | 👤 Angel y Lester revisan discrepancias y corrigen spec o tareas. | Reporte sin inconsistencias críticas. |
+| **6. Implementación** | `/speckit-implement` | Agente propone código, Humano prueba y commitea | `tasks.md`, `plan.md`, suites de pruebas. | `src/` (backend, frontend) y `tests/` | Un commit por tarea. Dos estados de salida (`APROBADO_AUTOMATICO` / `DERIVADO_REVISION`). Advertencia visual de riesgo alto sin usar palabra "rechazado". Comentarios de trazabilidad obligatorios. | 👤 **COMPUERTA DEL DIFF:** El humano corre tests, revisa diff y commitea. | 100% de tests unitarios, E2E y reproducibilidad pasando (`PASS`). |
 
-- **Regla de precedencia estricta del motivo de evaluación (F4):**
-  1. Si `alertaFraudeActiva === true` → `motivo: 'alerta_fraude'` (máxima precedencia, MIRA §3 / DEC-E2-06).
-  2. Si alguna señal individual < mínimo propio → `motivo: 'senal_bajo_minimo'` (precedencia sobre puntaje global, H-05 / D-07).
-  3. Si puntaje global < umbralAprobacion (≥ 90) → `motivo: 'puntaje_bajo_umbral'` (H-01 / DEC-01).
-  4. Si puntaje global ≥ umbralAprobacion (≥ 90) sin señales bajo mínimo ni alerta de fraude → `decision: 'APROBADO_AUTOMATICO'`, `motivo: 'aprobado'`.
+- **Regla de precedencia estricta del orden de evaluación (F4):**
+  1. Si `alertaFraudeActiva === true` → `decision: 'DERIVADO_REVISION'`, `motivo: 'alerta_fraude'` (máxima precedencia, MIRA §3 / DEC-E2-06).
+  2. Si alguna señal individual < mínimo propio → `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'` (precedencia sobre puntaje global, H-05 / D-07).
+  3. Si puntaje global ≥ umbralAprobacion (≥ 90) sin señales bajo mínimo ni alerta de fraude → `decision: 'APROBADO_AUTOMATICO'`, `motivo: 'aprobado'` (H-01 / DEC-01).
+  4. En cualquier otro caso (puntaje global < umbralAprobacion sin fraude ni señales bajo mínimo) → `decision: 'DERIVADO_REVISION'`, `motivo: 'puntaje_bajo_umbral'`.
 
-### 3.2 Pregunta Crítica para la Fase de Aclaración (`clarify`)
+- **Regla independiente de cálculo de riesgo alto de rechazo (`riesgoAltoRechazo: boolean`):**
+  - Se evalúa con posterioridad a las reglas de decisión anteriores y **no altera el resultado** (`decision`), preservando el principio constitucional de no rechazar automáticamente.
+  - `riesgoAltoRechazo = (cantidad de señales bajo mínimo >= 2) || (scoreGlobal < umbralRiesgoAlto)`.
+  - El parámetro `umbralRiesgoAlto` tiene valor por defecto **60** (configurable en F5 y versionado).
+  - En la vista de resultado de F4: si `riesgoAltoRechazo === true`, se despliega una advertencia visual destacada (*"Riesgo alto de rechazo: decide un operador"*). Por mandato normativo y diseño ético (ENT6 [00:04:06]), **nunca se utiliza la palabra "rechazado"** para una decisión emanada del sistema.
+
+### 3.2 Pregunta Crítica de la Fase de Aclaración (`clarify`) — Resuelta por el Equipo (DEC-E2-10)
 - **Pregunta:** *¿Qué papel operativo cumple el umbral de 60 puntos ahora que la decisión `DEC-08` / `H-08` eliminó definitivamente el rechazo automático bajo 60?*
-- **Análisis previo y respuesta tentativa del equipo:** Con las ponderaciones asumidas (0.40, 0.40, 0.20) y los mínimos individuales (70, 70, 60), el puntaje mínimo alcanzable sin que ninguna señal caiga bajo su mínimo es de 68 puntos (0.40 * 70 + 0.40 * 70 + 0.20 * 60 = 28 + 28 + 12 = 68). Por lo tanto, cualquier caso con puntaje inferior a 60 presenta forzosamente al menos una señal bajo su mínimo propio. Dado que por la regla de precedencia estricta el motivo es siempre `'senal_bajo_minimo'` y que por DEC-08 todo caso derivado va a revisión asistida (sin rechazo automático), el umbral de 60 puntos resulta matemáticamente redundante para la lógica de decisión.
-- **Resolución a confirmar con Rodrigo en `clarify`:** Se propone retirar `umbralRevision = 60` del contrato y del motor de decisión, o conservarlo exclusivamente como etiqueta informativa de severidad visual (*"prioridad alta / riesgo crítico"*) para ordenar la bandeja de trabajo del operador humano.
+- **Análisis previo del equipo:** Con las ponderaciones asumidas (0.40, 0.40, 0.20) y los mínimos individuales (70, 70, 60), el puntaje mínimo alcanzable sin que ninguna señal caiga bajo su mínimo es de 68 puntos (0.40 * 70 + 0.40 * 70 + 0.20 * 60 = 28 + 28 + 12 = 68). Por lo tanto, cualquier caso con puntaje inferior a 60 presenta forzosamente al menos una señal bajo su mínimo propio. Dado que por la regla de precedencia estricta el motivo es siempre `'senal_bajo_minimo'` y que por DEC-08 todo caso derivado va a revisión asistida (sin rechazo automático), el valor 60 no operaba como corte de decisión.
+- **Resolución confirmada por el equipo (13-10-2026, DEC-E2-10):** La pregunta queda formalmente respondida y no se retira el umbral de 60. El valor 60 pasa a denominarse **`umbralRiesgoAlto`** (configurable en F5 y versionado, 60 por defecto). No define un estado de "rechazo automático", sino que activa la bandera informativa `riesgoAltoRechazo: boolean` cuando el puntaje global es inferior a dicho umbral (o cuando hay al menos dos señales bajo mínimo), alertando al operador en F4 (*"Riesgo alto de rechazo: decide un operador"*). Se elimina toda propuesta anterior de retirar este umbral. Rodrigo Guerrero (representante del cliente en la E2) confirma o ajusta este comportamiento en `/speckit-clarify`.
 
 ---
 
@@ -318,15 +434,15 @@ git status
 ### 4.1 Catálogo de Decisiones de Diseño y Responsabilidades
 | # | Decisión Técnica | Opciones Consideradas | Hallazgo / Requisito Vinculado | Quién Propone | 👤 Quién Decide |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **D-01** | **Estructura de Persistencia (SQLite)** | (a) Monolítico sin tipar.<br>(b) Relacional con tablas `flujos`, `umbrales`, `casos`, `senales` y `auditoria_cambios`. | `modelo_dominio.json`, `RQF-039`, `RQNF-008`. | Rodrigo (Backend) | 👤 Rodrigo + Jorge |
-| **D-02** | **Simulación del Motor y Señales** | (a) Generador pseudo-aleatorio.<br>(b) Carga estática determinista desde `data/casos_prueba.json` respaldada en SQLite. | §4.3 pauta (motor no se construye, casos fijos). | Lester (QA) | 👤 Rodrigo (Representante) |
-| **D-03** | **Versionado de Umbrales (F5)** | (a) Sobrescritura directa.<br>(b) Histórico inmutable con estado `BORRADOR` / `APROBADO`, timestamp y usuario. | `RQF-039`, `DEC-01`. | Rodrigo (Backend) | 👤 Angel (audita trazabilidad) |
-| **D-04** | **Autenticación Simulada (H-06)** | (a) Sin login.<br>(b) Selector desplegable de rol activo en barra superior (*Diseñador*, *Operador*, y roles simulados *Riesgo* `[SUPUESTO del equipo]` y *Auditor* `[SUPUESTO del equipo]`). MIRA §2.13 y RQF-051 definen formalmente *Operador*, *Diseñador*, *Consultor* y *Administrador*. | `H-06` (SSO obligatorio; simulado para demo), MIRA §2.13. | Jorge (Frontend) | 👤 Rodrigo (Representante) |
+| **D-01** | **Estructura de Persistencia (SQLite)** | (a) Monolítico sin tipar.<br>(b) Relacional con tablas `flujos`, `umbrales`, `casos`, `senales` y `auditoria_cambios`. | `modelo_dominio.json`, `RQF-039 [fase5-lester]`, `RQNF-008`. | Rodrigo (Backend) | 👤 Rodrigo + Jorge |
+| **D-02** | **Simulación del Motor y Señales** | (a) Generador pseudo-aleatorio.<br>(b) Carga estática determinista desde `data/casos_prueba.json` respaldada en SQLite. | §4.3 pauta (motor no se construye, casos fijos). | Lester (QA) | 👤 Rodrigo Guerrero (representante del cliente en la E2) |
+| **D-03** | **Versionado de Umbrales (F5)** | (a) Sobrescritura directa.<br>(b) Histórico inmutable con estado `BORRADOR` / `APROBADO`, timestamp y usuario. | `RQF-039 [fase5-lester]`, `DEC-01`. | Rodrigo (Backend) | 👤 Angel (audita trazabilidad) |
+| **D-04** | **Autenticación Simulada (H-06) y Flujo de Aprobación de Umbrales** | (a) Sin login.<br>(b) Selector desplegable de rol y usuario activo. **Flujo de aprobación acordado (DEC-E2-10(d)):** Un usuario con rol *Diseñador* propone el cambio de umbrales/mínimos/pesos, y un usuario con rol *Administrador* distinto lo aprueba (quien propone nunca aprueba). Esta regla cubre armónicamente MIRA §2.13 (que asigna el diseño de flujos al Diseñador), ENT6 [00:21:16] y la intención de la prueba `PF-033` (que exige dos aprobaciones separadas, redactada literalmente como "administrador"). Se documenta la diferencia con la redacción literal de PF-033 y se cierra el punto pendiente de rol. Selector incluye al menos: `Diseñador 1`, `Diseñador 2`, `Administrador 1`, `Administrador 2`, `Operador 1`, y roles simulados `Riesgo` y `Auditor` `[SUPUESTO del equipo]`. | `H-06`, MIRA §2.13, `PF-033`, `RQF-039 [fase5-lester]`, ENT6 [00:21:16], DEC-E2-10. | Jorge (Frontend) | 👤 Rodrigo Guerrero (representante del cliente en la E2) (CERRADA) |
 | **D-05** | **Inmutabilidad de Auditoría** | (a) Archivo plano `.txt`.<br>(b) Tabla SQLite `rastro_auditoria` append-only bloqueada a `UPDATE`/`DELETE` con triggers. | `H-12`, `RQNF-008`. | Rodrigo (Backend) | 👤 Lester (QA) |
 | **D-06** | **Estrategia de Pruebas E2E y Reproducibilidad** | (a) Pruebas manuales en video.<br>(b) Suite Playwright para E2E y test de reproducibilidad determinista al 100% sobre versiones guardadas (H-14). | §6.5 pauta, `H-14`, `DEC-14`. | Lester (QA) | 👤 Lester |
-| **D-07** | **Mínimos por Señal (H-05)** | Mínimos fijados como supuestos unificados del equipo alineados con MIRA §2.6: Autenticidad = 70 `[SUPUESTO del equipo]`, Cruce de fuentes = 70 `[SUPUESTO del equipo]`, Coherencia = 60 `[SUPUESTO del equipo]`. | `H-05` (decisión abierta con cliente). | Jorge / Rodrigo | 👤 Rodrigo (Representante) |
-| **D-08** | **Fórmula de Agregación y Ponderaciones del Puntaje** | Promedio ponderado determinista: 0.40 * Autenticidad + 0.40 * CruceFuentes + 0.20 * Coherencia [SUPUESTO del equipo]. | `RQF-043` (`final-final.md`), F4. | Rodrigo (Backend) | 👤 Rodrigo + Jorge |
-| **D-09** | **Alcance de la Especificación en Spec Kit** | (a) Una sola spec consolidada para F5 y F4.<br>(b) Dos specs separadas (`FEAT-001-F5` y `FEAT-002-F4`). | Gestión de cuota de Antigravity y aislamiento de tareas. | Angel (Informe) | 👤 Rodrigo + Lester |
+| **D-07** | **Mínimos por Señal (H-05)** | Mínimos fijados como supuestos unificados del equipo: Autenticidad = 70 `[SUPUESTO del equipo]`, Cruce de fuentes = 70 `[SUPUESTO del equipo]`, Coherencia = 60 `[SUPUESTO del equipo]`. MIRA §2.6 señala que están pendientes de definir con área de riesgo y ENT3 [00:21:47] (VERIFICADO; fuente: MIRA docx, Sebastián: *"mínimos por señal… aunque nadie ha definido cuáles son"*). Son modificables en F5 bajo el flujo Diseñador propone / Administrador aprueba y quedan versionados. Regla de validación: cada mínimo debe estar estrictamente entre 0 y 100. Rodrigo Guerrero (representante del cliente en la E2) los confirma o ajusta en `/speckit-clarify`. | `H-05`, MIRA §2.6, ENT3 [00:21:47] (VERIFICADO), DEC-E2-10. | Jorge / Rodrigo | 👤 Rodrigo Guerrero (representante del cliente en la E2) |
+| **D-08** | **Fórmula de Agregación y Ponderaciones del Puntaje** | Promedio ponderado determinista: 0.40 * Autenticidad + 0.40 * CruceFuentes + 0.20 * Coherencia `[SUPUESTO del equipo]`. MIRA §2.6 no provee fórmula explícita. Modificables en F5 y versionados bajo el flujo Diseñador propone / Administrador aprueba. Reglas de validación: la suma de los tres pesos debe ser exactamente 1.00 (100%), y cada peso individual debe estar entre 0.00 y 1.00. Rodrigo Guerrero (representante del cliente en la E2) los confirma o ajusta en `/speckit-clarify`. | `RQF-043` (`final-final.md`), MIRA §2.6, F4, DEC-E2-10. | Rodrigo (Backend) | 👤 Rodrigo + Jorge |
+| **D-09** | **Alcance de la Especificación en Spec Kit** | (a) Una sola spec consolidada para F5 y F4.<br>(b) Dos specs separadas.<br>**Resolución (DEC-E2-10(c)):** Se aprueba la opción (a): **una sola spec consolidada para F5 y F4**, con las tareas en `tasks.md` etiquetadas explícitamente como `[F5]` o `[F4]` para mantener trazabilidad y control de avance. Cierra D-09. | Gestión de cuota de Antigravity, acoplamiento de contratos y DEC-E2-10. | Angel (Informe) | 👤 Rodrigo + Lester (CERRADA) |
 
 ### 4.2 Protocolo para Decisiones No Declaradas del Agente
 Toda propuesta del agente que agregue campos, rutas o reglas no solicitadas en `spec.md` será vetada de inmediato en la inspección del diff. Si afecta la lógica de negocio, se eleva a Rodrigo y se registra en `docs/entregable2/decisiones-agente-rechazadas.md`.
@@ -338,8 +454,8 @@ Toda propuesta del agente que agregue campos, rutas o reglas no solicitadas en `
 ### 5.1 Frentes de Responsabilidad y Dueños de Artefactos
 - **Frente 1: Backend y Motor de Reglas (Rodrigo Guerrero):** Código en `src/backend/`, lógica de F5/F4, Representante del Cliente en fases SDD y aceptación.
 - **Frente 2: Frontend y Experiencia de Usuario (Jorge Alvarez):** Código en `src/frontend/`, componentes React de F5/F4 en español, capturas de interfaz.
-- **Frente 3: Testing y Aseguramiento de Calidad (Lester Gonzalez):** Setup inicial de Spec Kit en raíz, tests en `tests/` (Vitest, Playwright, reproducibilidad determinista), análisis de consistencia.
-- **Frente 4: Informe, Trazabilidad y Gobernanza SDD (Angel Salgado):** Informe PDF (6.1 a 6.8), matriz de trazabilidad, log de prompts, bitácora DEC, diapositivas PPT.
+- **Frente 3: Testing y Aseguramiento de Calidad (Lester Gonzalez):** Setup inicial de Spec Kit en raíz (realizado 12-10-2026 v1.0.2.dev0 en rama `feat/setup-speckit`), custodia técnica de `.specify/` y `.agents/skills/`, tests en `tests/` (Vitest, Playwright, reproducibilidad determinista), análisis de consistencia.
+- **Frente 4: Informe, Trazabilidad y Gobernanza SDD (Angel Salgado):** Informe PDF (6.1 a 6.8), matriz de trazabilidad, log de prompts, bitácora DEC, custodia de `.specify/memory/constitution.md`, diapositivas PPT.
 
 ### 5.2 Contrato de Datos Temprano F5 ↔ F4 (`src/shared/types.ts`)
 Congelado el **Martes 13 de Octubre (Día 1 de desarrollo)** para desacoplar el trabajo de interfaz y backend:
@@ -350,6 +466,7 @@ export interface UmbralesFlujo {
   idFlujo: string;
   version: number;
   umbralAprobacion: number;    // Por defecto 90 (DEC-01: umbral >= 90)
+  umbralRiesgoAlto: number;    // Por defecto 60 (DEC-E2-10: activa advertencia riesgoAltoRechazo si score < umbralRiesgoAlto)
   minimoAutenticidad: number;  // H-05 / MIRA §2.6 (supuesto equipo: 70) [SUPUESTO del equipo]
   minimoCruceFuentes: number;  // H-05 / MIRA §2.6 (supuesto equipo: 70) [SUPUESTO del equipo]
   minimoCoherencia: number;    // H-05 / MIRA §2.6 (supuesto equipo: 60) [SUPUESTO del equipo]
@@ -371,9 +488,10 @@ export interface SenalesCaso {
 export interface ResultadoEvaluacion {
   idCaso: string;
   scoreGlobal: number;
-  decision: 'APROBADO_AUTOMATICO' | 'DERIVADO_REVISION'; // Únicamente dos estados
+  decision: 'APROBADO_AUTOMATICO' | 'DERIVADO_REVISION'; // Únicamente dos estados (DEC-08 / DEC-E2-10)
   // Precedencia estricta de motivo: alerta_fraude > senal_bajo_minimo > puntaje_bajo_umbral (o 'aprobado' si >= 90)
   motivo: 'aprobado' | 'alerta_fraude' | 'senal_bajo_minimo' | 'puntaje_bajo_umbral';
+  riesgoAltoRechazo: boolean; // DEC-E2-10: true si >= 2 señales bajo mínimo O scoreGlobal < umbralRiesgoAlto (no cambia decision)
   senalesBajoMinimo: string[];
   desgloseComponentes: {
     autenticidad: number;
@@ -393,10 +511,10 @@ export interface ResultadoEvaluacion {
 - PRs Documentación/Spec (Angel) → Revisa Rodrigo y Lester.
 
 ### 5.4 Gestión de Cuotas de Antigravity
-- **Lester:** Ejecuta `specify init` en raíz, `/speckit-constitution` y el análisis de consistencia.
+- **Lester:** Ejecuta `specify init` en raíz (completado el 12-10-2026 v1.0.2.dev0), `/speckit-constitution` (en `.specify/memory/constitution.md`) y el análisis de consistencia (`/speckit-analyze`).
 - **Rodrigo:** Ejecuta sesiones de generación backend.
 - **Jorge:** Ejecuta sesiones de generación frontend.
-- **Angel:** Custodia la gobernanza de `constitution.md`, ejecuta prompts de auditoría documental y comparativa E1.
+- **Angel:** Custodia la gobernanza de `.specify/memory/constitution.md`, ejecuta prompts de auditoría documental y comparativa E1.
 
 ### 5.5 Matriz RACI
 | Actividad / Entregable | Rodrigo (Backend / Cliente) | Jorge (Frontend) | Lester (QA / Testing) | Angel (Informe / Trazab.) |
@@ -405,8 +523,8 @@ export interface ResultadoEvaluacion {
 | Exportar `backlog.md` desde GitHub Projects | I | I | **R / A** | C |
 | Preparar datos de prueba ficticios | **R / A** | C | C | I |
 | Onboarding técnico de Jorge | C | **R / A** | C | I |
-| Inicialización Spec Kit en raíz (`agy`) | I | I | **R / A** | I |
-| Redacción y custodia de `constitution.md` | C | C | **R** (ejecuta) | **A** (custodia) |
+| Inicialización Spec Kit en raíz (`agy` v1.0.2.dev0) | I | I | **R / A** (completado) | I |
+| Redacción y custodia de `.specify/memory/constitution.md` | C | C | **R** (ejecuta) | **A** (custodia) |
 | Redacción de `spec.md` | **A** | C | C | **R** |
 | Sesión de Aclaración (`clarify`) | **R / A** | C | C | I |
 | Plan Técnico (`plan.md`) y Contrato de Datos | **R / A** | **R** | C | I |
@@ -425,72 +543,71 @@ export interface ResultadoEvaluacion {
 
 ## 6. Calendario Día por Día (12 al 19 de Octubre de 2026)
 
-Cronograma operativo recalculado a partir de hoy **lunes 12 de octubre a las 16:30 CLT**:
+Cronograma operativo recalculado a partir de hoy **martes 13 de octubre de 2026** (fecha de confirmación de acuerdos de diseño):
 
 ```
-Lun 12 (16:30+): Setup Spec Kit en raíz, Constitution, Onboarding Jorge
-Mar 13:          Specify F5+F4, Contrato Datos src/shared/types.ts, Clarify
-Mié 14:          Plan Técnico, Tasks, Análisis de Consistencia, Arranque Código
-Jue 15:          Sprint Implementación Backend (F5/F4) + Frontend (F5/F4)
-Vie 16:          Integración, E2E Playwright, Test Reproducibilidad (H-14)
-Sáb 17:          Usabilidad Externa, Sesión Aceptación Cliente, Redacción Informe
-Dom 18:          CONGELAMIENTO (18:00), Tag v2.0, Check README (<15m), PPT
-Lun 19:          Ensayo Demo (v2.0), Entrega 14:00 CLT, Exposición Oral
+Lun 12 (~23:30): Setup Spec Kit en raíz REALIZADO (v1.0.2.dev0 en feat/setup-speckit)
+Mar 13:          Acuerdos DEC-E2-10, Constitución, Specify F5+F4 (spec única), Contrato Types, Clarify
+Mié 14 a Vie 16: Sprint de Implementación (Miércoles a Viernes): Backend, Frontend, Tests, Integración y E2E
+Sáb 17:          Prueba Usabilidad con Integrante de Otro Equipo y Sesión Formal de Aceptación con Rodrigo Guerrero (representante del cliente en la E2)
+Dom 18:          CONGELAMIENTO TOTAL (18:00 CLT), Tag v2.0, Check README (<15m), Cierre Informe PDF y PPT
+Lun 19:          Ensayo Demo (v2.0), Entrega 14:00 CLT, Exposición Oral [POR CONFIRMAR en clase]
 ```
 
 ### 6.1 Detalle Diario de Tareas
-- **Lunes 12 de Octubre (Día 0 — Setup y Arranque SDD, desde 16:30 CLT):**
-  - [ ] Lester inicializa Spec Kit en la raíz en rama `feat/setup-speckit` (`specify init --here --integration agy`). Verifica que `README.md` y archivos de E1 no fueron tocados.
-  - [ ] Lester ejecuta `/speckit-constitution`. Se incorporan las DEC críticas que rigen la constitución (`DEC-01`, `DEC-05`, `DEC-06`, `DEC-08`, `DEC-12`, `DEC-14`, `DEC-E2-06`).
-  - [ ] En paralelo, Angel y Lester avanzan en el resto de fichas DEC y en la exportación de `docs/entregable2/backlog.md`.
-  - [ ] Jorge completa la lectura guiada de onboarding (4,5 hrs).
-- **Martes 13 de Octubre (Día 1 — Especificación, Contrato y Clarificación):**
-  - [ ] Redactar `/speckit-specify` para F5 y F4 con los 5 casos de prueba de gastos médicos.
-  - [ ] Rodrigo y Jorge definen y commitean `src/shared/types.ts`.
-  - [ ] Ejecutar `/speckit-clarify` con Rodrigo (resolver supuesto H-05 y confirmar función del umbral 60).
-- **Miércoles 14 de Octubre (Día 2 — Planificación, Consistencia y Arranque):**
-  - [ ] Ejecutar `/speckit-plan` (arquitectura SQLite, Express, React, declaración de reproducibilidad).
-  - [ ] 👤 **Revisión humana del plan técnico.**
-  - [ ] Ejecutar `/speckit-tasks` y auditoría de consistencia (`/speckit-analyze` o Plan B).
-  - [ ] Rodrigo arranca endpoints base; Jorge arranca vistas con mocks.
-- **Jueves 15 de Octubre (Día 3 — Sprint de Implementación y Tests Unitarios):**
-  - [ ] Rodrigo implementa lógica de evaluación determinista de F4 y CRUD de umbrales F5.
-  - [ ] Jorge implementa pantallas de gestión de umbrales (F5) y evaluación de casos (F4).
-  - [ ] Lester implementa tests unitarios y de integración en Vitest + Supertest.
-  - [ ] Angel inicia redacción de secciones 6.2 y 6.3 del informe.
-- **Viernes 16 de Octubre (Día 4 — Integración, E2E y Prueba Extra-funcional):**
-  - [ ] Conectar frontend con backend. Evaluar los 5 casos de prueba en la UI.
-  - [ ] Lester y Jorge ejecutan suite Playwright para recorrido E2E.
-  - [ ] **Lester ejecuta la prueba extra-funcional medible (H-14):** Test automatizado que reevalúa casos pasados con versión histórica de umbrales verificando 100% de reproducibilidad determinista.
-  - [ ] Opcional: Ejecutar k6 para medir línea base exploratoria de latencia (reportar como observación).
-  - [ ] Angel avanza secciones 6.4 y 6.5.
-- **Sábado 17 de Octubre (Día 5 — Usabilidad, Aceptación e Informe Central):**
-  - [ ] Prueba de usabilidad con integrante de otro equipo (registrar en `docs/entregable2/usabilidad.md`).
-  - [ ] 👤 **Sesión formal de aceptación:** Rodrigo evalúa el software contra los `AC-N` en presencia de Lester y Jorge (acta en `docs/entregable2/sesion-aceptacion.md`).
-  - [ ] Angel redacta sección 6.6 (Comparativa con E1) y sección 6.7 (Discusión crítica).
-- **Domingo 18 de Octubre (Día 6 — Congelamiento, Tag `v2.0` y PPT):**
+- **Lunes 12 de Octubre (Día 0 — Setup Inicial Realizado, ~23:30 CLT):**
+  - [x] **Setup Spec Kit en raíz:** Lester inicializó Spec Kit con `specify init --here --integration agy` en la rama `feat/setup-speckit` (CLI v1.0.2.dev0 registrada en `docs/entregable2/specify-version.txt`, commit `18bbb67`). Se verificó que `README.md` y archivos de E1 no sufrieron modificaciones.
+  - [x] Jorge avanza en la lectura guiada de onboarding (4,5 hrs).
+- **Martes 13 de Octubre (Día 1 — Acuerdos de Diseño, Constitución, Especificación y Clarificación):**
+  - [x] **Alineación del equipo y acuerdos de diseño:** Confirmación unánime de `DEC-E2-02`, `DEC-E2-07`, `DEC-E2-08`, `DEC-E2-09` y `DEC-E2-10`. Se formaliza que no se retira el umbral de 60 sino que opera como `umbralRiesgoAlto` activando `riesgoAltoRechazo: boolean` sin rechazo automático (DEC-08).
+  - [ ] **Ejecución de `/speckit-constitution`:** Lester completa `.specify/memory/constitution.md` incorporando los principios rectores de E1 y el mandato: *"El sistema nunca rechaza automáticamente un caso; el máximo efecto es derivarlo, con advertencia de riesgo alto cuando corresponda"*.
+  - [ ] **Redacción de `/speckit-specify` para F5 y F4:** Una sola spec consolidada (DEC-E2-10(c)) con los casos de prueba de gastos médicos (creará la carpeta de specs).
+  - [ ] Rodrigo y Jorge congelan y commitean `src/shared/types.ts` con `umbralRiesgoAlto` y `riesgoAltoRechazo`.
+  - [ ] Ejecutar `/speckit-clarify` con Rodrigo Guerrero (representante del cliente en la E2) (sellando supuestos de mínimos 70/70/60, pesos 0,40/0,40/0,20 y rol en flujo de aprobación).
+  - [ ] Angel y Lester avanzan en la redacción de fichas DEC y exportación de `docs/entregable2/backlog.md`.
+- **Miércoles 14 a Viernes 16 de Octubre (Días 2 a 4 — Sprint de Implementación de Miércoles a Viernes):**
+  - **Miércoles 14 de Octubre (Día 2 — Plan Técnico, Tareas y Arranque):**
+    - [ ] Ejecutar `/speckit-plan` (arquitectura SQLite, Express, React, declaración de reproducibilidad).
+    - [ ] 👤 **Revisión humana del plan técnico (Compuerta Crítica).**
+    - [ ] Ejecutar `/speckit-tasks` (tareas etiquetadas `[F5]` y `[F4]`) y auditoría de consistencia con `/speckit-analyze`.
+    - [ ] Arranque de código: Rodrigo inicializa base de datos SQLite y endpoints base; Jorge estructura layout de componentes React.
+  - **Jueves 15 de Octubre (Día 3 — Implementación Núcleo y Tests Unitarios):**
+    - [ ] Rodrigo implementa lógica de motor determinista de F4 (precedencia estricta de motivo y cálculo de `riesgoAltoRechazo`) y CRUD de umbrales F5 con versionado inmutable.
+    - [ ] Jorge implementa pantallas React en español: configuración de umbrales con flujo Diseñador propone / Administrador aprueba (F5) y evaluación con advertencia visual de riesgo alto sin usar palabra "rechazado" (F4).
+    - [ ] Lester implementa tests unitarios en Vitest: Casos 1 a 6 y prueba directa de dos señales bajo mínimo.
+    - [ ] Angel inicia redacción de secciones 6.2 y 6.3 del informe.
+  - **Viernes 16 de Octubre (Día 4 — Integración, E2E y Prueba Extra-funcional Medible):**
+    - [ ] Conectar frontend con backend. Evaluar la suite de casos de prueba en la interfaz web de punta a punta.
+    - [ ] Lester y Jorge ejecutan suite Playwright para recorrido E2E.
+    - [ ] **Lester ejecuta la prueba extra-funcional medible (H-14):** Test automatizado que reevalúa casos históricos contra versiones de umbrales guardadas, verificando 100% de reproducibilidad determinista.
+    - [ ] Angel avanza secciones 6.4 y 6.5 del informe.
+- **Sábado 17 de Octubre (Día 5 — Prueba de Usabilidad, Sesión de Aceptación con Cliente y Redacción Central):**
+  - [ ] **Prueba de usabilidad con integrante de otro equipo:** Evaluación de usabilidad de la interfaz F5+F4 por un evaluador externo independiente; registro formal en `docs/entregable2/usabilidad.md`.
+  - [ ] 👤 **Sesión formal de aceptación con el cliente:** Rodrigo Guerrero (representante del cliente en la E2) evalúa el software integrado contra los criterios `AC-1` a `AC-6` en presencia de Lester y Jorge como observadores (acta firmada en `docs/entregable2/sesion-aceptacion.md`).
+  - [ ] Angel redacta sección 6.6 (Comparativa con E1: tablas 6.6-A y 6.6-B, indicadores TPR, TIH, IRF) y sección 6.7 (Discusión crítica).
+- **Domingo 18 de Octubre (Día 6 — Congelamiento, Tag `v2.0` y Cierre de Documentación):**
   - [ ] **18:00 CLT: CONGELAMIENTO TOTAL DE CÓDIGO (Code Freeze).**
-  - [ ] Prueba de clonación en máquina limpia: levantar desde el `README.md` en menos de 15 minutos.
+  - [ ] Prueba de clonación en máquina limpia: levantar aplicación desde `README.md` en menos de 15 minutos (requisito crítico de C4).
   - [ ] Subir tag oficial: `git tag -a v2.0 -m "Entrega 2 MIRA Oficial" && git push origin v2.0`.
-  - [ ] Redactar secciones 6.1 (Resumen ejecutivo) y 6.8 (Conclusiones). Compilar PDF final.
-  - [ ] Diseñar diapositivas PPT.
-- **Lunes 19 de Octubre (Día 7 — Entrega y Exposición):**
-  - [ ] 09:00–11:00 CLT: Ensayo cronometrado de la presentación (15 min) y demo corriendo sobre tag `v2.0`.
-  - [ ] 12:00 CLT: Subir informe PDF y PPT.
+  - [ ] Redactar secciones 6.1 (Resumen ejecutivo) y 6.8 (Conclusiones). Compilar PDF final dentro del límite de 11 planas A4.
+  - [ ] Diseñar diapositivas PPT para la presentación oral.
+- **Lunes 19 de Octubre (Día 7 — Ensayo, Entrega y Exposición):**
+  - [ ] 09:00–11:00 CLT: Ensayo cronometrado de la presentación (15 min) y demo corriendo sobre tag `v2.0` con participación de los 4 integrantes.
+  - [ ] 12:00 CLT: Subir informe PDF y diapositivas PPT a la plataforma.
   - [ ] **14:00 CLT: CIERRE DEFINITIVO DE ENTREGA.**
-  - [ ] Defensa oral: `[POR CONFIRMAR fecha y hora]`.
+  - [ ] Exposición oral y demo en vivo: `[POR CONFIRMAR en clase]` (fecha y hora exacta).
 
 ### 6.2 Plan de Contingencia y Política de Recorte Priorizado
-Si se presentan atrasos durante el desarrollo:
-1. **Recorte 1:** Simplificar estilos visuales a CSS funcional limpio.
-2. **Recorte 2:** Reducir la suite E2E a exactamente 1 prueba principal en Playwright (mínimo de pauta).
+Dado que la implementación está concentrada de miércoles a viernes y que el sábado 17 de octubre está fijado para la prueba de usabilidad externa y la sesión de aceptación con Rodrigo Guerrero (representante del cliente en la E2), las compuertas del fin de semana son inamovibles. Si se presentan atrasos durante el sprint de implementación (miércoles a viernes):
+1. **Recorte 1:** Simplificar estilos visuales a CSS funcional limpio sin animaciones accesorias ni micro-interacciones complejas.
+2. **Recorte 2:** Reducir la suite E2E a exactamente 1 prueba principal en Playwright (mínimo exigido por la pauta: flujo continuo de modificar umbral en F5 y evaluar caso derivado en F4).
 - **LO QUE NUNCA SE PUEDE RECORTAR:**
-  - La conexión funcional real entre F5 y F4.
-  - Cumplimiento del `README.md` ejecutable en < 15 minutos (si falla, C4 baja a 3.0 máx).
-  - Los casos de prueba ficticios de gastos médicos.
-  - La prueba extra-funcional medible (reproducibilidad determinista).
-  - La prueba de usabilidad con externo y la sesión de aceptación con cliente.
-  - El límite de extensión por sección en el informe PDF.
+  - La conexión funcional real entre F5 y F4 con persistencia en base de datos SQLite.
+  - La implementación completa de miércoles a viernes que habilita las compuertas del sábado 17: la prueba de usabilidad con un integrante de otro equipo y la sesión formal de aceptación con Rodrigo Guerrero (representante del cliente en la E2).
+  - Cumplimiento del `README.md` ejecutable en < 15 minutos en máquina limpia (si falla, la nota de C4 se topa en 3.0 máx).
+  - Los casos de prueba ficticios de gastos médicos (Casos 1 al 6 y prueba directa de dos señales bajo mínimo).
+  - La prueba extra-funcional medible de reproducibilidad determinista al 100% sobre versiones guardadas (H-14).
+  - El límite de extensión de 11 planas A4 para el cuerpo del informe escrito PDF más anexos.
 
 ---
 
@@ -499,10 +616,16 @@ Si se presentan atrasos durante el desarrollo:
 ### 7.1 Estructura de Carpetas en el Repositorio
 ```
 proyecto-llm/
-├── .specify/                         # Plantillas de Spec Kit
-├── memory/constitution.md            # Principios no negociables [POR VERIFICAR ruta]
-├── specs/FEAT-001/                   # Especificación de F5+F4 [POR VERIFICAR ruta]
+├── .agents/
+│   └── skills/                       # 10 skills de Spec Kit (solo se versiona skills/)
+├── .specify/                         # Configuración, scripts, templates y workflows
+│   ├── memory/
+│   │   └── constitution.md           # Principios no negociables (verificado en .specify/memory/)
+│   ├── scripts/bash/                 # Scripts auxiliares de inicialización y plantillas
+│   └── templates/                    # Plantillas oficiales (constitution, spec, plan, tasks)
+├── specs/                            # Carpeta de specs [POR VERIFICAR ruta tras /speckit-specify]
 ├── docs/entregable2/
+│   ├── specify-version.txt           # Registro oficial CLI v1.0.2.dev0 (12-10-2026)
 │   ├── equivalencias-requisitos.md   # Mapeo de IDs
 │   ├── backlog.md                    # Historias HU-xxx exportadas
 │   ├── clarificaciones.md            # Q&A formal con Representante del Cliente
@@ -510,7 +633,7 @@ proyecto-llm/
 │   ├── matriz-trazabilidad.md        # RQF -> AC -> Task -> Commit -> Test
 │   ├── log-prompts.md                # Registro de interacciones con el agente
 │   ├── decisiones/                   # Fichas DEC-01 a DEC-16 y DEC-E2-xx
-│   ├── sesion-aceptacion.md          # Acta de aceptación con Rodrigo
+│   ├── sesion-aceptacion.md          # Acta de aceptación con Rodrigo Guerrero (representante del cliente en la E2)
 │   └── usabilidad.md                 # Registro de prueba con evaluador externo
 ├── data/
 │   ├── casos_prueba.json             # 5 casos ficticios de gastos médicos
@@ -527,14 +650,18 @@ Prefijos: `[CONSTITUTION]`, `[SPEC]`, `[CLARIFY]`, `[PLAN]`, `[TASK-xx]`, `[HUMA
 Campos: `ID Interacción`, `Fecha y Fase`, `Prompt Ingresado`, `Resumen Salida Agente`, `Intervención Humana (Aceptado / Ajustado / Rechazado)`, `Detalle Corrección (Antes / Después)`, `Evaluación Crítica`.
 
 ### 7.4 Matriz de Trazabilidad Canónica (`docs/entregable2/matriz-trazabilidad.md`)
-| Requisito E1 (`RQF-xxx`) | Equivalente PDF (`RQF-Bxx`) | Criterio Aceptación Spec (`spec.md`) | Tarea (`tasks.md`) | Archivo Código Fuente (`src/`) | Commit Hash | Prueba Automatizada (`tests/`) |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `RQF-040` | `[POR VERIFICAR]` | `AC-1: Aprobación automática >= 90` | `T-04` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testAutoApproval` |
-| `RQF-041` | `[POR VERIFICAR]` | `AC-2: Derivación por señal bajo mínimo` | `T-05` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMinSignalGate` |
-| `RQF-023` | `[POR VERIFICAR]` | `AC-3: Precedencia de alerta de fraude` | `T-06` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testFraudPrecedence` |
-| `RQF-020` | `[POR VERIFICAR]` | `AC-4: Derivación obligatoria < 60` | `T-07` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testUnder60Gate` |
-| `RQF-039` | `[POR VERIFICAR]` | `AC-5: Edición y versionado de umbrales` | `T-02` | `src/backend/routes/umbrales.ts`| `[hash]` | `tests/integration/umbrales.test.ts` |
-| `RQNF-002` / `RQNF-003` | `[POR VERIFICAR]` | `AC-6: Reproducibilidad histórica 100%` | `T-12` | `src/backend/routes/eval.ts` | `[hash]` | `tests/reproducibility/deterministic.test.ts` |
+
+> **Regla de citación obligatoria:** La especificación (`spec.md`), la matriz de trazabilidad (`matriz-trazabilidad.md`) y el informe final deben citar cada requisito acompañado de su archivo fuente (ejemplo: `RQF-040 [fase5-lester]`, `RQF-028 [final-final]`, `RQF-B10 [PDF pág. 9]`). Se incorpora la columna canónica **Fuente** para auditar el origen físico de cada requisito:
+
+| Requisito E1 | Fuente | Equivalente Alternativo (`final-final.md`) | Equivalente PDF (`RQF-Bxx`) | Criterio Aceptación Spec (`spec.md`) | Tarea (`tasks.md`) | Archivo Código Fuente (`src/`) | Commit Hash | Prueba Automatizada (`tests/`) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `RQF-040` | `fase5-lester` | `RQF-005` | `RQF-B10 (pág. 9)` (prueba usa umbral 85) | `AC-1: Aprobación automática >= 90` | `T-04` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testAutoApproval` |
+| `RQF-041` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-08/E2-06) | `AC-2: Derivación por señal bajo mínimo` | `T-05` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMinSignalGate` |
+| `RQF-023` | `fase5-lester` | `RQF-028` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-E2-06) | `AC-3: Precedencia de alerta de fraude` | `T-06` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testFraudPrecedence` |
+| `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B11 (pág. 9) y RQF-B12 (pág. 9)` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | `AC-4: Derivación con advertencia de riesgo alto (umbralRiesgoAlto = 60)` | `T-07` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testHighRiskWarning` |
+| `RQF-039` | `fase5-lester` | `RQF-035` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `AC-5: Edición y versionado de umbrales` | `T-02` | `src/backend/routes/umbrales.ts`| `[hash]` | `tests/integration/umbrales.test.ts` |
+| `RQF-044` | `final-final` | `[SIN EQUIVALENTE VERIFICADO en lester]` | `RQF-B09 (pág. 9)` | `AC-7: Configuración de umbrales por flujo/cliente` | `T-01` | `src/backend/routes/umbrales.ts`| `[hash]` | `tests/integration/umbrales.test.ts` |
+| `RQNF-002` | `fase5-lester` | `RQNF-003` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `AC-6: Reproducibilidad histórica 100%` | `T-12` | `src/backend/routes/eval.ts` | `[hash]` | `tests/reproducibility/deterministic.test.ts` |
 
 ### 7.5 Atribución de Origen de los Cambios
 Registro auditable distinguiendo cambios originados por el **Representante del Cliente**, el **Equipo de Desarrollo** y el **Agente**.
@@ -542,11 +669,48 @@ Registro auditable distinguiendo cambios originados por el **Representante del C
 ### 7.6 Mapeo de Secciones del Informe (6.1 a 6.8) y Fuentes
 Angel Salgado es el redactor principal del informe con apoyo técnico de Rodrigo (backend), Jorge (UI) y Lester (tests).
 
-### 7.7 Estructura Tentativa para Sección 6.6 (Comparativa con Entrega 1)
-> ⚠️ `[SUPUESTO: pendiente de consulta al profesor]`: Rige la estructura tentativa adoptada desde el inicio:
-1. **Tabla 6.6.1:** Matriz de Evolución de Requisitos (Sin cambio / Modificado / Descartado / Nuevo, Motivo, Origen).
-2. **Tabla 6.6.2:** Matriz de Reconciliación de Supuestos e Inconsistencias (H-xx, Supuesto original, Resolución en código).
-3. **Tres Indicadores:** Tasa de Preservación de Requisitos Must (TPR), Tasa de Intervención Humana en Código (TIH) e Índice de Retrabajo por Fase (IRF).
+### 7.7 Estructura y Métricas de la Sección 6.6 (Comparativa con Entrega 1) — DEC-E2-08
+Conforme a la resolución interna **DEC-E2-08**, la sección 6.6 del informe escrito se estructura y gobierna formalmente bajo el siguiente estándar:
+
+1. **Tabla 6.6-A: Evolución de Requisitos**  
+   Columnas obligatorias:
+   - `Requisito E1 con fuente` (ejemplo: `RQF-040 [fase5-lester]`, `RQF-028 [final-final]`, `RQF-B10 [PDF pág. 9]`).
+   - `Clasificación`: *Sin cambio* / *Modificado* / *Diferido por alcance* / *Nuevo*.
+   - `Qué cambió`: Descripción concreta del cambio o refinamiento técnico.
+   - `Origen`: *equipo* / *cliente* / *agente*.
+   - `Evidencia`: Hash de commit, archivo de spec, test o acta de decisión.
+
+   *Fila canónica de RQF-B12 / RQF-020 en Tabla 6.6-A:*
+   | Requisito E1 con fuente | Clasificación | Qué cambió | Origen | Evidencia |
+   | :--- | :--- | :--- | :--- | :--- |
+   | `RQF-B12 [PDF pág. 9]` / `RQF-020 [fase5-lester]` | Modificado | Modificado: rechazo automático → derivación con advertencia de riesgo alto (umbralRiesgoAlto = 60). El sistema nunca rechaza automáticamente un caso; el máximo efecto es derivarlo a revisión humana asistida con advertencia destacada. | equipo, con base en ENT6 | `DEC-08`, `DEC-E2-06`, `DEC-E2-10`, `tests/unit/engine.test.ts:testHighRiskWarning` |
+
+2. **Subsección 6.6.1: Preguntas Guía de Reflexión**  
+   Espacio reservado exclusivamente para el desarrollo de las preguntas guía de análisis cualitativo exigidas en el enunciado (bloques A y B obligatorios, y al menos 4 de C, D, E).
+
+3. **Tabla 6.6-B: Hallazgos y Supuestos**  
+   Columnas obligatorias:
+   - `H-xx`: Identificador canónico del hallazgo o inconsistencia (ej. `H-01`, `H-05`, `H-08`, `H-10`, `H-14`).
+   - `Qué decía la E1`: Definición o supuesto heredado de la Entrega 1.
+   - `Estado en la E2`: Resolución formal implementada en la Entrega 2.
+   - `Quién lo detectó`: Integrante, rol o stakeholder origen de la detección.
+   - `Evidencia`: Ficha DEC, commit, test automatizado o acta de clarify.
+
+4. **Fórmulas de los Tres Indicadores Cuantitativos:**
+   - **TPR (Tasa de Preservación de Requisitos Must):**
+     TPR = Must de F4/F5 sin cambio / Must de F4/F5 x 100
+   - **TIH (Tasa de Intervención Humana en Código):**
+     TIH = Commits de corrección humana / Commits de tareas x 100
+   - **IRF (Índice de Retrabajo por Fase):**
+     IRF = Artefactos de fase con corrección humana sustantiva / Artefactos de la fase
+
+5. **Gobernanza y Responsabilidad:**
+   - Las tablas 6.6-A y 6.6-B se completan **cada día** durante el sprint.
+   - **Angel Salgado** es el responsable exclusivo de su llenado y mantenimiento.
+
+6. **Diferencias Clave entre Entrega 1 y Entrega 2 como Decisiones Deliberadas del Equipo:**
+   - **Rechazo automático (RQF-B12) → Derivación asistida siempre con advertencia de riesgo alto (DEC-08, DEC-E2-06 y DEC-E2-10):** En la Entrega 1, el requisito `RQF-B12` (pág. 9) y su caso de prueba estipulaban el rechazo automático de expedientes bajo el umbral mínimo o con alerta de fraude activa (*"Rechazado, ignorando el puntaje total"*). En la Entrega 2, el equipo adopta como decisión deliberada la prohibición absoluta de rechazos automáticos dictada por Cumplimiento (Daniela Cortés, ENT6 [00:04:06]), resolviendo que todo expediente en dicha condición se deriva obligatoriamente a revisión asistida por un operador humano (**DEC-08** y **DEC-E2-06**). Se anota formalmente: *"Modificado: rechazo automático → derivación con advertencia de riesgo alto (umbralRiesgoAlto = 60). Origen: equipo, con base en ENT6"*.
+   - **Umbral fijo 85 y rango 60-84 (RQF-B10 y RQF-B11) → Umbral ≥ 90 configurable (DEC-01):** En la Entrega 1, los requisitos `RQF-B10` y `RQF-B11` manejaban un umbral rígido de 85 puntos para aprobación y un rango intermedio de 60-84 para revisión (probados con 95 y 75 puntos respectivamente). En la Entrega 2, el equipo adopta deliberadamente el umbral **≥ 90 puntos** como valor conservador exigido por el cliente piloto (Francisca Leiva, ENT4 [00:11:06]), parametrizable de forma independiente por flujo y cliente mediante la funcionalidad F5 (**DEC-01**).
 
 ### 7.8 Medición Objetiva del Aporte del Agente en Git
 Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y commits de corrección humana (`[HUMAN-FIX]`).
@@ -558,26 +722,35 @@ Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y co
 ### 8.1 Alineación con los Criterios de Evaluación y Descuentos
 - **C1: Resumen ejecutivo (5%):** Máximo 1/2 plana; responde qué se construyó, método, 3 cambios y recomendaciones; cero jerga.
 - **C2: Introducción y selección (5%):** Máximo 1 plana; justifica F5+F4 por criterio de riesgo, conexión de datos y cruce con H-05/DEC-01.
-- **C3: Aplicación del método SDD (10%):** Fases completas en git; DEC en constitution; antes/después en log de prompts; balance costo/valor.
+- **C3: Aplicación del método SDD (10%):** Fases completas en git; DEC en `.specify/memory/constitution.md`; antes/después en log de prompts; balance costo/valor.
 - **C4: Implementación (20%):** Repo levantable en menos de 15 min desde README; ambas funcionalidades operando en español; interfaz de punta a punta.
 - **C5: Pruebas y verificación (5%):** Cobertura Must; al menos 1 prueba E2E (Playwright); 1 prueba extra-funcional medible (reproducibilidad determinista 100%); usabilidad externa y aceptación registradas.
-- **C6: Comparativa con E1 (30%):** Tablas 6.6.1 y 6.6.2; 3 indicadores calculados; respuestas fundadas en evidencia a bloques A y B, y al menos 4 de C, D, E.
-- **C8: Discusión (5%):** Máximo 1 plana; reflexión crítica con lecciones aprendidas y contraste SDD vs BMAD.
-- **C9: Conclusiones (5%):** Máximo 1/2 plana; aprendizajes y deudas técnicas.
+- **C6: Comparativa con E1 (30%):** Tablas 6.6-A y 6.6-B (subsección 6.6.1 para preguntas guía); 3 indicadores calculados (TPR, TIH, IRF); respuestas fundadas en evidencia a bloques A y B, y al menos 4 de C, D, E.
+- **C8: Discusión (5%):** Máximo 1 plana; reflexión crítica con lecciones aprendidas y contraste SDD vs BMAD (el cuerpo manda junto a Conclusiones).
+- **C9: Conclusiones (5%):** Máximo 1/2 plana; aprendizajes y deudas técnicas (el cuerpo manda junto a Discusión).
 - **C10: Presentación oral y demo (15%):** 15 min; participan los 4; demo en vivo corriendo estrictamente sobre tag `v2.0`; dominio individual absoluto.
+*(Nota: la pauta suma 100% omitiendo C7).*
 
 #### Penalizaciones Graves a Evitar
-- ❌ **Cita o referencia inexistente:** Descuenta **1.0 punto** por ocurrencia en el criterio afectado.
+- ❌ **Cita o referencia inexistente:** Se asume preventivamente un descuento de **−1,0 punto** por ocurrencia en el criterio afectado (según DEC-E2-09).
 - ❌ **Repo que no levanta en menos de 15 min:** Nota máxima de C4 topada en **3.0**.
 - ❌ **Artefacto obligatorio ausente:** Penalización directa en C3.
-- ❌ **Exceso de páginas:** El evaluador corta la lectura al límite de la plana.
+- ❌ **Exceso de páginas:** Límite estricto de **11 planas A4** para el cuerpo del informe más anexos (tablas y figuras dentro del límite; matriz de trazabilidad y bitácora en anexos). El evaluador corta la lectura al límite de la plana.
 
 ### 8.2 Definición de Terminado (DoD) Global
-- [ ] Tag git `v2.0` empujado a origin.
+- [ ] Tag git `v2.0` empujado a origin (entrega el lunes 19 antes de las 14:00 hrs con la etiqueta `v2.0`).
 - [ ] README verificado en máquina limpia en < 15 min.
 - [ ] 100% de tests unitarios, Playwright y reproducibilidad determinista en verde.
-- [ ] Acta de aceptación firmada por Rodrigo con Lester y Jorge presentes.
-- [ ] Informe PDF dentro de los límites de páginas por sección.
+- [ ] Acta de aceptación firmada por Rodrigo Guerrero (representante del cliente en la E2) con Lester y Jorge presentes.
+- [ ] Informe PDF dentro del límite de 11 planas A4 (tablas y figuras dentro del límite; trazabilidad y bitácora como anexos).
+- [ ] **Script de verificación pre-entrega:** Ejecución obligatoria antes de entregar de un script automatizado que verifique físicamente en el repositorio la existencia de IDs, citas documentales y hashes de commit (asegura cero citas inexistentes, previniendo descuento de −1,0 por ocurrencia según DEC-E2-09).
+- [ ] **Lista de artefactos obligatorios presentes en el repositorio:**
+  - [ ] Constitución: `.specify/memory/constitution.md`.
+  - [ ] Especificación: `spec.md` (o en subdirectorio `specs/`).
+  - [ ] Registro de clarificación: `docs/entregable2/clarificaciones.md`.
+  - [ ] Plan de implementación: `plan.md`.
+  - [ ] Lista de tareas de desarrollo: `tasks.md`.
+  - [ ] Reporte de análisis de consistencia: `docs/entregable2/reporte-analisis-consistencia.md`.
 
 ---
 
@@ -586,25 +759,43 @@ Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y co
 | # | Riesgo Identificado | Prob. | Impacto | Señal Temprana de Alerta | Protocolo de Mitigación Inmediata |
 | :--- | :--- | :---: | :---: | :--- | :--- |
 | **R-01** | **Tests circulares generados por el agente** | Alto | Crítico | El test pasa de inmediato sin haber fallado antes. | Tests derivados de criterios `AC-N` de la Entrega 1. Lester revisa que verifiquen entradas/salidas de negocio. |
-| **R-02** | **Requisitos inventados fuera de alcance** | Alto | Alto | Agente propone endpoints o features no solicitadas en `spec.md`. | `constitution.md` prohíbe inventar requisitos; sección "Fuera de alcance" explícita; veto inmediato del diff. |
+| **R-02** | **Requisitos inventados fuera de alcance** | Alto | Alto | Agente propone endpoints o features no solicitadas en `spec.md`. | `.specify/memory/constitution.md` prohíbe inventar requisitos; sección "Fuera de alcance" explícita; veto inmediato del diff. |
 | **R-03** | **Deriva de IDs entre RQF-xxx y RQF-Bxx** | Medio | Alto | El agente mezcla nomenclaturas en commits o tests. | Aplicar `DEC-E2-02`. Prompts exigen estrictamente la nomenclatura `RQF-xxx` de la Entrega 1. |
 | **R-04** | **Agotamiento de cuota de Antigravity** | Medio | Alto | Rate limits o truncado en sesiones de plan/implement. | Rotación de cuentas según [§5.4](#54-gestión-de-cuotas-de-antigravity); prompts modulares de <100 líneas. |
 | **R-05** | **Bloqueo entre Frontend y Backend** | Alto | Medio | Jorge no puede avanzar por falta de endpoints. | Contrato `src/shared/types.ts` congelado el Martes 13; Jorge usa mocks locales para desarrollar la UI. |
-| **R-06** | **Parálisis por Decisiones Abiertas** | Medio | Medio | Discusiones prolongadas en clarify. | Rodrigo fija supuesto formal documentado en clarify. Lo que no toque F5/F4 se declara fuera de alcance. |
+| **R-06** | **Parálisis por Decisiones Abiertas** | Medio | Medio | Discusiones prolongadas en clarify. | Rodrigo Guerrero (representante del cliente en la E2) fija supuesto formal documentado en clarify. Lo que no toque F5/F4 se declara fuera de alcance. |
 | **R-07** | **Desconocimiento del Dominio por Jorge** | Alto | Medio | Jorge asume reglas incorrectas en UI. | Onboarding guiado el Día 0 ([§2.g](#2g-ruta-de-onboarding-técnico-para-jorge-alvarez)) con cuestionario previo. |
-| **R-08** | **Conflicto de Interés de Rodrigo** | Alto | Crítico | Rodrigo aprueba su propio backend sin probar bordes. | `DEC-E2-03`: criterios congelados antes; sesión presencial con Lester y Jorge como validadores; acta inmutable. |
+| **R-08** | **Conflicto de Interés de Rodrigo Guerrero** | Alto | Crítico | Rodrigo Guerrero (representante del cliente en la E2) aprueba su propio backend sin probar bordes. | `DEC-E2-03`: criterios congelados antes; sesión presencial con Lester y Jorge como validadores; acta inmutable. |
 | **R-09** | **Dependencia de un Solo Integrante** | Medio | Alto | Desconexión de un integrante durante el sprint. | PRs pequeños integrados diariamente; contratos claros en git para relevos rápidos. |
 | **R-10** | **Fuga de Secretos o Datos Reales** | Bajo | Crítico | Commits con credenciales o datos sensibles. | Solo datos ficticios en `data/`; `.gitignore` estricto para `.env` y temporales. |
+| **R-11** | **Tensión de cronograma comercial vs. plan formal (H-10 / DEC-10)** | Alto | Crítico | Presión de stakeholders comerciales o del cliente piloto para adelantar ingesta de casos reales a enero de 2027 o comprometer hitos por la feria de fines de marzo de 2027 (declaración de Rodrigo Vergara (sponsor, ENT1 [00:11:05])). | Rige el plan formal de MIRA §5.2 (marcha blanca a fines de febrero y paso a producción a fines de abril de 2027). Mitigación: registrar la discrepancia, mantener el alcance F5+F4 y regirse por MIRA §5.2. Cualquier demostración en feria con datos simulados/sintéticos en entorno de pruebas: [propuesta pendiente de decisión del equipo]. |
 
 ---
 
 ## 10. Consultas Pendientes al Profesor y Puntos por Confirmar
 
-### 10.1 Consultas Formales Pendientes de Respuesta Docente
-1. **Consulta 1 (Jorge Alvarez):** *Condiciones de evaluación individual para nuevo integrante.* Estado: `[pendiente de respuesta]`. Supuesto: Jorge se capacita en onboarding para defender el proyecto al mismo nivel.
-2. **Consulta 2 (Estructura de 6.6):** *Vinculación de las 2 tablas y 3 indicadores.* Estado: `[pendiente de respuesta]`. Supuesto: Rige la propuesta metodológica de [§7.7](#77-estructura-tentativa-para-sección-66-comparativa-con-entrega-1).
-3. **Consulta 3 (Rúbrica Cap. 8):** *Ponderación asimétrica vs 10 criterios de 10%.* Estado: `[pendiente de respuesta]`. Supuesto: El equipo prioriza la tabla de ponderaciones asimétricas explícita (C6 30%, C4 20%, etc.).
-4. **Consulta 4 (Universo de Requisitos):** *49 del PDF vs 75 del markdown.* Estado: `[pendiente de respuesta]`. Supuesto: Rige `DEC-E2-02` con tabla de equivalencias.
+### 10.1 Resoluciones Internas de Ambigüedades del Enunciado (DEC-E2-02, 07, 08, 09 y 10)
+El profesor indicó al equipo que resolviera internamente las ambigüedades del enunciado. Las consultas quedan resueltas internamente mediante decisiones formales confirmadas por el equipo completo el 13-10-2026:
+
+1. **Consulta 1 (Evaluación individual de nuevo integrante):** *Resuelta internamente mediante `DEC-E2-07`.*  
+   Equipo ratificado en 4 personas. Jorge Alvarez no participó en la Entrega 1, lo cual se declara formalmente en la sección 6.2 del informe. Se fijan los tres insumos base: descripción de MIRA, retroalimentación de la Entrega 1 (*"todo bien, solo detalles en la presentación"*, sin modificación de requisitos) y análisis de la Entrega 1 (informe y artefactos de fases 1 a 6).  
+   *Estado:* **RESUELTA INTERNAMENTE (`DEC-E2-07`, confirmada por el equipo completo el 13-10-2026)**.
+
+2. **Consulta 2 (Estructura de 6.6 y vinculación de tablas/indicadores):** *Resuelta internamente mediante `DEC-E2-08`.*  
+   Se fija la estructura canónica de la sección 6.6: Tabla 6.6-A (evolución de requisitos con columnas: requisito E1 con fuente, clasificación *Sin cambio* / *Modificado* / *Diferido por alcance* / *Nuevo*, qué cambió, origen equipo-cliente-agente, evidencia), subsección 6.6.1 reservada para las preguntas guía de reflexión, y Tabla 6.6-B (hallazgos y supuestos: H-xx, qué decía la E1, estado en la E2, quién lo detectó, evidencia). Se formalizan las fórmulas de los tres indicadores (TPR, TIH, IRF). Las tablas se llenan diariamente; Angel Salgado es responsable.  
+   *Estado:* **RESUELTA INTERNAMENTE (`DEC-E2-08`, confirmada por el equipo completo el 13-10-2026)**.
+
+3. **Consulta 3 (Ponderaciones de la rúbrica y límites del informe):** *Resuelta internamente mediante `DEC-E2-09`.*  
+   Rige la tabla de ponderaciones de la rúbrica del enunciado (C6 30%, C4 20%, C10 15%, C3 10%, demás 5%; falta C7). Límite de 11 planas A4 para el cuerpo del informe más anexos (tablas y figuras dentro del límite; matriz de trazabilidad y bitácora en anexos, mandando en el cuerpo 6.7 Discusión y 6.8 Conclusiones). Se asume preventivamente el descuento de −1,0 por cita inexistente y se exige en la definición de terminado (§8.2) correr un script de verificación pre-entrega (IDs, citas, hashes de commit), junto a la presencia de los artefactos obligatorios.  
+   *Estado:* **RESUELTA INTERNAMENTE (`DEC-E2-09`, confirmada por el equipo completo el 13-10-2026)**.
+
+4. **Consulta 4 (Universo y numeración oficial de requisitos):** *Resuelta internamente mediante `DEC-E2-02`.*  
+   Ante la colisión severa de identificadores entre `final-final.md` (81 requisitos) y `fase5-lester` (57 requisitos), y la consolidación de 49 requisitos en el PDF (`RQF-Bxx`), rige la decisión interna **`DEC-E2-02`**: se adopta la numeración de `fase5/fase5-lester/requisitos_formato_final.md` (respaldada por la suite de pruebas `fase6/pruebas-funcionales.md`) con la exigencia formal de citar cada requisito con su archivo fuente (ejemplo: `RQF-040 [fase5-lester]`) y su identificador de referencia cruzada del PDF (`RQF-Bxx`).  
+   *Estado:* **RESUELTA INTERNAMENTE (`DEC-E2-02`, confirmada por el equipo completo el 13-10-2026)**.
+
+5. **Consulta 5 (Decisiones de diseño de F5 + F4 y umbral 60):** *Resuelta internamente mediante `DEC-E2-10`.*  
+   Se ratifican los supuestos de señales (mínimos 70/70/60, pesos 0,40/0,40/0,20), no se retira el 60 sino que pasa a ser `umbralRiesgoAlto` (Opción A: activa advertencia destacada sin rechazo automático), se define spec única para F5+F4 con tareas etiquetadas `[F5]` y `[F4]`, y se aprueba el flujo Diseñador propone / Administrador aprueba (cerrando rol de PF-033).  
+   *Estado:* **RESUELTA INTERNAMENTE (`DEC-E2-10`, confirmada por el equipo completo el 13-10-2026)**.
 
 ---
 
@@ -613,33 +804,32 @@ Cálculo mediante diffs entre commits generados por el agente (`[TASK-xx]`) y co
 ### 11.1 Tabla de IDs Verificados vs. No Verificados Físicamente en el Repositorio
 | Tipo de Identificador | ID Citado en esta Guía | Archivo Fuente en el Repositorio | Estado de Verificación | Observación Técnica |
 | :--- | :--- | :--- | :--- | :--- |
-| **Requisito Funcional** | `RQF-001` | [`fase5/requisitos-funcionales-y-no-funcionales-final-final.md:L3`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md#L3) | **VERIFICADO** | Existe físicamente (ingesta HTTP); no arranca en RQF-002. |
-| **Requisito Funcional** | `RQF-020` | [`fase5/fase5-lester/requisitos_formato_final.md:L22`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L22) | **VERIFICADO** | Casos < 60 puntos; redefinido por H-08 sin rechazo automático. |
-| **Requisito Funcional** | `RQF-023` | [`fase5/fase5-lester/requisitos_formato_final.md:L25`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L25) | **VERIFICADO** | Precedencia de alerta de fraude derivando a revisión humana. |
-| **Requisito Funcional** | `RQF-039` | [`fase5/fase5-lester/requisitos_formato_final.md:L41`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L41) | **VERIFICADO** | Dos aprobaciones separadas antes de modificar umbrales. |
-| **Requisito Funcional** | `RQF-040` | [`fase5/fase5-lester/requisitos_formato_final.md:L42`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L42) | **VERIFICADO** | Aprobación automática según umbral definido (90). |
-| **Requisito Funcional** | `RQF-041` | [`fase5/fase5-lester/requisitos_formato_final.md:L43`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L43) | **VERIFICADO** | Derivación si alerta de fraude o señal bajo mínimo. |
-| **Requisito (Excluido)** | `RQF-013` | [`fase5/fase5-lester/requisitos_formato_final.md:L15`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L15) | **VERIFICADO (Excluido)** | Tiempo restante en bandeja; excluido en `fase6/pruebas-funcionales.md:L3`. |
-| **Requisito No Funcional**| `RQNF-002` | [`fase5/fase5-lester/requisitos_formato_final.md:L57`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L57) | **VERIFICADO** | Reconstrucción de decisiones pasadas basándose en historial. |
-| **Requisitos PDF** | `RQF-B01` a `RQF-B36` | [`Informe Mira - LLM.pdf`](../informe%20proyecto/Informe%20Mira%20-%20LLM.pdf) (págs 9-12) | `[POR VERIFICAR cotejo PDF]` | Mapeo biunívoco pendiente de cotejo celda a celda contra el PDF. |
-| **Prueba Funcional** | `PF-015` | [`fase6/pruebas-funcionales.md:L34`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L34) | **VERIFICADO** | Verifica RQF-020 (caso con 45 puntos escala a humano según H-08). |
-| **Prueba Funcional** | `PF-018` | [`fase6/pruebas-funcionales.md:L43`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L43) | **VERIFICADO** | Verifica RQF-023 (puntaje 100 con fraude deriva a revisión manual). |
-| **Prueba Funcional** | `PF-020` | [`fase6/pruebas-funcionales.md:L45`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L45) | **VERIFICADO** | Verifica RQF-040 (caso ≥ 90 sin fraude aprueba automáticamente). |
-| **Prueba Funcional** | `PF-021` | [`fase6/pruebas-funcionales.md:L46`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L46) | **VERIFICADO** | Verifica RQF-041 (puntaje 100 con señal bajo mínimo deriva o rechaza; la opción "o rechaza" queda formalmente superada por DEC-08, rigiendo únicamente la derivación). |
-| **Prueba Funcional** | `PF-033` | [`fase6/pruebas-funcionales.md:L69`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L69) | **VERIFICADO** | Verifica RQF-039 (cambio de umbral requiere dos aprobaciones). |
+| **Requisito Funcional** | `RQF-001 [final-final]` | [`fase5/requisitos-funcionales-y-no-funcionales-final-final.md:L3`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md#L3) | **VERIFICADO** | Existe físicamente (ingesta HTTP); no arranca en RQF-002. En `fase5-lester` corresponde a recepción de evidencia multi-archivo. |
+| **Requisito Funcional** | `RQF-020 [fase5-lester]` | [`fase5/fase5-lester/requisitos_formato_final.md:L22`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L22) | **VERIFICADO** | Casos < 60 puntos; modificado por DEC-08 / DEC-E2-10: rechazo automático → derivación con advertencia de riesgo alto (umbralRiesgoAlto = 60). Origen: equipo, con base en ENT6. En `final-final.md` colisiona con "encolar peticiones excedentes" y queda como `[SIN EQUIVALENTE VERIFICADO]`; en el PDF su cobertura es parcial por contenido bajo `RQF-B11 (pág. 9)` y `RQF-B12 (pág. 9)` (el rechazo automático fue superado por DEC-08 / DEC-E2-06 / DEC-E2-10). |
+| **Requisito Funcional** | `RQF-023 [fase5-lester]` | [`fase5/fase5-lester/requisitos_formato_final.md:L25`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L25) | **VERIFICADO** | Precedencia de alerta de fraude derivando a revisión humana. En `final-final.md` colisiona con "crear caso nuevo vinculado", su equivalente verificado por contenido es `RQF-028`; en el PDF su cobertura es parcial por contenido bajo `RQF-B12 (pág. 9)` (el PDF estipula "Rechazado, ignorando el puntaje total", superado por DEC-E2-06; en pág. 13 la prueba `PF-018` cita textualmente `RQF-023`). |
+| **Requisito Funcional** | `RQF-039 [fase5-lester]` | [`fase5/fase5-lester/requisitos_formato_final.md:L41`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L41) | **VERIFICADO** | Dos aprobaciones separadas antes de modificar umbrales. En `final-final.md` colisiona con "carga manual por formulario", su equivalente verificado por contenido es `RQF-035`; en el PDF queda `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo; `RQF-B09` cubre configuración simple pero no exige doble aprobación). |
+| **Requisito Funcional** | `RQF-040 [fase5-lester]` | [`fase5/fase5-lester/requisitos_formato_final.md:L42`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L42) | **VERIFICADO** | Aprobación automática según umbral definido (≥ 90 por decisión del equipo). En `final-final.md` colisiona con "extraer texto y firmas", su equivalente verificado por contenido es `RQF-005`; en el PDF corresponde a `RQF-B10 (pág. 9)` (verificado por el equipo; su prueba en PDF usa umbral 85). |
+| **Requisito Funcional** | `RQF-041 [fase5-lester]` | [`fase5/fase5-lester/requisitos_formato_final.md:L43`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L43) | **VERIFICADO** | Derivación si alerta de fraude o señal bajo mínimo. En `final-final.md` colisiona con "detectar objetos y daños en fotos" y queda como `[SIN EQUIVALENTE VERIFICADO]`; en el PDF su cobertura es parcial por contenido bajo `RQF-B12 (pág. 9)` (el PDF estipula rechazo automático, superado por DEC-08 / DEC-E2-06). |
+| **Requisito Funcional** | `RQF-044 [final-final]` / `RQF-B09` | [`fase5/requisitos-funcionales-y-no-funcionales-final-final.md:L46`](../fases-y-plan-de-trabajo/fase5/requisitos-funcionales-y-no-funcionales-final-final.md#L46) y PDF pág. 9 | **VERIFICADO** | Configuración de umbrales numéricos de decisión por flujo y cliente (F5). En `final-final.md` es `RQF-044`; en el PDF es `RQF-B09 (pág. 9)`; en `fase5-lester` queda como `[SIN EQUIVALENTE VERIFICADO en lester]` (en lester solo existe `RQF-039` que exige doble aprobación). |
+| **Requisito (Excluido)** | `RQF-013 [fase5-lester]` | [`fase5/fase5-lester/requisitos_formato_final.md:L15`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L15) | **VERIFICADO (Excluido)** | Tiempo restante en bandeja; excluido en `fase6/pruebas-funcionales.md:L3`. |
+| **Requisito No Funcional**| `RQNF-002 [fase5-lester]`| [`fase5/fase5-lester/requisitos_formato_final.md:L57`](../fases-y-plan-de-trabajo/fase5/fase5-lester/requisitos_formato_final.md#L57) | **VERIFICADO** | Reconstrucción de decisiones pasadas basada en historial. En `final-final.md` colisiona con "conservar expedientes de 90 días a 10 años", su equivalente verificado por contenido es `RQNF-003`; en el PDF queda `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo). |
+| **Requisitos PDF** | `RQF-B01` a `RQF-B36` y `RQNF-B01` a `RQNF-B13` | [`Informe Mira - LLM.pdf`](../informe%20proyecto/Informe%20Mira%20-%20LLM.pdf) (págs 9-12) | **VERIFICADO en PDF** | Conteo exacto: 49 requisitos (36 funcionales `RQF-B01..B36` y 13 no funcionales `RQNF-B01..B13`). Cotejo verificado con F5+F4: `RQF-B09` (configuración de umbrales = `RQF-044`), `RQF-B10` (aprobación automática = `RQF-040 [lester]` / `RQF-005 [final-final]`), `RQF-B11` (derivación rango 60-84) y `RQF-B12` (rechazo bajo umbral o fraude, cubriendo parcialmente por contenido `RQF-020`, `RQF-023` y `RQF-041`, superado el rechazo por DEC-08 / DEC-E2-06). `RQF-039` y `RQNF-002` no tienen equivalente directo en el PDF. |
+| **Prueba Funcional** | `PF-015` | [`fase6/pruebas-funcionales.md:L34`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L34) | **VERIFICADO** | Verifica RQF-020 [fase5-lester] (caso con 45 puntos escala a humano según H-08). |
+| **Prueba Funcional** | `PF-018` | [`fase6/pruebas-funcionales.md:L43`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L43) | **VERIFICADO** | Verifica RQF-023 [fase5-lester] (puntaje 100 con fraude deriva a revisión manual). |
+| **Prueba Funcional** | `PF-020` | [`fase6/pruebas-funcionales.md:L45`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L45) | **VERIFICADO** | Verifica RQF-040 [fase5-lester] (la precondición en PF-020 dice "sobre 90"; la decisión del equipo DEC-01 es ≥ 90). |
+| **Prueba Funcional** | `PF-021` | [`fase6/pruebas-funcionales.md:L46`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L46) | **VERIFICADO** | Verifica RQF-041 [fase5-lester] (puntaje 100 con señal bajo mínimo deriva o rechaza; la opción "o rechaza" queda formalmente superada por DEC-08, rigiendo únicamente la derivación). |
+| **Prueba Funcional** | `PF-033` | [`fase6/pruebas-funcionales.md:L69`](../fases-y-plan-de-trabajo/fase6/pruebas-funcionales.md#L69) | **VERIFICADO** | Verifica RQF-039 [fase5-lester] (cambio de umbral requiere dos aprobaciones; resuelto por DEC-E2-10(d): Diseñador propone, Administrador aprueba; asociado indirectamente a RQF-044 / RQF-B09). |
 | **Caso de Uso** | `UC-01` | [`fase4/Fase 4 — Casos de uso (§5.3.2).md:L15`](../fases-y-plan-de-trabajo/fase4/Fase%204%20%E2%80%94%20Casos%20de%20uso%20%28%C2%A75.3.2%29.md#L15) | **VERIFICADO** | Evaluar caso automáticamente (contiene nota "85 vs 80 sin resolver"). |
 | **Inconsistencias** | `H-01`, `H-05`, `H-08`, `H-10`, `H-11`, `H-14` | [`fase2/inconsistencias-revisadas.md`](../fases-y-plan-de-trabajo/fase2/inconsistencias-revisadas.md) | **VERIFICADO** | Todas corresponden a filas HC-001, HC-005, HC-008, HC-010, HC-011, HC-014. |
-| **Citas de Entrevistas**| `ENT2 [00:13:05]`, `ENT4 [00:11:06]`, `ENT6 [00:21:16]`, `ENT3 [00:08:57]` | [`fase2/inconsistencias-revisadas.md`](../fases-y-plan-de-trabajo/fase2/inconsistencias-revisadas.md) | **VERIFICADO** | Marcas de tiempo cotejadas contra las fuentes de Fase 2. |
+| **Citas de Entrevistas**| `ENT2 [00:13:05]`, `ENT4 [00:11:06]`, `ENT5 [00:15:16]`, `ENT6 [00:01:21]`, `ENT6 [00:04:06]`, `ENT6 [00:21:16]`, `ENT3 [00:08:57]` | [`fase2/inconsistencias-revisadas.md`](../fases-y-plan-de-trabajo/fase2/inconsistencias-revisadas.md) | **VERIFICADO** | Marcas de tiempo cotejadas contra las fuentes de Fase 2. ENT5 [00:15:16] (sesgo de anclaje), ENT6 [00:01:21] ("apriete aceptar en tres segundos"), ENT6 [00:04:06] (prohibición de rechazo automático e intervención humana indelegable) y ENT6 [00:21:16] (doble aprobación de umbrales) verificadas físicamente. |
+| **Cita de Entrevista** | `ENT3 [00:21:47]` | Transcripción ENT3 / MIRA docx | **VERIFICADO** | Marca de tiempo y cita verificadas (fuente: MIRA docx, ENT3 [00:21:47], Sebastián: *"mínimos por señal… aunque nadie ha definido cuáles son"*). Citada en DEC-E2-10(a) y D-07. |
 
 ### 11.2 Lista Consolidada de Puntos `[POR VERIFICAR]` y `[POR CONFIRMAR]`
-1. `[POR CONFIRMAR escala, probablemente 6,7 sobre 7,0]`: Escala de nota de la Entrega 1 consignada como 67 en el acta.
-2. `[POR CONFIRMAR fecha y hora]`: Bloque horario de la defensa oral del equipo el lunes 19 de octubre.
-3. `[pendiente de decisión del equipo]`: Resolución de la tensión de H-10 (HC-010) entre el cronograma formal de MIRA §5.2 (producción a fines de abril de 2027 y marcha blanca a fines de febrero) y el compromiso comercial expresado en ENT1 [00:11:05] (casos reales en enero de 2027 y feria a fines de marzo).
-4. `[POR CONFIRMAR universo de requisitos]`: Confirmación del docente sobre si el alcance cerrado se audita contra los 49 requisitos del PDF o los del Markdown.
-5. `[POR VERIFICAR cotejo PDF]`: Correspondencia biunívoca fila a fila de los códigos `RQF-Bxx` del PDF con los `RQF-xxx` de los archivos Markdown.
-6. `[POR VERIFICAR tras el init]`: Rutas relativas exactas generadas por Spec Kit al inicializar en la raíz (`memory/constitution.md` y `specs/...`).
-7. `[SUPUESTO del equipo]`: Nombres de señales concretas alineadas conceptualmente con MIRA §2.6 (`autenticidad_documentos`, `cruce_fuentes`, `coherencia_solicitud` [biométrica solo si aplica]), bandera de fraude aparte (`alertaFraudeActiva`), umbrales mínimos (70, 70, 60), ponderaciones (40%, 40%, 20%), y roles simulados para autenticación (*Riesgo* y *Auditor* en D-04).
-8. `[SUPUESTO: pendiente de consulta al profesor]`: Estructura tentativa de las tablas 6.6.1, 6.6.2 y los tres indicadores TPR, TIH e IRF.
+1. `[POR CONFIRMAR en clase]`: Horario y día exacto de la exposición oral del equipo (a las 14:30 o en otro día según fije el profesor).
+2. `[POR VERIFICAR tras /speckit-specify]`: Ruta relativa exacta que generará Spec Kit para la carpeta de especificación de la funcionalidad (`specs/...`). La ruta de la constitución quedó verificada en `.specify/memory/constitution.md`.
+3. `[SUPUESTO del equipo]`: Nombres de señales concretas alineadas conceptualmente con MIRA §2.6 (`autenticidad_documentos`, `cruce_fuentes`, `coherencia_solicitud` [biométrica solo si aplica]), bandera de fraude aparte (`alertaFraudeActiva`), umbrales mínimos (70, 70, 60), ponderaciones (40%, 40%, 20%), y roles simulados para autenticación (*Riesgo* y *Auditor* en D-04). Rodrigo Guerrero (representante del cliente en la E2) los confirma o ajusta en `/speckit-clarify`.
+4. **VERIFICADO** (fuente: MIRA docx, ENT3 [00:21:47], Sebastián: *"mínimos por señal… aunque nadie ha definido cuáles son"*): Marca de tiempo ENT3 [00:21:47] citada en DEC-E2-10(a) y D-07 respecto a que los umbrales mínimos de señales están pendientes de definir con el área de riesgo del cliente piloto.
+5. `[POR VERIFICAR]`: Permisos y credenciales requeridas para ejecutar `/speckit-taskstoissues` contra el repositorio GitHub (`GITHUB_TOKEN` o autenticación CLI `gh`), en caso de que el equipo decida utilizarlo para crear issues automáticamente.
 
 ---
 *Fin de la Guía Operativa. Archivo de control versionado para la Entrega 2 de MIRA.*
