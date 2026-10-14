@@ -1,7 +1,7 @@
 <!--
 Sync Impact Report:
 - Version change: Unratified template (0.0.0) → 1.0.0
-- Adoption / Ratification: Primera ratificación formal unánime del equipo (Lester Gonzalez, Rodrigo Guerrero, Jorge Alvarez, Angel Salgado) el 2026-10-14.
+- Adoption / Ratification: Ratificada por Lester Gonzalez el 2026-10-14; pendiente de lectura y aprobación del equipo en el PR.
 - Principles defined: 11 principios operativos fundamentales formalizados y vinculados a decisiones DEC-01..16 y DEC-E2-01..10:
   - I. Prohibición Absoluta de Rechazo Automático (NO NEGOCIABLE) [DEC-08, DEC-E2-06, DEC-E2-10, ENT6]
   - II. Determinismo y Precedencia Estricta del Motor de Decisión (F4) [DEC-01, DEC-E2-06, DEC-E2-10, MIRA §3]
@@ -16,7 +16,7 @@ Sync Impact Report:
   - XI. Política de Ramas, Protección de Main y Flujo de Integración [§2.f, §5.3]
 - Added sections: Restricciones Adicionales y Salvaguardas de Calidad, Flujo de Desarrollo y Compuertas de Calidad, Governance
 - Removed sections: Marcadores de posición de plantilla no utilizados
-- Follow-up TODOs / Puntos [POR CONFIRMAR]: Ninguno pendiente en la constitución base.
+- Follow-up TODOs / Puntos [POR CONFIRMAR]: Término "arquitectura liviana Express" en Principio VII (DEC-E2-05 define "Node.js (v20+ LTS) con TypeScript y Express / Fastify"); frase textual "commit acotado a menos de 2 horas" en Principio IX (§3.1 y §4.1 respaldan "Tareas atómicas de <2 horas").
 -->
 
 # Constitución del Proyecto MIRA (Entrega 2)
@@ -29,7 +29,7 @@ La presente Constitución establece los principios rectores, invariantes de nego
 
 ### I. Prohibición Absoluta de Rechazo Automático (NO NEGOCIABLE)
 - **Principio Fundamental:** *"El sistema nunca rechaza automáticamente un caso; el máximo efecto es derivarlo, con advertencia de riesgo alto cuando corresponda"* (Citas: `DEC-08`, `DEC-E2-06`, `DEC-E2-10(b)`; Daniela Cortés en ENT6 [00:04:06]).
-- **Lenguaje Prohibido en UI y Código:** Ni la interfaz de usuario ni el código fuente utilizarán jamás el término "rechazado", "rechazo automático" o análogos para comunicar una decisión emitida por el sistema (`DEC-E2-10(b)`, §3.1).
+- **Lenguaje Prohibido en UI y Código:** La UI y el código no presentan como decisión del sistema un "rechazado" o "rechazo automático" (`DEC-E2-10(b)`, §3.1). Se permite el campo `riesgoAltoRechazo` y el texto de advertencia *"Riesgo alto de rechazo: decide un operador"*, que son solo informativos.
 - **Estados de Salida Permitidos:** La respuesta del motor de evaluación contempla única y estrictamente dos estados resolutivos (`decision`):
   1. `APROBADO_AUTOMATICO`: El caso cumple holgadamente todos los criterios y aprueba sin intervención humana.
   2. `DERIVADO_REVISION`: El caso requiere revisión humana obligatoria asistida por la bandeja del operador.
@@ -65,7 +65,7 @@ La presente Constitución establece los principios rectores, invariantes de nego
 
 ### V. Trazabilidad Canónica, Citación de Fuentes y Verificación Pre-Entrega
 - **Convención Canónica de Identificadores:** Ante la colisión de IDs detectada entre los archivos de la Fase 5, rige como convención rectora la numeración de `fase5/fase5-lester/requisitos_formato_final.md` respaldada por la suite de pruebas funcionales de `fase6/pruebas-funcionales.md` (`DEC-E2-02`, §2.a).
-- **Exigencia Formal de Citación:** Todo requisito mencionado en especificaciones (`spec.md`), planes (`plan.md`), tareas (`tasks.md`), matriz de trazabilidad, código fuente, comentarios de tests o informe final debe citarse obligatoriamente acompañado de su archivo fuente (ejemplo: `RQF-040 [fase5-lester]`, `RQF-028 [final-final]`) y de su identificador de referencia cruzada del informe PDF de la Entrega 1 (`RQF-Bxx [PDF pág. 9]`) (`DEC-E2-02`).
+- **Exigencia Formal de Citación:** Todo requisito mencionado en especificaciones (`spec.md`), planes (`plan.md`), tareas (`tasks.md`), matriz de trazabilidad, código fuente, comentarios de tests o informe final debe citarse obligatoriamente acompañado de su archivo fuente (ejemplo: `RQF-040 [fase5-lester]`, `RQF-028 [final-final]`). La referencia cruzada `RQF-Bxx [PDF pág. X]` se cita cuando exista equivalente; si no existe, se escribe "sin equivalente en PDF" (ej. `RQF-039`). Prohibido inventar un `RQF-Bxx` (`DEC-E2-02`, §7.4, §8.1).
 - **Tolerancia Cero a Citas Inexistentes:** Toda afirmación o cita no respaldada fehacientemente en la documentación heredada o en las fuentes verificadas debe marcarse explícitamente como `[POR VERIFICAR]` o `[POR CONFIRMAR]`. Inventar una cita documental o ID constituye un defecto grave con penalización directa de −1,0 punto (`DEC-E2-09`, §8.1).
 - **Script de Verificación Pre-Entrega:** Es requisito obligatorio de la Definición de Terminado (§8.2 / `DEC-E2-09`) ejecutar antes de la entrega final un script automatizado que valide en el árbol git la existencia física de cada ID, cita y hash referenciado.
 
@@ -78,19 +78,19 @@ La presente Constitución establece los principios rectores, invariantes de nego
   5. `/speckit-tasks` → Desglose ordenado de tareas atómicas.
   6. `/speckit-analyze` → Auditoría de consistencia y completitud cruzada.
   7. `/speckit-implement` → Implementación guiada por pruebas y tareas.
-- **Prohibición de Código Prematuro:** No se escribirá ni commiteará una sola línea de código de producción antes de haber aprobado el plan técnico, las tareas atómicas y el reporte favorable de análisis de consistencia sin discrepancias críticas (§3.1).
+- **Prohibición de Código Prematuro:** El archivo `src/shared/types.ts` es un contrato derivado del plan y se commitea con prefijo `[PLAN]`; lo prohibido antes de plan (`plan.md`), tasks (`tasks.md`) y analyze (`speckit-analyze`) es la lógica de producción (motor, endpoints, UI) (§3.1).
 - **Especificación Única Consolidada:** Se redacta una sola especificación consolidada (`spec.md`) para el incremento conjunto F5 + F4, estructurando las tareas de desarrollo en `tasks.md` con etiquetas explícitas `[F5]` y `[F4]` para mantener trazabilidad y control de avance (`DEC-E2-10(c)`, `D-09`).
 - **Aislamiento Tecnológico de la Spec:** La especificación técnica (`spec.md`) describe exclusivamente reglas de negocio, requerimientos funcionales, contratos de dominio y criterios de aceptación (`AC-1` a `AC-6`), excluyendo terminantemente menciones a tecnologías, frameworks, bases de datos o librerías de implementación (§3.1).
 
 ### VII. Stack Tecnológico, Contrato Compartido y Datos Sintéticos
 - **Stack Tecnológico Oficial:**
-  - **Backend:** Node.js con TypeScript, arquitectura liviana Express (`DEC-E2-05`).
+  - **Backend:** Node.js con TypeScript, arquitectura liviana Express [POR CONFIRMAR: en la guía DEC-E2-05 figura como "Node.js (v20+ LTS) con TypeScript y Express / Fastify"] (`DEC-E2-05`).
   - **Frontend:** React con Vite, componentes interactivos en español neutro profesional (`DEC-E2-05`).
   - **Persistencia:** Base de datos relacional SQLite autocontenida sin contenedores Docker pesados, permitiendo levantar el sistema en máquina limpia en menos de 15 minutos vía `npm install && npm run dev` (`DEC-E2-05`, `D-01`, C4).
   - **Testing:** Vitest + Supertest para pruebas unitarias e integración de backend; Playwright para pruebas E2E de navegador (`DEC-E2-05`, `D-06`).
 - **Simulación Determinista del Motor:** Conforme a la pauta (§4.3) y a la decisión `D-02`, el motor multimodal de inteligencia artificial no se construye; se simula mediante carga determinista de casos desde `data/casos_prueba.json` respaldada en SQLite.
 - **Uso Exclusivo de Datos Sintéticos:** Por seguridad y cumplimiento normativo, queda terminantemente prohibido el uso o almacenamiento de datos reales de siniestros o asegurados. Únicamente se permiten datos ficticios controlados en `data/` (`R-10`).
-- **Contrato de Datos Unificado:** El archivo `src/shared/types.ts` (§5.2, `DEC-E2-10`) constituye la única interfaz canónica compartida entre frontend y backend (`ConfiguracionUmbrales`, `CasoEvaluacion`, `ResultadoEvaluacion`, `SenalCaso`).
+- **Contrato de Datos Unificado:** El archivo `src/shared/types.ts` (§5.2, `DEC-E2-10`) constituye la única interfaz canónica compartida entre frontend y backend (`UmbralesFlujo`, `SenalesCaso`, `ResultadoEvaluacion`).
 
 ### VIII. Matriz Exhaustiva de Pruebas y Reproducibilidad Determinista (RQNF-002)
 - **Suite de Casos de Negocio en `data/casos_prueba.json`:** Se definen y verifican formalmente los 6 casos de prueba de reembolso médico que aíslan individualmente cada regla de negocio (§2.d):
@@ -116,7 +116,7 @@ La presente Constitución establece los principios rectores, invariantes de nego
   - `[TEST]`: Suites de pruebas unitarias, de integración, E2E o de reproducibilidad.
   - `[DOC]`: Guías, bitácoras, matrices de trazabilidad e informes.
 - **Aislamiento de Correcciones Humanas:** Queda terminantemente prohibido mezclar correcciones humanas con commits de generación del agente. Toda corrección manual debe aislarse en commits separados bajo el prefijo `[HUMAN-FIX]` para auditar el esfuerzo real de ingeniería (§7.2).
-- **Atomicidad de Tareas:** Cada tarea de desarrollo debe corresponder a un commit acotado a un bloque de trabajo menor a 2 horas.
+- **Atomicidad de Tareas:** Cada tarea de desarrollo debe corresponder a un commit acotado a menos de 2 horas [POR CONFIRMAR: en la guía §3.1 y §4.1 respaldado como "Tareas atómicas de <2 horas"; la frase textual "commit acotado a menos de 2 horas" no aparece en §7.2].
 
 ### X. Registro Obligatorio de Intervención Humana y Medición de Retrabajo
 - **Bitácora de Intervenciones Humanas:** Cada intervención manual correctiva sobre código, especificaciones o planes generados por el agente de IA debe registrarse inmediatamente en `docs/entregable2/bitacora-intervenciones.md` detallando: qué cambió, motivo del cambio y evidencia verificable (commit hash, archivo modificado o prueba asociada) (`DEC-E2-08`, §7.7).
@@ -154,7 +154,7 @@ La presente Constitución establece los principios rectores, invariantes de nego
 
 El equipo establece seis compuertas humanas de paso obligado para salvaguardar la excelencia del entregable:
 
-1. **Compuerta 1 (Constitución):** Aprobación y ratificación unánime del presente documento por los cuatro integrantes antes de redactar la especificación.
+1. **Compuerta 1 (Constitución):** Ratificada por Lester Gonzalez el 2026-10-14; pendiente de lectura y aprobación del equipo en el PR.
 2. **Compuerta 2 (Especificación y Clarificación):** Validación formal de `spec.md` y de los supuestos documentados por el Representante del Cliente (Rodrigo Guerrero), en presencia de Lester Gonzalez y Jorge Alvarez como observadores y auditores.
 3. **Compuerta 3 (Plan Técnico y Contratos):** Aprobación técnica conjunta de la arquitectura y del contrato `src/shared/types.ts` por parte de Backend (Rodrigo) y Frontend (Jorge) antes de la generación de tareas.
 4. **Compuerta 4 (Revisión de Diff y Pruebas):** El integrante humano a cargo revisa cada propuesta de código del agente, ejecuta la suite de tests automatizados y verifica que no existan tests circulares ni código espurio antes de realizar el commit.
@@ -169,4 +169,4 @@ El equipo establece seis compuertas humanas de paso obligado para salvaguardar l
 - **Procedimiento de Enmienda:** Toda modificación o adición a este documento exige acuerdo unánime de los cuatro ingenieros del equipo (Lester Gonzalez, Rodrigo Guerrero, Jorge Alvarez, Angel Salgado), registro en una ficha de decisión (`DEC-E2-xx`) y actualización del versionamiento SemVer en este archivo.
 - **Custodia:** Angel Salgado (Gobernanza y Documentación) y Lester Gonzalez (Aseguramiento de Calidad) custodian la adherencia a estos principios en cada revisión de Pull Request.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-14 | **Last Amended**: 2026-10-14
+**Version**: 1.0.0 | **Ratified**: Ratificada por Lester Gonzalez el 2026-10-14; pendiente de lectura y aprobación del equipo en el PR | **Last Amended**: 2026-10-14
