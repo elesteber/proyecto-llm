@@ -31,4 +31,5 @@
 
 ## Notes
 
-- El único ítem pendiente es la resolución de los 3 marcadores `[NEEDS CLARIFICATION]` que serán respondidos formalmente por el Representante del Cliente (Rodrigo Guerrero) en la sesión interactiva de `/speckit-clarify`.
+- El único ítem pendiente es la resolución de los 3 marcadores `[NEEDS CLARIFICATION]` que serán respondidos formalmente por el Representante del Cliente (Rodrigo Guerrero, integrante del equipo que actúa como representante del cliente en la E2; DEC-E2-07) en la sesión interactiva de `/speckit-clarify`.
+- La especificación se encuentra completamente libre de detalles de implementación tecnológica, cumpliendo estrictamente con el Principio VI de la Constitución.

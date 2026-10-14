@@ -43,10 +43,10 @@ La relación funcional entre ambos componentes es estrictamente de productor a c
 
 | Actor | Rol y Responsabilidades | Permisos Clave en el Sistema |
 | :--- | :--- | :--- |
-| **Diseñador** | Usuario especialista en diseño de políticas de suscripción y reglas de negocio (MIRA §2.13). Responsable de ajustar los umbrales de decisión, mínimos por señal y ponderaciones del flujo según directrices del área de riesgo. | - Consulta de versión vigente e historial.<br>- Creación y modificación de propuestas de umbrales en estado `BORRADOR`.<br>- Envío de borradores a revisión administrativa.<br>- *Restricción:* No puede auto-aprobar sus propias propuestas. |
-| **Administrador** | Usuario con máxima atribución operativa sobre la gobernanza de parámetros de la plataforma (MIRA §2.13, PF-033, DEC-E2-10(d)). Responsable de auditar y autorizar formalmente las políticas propuestas. | - Consulta de versión vigente e historial.<br>- Aprobación o desestimación formal de propuestas en estado `BORRADOR`.<br>- Promoción de la versión a estado `APROBADO` (entrada en vigencia inmediata).<br>- *Restricción:* Solo puede aprobar propuestas creadas por un usuario distinto. |
+| **Diseñador** | Usuario especialista en diseño de políticas de suscripción y reglas de negocio (MIRA §2.13). Responsable de ajustar los umbrales de decisión, mínimos por señal y ponderaciones del flujo según directrices del área de riesgo. | - Consulta de versión vigente e historial.<br>- Creación y modificación de propuestas de umbrales en estado `BORRADOR`.<br>- Envío de borradores a revisión administrativa [SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify].<br>- *Restricción:* No puede auto-aprobar sus propias propuestas. |
+| **Administrador** | Usuario con máxima atribución operativa sobre la gobernanza de parámetros de la plataforma (MIRA §2.13, PF-033, DEC-E2-10(d)). Responsable de auditar y autorizar formalmente las políticas propuestas. | - Consulta de versión vigente e historial.<br>- Aprobación o desestimación formal de propuestas en estado `BORRADOR` [SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify].<br>- Promoción de la versión a estado `APROBADO` (entrada en vigencia inmediata).<br>- *Restricción:* Solo puede aprobar propuestas creadas por un usuario distinto. |
 | **Operador** | Analista humano de liquidación de reembolsos que atiende los casos derivados a revisión manual en la bandeja de trabajo (MIRA §2.6, ENT6 [00:04:06]). | - Visualización de casos evaluados.<br>- Inspección de decisión emitida, motivo técnico, puntaje global y desglose por señales.<br>- Recepción y visualización de la advertencia informativa de riesgo alto para apoyar su deliberación humana. |
-| **Representante del Cliente** | Rodrigo Guerrero (en su rol docente de cliente piloto para la Entrega 2; DEC-E2-07, DEC-E2-10). | - Validador de criterios de aceptación y confirmación de supuestos de negocio durante la fase de clarificación. |
+| **Representante del Cliente** | Rodrigo Guerrero (integrante del equipo que actúa como representante del cliente en la Entrega 2; DEC-E2-07, DEC-E2-10). | - Validador de criterios de aceptación y confirmación de supuestos de negocio durante la fase de clarificación. |
 
 ---
 
@@ -78,15 +78,15 @@ La relación funcional entre ambos componentes es estrictamente de productor a c
   3. `coherencia_solicitud`: Coherencia y consistencia de la prestación médica solicitada (Ponderación por defecto: 0,20; Mínimo propio por defecto: 60) `[SUPUESTO del equipo]`.
   4. `alertaFraudeActiva`: Indicador booleano independiente que señala sospecha fundada o detección de anomalía de fraude (MIRA §3). No forma parte de la suma ponderada continua.
 - **Fórmula de Agregación del Puntaje Global:**
-  $$\text{Puntaje Global} = (0,40 \times \text{autenticidad\_documentos}) + (0,40 \times \text{cruce\_fuentes}) + (0,20 \times \text{coherencia\_solicitud})$$
-  *(El resultado se redondea a un decimal para su presentación y comparación).*
+  Puntaje Global = (0,40 * autenticidad_documentos) + (0,40 * cruce_fuentes) + (0,20 * coherencia_solicitud)
+  *(Regla de precisión: el motor de evaluación realiza todas las comparaciones de umbrales y reglas utilizando el puntaje con precisión decimal completa SIN redondear; el redondeo a un decimal es exclusivamente para propósitos de visualización en la interfaz [SUPUESTO del equipo]).*
 
 ### RN-04: Orden Secuencial Determinista y Precedencia del Motor (F4)
 El motor de evaluación evalúa las condiciones de negocio en un orden secuencial fijo e inalterable (§3.1, §5.2, DEC-01, DEC-E2-06, DEC-E2-10):
 1. **Paso 1 (Precedencia de Fraude):** Si `alertaFraudeActiva` es verdadera, el sistema resuelve inmediatamente `decision = DERIVADO_REVISION` con `motivo = 'alerta_fraude'`, con máxima jerarquía e ignorando cualquier puntaje obtenido (MIRA §3, PF-018).
 2. **Paso 2 (Precedencia de Señal Bajo Mínimo):** Si al menos una señal individual no alcanza su mínimo propio respectivo, el sistema resuelve `decision = DERIVADO_REVISION` con `motivo = 'senal_bajo_minimo'`, con precedencia sobre el puntaje global ponderado (H-05, D-07, DEC-E2-10(a)).
 3. **Paso 3 (Aprobación Automática):** Si no hay fraude ni señales bajo mínimo, y el puntaje global es mayor o igual al umbral de aprobación vigente (`Puntaje Global >= umbralAprobacion`, fijado en 90 por defecto; DEC-01, PF-020), el sistema resuelve `decision = APROBADO_AUTOMATICO` con `motivo = 'aprobado'`.
-4. **Paso 4 (Derivación por Puntaje Bajo Umbral):** En cualquier otro caso (puntaje global inferior a 90 sin fraude ni señales bajo mínimo), el sistema resuelve `decision = DERIVADO_REVISION` con `motivo = 'puntaje_bajo_umbral'`.
+4. **Paso 4 (Derivación por Puntaje Bajo Umbral):** En cualquier otro caso (puntaje global inferior a 90 sin fraude ni señales bajo mínimo, con los valores por defecto), el sistema resuelve `decision = DERIVADO_REVISION` con `motivo = 'puntaje_bajo_umbral'`.
 - **Jerarquía de Precedencia:** En caso de concurrencia de causas de derivación, la jerarquía de asignación de motivo es: `alerta_fraude` > `senal_bajo_minimo` > `puntaje_bajo_umbral`.
 
 ### RN-05: Protocolo de Doble Control y Versionamiento Inmutable (F5)
@@ -100,9 +100,9 @@ El motor de evaluación evalúa las condiciones de negocio en un orden secuencia
 
 ### RN-06: Validaciones de Integridad Paramétrica (F5)
 Al proponer un cambio en los parámetros de umbral, el sistema valida obligatoriamente:
-1. **Suma de Ponderaciones:** La suma de los tres pesos debe ser exactamente igual a 1,00 ($0,40 + 0,40 + 0,20 = 1,00$), con cada peso individual acotado entre 0,00 y 1,00 ($0,00 \le \text{peso} \le 1,00$).
-2. **Límites de Umbrales y Mínimos:** Todos los umbrales de corte (`umbralAprobacion`, `umbralRiesgoAlto`) y mínimos individuales por señal (`minimoAutenticidad`, `minimoCruceFuentes`, `minimoCoherencia`) deben ser números dentro del rango inclusivo de 0 a 100 ($0 \le x \le 100$).
-3. **Consistencia de Corte:** El umbral de aprobación debe ser estrictamente mayor que el umbral de riesgo alto (`umbralAprobacion > umbralRiesgoAlto`).
+1. **Suma de Ponderaciones:** La suma de los tres pesos debe ser exactamente igual a 1,00 (0,40 + 0,40 + 0,20 = 1,00), con cada peso individual acotado entre 0,00 y 1,00 (0,00 <= peso <= 1,00).
+2. **Límites de Umbrales y Mínimos:** Todos los umbrales de corte (`umbralAprobacion`, `umbralRiesgoAlto`) y mínimos individuales por señal (`minimoAutenticidad`, `minimoCruceFuentes`, `minimoCoherencia`) deben ser números dentro del rango inclusivo de 0 a 100 (0 <= x <= 100).
+3. **Consistencia de Corte:** El umbral de aprobación debe ser estrictamente mayor que el umbral de riesgo alto (`umbralAprobacion > umbralRiesgoAlto`) [SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify].
 
 ### RN-07: Reproducibilidad Determinista Histórica (RQNF-002)
 - Reevaluar un caso registrado en el historial contra la versión específica de umbrales con la que fue evaluado originalmente debe producir con un 100% de consistencia el mismo puntaje global, la misma decisión, el mismo motivo técnico y el mismo estado de riesgo alto (`RQNF-002 [fase5-lester]`, DEC-14, H-14).
@@ -162,10 +162,6 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
    - **Dado** que el umbral de riesgo alto es 60,
    - **Cuando** se evalúa un caso (`CASO-MED-006`) con autenticidad = 0 (< 70), cruce = 70 y coherencia = 60 (puntaje ponderado = 40.0 < 60),
    - **Entonces** el sistema resuelve `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'`, y activa `riesgoAltoRechazo: true` debido a que el puntaje es estrictamente inferior a 60.
-3. **Escenario 3.3: Activación de advertencia por dos señales bajo mínimo con puntaje global no crítico (Caso Unitario §2.d)**
-   - **Dado** que el umbral de riesgo alto es 60 y los mínimos son 70/70/60,
-   - **Cuando** se evalúa un caso con autenticidad = 65 (< 70), cruce = 65 (< 70) y coherencia = 100 (puntaje ponderado = 72.0 ≥ 60),
-   - **Entonces** el sistema resuelve `decision: 'DERIVADO_REVISION'`, `motivo: 'senal_bajo_minimo'`, y activa `riesgoAltoRechazo: true` estrictamente por la condición de dos señales bajo mínimo propio (`conteo >= 2`), a pesar de tener un puntaje global superior a 60.
 
 ---
 
@@ -180,7 +176,7 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
    - **Dado** que un usuario con rol Diseñador accede al panel de umbrales,
    - **Cuando** ingresa nuevos parámetros válidos (pesos sumando 1,00 y valores entre 0 y 100) y envía la propuesta,
    - **Entonces** el sistema registra la propuesta en estado `BORRADOR`, almacena la identidad del proponente y no altera la versión vigente de evaluación.
-2. **Escenario 4.2: Rechazo de propuesta con suma de ponderaciones inválida**
+2. **Escenario 4.2: Bloqueo de propuesta con suma de ponderaciones inválida**
    - **Dado** que el Diseñador ingresa pesos de 0,50, 0,40 y 0,20 (suma = 1,10),
    - **Cuando** intenta guardar la propuesta,
    - **Entonces** el sistema bloquea el guardado, emite una alerta indicando que *"La suma de las ponderaciones debe ser exactamente 1,00"* y mantiene el formulario en edición.
@@ -206,7 +202,7 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
 ---
 
 ### User Story 6 - Consulta de Historial y Reproducibilidad Determinista (Prioridad: P3)
-*Como Auditor o analista de calidad, deseo inspeccionar el histórico inmutable de versiones de umbrales y reevaluar casos pasados, para garantizar la total trazabilidad y reproducibilidad de las decisiones tomadas.*
+*Como Administrador o analista de calidad, deseo inspeccionar el histórico inmutable de versiones de umbrales y reevaluar casos pasados, para garantizar la total trazabilidad y reproducibilidad de las decisiones tomadas.*
 
 - **Por qué esta prioridad:** Requisito no funcional regulatorio indispensable para auditoría y defensa ante reclamos (RQNF-002 [fase5-lester], DEC-14, H-14).
 - **Prueba Independiente:** Consultar el histórico de versiones y ejecutar la reevaluación de un caso histórico contra su versión de origen, verificando 100% de consistencia decisional.
@@ -218,7 +214,7 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
    - **Entonces** el sistema lista todas las versiones pasadas y la actual en orden cronológico, detallando número de versión, fecha de aprobación, usuario proponente, usuario aprobador y estado.
 2. **Escenario 6.2: Reproducibilidad determinista de decisiones históricas**
    - **Dado** un caso evaluado originalmente bajo la versión de umbrales 1, habiendo actualmente una versión 2 vigente con umbrales distintos,
-   - **Cuando** el auditor solicita la reevaluación del caso contra la versión 1,
+   - **Cuando** el Administrador solicita la reevaluación del caso contra la versión 1,
    - **Entonces** el sistema reproduce de forma exacta e idéntica el puntaje, la decisión, el motivo y las banderas originales (100% determinismo).
 
 ---
@@ -234,9 +230,9 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
 4. **Mínimo Absoluto de Señal en Cero (0.0):**
    - *Comportamiento esperado:* Si una señal obtiene 0.0 (ejemplo: falsificación evidente de boleta), la señal cae estrictamente bajo su mínimo propio (salvo que el mínimo configurado fuera 0), forzando derivación por `senal_bajo_minimo` y activando riesgo alto si el puntaje global cae bajo 60.
 5. **Propuesta con Ponderaciones Decimales que Suman 0,999 o 1,001 por Redondeo:**
-   - *Comportamiento esperado:* El sistema exige validación de igualdad a 1,00 con precisión de dos decimales ($1,00$). Valores fuera de este umbral exacto no pueden ser enviados a aprobación.
+   - *Comportamiento esperado:* El sistema exige validación de igualdad a 1,00 con precisión de dos decimales (1,00). Valores fuera de este umbral exacto no pueden ser enviados a aprobación.
 6. **Múltiples Borradores Concurrentes en F5:**
-   - *Comportamiento esperado:* Solo puede existir un único borrador activo en revisión por flujo a la vez. Si existe un borrador pendiente de aprobación, el Diseñador debe modificar el borrador existente o esperar su resolución antes de generar uno nuevo.
+   - *Comportamiento esperado:* [SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify] Solo puede existir un único borrador activo en revisión por flujo a la vez. Si existe un borrador pendiente de aprobación, el Diseñador debe modificar el borrador existente o esperar su resolución antes de generar uno nuevo.
 7. **Modificación de Umbrales mientras Ocurre una Evaluación en F4:**
    - *Comportamiento esperado:* Toda evaluación iniciada se completa atómicamente con la versión de umbrales que estaba vigente en el instante exacto de la petición, registrando el número de versión aplicado en el resultado.
 
@@ -246,19 +242,19 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
 
 ### 5.1 Requisitos Funcionales del Incremento
 
-| ID Requisito | Descripción Funcional y Reglas Asociadas | Requisito Origen (Fuente E1) | Equivalente Alternativo | Equivalente PDF E1 | Ficha DEC Vinculada |
+| ID Requisito | Descripción Funcional y Reglas Asociadas | Requisito Origen (Fuente E1) | Equivalente Alternativo (`final-final.md`) | Equivalente PDF E1 (`RQF-Bxx`) | Ficha DEC Vinculada |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **FR-001** | El sistema debe permitir a un usuario con rol Diseñador proponer modificaciones a los parámetros de evaluación (umbral de aprobación, umbral de riesgo alto, mínimos por señal y ponderaciones continuas), registrando la propuesta en estado BORRADOR con rastro de auditoría del proponente. | `RQF-039 [fase5-lester]` | `RQF-035` | *sin equivalente en PDF* | `DEC-E2-10(a)(d)`, `D-04` |
+| **FR-001** | El sistema debe permitir a un usuario con rol Diseñador configurar y proponer modificaciones a los parámetros de evaluación (umbral de aprobación, umbral de riesgo alto, mínimos por señal y ponderaciones continuas), registrando la propuesta en estado BORRADOR con rastro de auditoría del proponente. | `RQF-044 [final-final]` (configuración de umbrales) y `RQF-039 [fase5-lester]` (propuesta en borrador) | `RQF-035 [final-final]` (para RQF-039) / *sin equivalente en lester* (para RQF-044) | `RQF-B09 [PDF pág. 9]` (para configuración de umbrales) / *sin equivalente en PDF* (para propuesta en borrador de doble aprobación) | `DEC-E2-10(a)(d)`, `D-04`, `PF-033` |
 | **FR-002** | El sistema debe exigir que toda propuesta de umbrales sea aprobada por un usuario con rol Administrador formalmente distinto al usuario que la propuso, impidiendo terminantemente la auto-aprobación del cambio y actualizando el estado a APROBADO e incrementando el número de versión al autorizarse. | `RQF-039 [fase5-lester]` | `RQF-035` | *sin equivalente en PDF* | `DEC-E2-10(d)`, `D-04`, `PF-033` |
 | **FR-003** | El sistema debe validar que en toda propuesta de umbrales la suma de los tres pesos de las señales sea exactamente igual a 1,00, y que cada mínimo individual y umbral de decisión sea un valor numérico acotado entre 0 y 100. | `RQF-044 [final-final]` | *sin equivalente en lester* | `RQF-B09 [PDF pág. 9]` | `DEC-E2-10(a)`, `D-08` |
 | **FR-004** | El sistema debe mantener un historial inmutable de versiones de umbrales donde cada registro conserva versión, parámetros, usuario proponente, usuario aprobador, fecha/hora y estado, impidiendo su sobrescritura o borrado. | `RQNF-002 [fase5-lester]` | `RQNF-003` | *sin equivalente en PDF* | `DEC-14`, `H-14`, `D-03` |
 | **FR-005** | El sistema debe calcular el puntaje global ponderado de un caso de reembolso médico multiplicando cada una de las tres señales (`autenticidad_documentos`, `cruce_fuentes`, `coherencia_solicitud`) por su ponderación vigente. | `RQF-040 [fase5-lester]` | `RQF-005` | `RQF-B10 [PDF pág. 9]` | `DEC-E2-10(a)`, `D-08` |
-| **FR-006** | El sistema debe resolver `decision: 'APROBADO_AUTOMATICO'` con `motivo: 'aprobado'` cuando el puntaje global sea mayor o igual al umbral de aprobación vigente (90 por defecto), no exista alerta de fraude y ninguna señal esté bajo su mínimo individual. | `RQF-040 [fase5-lester]` | `RQF-005` | `RQF-B10 [PDF pág. 9]` | `DEC-01`, `DEC-E2-10(b)`, `PF-020` |
-| **FR-007** | El sistema debe resolver `decision: 'DERIVADO_REVISION'` con `motivo: 'alerta_fraude'` ante cualquier caso con alerta de fraude activa, con máxima precedencia sobre cualquier puntaje obtenido. | `RQF-023 [fase5-lester]` | `RQF-028` | `RQF-B12 [PDF pág. 9]` (parcial) | `DEC-E2-06`, `PF-018` |
-| **FR-008** | El sistema debe resolver `decision: 'DERIVADO_REVISION'` con `motivo: 'senal_bajo_minimo'` cuando al menos una señal individual no alcance su mínimo propio, con precedencia sobre el puntaje global y subordinada únicamente a la alerta de fraude. | `RQF-041 [fase5-lester]` | *sin equivalente en lester* | `RQF-B12 [PDF pág. 9]` (parcial) | `DEC-E2-10(a)`, `H-05`, `PF-021` |
-| **FR-009** | El sistema debe resolver `decision: 'DERIVADO_REVISION'` con `motivo: 'puntaje_bajo_umbral'` cuando el caso no presente alertas de fraude ni señales bajo mínimo pero su puntaje global sea inferior al umbral de aprobación. | `RQF-020 [fase5-lester]` | *sin equivalente en lester* | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (parcial) | `DEC-08`, `DEC-E2-10(b)`, `PF-015` |
-| **FR-010** | El sistema nunca debe rechazar automáticamente un caso ni utilizar la palabra "rechazado" o "rechazo automático" para comunicar una decisión del sistema. | `RQF-020 [fase5-lester]` | *sin equivalente en lester* | `RQF-B12 [PDF pág. 9]` (parcial) | `DEC-08`, `DEC-E2-06`, `DEC-E2-10(b)` |
-| **FR-011** | El sistema debe activar el indicador informativo `riesgoAltoRechazo: true` y desplegar el texto *"Riesgo alto de rechazo: decide un operador"* si el caso presenta 2 o más señales bajo mínimo o un puntaje menor a `umbralRiesgoAlto` (60 por defecto), sin alterar la decisión de derivación. | `RQF-020 [fase5-lester]` | *sin equivalente en lester* | `RQF-B11 [PDF pág. 9]` (parcial) | `DEC-08`, `DEC-E2-10(b)` |
+| **FR-006** | El sistema debe resolver `decision: 'APROBADO_AUTOMATICO'` con `motivo: 'aprobado'` cuando el puntaje global sea mayor o igual al umbral de aprobación vigente (90 por defecto), no exista alerta de fraude y ninguna señal esté bajo su mínimo individual. | `RQF-040 [fase5-lester]` | `RQF-005` | `RQF-B10 [PDF pág. 9]` (prueba en PDF usa umbral 85) | `DEC-01`, `DEC-E2-10(b)`, `PF-020` |
+| **FR-007** | El sistema debe resolver `decision: 'DERIVADO_REVISION'` con `motivo: 'alerta_fraude'` ante cualquier caso con alerta de fraude activa, con máxima precedencia sobre cualquier puntaje obtenido. | `RQF-023 [fase5-lester]` | `RQF-028` | `RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; el PDF estipula rechazo automático ante fraude, superado por DEC-E2-06; prueba PF-018 en pág. 13 cita RQF-023) | `DEC-E2-06`, `PF-018` |
+| **FR-008** | El sistema debe resolver `decision: 'DERIVADO_REVISION'` con `motivo: 'senal_bajo_minimo'` cuando al menos una señal individual no alcance su mínimo propio, con precedencia sobre el puntaje global y subordinada únicamente a la alerta de fraude. | `RQF-041 [fase5-lester]` | `[SIN EQUIVALENTE VERIFICADO en final-final]` | `RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; PDF dice "Rechazado", superado por DEC-08/E2-06) | `DEC-E2-10(a)`, `H-05`, `PF-021` |
+| **FR-009** | El sistema debe resolver `decision: 'DERIVADO_REVISION'` con `motivo: 'puntaje_bajo_umbral'` cuando el caso no presente alertas de fraude ni señales bajo mínimo pero su puntaje global sea inferior al umbral de aprobación. | `RQF-020 [fase5-lester]` | `[SIN EQUIVALENTE VERIFICADO en final-final]` | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; RQF-B11 rango intermedio 60-84 y RQF-B12 rechazo bajo umbral mínimo, superado por DEC-08) | `DEC-08`, `DEC-E2-10(b)`, `PF-015` |
+| **FR-010** | El sistema nunca debe rechazar automáticamente un caso ni utilizar la palabra "rechazado" o "rechazo automático" para comunicar una decisión del sistema. | `RQF-020 [fase5-lester]` | `[SIN EQUIVALENTE VERIFICADO en final-final]` | Modificado respecto a RQF-B12 (reemplazado por DEC-08, DEC-E2-06 y DEC-E2-10) | `DEC-08`, `DEC-E2-06`, `DEC-E2-10(b)` |
+| **FR-011** | El sistema debe activar el indicador informativo `riesgoAltoRechazo: true` y desplegar el texto *"Riesgo alto de rechazo: decide un operador"* si el caso presenta 2 o más señales bajo mínimo o un puntaje menor a `umbralRiesgoAlto` (60 por defecto), sin alterar la decisión de derivación. | `RQF-020 [fase5-lester]` | `[SIN EQUIVALENTE VERIFICADO en final-final]` | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | `DEC-08`, `DEC-E2-10(b)` |
 | **FR-012** | El sistema debe ser capaz de reevaluar un caso histórico contra la versión específica de umbrales con la que fue evaluado originalmente, garantizando un 100% de reproducibilidad determinista en la decisión y el motivo. | `RQNF-002 [fase5-lester]` | `RQNF-003` | *sin equivalente en PDF* | `DEC-14`, `H-14` |
 
 ---
@@ -280,7 +276,7 @@ Al proponer un cambio en los parámetros de umbral, el sistema valida obligatori
 
 ### 6.1 Criterios de Aceptación de Casos de Negocio (§2.d, §7.4)
 
-A continuación se formaliza la correspondencia canónica de los criterios de aceptación `AC-1` a `AC-7`, vinculándolos de forma unívoca a los casos de prueba sintéticos documentados en la guía (§2.d, §7.4) `[POR CONFIRMAR en clarify]`:
+A continuación se formaliza la correspondencia canónica de los criterios de aceptación `AC-1` a `AC-6`, vinculándolos de forma unívoca a los casos de prueba sintéticos documentados en la guía (§2.d, §7.4):
 
 | Criterio | Caso Asociado (§2.d) | Descripción del Escenario de Prueba | Señales de Entrada | Puntaje Global | Resultado Esperado | Motivo Esperado | Advertencia Riesgo Alto |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -290,15 +286,22 @@ A continuación se formaliza la correspondencia canónica de los criterios de ac
 | **AC-4** | `CASO-MED-004` | Derivación con advertencia de riesgo alto por puntaje crítico y 2 señales bajo mínimo | Aut: 40 (< 70), Cruce: 40 (< 70), Coh: 60, Fraude: false | **44.0** (< 60) | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** |
 | **AC-5** | `CASO-MED-005` | Derivación estándar en rango intermedio de puntaje sin señales bajo mínimo | Aut: 75, Cruce: 75, Coh: 75, Fraude: false | **75.0** (60 ≤ x < 90) | `DERIVADO_REVISION` | `'puntaje_bajo_umbral'` | `false` |
 | **AC-6** | `CASO-MED-006` | Derivación con advertencia de riesgo alto por puntaje crítico con 1 sola señal bajo mínimo | Aut: 0 (< 70), Cruce: 70, Coh: 60, Fraude: false | **40.0** (< 60) | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** |
-| **AC-7** | Caso Unitario (§2.d) | Derivación con advertencia de riesgo alto por 2 señales bajo mínimo con puntaje no crítico | Aut: 65 (< 70), Cruce: 65 (< 70), Coh: 100, Fraude: false | **72.0** (≥ 60) | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** |
 
-### 6.2 Resultados Medibles de Éxito (Measurable Outcomes)
+### 6.2 Prueba Unitaria de Condición Lógica Multiseñal (PU-1)
 
-- **SC-001 (Consistencia Resolutiva Total):** El 100% de los casos de prueba sintéticos de la suite de negocio (`CASO-MED-001` a `CASO-MED-006` y caso unitario) deben evaluarse con estricta coincidencia frente a su decisión, motivo y bandera de riesgo esperado en pruebas automatizadas independientes.
+Fuera de la suite de casos de negocio del dominio en interfaz, se define una prueba unitaria técnica directa en motor (§2.d ítem 7) para aislar la condición de multiseñal bajo mínimo:
+
+| Identificador | Caso Asociado (§2.d) | Descripción del Escenario de Prueba | Señales de Entrada | Puntaje Global | Resultado Esperado | Motivo Esperado | Advertencia Riesgo Alto |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **PU-1** | Caso Unitario (§2.d) | Derivación con advertencia de riesgo alto por 2 señales bajo mínimo con puntaje no crítico | Aut: 65 (< 70), Cruce: 65 (< 70), Coh: 100, Fraude: false | **72.0** (≥ 60) | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** |
+
+### 6.3 Resultados Medibles de Éxito (Measurable Outcomes)
+
+- **SC-001 (Consistencia Resolutiva Total):** El 100% de los casos de prueba sintéticos de la suite de negocio (`CASO-MED-001` a `CASO-MED-006`) y la prueba unitaria `PU-1` deben evaluarse con estricta coincidencia frente a su decisión, motivo y bandera de riesgo esperado en pruebas automatizadas independientes.
 - **SC-002 (Cero Falsos Rechazos del Sistema):** En el 100% de las evaluaciones realizadas, la salida del sistema debe ser estrictamente `APROBADO_AUTOMATICO` o `DERIVADO_REVISION`. La tasa de emisión de "rechazo automático" por parte del sistema es exactamente 0% (invariante absoluto RN-01).
 - **SC-003 (Eficacia del Protocolo de Doble Control):** El 100% de los intentos de auto-aprobación de un borrador de umbrales por el mismo usuario que lo propuso deben ser bloqueados por el sistema de forma comprobable.
 - **SC-004 (Reproducibilidad Determinista Histórica):** El 100% de las reevaluaciones históricas ejecutadas contra versiones archivadas de umbrales deben producir idéntico puntaje ponderado, idéntica decisión e idéntico motivo de salida (RQNF-002 [fase5-lester]).
-- **SC-005 (Facilidad Operativa de Consulta):** Los operadores y administradores deben poder visualizar la configuración vigente y el historial completo de cambios en la interfaz con un máximo de 2 interacciones de usuario.
+- **SC-005 (Facilidad Operativa de Consulta):** [SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify] Los operadores y administradores deben poder visualizar la configuración vigente y el historial completo de cambios en la interfaz con un máximo de 2 interacciones de usuario.
 
 ---
 
@@ -306,15 +309,23 @@ A continuación se formaliza la correspondencia canónica de los criterios de ac
 
 1. **Simulación Determinista del Motor Multimodal (D-02):** El análisis de visión por computadora y procesamiento de lenguaje natural sobre las imágenes y PDFs ficticios no se realiza en tiempo real; se asume que las señales numéricas resultantes (`autenticidadDocumentos`, `cruceFuentes`, `coherenciaSolicitud`) y la bandera `alertaFraudeActiva` ya han sido calculadas previamente y residen en los casos de prueba sintéticos controlados.
 2. **Valores por Defecto de Mínimos y Ponderaciones (D-07, D-08):** Conforme a MIRA §2.6 y a las declaraciones de Sebastián en ENT3 [00:21:47] (*"mínimos por señal… aunque nadie ha definido cuáles son"*), se asumen como supuestos formales del equipo para el flujo de reembolso médico: Autenticidad = 70 (peso 0,40), Cruce = 70 (peso 0,40) y Coherencia = 60 (peso 0,20). El cliente confirmará o ajustará estos valores en clarify.
-3. **Rol del Umbral 60 como Señal de Riesgo Alto (DEC-08, DEC-E2-10(b)):** El valor 60 no opera como umbral de rechazo automático sino como un disparador informativo de `riesgoAltoRechazo`. Matemáticamente, con los mínimos asumidos (70/70/60) y ponderaciones (0,40/0,40/0,20), el puntaje mínimo sin señales bajo mínimo es 68.0 puntos, por lo que todo puntaje inferior a 60 presenta forzosamente al menos una deficiencia documental.
+3. **Rol del Umbral 60 como Señal de Riesgo Alto (DEC-08, DEC-E2-10(b)):** El valor 60 no opera como umbral de rechazo automático sino como un disparador informativo de `riesgoAltoRechazo`. Matemáticamente, con los valores por defecto de mínimos asumidos (70/70/60) y ponderaciones (0,40/0,40/0,20), el puntaje mínimo sin señales bajo mínimo es 68.0 puntos, por lo que todo puntaje inferior a 60 presenta forzosamente al menos una deficiencia documental con los valores por defecto.
 4. **Selector de Sesión y Autenticación Simulada (D-04, H-06):** Para posibilitar la demostración y verificación del protocolo de doble control en un entorno sin credenciales complejas ni servicios en la nube externos, el sistema dispondrá de un mecanismo simplificado de selección de usuario y rol en la interfaz (ej. Diseñador 1, Administrador 1, Operador 1).
 5. **Idioma Oficial:** Toda la interfaz de usuario, etiquetas, mensajes de retroalimentación, estados y advertencias se redactan exclusivamente en idioma español neutro profesional (Principio VII / Restricción 3).
+6. **Regla de Precisión en Comparaciones:** Las comparaciones lógicas y matemáticas del motor de evaluación se ejecutan sobre los valores numéricos sin redondear; el redondeo a un decimal es una regla exclusiva de presentación visual en interfaz [SUPUESTO del equipo].
+
+### 7.1 Supuestos Pendientes de Confirmación (no decididos en DEC-E2-10)
+Los siguientes puntos corresponden a supuestos operativos propuestos por el equipo de ingeniería para completar el flujo, no zanjados en DEC-E2-10 y sujetos a ratificación formal en la sesión de clarificación:
+- **(a) Consistencia de Corte Paramétrico (RN-06 punto 3):** `[SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify]` Exigencia de validación `umbralAprobacion > umbralRiesgoAlto` para impedir rangos invertidos o solapamientos ilógicos.
+- **(b) Restricción de Concurrencia de Borradores (Edge Case 6):** `[SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify]` Existencia de como máximo un solo borrador activo en revisión simultánea por flujo.
+- **(c) Acciones de Desestimación y Envío Administrativo (§2 Actores):** `[SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify]` Capacidad del Diseñador para "enviar a revisión administrativa" y del Administrador para "desestimar formalmente" una propuesta en borrador.
+- **(d) Métrica de Usabilidad SC-005 (§6.3):** `[SUPUESTO del equipo, no decidido en DEC-E2-10, confirmar en clarify]` Límite de un máximo de 2 interacciones de usuario para acceder a la visualización de configuración e historial.
 
 ---
 
 ## 8. Puntos Pendientes de Clarificación ([NEEDS CLARIFICATION])
 
-De acuerdo con el mandato de gobernanza del proyecto, se registran exactamente los siguientes tres marcadores estructurados para su resolución con el Representante del Cliente (Rodrigo Guerrero) en la fase `/speckit-clarify`:
+De acuerdo con el mandato de gobernanza del proyecto, se registran exactamente los siguientes tres marcadores estructurados para su resolución con el Representante del Cliente (Rodrigo Guerrero, integrante del equipo que actúa como representante del cliente en la Entrega 2; DEC-E2-07) en la fase `/speckit-clarify`:
 
 ### Clarificación 1: Confirmación de Valores de Mínimos por Señal y Ponderaciones
 - **Contexto:** En MIRA §2.6 y ENT3 [00:21:47], Sebastián declara que los mínimos por señal están pendientes de definición con el área de riesgo. El equipo adoptó como supuesto de diseño los valores 70 para autenticidad, 70 para cruce de fuentes y 60 para coherencia de solicitud, con pesos 0,40, 0,40 y 0,20 (D-07, D-08, DEC-E2-10(a)).
@@ -322,10 +333,10 @@ De acuerdo con el mandato de gobernanza del proyecto, se registran exactamente l
 
 ### Clarificación 2: Nombres y Roles del Mecanismo Simulado de Doble Control
 - **Contexto:** Para verificar la regla de separación de funciones (FR-002, D-04, PF-033) en una demostración local sin gestión de contraseñas de producción (H-06), se contempla un selector de usuario y rol.
-- **Pregunta a clarificar:** *[NEEDS CLARIFICATION: ¿Qué lista exacta de usuarios y roles preconfigurados debe incluir el selector de sesión en la interfaz para validar la regla de incompatibilidad de doble control (ej. Diseñador 1, Diseñador 2, Administrador 1, Administrador 2, Operador 1, Auditor)?]*
+- **Pregunta a clarificar:** *[NEEDS CLARIFICATION: ¿Qué lista exacta de usuarios y roles preconfigurados debe incluir el selector de sesión en la interfaz para validar la regla de incompatibilidad de doble control (ej. Diseñador 1, Diseñador 2, Administrador 1, Administrador 2, Operador 1)?]*
 
 ### Clarificación 3: Confirmación de Ausencia de SLA Vinculante de Tiempo de Respuesta
-- **Contexto:** En la Entrega 1 existió confusión sobre requisitos de tiempo de respuesta (H-11), aclarándose en DEC-E2-05 que la herramienta de carga k6 se conserva únicamente para medir una línea base exploratoria de latencia, sin carácter de SLA contractual o causal de reprobación.
+- **Contexto:** En la Entrega 1 existió confusión sobre requisitos de tiempo de respuesta (H-11), aclarándose en DEC-E2-05 que la herramienta de carga se conserva únicamente para medir una línea base exploratoria de latencia, sin carácter de SLA contractual o causal de reprobación.
 - **Pregunta a clarificar:** *[NEEDS CLARIFICATION: ¿Ratifica el Representante del Cliente que no existe un SLA de latencia o tiempo de respuesta máximo como requisito funcional vinculante en la Entrega 2, manteniéndose el análisis de rendimiento como métrica exploratoria no condicionante?]*
 
 ---
