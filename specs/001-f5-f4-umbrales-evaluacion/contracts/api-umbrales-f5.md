@@ -26,8 +26,8 @@ Obtiene la configuración de umbrales actualmente vigente (la versión con estad
   "pesoCoherencia": 0.20,
   "proponente": "sistema",
   "aprobador": "carga inicial del sistema (valores por defecto)",
-  "fechaPropuesta": "2026-10-14T00:00:00.000Z",
-  "fechaResolucion": "2026-10-14T00:00:00.000Z",
+  "fechaPropuesta": "2026-10-14T00:00:00.000Z", // fecha de la carga inicial
+  "fechaResolucion": "2026-10-14T00:00:00.000Z", // fecha de la carga inicial
   "estado": "APROBADO"
 }
 ```
@@ -61,8 +61,8 @@ Lista todas las versiones históricas de umbrales del flujo (aprobadas, desestim
       "pesoCoherencia": 0.20,
       "proponente": "sistema",
       "aprobador": "carga inicial del sistema (valores por defecto)",
-      "fechaPropuesta": "2026-10-14T00:00:00.000Z",
-      "fechaResolucion": "2026-10-14T00:00:00.000Z",
+      "fechaPropuesta": "2026-10-14T00:00:00.000Z", // fecha de la carga inicial
+      "fechaResolucion": "2026-10-14T00:00:00.000Z", // fecha de la carga inicial
       "estado": "APROBADO"
     }
   ]
@@ -74,7 +74,7 @@ Lista todas las versiones históricas de umbrales del flujo (aprobadas, desestim
 ## 3. `POST /api/umbrales/borrador`
 Crea una nueva propuesta de umbrales en estado `BORRADOR`.
 - **Autenticación e Identidad:** La identidad del proponente se extrae automáticamente en el servidor desde la sesión activa (`/api/session`). **No se envía en el cuerpo de la petición.**
-- **Control de Acceso:** El backend valida que la identidad activa posea el rol de **`Diseñador`** (ej. `'Diseñador 1'` o `'Diseñador 2'`). Si no es Diseñador, rechaza con código 403 Forbidden.
+- **Control de Acceso:** El backend valida que la identidad activa posea el rol de **`Diseñador` o `Administrador`** `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]`. Si no posee este rol, rechaza con código 403 Forbidden.
 - **Restricción de Concurrencia:** Bloqueado con error 409 Conflict si ya existe un borrador activo sin resolver en el flujo (garantizado por el índice único condicional SQLite).
 - **Asignación de Versión:** El backend asigna de inmediato el número secuencial `version = MAX(version) + 1`.
 
@@ -129,7 +129,7 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR`.
 - **Respuesta 403 Forbidden:**
 ```json
 {
-  "error": "Acceso denegado: solo un usuario con rol Diseñador puede proponer modificaciones de umbrales."
+  "error": "Acceso denegado: solo un usuario con rol Diseñador o Administrador puede proponer modificaciones de umbrales."
 }
 ```
 - **Respuesta 409 Conflict:**
@@ -144,7 +144,7 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR`.
 ## 4. `PUT /api/umbrales/borrador`
 Modifica los parámetros numéricos de la propuesta actualmente en estado `BORRADOR`.
 - **Autenticación e Identidad:** La identidad del editor se extrae de la sesión activa (`/api/session`).
-- **Control de Acceso:** El backend valida que la identidad activa sea de rol **`Diseñador`**.
+- **Control de Acceso:** El backend valida que la identidad activa sea de rol **`Diseñador` o `Administrador`** `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]`.
 - **Regla:** Actualiza los campos numéricos manteniendo el mismo número de `version` asignado previamente.
 
 - **Cuerpo de la Petición:**

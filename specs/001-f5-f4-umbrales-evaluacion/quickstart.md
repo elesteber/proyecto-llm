@@ -60,18 +60,18 @@ Una vez ejecutado `npm run dev`:
 ---
 
 ### Escenario 2: Doble Control y Segregación de Funciones en F5 (`PF-033`)
-- **Objetivo:** Demostrar que quien propone un cambio no puede aprobarlo y que se requiere un Administrador independiente (`D-04`, `PF-033`). La identidad proviene de la sesión activa en `/api/session`.
+- **Objetivo:** Demostrar que quien propone un cambio no puede aprobarlo y que se requiere un segundo Administrador independiente (`D-04`, `PF-033`). La identidad proviene de la cookie de sesión activa (`mira_session`) gestionada con `-c cookies.txt -b cookies.txt`.
 
-- **Paso 2.0: Conmutar sesión activa a Diseñador 1**
+- **Paso 2.0: Conmutar sesión activa a Administrador 1**
   ```bash
-  curl -s -X POST http://localhost:3001/api/session/switch \
+  curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/session/switch \
     -H "Content-Type: application/json" \
-    -d '{"nuevoUsuario": "Diseñador 1"}' | jq .
+    -d '{"nuevoUsuario": "Administrador 1"}' | jq .
   ```
 
-- **Paso 2.1: Crear propuesta como Diseñador 1 (asigna versión 2 en BORRADOR)**
+- **Paso 2.1: Crear propuesta como Administrador 1 (asigna versión 2 en BORRADOR)**
   ```bash
-  curl -s -X POST http://localhost:3001/api/umbrales/borrador \
+  curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/umbrales/borrador \
     -H "Content-Type: application/json" \
     -d '{
       "idFlujo": "reembolso-gastos-medicos",
@@ -85,34 +85,34 @@ Una vez ejecutado `npm run dev`:
       "pesoCoherencia": 0.20
     }' | jq .
   ```
-  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Diseñador 1"`.
+  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Administrador 1"` `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]`.
 
-- **Paso 2.2: Intento de auto-aprobación con Diseñador 1 activo (Debe Fallar)**
+- **Paso 2.2: Intento de auto-aprobación con Administrador 1 activo (Debe Fallar con 403)**
   ```bash
-  curl -s -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
+  curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
     -H "Content-Type: application/json" \
     -d '{
       "idFlujo": "reembolso-gastos-medicos"
     }' | jq .
   ```
-  *Resultado:* Código 403 Forbidden (*"Violación de segregación de funciones: El usuario proponente no puede aprobar su propia propuesta"*).
+  *Resultado:* Código 403 Forbidden (*"Violación de segregación de funciones: El usuario proponente no puede aprobar su propia propuesta de umbrales; se requiere un aprobador independiente"*).
 
-- **Paso 2.3: Conmutar sesión activa a Administrador 1**
+- **Paso 2.3: Conmutar sesión activa a Administrador 2**
   ```bash
-  curl -s -X POST http://localhost:3001/api/session/switch \
+  curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/session/switch \
     -H "Content-Type: application/json" \
-    -d '{"nuevoUsuario": "Administrador 1"}' | jq .
+    -d '{"nuevoUsuario": "Administrador 2"}' | jq .
   ```
 
-- **Paso 2.4: Aprobación legítima por Administrador 1**
+- **Paso 2.4: Aprobación legítima por Administrador 2**
   ```bash
-  curl -s -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
+  curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
     -H "Content-Type: application/json" \
     -d '{
       "idFlujo": "reembolso-gastos-medicos"
     }' | jq .
   ```
-  *Resultado:* Código 200 OK; versión 2 pasa a `APROBADO` y entra en vigencia operativa con `aprobador: "Administrador 1"`.
+  *Resultado:* Código 200 OK; versión 2 pasa a `APROBADO` y entra en vigencia operativa con `aprobador: "Administrador 2"`.
 
 ---
 
@@ -120,7 +120,7 @@ Una vez ejecutado `npm run dev`:
 - **Objetivo:** Verificar las 6 reglas de negocio de evaluación sobre casos sintéticos precalculados copiados exactamente de `entregable2/guia-implementacion-sdd.md §2.d`:
 
 | Criterio | Caso | Señales de Entrada (Aut / Cruce / Coh / Fraude) | Puntaje | Decisión Esperada | Motivo Esperado | Advertencia Riesgo Alto |
-| :--- | :--- | :--- | :---: | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- | :--- | :--- | :---: |
 | **AC-1** | `CASO-MED-001` | 95.0 / 95.0 / 90.0 / false | **94.0** | `APROBADO_AUTOMATICO` | `aprobado` | `false` |
 | **AC-2** | `CASO-MED-002` | 100.0 / 100.0 / 55.0 / false | **91.0** | `DERIVADO_REVISION` | `senal_bajo_minimo` | `false` |
 | **AC-3** | `CASO-MED-003` | 95.0 / 95.0 / 90.0 / **true** | **94.0** | `DERIVADO_REVISION` | `alerta_fraude` | `false` |
@@ -128,9 +128,9 @@ Una vez ejecutado `npm run dev`:
 | **AC-5** | `CASO-MED-005` | 75.0 / 75.0 / 75.0 / false | **75.0** | `DERIVADO_REVISION` | `puntaje_bajo_umbral` | `false` |
 | **AC-6** | `CASO-MED-006` | 0.0 / 70.0 / 60.0 / false | **40.0** | `DERIVADO_REVISION` | `senal_bajo_minimo` | **`true`** |
 
-*Comando para evaluar directamente un caso (las señales se cargan en el servidor desde data/casos_prueba.json per D-02):*
+*Comando para evaluar directamente un caso (las señales se cargan en el servidor desde data/casos_prueba.json per D-02 y la sesión se envía con cookies):*
 ```bash
-curl -s -X POST http://localhost:3001/api/evaluacion/evaluar \
+curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/evaluacion/evaluar \
   -H "Content-Type: application/json" \
   -d '{
     "idCaso": "CASO-MED-001",

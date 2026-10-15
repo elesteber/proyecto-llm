@@ -68,3 +68,16 @@ Conmuta la sesión activa hacia otra de las 5 identidades preconfiguradas para p
   "error": "Identidad no autorizada. Debe seleccionar una de las 5 identidades oficiales: Diseñador 1, Diseñador 2, Administrador 1, Administrador 2, Operador 1."
 }
 ```
+
+---
+
+## 4. Mecanismo de Persistencia de Sesión
+
+Para garantizar que la identidad activa se preserve a través de llamadas sucesivas sin requerir bases de datos de sesiones complejas:
+1. **Emisión de Cookie de Sesión:** En cada llamada exitosa a `POST /api/session/switch`, el servidor responde con la cabecera HTTP:
+   `Set-Cookie: mira_session=<nombre_usuario>; Path=/; HttpOnly; SameSite=Lax`
+2. **Identidad por Defecto:** Si una petición no incluye la cookie `mira_session` o su valor no pertenece al catálogo de 5 identidades válidas, el middleware de autenticación del backend asume por defecto la identidad `'Diseñador 1'`.
+3. **Validación en Middleware:** Cada endpoint protegido (creación/modificación de borradores, aprobación, desestimación y evaluación) extrae el usuario activo desde la cookie de sesión validada, garantizando que el rol y nombre se resuelvan en el servidor y no puedan ser falsificados en el cuerpo JSON de la petición.
+4. **Persistencia en Pruebas y Clientes CLI (`curl`):**
+   Para automatizaciones o pruebas manuales mediante CLI, las llamadas deben persistir y reutilizar el archivo de cookies empleando los parámetros `-c cookies.txt` (guardar cookies recibidas) y `-b cookies.txt` (enviar cookies guardadas).
+

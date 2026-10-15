@@ -458,7 +458,7 @@ Toda propuesta del agente que agregue campos, rutas o reglas no solicitadas en `
 - **Frente 4: Informe, Trazabilidad y Gobernanza SDD (Angel Salgado):** Informe PDF (6.1 a 6.8), matriz de trazabilidad, log de prompts, bitácora DEC, custodia de `.specify/memory/constitution.md`, diapositivas PPT.
 
 ### 5.2 Contrato de Datos Temprano F5 ↔ F4 (`src/shared/types.ts`)
-Congelado el **Martes 13 de Octubre (Día 1 de desarrollo)** para desacoplar el trabajo de interfaz y backend (el contrato formal y vigente se detalla en `specs/001-f5-f4-umbrales-evaluacion/data-model.md §4`):
+Se congela tras aprobar el plan técnico (commit [PLAN], Compuerta 3); el contrato vigente es data-model.md §4:
 
 ```typescript
 // src/shared/types.ts - Contrato de Interfaces F5 <-> F4
@@ -661,12 +661,13 @@ Campos: `ID Interacción`, `Fecha y Fase`, `Prompt Ingresado`, `Resumen Salida A
 | `RQF-041` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-08/E2-06) | `AC-2: Derivación por señal bajo mínimo (CASO-MED-002)` | `T-05` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMinSignalGate` |
 | `RQF-023` | `fase5-lester` | `RQF-028` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-E2-06) | `AC-3: Precedencia de alerta de fraude (CASO-MED-003)` | `T-06` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testFraudPrecedence` |
 | `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B11 (pág. 9) y RQF-B12 (pág. 9)` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | `AC-4: Derivación con advertencia de riesgo alto por puntaje crítico y 2 señales bajo mínimo (CASO-MED-004)` | `T-07` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testHighRiskWarning` |
-| `RQF-040` | `fase5-lester` | `RQF-005` | `RQF-B11 (pág. 9)` (rango intermedio 60-84) | `AC-5: Derivación estándar en rango intermedio de puntaje (CASO-MED-005)` | `T-08` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testIntermediateRange` |
+| `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (superado por DEC-08) | `AC-5: Derivación estándar en rango intermedio de puntaje (CASO-MED-005)` | `T-08` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testIntermediateRange` |
 | `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (superado por DEC-08 / DEC-E2-10) | `AC-6: Derivación con advertencia de riesgo alto por puntaje crítico con 1 sola señal bajo mínimo (CASO-MED-006)` | `T-09` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testCriticalScoreWarning` |
-| `DEC-E2-10(b)` | `equipo` | `[SIN EQUIVALENTE VERIFICADO]` | `[SIN EQUIVALENTE VERIFICADO]` (supuesto de diseño) | `PU-1: Condición lógica multiseñal bajo mínimo con puntaje alto (72.0)` | `T-10` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMultiSignalWarning` |
-| `RQF-044` | `final-final` | `[SIN EQUIVALENTE VERIFICADO en lester]` | `RQF-B09 (pág. 9)` | `US4 / Esc. 4.1 & 4.2: Configuración de umbrales por flujo y propuesta en borrador` | `T-01` | `src/backend/routes/umbrales.ts` | `[hash]` | `tests/integration/umbrales.test.ts` |
-| `RQF-039` | `fase5-lester` | `RQF-035` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `US5 / Esc. 5.1 & 5.2: Doble control y aprobación de umbrales (SC-003)` | `T-02` | `src/backend/routes/umbrales.ts` | `[hash]` | `tests/integration/umbrales.test.ts` |
-| `RQNF-002` | `fase5-lester` | `RQNF-003` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `SC-004: Reproducibilidad histórica determinista al 100% (US6 / Esc. 6.2)` | `T-12` | `src/backend/routes/eval.ts` | `[hash]` | `tests/reproducibility/deterministic.test.ts` |
+| `RQF-044` | `final-final` | `[SIN EQUIVALENTE VERIFICADO en lester]` | `RQF-B09 (pág. 9)` | `FR-001 / FR-003: Configuración de umbrales por flujo y propuesta en borrador` | `T-01` | `src/backend/routes/umbrales.ts` | `[hash]` | `tests/integration/umbrales.test.ts` |
+| `RQF-039` | `fase5-lester` | `RQF-035` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `FR-002: Doble control y aprobación de umbrales (SC-003)` | `T-02` | `src/backend/routes/umbrales.ts` | `[hash]` | `tests/integration/umbrales.test.ts` |
+| `RQNF-002` | `fase5-lester` | `RQNF-003` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `FR-004 / FR-012: Historial inmutable y reproducibilidad determinista al 100% (SC-004)` | `T-12` | `src/backend/routes/eval.ts` | `[hash]` | `tests/reproducibility/deterministic.test.ts` |
+
+> **Nota:** Tarea (tasks.md): identificadores provisionales hasta ejecutar /speckit-tasks. (La prueba unitaria directa `PU-1` se especifica en `spec.md §6.2` como verificación complementaria del motor).
 
 ### 7.5 Atribución de Origen de los Cambios
 Registro auditable distinguiendo cambios originados por el **Representante del Cliente**, el **Equipo de Desarrollo** y el **Agente**.

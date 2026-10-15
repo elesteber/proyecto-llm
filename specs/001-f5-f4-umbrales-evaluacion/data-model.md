@@ -23,8 +23,8 @@ Representa una configuración paramétrica completa e independiente para un fluj
 - **`pesoAutenticidad`** (`number`): Ponderación de autenticidad (por defecto `0.40`, `D-08`, `clarificaciones.md` P1 `[SUPUESTO del equipo]`). Rango: `[0.00, 1.00]`.
 - **`pesoCruceFuentes`** (`number`): Ponderación de cruce de fuentes (por defecto `0.40`, `D-08`, `clarificaciones.md` P1 `[SUPUESTO del equipo]`). Rango: `[0.00, 1.00]`.
 - **`pesoCoherencia`** (`number`): Ponderación de coherencia (por defecto `0.20`, `D-08`, `clarificaciones.md` P1 `[SUPUESTO del equipo]`). Rango: `[0.00, 1.00]`.
-- **`proponente`** (`string`): Identidad del usuario que formuló la propuesta (rol Diseñador). En la versión 1 inicial figura como `'sistema'`.
-- **`aprobador`** (`string | null`): Identidad del usuario Administrador independiente que autorizó la propuesta (obligatorio si `estado === 'APROBADO'` o `'DESESTIMADO'` para versiones >= 2). En la versión 1 inicial figura como `'carga inicial del sistema (valores por defecto)'` (no se inventan aprobaciones humanas; el doble control rige desde la versión 2).
+- **`proponente`** (`string`): Identidad del usuario que formuló la propuesta (rol Diseñador o Administrador `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]`). En la versión 1 inicial figura como `'sistema'`.
+- **`aprobador`** (`string | null`): Identidad del usuario Administrador independiente que autorizó la propuesta (obligatorio si `estado === 'APROBADO'` o `'DESESTIMADO'` para versiones >= 2; `aprobador !== proponente`, `PF-033`). En la versión 1 inicial figura como `'carga inicial del sistema (valores por defecto)'` (no se inventan aprobaciones humanas; el doble control rige desde la versión 2).
 - **`fechaPropuesta`** (`string` ISO 8601 UTC): Momento de creación del borrador.
 - **`fechaResolucion`** (`string | null` ISO 8601 UTC): Momento en que la propuesta fue resuelta (aprobada o desestimada).
 - **`estado`** (`enum`): Estado en el ciclo de vida: `'BORRADOR'`, `'APROBADO'` o `'DESESTIMADO'` (`D-03`, `clarificaciones.md` P2).
@@ -62,24 +62,24 @@ A continuación se formaliza la tabla canónica con los datos de entrada, cálcu
 | Caso | Prestación / Evidencia (§2.d) | Señales de Entrada (`aut` / `cruce` / `coh` / `fraude`) | Cálculo Detallado del Puntaje Global (`0,40·aut + 0,40·cruce + 0,20·coh`) | Puntaje Global | Decisión Esperada | Motivo Esperado | Riesgo Alto Rechazo | Causa / Regla Aislada (§2.d) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **`CASO-MED-001`** | Consulta medicina general (45.000 CLP); `boleta_consulta_001.pdf`, `receta_medica_001.jpg` | Aut: 95, Cruce: 95, Coh: 90, Fraude: **false** | `0.40·95 + 0.40·95 + 0.20·90 = 38.0 + 38.0 + 18.0` | **94.0** | `APROBADO_AUTOMATICO` | `'aprobado'` | `false` | Puntaje 94.0 ≥ 90, sin señales bajo mínimo, sin fraude (`DEC-01`). |
-| **`CASO-MED-002`** | Exámenes laboratorio sangre (120.000 CLP); `orden_laboratorio_002.pdf`, `factura_clinica_002.pdf` | Aut: 100, Cruce: 100, **Coh: 55 (< 60)**, Fraude: **false** | `0.40·100 + 0.40·100 + 0.20·55 = 40.0 + 40.0 + 11.0` | **91.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | `false` | Coherencia 55 < mínimo 60 deriva pese a puntaje 91 ≥ 90 (`H-05`). *Nota:* si se usara 95/95/55 daría 87.0; la guía §2.d define 100/100/55 = 91.0. |
+| **`CASO-MED-002`** | Exámenes laboratorio sangre (120.000 CLP); `orden_laboratorio_002.pdf`, `factura_clinica_002.pdf` | Aut: 100, Cruce: 100, **Coh: 55 (< 60)**, Fraude: **false** | `0.40·100 + 0.40·100 + 0.20·55 = 40.0 + 40.0 + 11.0` | **91.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | `false` | Coherencia 55 < mínimo 60 deriva pese a puntaje 91 ≥ 90 (`H-05`). |
 | **`CASO-MED-003`** | Reembolso medicamentos alto costo (280.000 CLP); `boleta_farmacia_adulterada_003.jpg` | Aut: 95, Cruce: 95, Coh: 90, **Fraude: true** | `0.40·95 + 0.40·95 + 0.20·90 = 38.0 + 38.0 + 18.0` | **94.0** | `DERIVADO_REVISION` | `'alerta_fraude'` | `false` | Precedencia absoluta de alerta de fraude ignorando puntaje 94 (`DEC-E2-06`). |
 | **`CASO-MED-004`** | Procedimiento ambulatorio (60.000 CLP); `recibo_ambulatorio_004.pdf` | **Aut: 40 (< 70)**, **Cruce: 40 (< 70)**, Coh: 60, Fraude: **false** | `0.40·40 + 0.40·40 + 0.20·60 = 16.0 + 16.0 + 12.0` | **44.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Puntaje 44 < 60 y 2 señales bajo mínimo activan `riesgoAltoRechazo: true` sin rechazo automático (`DEC-08`, `DEC-E2-10`). |
 | **`CASO-MED-005`** | Consulta médica especialista (50.000 CLP); `bono_consulta_005.pdf` | Aut: 75, Cruce: 75, Coh: 75, Fraude: **false** | `0.40·75 + 0.40·75 + 0.20·75 = 30.0 + 30.0 + 15.0` | **75.0** | `DERIVADO_REVISION` | `'puntaje_bajo_umbral'` | `false` | Todas las señales cumplen mínimos; puntaje en rango intermedio 60 ≤ 75 < 90. |
 | **`CASO-MED-006`** | Reembolso exámenes complejos con documentación ilegible (95.000 CLP); `examen_complejo_006.pdf` | **Aut: 0 (< 70)**, Cruce: 70, Coh: 60, Fraude: **false** | `0.40·0 + 0.40·70 + 0.20·60 = 0.0 + 28.0 + 12.0` | **40.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Deriva por autenticidad 0 < 70; activa riesgo alto por puntaje crítico 40.0 < 60 con 1 sola señal bajo mínimo. |
-| **`PU-1`** | Prueba unitaria directa de motor (`tests/unit/evaluacion-engine.test.ts`) | **Aut: 65 (< 70)**, **Cruce: 65 (< 70)**, Coh: 100, Fraude: **false** | `0.40·65 + 0.40·65 + 0.20·100 = 26.0 + 26.0 + 20.0` | **72.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Aísla la regla de multiseñal: 2 señales bajo mínimo activan `riesgoAltoRechazo: true` aun con puntaje no crítico 72.0 ≥ 60. |
+| **`PU-1`** | Prueba unitaria directa de motor (`backend/tests/unit/evaluacion-engine.test.ts`) | **Aut: 65 (< 70)**, **Cruce: 65 (< 70)**, Coh: 100, Fraude: **false** | `0.40·65 + 0.40·65 + 0.20·100 = 26.0 + 26.0 + 20.0` | **72.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Aísla la regla de multiseñal: 2 señales bajo mínimo activan `riesgoAltoRechazo: true` aun con puntaje no crítico 72.0 ≥ 60. |
 
 ---
 
 ## 2. Ciclo de Vida y Transiciones de Estado de Umbrales
 
 ```text
-                  [Diseñador propone]
+                  [Diseñador o Administrador propone]
                   (Asigna version = MAX + 1)
                            │
                            ▼
                    ┌───────────────┐
-                   │   BORRADOR    │ <─── [Diseñador modifica borrador existente]
+                   │   BORRADOR    │ <─── [Diseñador o Administrador modifica borrador existente]
                    └───────┬───────┘      (Visible en bandeja de Administradores)
                            │
           ┌────────────────┴────────────────┐
@@ -94,19 +94,19 @@ A continuación se formaliza la tabla canónica con los datos de entrada, cálcu
 
 ### Reglas Unificadas de Versionamiento
 1. **Asignación de Número:** El número de `version` se genera automáticamente al crear el registro en estado `BORRADOR` mediante `version = COALESCE(MAX(version), 0) + 1` para el flujo.
-2. **Conservación de Número en Desestimación:** Si una propuesta en borrador es rechazada por un Administrador, pasa a estado `DESESTIMADO` y **conserva su número de versión**. No se reutiliza ni se reasigna ese identificador numérico, quedando como registro histórico de auditoría inmutable.
+2. **Conservación de Número en Desestimación:** Si una propuesta en borrador es desestimada por un Administrador, pasa a estado `DESESTIMADO` y **conserva su número de versión**. No se reutiliza ni se reasigna ese identificador numérico, quedando como registro histórico de auditoría inmutable.
 3. **Correlatividad Ascendente con Posibles Huecos:** "Correlativo" significa estrictamente que las versiones aprobadas son ascendentes pero pueden presentar huecos (ejemplo: si la versión 2 es desestimada, la siguiente propuesta será versión 3; las aprobadas serán 1 y 3).
 4. **Definición de Versión Vigente Operativa:** La versión vigente que utiliza F4 para evaluar casos nuevos es siempre **la versión en estado `APROBADO` de mayor número secuencial (`MAX(version) WHERE estado = 'APROBADO'`)**.
 5. **Restricción de Concurrencia:** Solo puede existir **máximo un único `BORRADOR` activo por flujo simultáneamente**. Esta regla se garantiza a nivel de base de datos mediante un índice único condicional:
    `CREATE UNIQUE INDEX idx_un_solo_borrador_por_flujo ON umbrales_flujo(id_flujo) WHERE estado = 'BORRADOR';`.
-6. **Modificación de Borrador:** Mientras una propuesta se encuentre en estado `BORRADOR`, un usuario con rol Diseñador puede modificar sus parámetros numéricos sin alterar el número de versión asignado ni crear registros adicionales.
+6. **Modificación de Borrador:** Mientras una propuesta se encuentre en estado `BORRADOR`, un usuario con rol Diseñador o Administrador `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]` puede modificar sus parámetros numéricos sin alterar el número de versión asignado ni crear registros adicionales.
 7. **Incompatibilidad de Roles:** El Administrador que aprueba o desestima un borrador no puede ser el mismo usuario que lo propuso (`aprobador !== proponente`, `PF-033`).
 
 | Estado Origen | Evento / Acción | Rol Ejecutor | Estado Destino | Regla de Validación y Restricciones |
 | :--- | :--- | :--- | :--- | :--- |
-| *(Ninguno)* | `Crear Borrador` | Diseñador (1 o 2) | `BORRADOR` | Bloqueado si ya existe otro `BORRADOR` activo en el flujo. Asigna `version = MAX(version) + 1`. Valida `sum(pesos) = 1.00`, rangos `[0, 100]` y `umbralAprobacion > umbralRiesgoAlto`. |
-| `BORRADOR` | `Modificar Borrador` | Diseñador (1 o 2) | `BORRADOR` | Permite actualizar parámetros del borrador existente. Valida las mismas reglas numéricas. |
-| `BORRADOR` | `Enviar a revisión` | Diseñador | `BORRADOR` | **No crea un estado nuevo.** Permanece en `BORRADOR` visible para los Administradores `[SUPUESTO del equipo]`. |
+| *(Ninguno)* | `Crear Borrador` | Diseñador (1 o 2) o Administrador (1 o 2) `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]` | `BORRADOR` | Bloqueado si ya existe otro `BORRADOR` activo en el flujo. Asigna `version = MAX(version) + 1`. Valida `sum(pesos) = 1.00`, rangos `[0, 100]` y `umbralAprobacion > umbralRiesgoAlto`. Registra el usuario creador en `proponente`. |
+| `BORRADOR` | `Modificar Borrador` | Diseñador (1 o 2) o Administrador (1 o 2) `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]` | `BORRADOR` | Permite actualizar parámetros del borrador existente. Valida las mismas reglas numéricas. |
+| `BORRADOR` | `Enviar a revisión` | Diseñador o Administrador | `BORRADOR` | **No crea un estado nuevo.** Permanece en `BORRADOR` visible para los Administradores `[SUPUESTO del equipo]`. |
 | `BORRADOR` | `Aprobar Borrador` | Administrador (1 o 2) | `APROBADO` | **Incompatibilidad estricta:** `aprobador !== proponente` (`D-04`, `PF-033`). Pasa a ser la versión vigente. Inmutable. |
 | `BORRADOR` | `Desestimar Borrador` | Administrador (1 o 2) | `DESESTIMADO` | **Incompatibilidad estricta:** `aprobador !== proponente`. Conserva su número de versión; queda archivado inmutable. |
 | `APROBADO` | *(Cualquiera)* | *(Ninguno)* | *(Inmutable)* | Prohibido modificar o eliminar versiones aprobadas (`D-03`, `D-05`). |
@@ -116,7 +116,7 @@ A continuación se formaliza la tabla canónica con los datos de entrada, cálcu
 
 ## 3. Esquema Físico Relacional SQLite
 
-Se adoptan los nombres canónicos de la guía (`D-01` y `D-05`), precisando que la tabla de umbrales se denomina `umbrales_flujo` para incluir la clave `id_flujo` de forma multitenant:
+Se toman como referencia los nombres de la guía (`D-01` y `D-05`), adaptándolos para dar soporte multitenant (`umbrales_flujo`) y al rastro estructurado:
 
 ```sql
 -- Tabla 1: Versiones de Umbrales (F5)
@@ -165,7 +165,6 @@ CREATE TABLE IF NOT EXISTS auditoria_evaluaciones (
     senales_insumo TEXT NOT NULL, -- JSON object: vector de entrada exacto
     usuario_operador TEXT NOT NULL,
     timestamp TEXT NOT NULL,
-    es_reevaluacion INTEGER NOT NULL DEFAULT 0 CHECK(es_reevaluacion IN (0, 1)),
     FOREIGN KEY (id_flujo, version_umbrales_aplicada) REFERENCES umbrales_flujo(id_flujo, version)
 );
 
@@ -300,7 +299,7 @@ export interface SenalesCaso {
  */
 export interface CasoPrueba {
   idCaso: string;
-  prestacion?: string;         // [SUPUESTO del equipo] Descripción clínica resumida de apoyo
+  prestacion?: string;         // Prestación y monto ficticio según guía §2.d
   senales: SenalesCaso;
   resultadoEsperado: {
     decision: DecisionSistema;

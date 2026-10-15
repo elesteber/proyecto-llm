@@ -15,7 +15,7 @@ Obtiene la lista de casos de prueba sintéticos preconfigurados en `data/casos_p
 [
   {
     "idCaso": "CASO-MED-001",
-    "prestacion": "Consulta médica de medicina general (45.000 CLP) [SUPUESTO del equipo]",
+    "prestacion": "Consulta médica de medicina general (45.000 CLP) [guía §2.d]",
     "senales": {
       "autenticidad_documentos": 95.0,
       "cruce_fuentes": 95.0,
@@ -30,7 +30,7 @@ Obtiene la lista de casos de prueba sintéticos preconfigurados en `data/casos_p
   },
   {
     "idCaso": "CASO-MED-002",
-    "prestacion": "Exámenes de laboratorio de sangre (120.000 CLP) [SUPUESTO del equipo]",
+    "prestacion": "Exámenes de laboratorio de sangre (120.000 CLP) [guía §2.d]",
     "senales": {
       "autenticidad_documentos": 100.0,
       "cruce_fuentes": 100.0,
@@ -45,7 +45,7 @@ Obtiene la lista de casos de prueba sintéticos preconfigurados en `data/casos_p
   },
   {
     "idCaso": "CASO-MED-003",
-    "prestacion": "Reembolso de medicamentos de alto costo (280.000 CLP) [SUPUESTO del equipo]",
+    "prestacion": "Reembolso de medicamentos de alto costo (280.000 CLP) [guía §2.d]",
     "senales": {
       "autenticidad_documentos": 95.0,
       "cruce_fuentes": 95.0,
@@ -60,7 +60,7 @@ Obtiene la lista de casos de prueba sintéticos preconfigurados en `data/casos_p
   },
   {
     "idCaso": "CASO-MED-004",
-    "prestacion": "Procedimiento ambulatorio (60.000 CLP) [SUPUESTO del equipo]",
+    "prestacion": "Procedimiento ambulatorio (60.000 CLP) [guía §2.d]",
     "senales": {
       "autenticidad_documentos": 40.0,
       "cruce_fuentes": 40.0,
@@ -75,7 +75,7 @@ Obtiene la lista de casos de prueba sintéticos preconfigurados en `data/casos_p
   },
   {
     "idCaso": "CASO-MED-005",
-    "prestacion": "Consulta médica con especialista (50.000 CLP) [SUPUESTO del equipo]",
+    "prestacion": "Consulta médica con especialista (50.000 CLP) [guía §2.d]",
     "senales": {
       "autenticidad_documentos": 75.0,
       "cruce_fuentes": 75.0,
@@ -90,7 +90,7 @@ Obtiene la lista de casos de prueba sintéticos preconfigurados en `data/casos_p
   },
   {
     "idCaso": "CASO-MED-006",
-    "prestacion": "Reembolso de exámenes complejos con documentación ilegible (95.000 CLP) [SUPUESTO del equipo]",
+    "prestacion": "Reembolso de exámenes complejos con documentación ilegible (95.000 CLP) [guía §2.d]",
     "senales": {
       "autenticidad_documentos": 0.0,
       "cruce_fuentes": 70.0,
