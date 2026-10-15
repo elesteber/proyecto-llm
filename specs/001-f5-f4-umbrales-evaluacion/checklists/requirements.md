@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [x] No [NEEDS CLARIFICATION] markers remain *(5 clarificaciones formalmente resueltas y ratificadas en `/speckit-clarify`)*
+- [ ] No pending clarifications or assumptions remain *(5 clarificaciones resueltas; queda 1 supuesto pendiente de confirmación en §7.1(f))*
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,6 +31,7 @@
 
 ## Notes
 
-- **Compuerta 2 Superada (16/16 ítems cumplidos):** La sesión interactiva de `/speckit-clarify` concluyó el 2026-10-14 con la totalidad de las 5 consultas respondidas y ratificadas formalmente por el Representante del Cliente (Rodrigo Guerrero) bajo la auditoría de Lester Gonzalez y Jorge Alvarez (DEC-E2-03).
+- **Compuerta 2 (15/16 ítems cumplidos):** La sesión de `/speckit-clarify` fue ejecutada el 2026-10-14 con las 5 consultas ratificadas por el Representante del Cliente (Rodrigo Guerrero). Revisada por Lester Gonzalez; revisión pendiente de Jorge Alvarez y Angel Salgado (DEC-E2-03).
+- Queda 1 supuesto pendiente de confirmación formal por Rodrigo en §7.1(f) (delimitación de la decisión final del operador en F4).
 - La especificación se encuentra completamente libre de detalles de implementación tecnológica, cumpliendo estrictamente con el Principio VI de la Constitución.
 
