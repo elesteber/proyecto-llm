@@ -85,7 +85,7 @@ Una vez ejecutado `npm run dev`:
       "pesoCoherencia": 0.20
     }' | jq .
   ```
-  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Administrador 1"` `[SUPUESTO del equipo, para cubrir PF-033 con las dos identidades Administrador]`.
+  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Administrador 1"` `(PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio')`.
 
 - **Paso 2.2: Intento de auto-aprobación con Administrador 1 activo (Debe Fallar con 403)**
   ```bash

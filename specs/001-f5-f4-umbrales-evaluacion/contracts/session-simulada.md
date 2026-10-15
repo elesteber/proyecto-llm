@@ -75,9 +75,11 @@ Conmuta la sesión activa hacia otra de las 5 identidades preconfiguradas para p
 
 Para garantizar que la identidad activa se preserve a través de llamadas sucesivas sin requerir bases de datos de sesiones complejas:
 1. **Emisión de Cookie de Sesión:** En cada llamada exitosa a `POST /api/session/switch`, el servidor responde con la cabecera HTTP:
-   `Set-Cookie: mira_session=<nombre_usuario>; Path=/; HttpOnly; SameSite=Lax`
-2. **Identidad por Defecto:** Si una petición no incluye la cookie `mira_session` o su valor no pertenece al catálogo de 5 identidades válidas, el middleware de autenticación del backend asume por defecto la identidad `'Diseñador 1'`.
+   `Set-Cookie: mira_session=<nombre_usuario_codificado>; Path=/; HttpOnly; SameSite=Lax`
+   El valor de la cookie va codificado con `encodeURIComponent` (ej. `mira_session=Dise%C3%B1ador%201`) para compatibilidad estándar HTTP ante espacios y caracteres con tilde, y se decodifica mediante `decodeURIComponent` en el middleware del backend.
+2. **Identidad por Defecto:** Si una petición no incluye la cookie `mira_session` o su valor decodificado no pertenece al catálogo de 5 identidades válidas, el middleware de autenticación del backend asume por defecto la identidad `'Diseñador 1'`.
 3. **Validación en Middleware:** Cada endpoint protegido (creación/modificación de borradores, aprobación, desestimación y evaluación) extrae el usuario activo desde la cookie de sesión validada, garantizando que el rol y nombre se resuelvan en el servidor y no puedan ser falsificados en el cuerpo JSON de la petición.
-4. **Persistencia en Pruebas y Clientes CLI (`curl`):**
+4. **Mecanismo de simulación (D-04):** La identidad es falsificable desde el cliente por diseño; no es un mecanismo de seguridad. Su propósito exclusivo es habilitar la alternancia ágil de roles y la demostración verificable del doble control en entornos de evaluación docente y testing automatizado en < 15 minutos (C4).
+5. **Persistencia en Pruebas y Clientes CLI (`curl`):**
    Para automatizaciones o pruebas manuales mediante CLI, las llamadas deben persistir y reutilizar el archivo de cookies empleando los parámetros `-c cookies.txt` (guardar cookies recibidas) y `-b cookies.txt` (enviar cookies guardadas).
 
