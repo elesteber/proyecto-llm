@@ -1,0 +1,320 @@
+# Implementation Plan: Incremento Consolidado F5 (Configuración de Umbrales) + F4 (Evaluación y Decisión) de MIRA
+
+**Branch**: `feat/plan-f5-f4` | **Fecha**: 2026-10-14 | **Spec**: [specs/001-f5-f4-umbrales-evaluacion/spec.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/spec.md)  
+**Estado**: **Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)**
+
+**Insumos de Entrada**:
+- Especificación funcional consolidada: [spec.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/spec.md) y [requirements.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/checklists/requirements.md)
+- Constitución del proyecto: [.specify/memory/constitution.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/.specify/memory/constitution.md) (v1.0.0)
+- Acta de clarificaciones: [docs/entregable2/clarificaciones.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/docs/entregable2/clarificaciones.md)
+- Guía metodológica SDD: [entregable2/guia-implementacion-sdd.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/entregable2/guia-implementacion-sdd.md) (§3, §4.1 D-01..D-09, §5.2 y §6)
+- Insumos de investigación y modelado técnico: [research.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/research.md), [data-model.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/data-model.md), [contracts/](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/contracts/) y [quickstart.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/quickstart.md)
+
+---
+
+## 1. Summary
+
+El presente plan técnico diseña la arquitectura, contratos de datos y estrategia de verificación para el incremento funcional consolidado **F5** (*Configuración y Gestión de Umbrales de Decisión*) y **F4** (*Evaluación de Casos y Emisión de Decisión Asistida*) del sistema MIRA (Plataforma de Inteligencia Multimodal para Decisiones Empresariales, DPRIME SpA), aplicado al flujo piloto de **reembolso de gastos médicos** (MIRA §5.2).
+
+### Enfoque Técnico y Decisiones Arquitectónicas Cerradas (D-01 a D-09)
+Conforme al catálogo cerrado en la guía metodológica (§4.1):
+1. **Persistencia Relacional SQLite (`D-01`):** Base de datos relacional autocontenida (`data/mira.db`) con esquema fuertemente tipado en tablas `umbrales_flujo`, `auditoria_evaluaciones` y `rastro_auditoria`.
+2. **Simulación Determinista del Motor (`D-02`):** Las señales analíticas de los casos no se procesan en tiempo real mediante IA multimodal; se cargan estáticamente desde `data/casos_prueba.json` respaldadas en SQLite (`CASO-MED-001` a `CASO-MED-006`).
+3. **Versionado Inmutable de Umbrales (`D-03`):** Estados estrictos `'BORRADOR'`, `'APROBADO'` y `'DESESTIMADO'` (`clarificaciones.md` P2). Cada aprobación incrementa el número secuencial de versión inmutable; prohibido el `UPDATE` directo sobre versiones vigentes o archivadas.
+4. **Mecanismo de Doble Control y Autenticación Simulada (`D-04`):** Selector superior en interfaz con 5 identidades preconfiguradas fijas (`Diseñador 1`, `Diseñador 2`, `Administrador 1`, `Administrador 2`, `Operador 1`). Quien propone un borrador jamás puede aprobarlo o desestimarlo (`PF-033`, ENT6 [00:21:16]).
+5. **Auditoría Append-Only con Triggers SQLite (`D-05`):** Tabla `rastro_auditoria` protegida a nivel de base de datos contra `UPDATE` y `DELETE` mediante triggers SQLite `BEFORE UPDATE` y `BEFORE DELETE` con `RAISE(ABORT)`.
+6. **Estrategia de Pruebas E2E y Reproducibilidad Determinista (`D-06`):** Suite Playwright para recorridos de usuario y suite automatizada en Vitest que evalúa el 100% de consistencia decisional sobre versiones históricas (`RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]`, `SC-004`).
+7. **Mínimos por Señal Ratificados (`D-07`):** Autenticidad = 70.0, Cruce de fuentes = 70.0, Coherencia = 60.0 (`[SUPUESTO del equipo]` ratificado en `clarificaciones.md` P1).
+8. **Fórmula de Agregación Ponderada (`D-08`):** `0.40 * autenticidad + 0.40 * cruce + 0.20 * coherencia` (`[SUPUESTO del equipo]` ratificado en `clarificaciones.md` P1; no proviene de ningún RQF).
+9. **Especificación Única Consolidada (`D-09`):** Spec única para F5+F4 con contratos desacoplados y tareas etiquetadas `[F5]` y `[F4]`.
+
+---
+
+## 2. Technical Context
+
+### 2.1 Stack Tecnológico y Dependencias
+- **Lenguaje y Entorno:** Node.js v20+ LTS con TypeScript 5.x (`DEC-E2-05`).
+- **Backend Framework:** **Express** (Recomendado) vs **Fastify** (`[POR CONFIRMAR 1; ver §8.1]`). Se propone Express v4.19+ / v5 por simplicidad de arranque, integración nativa con Supertest y cero fricción en demostración evaluativa.
+- **Frontend Framework:** React 18+ estructurado con Vite, estilizado con CSS moderno en español neutro profesional (`DEC-E2-05`).
+- **Motor de Base de Datos y Driver:** SQLite 3 relacional (`data/mira.db`) manejado vía driver nativo síncrono **`better-sqlite3`** (Recomendado) vs **`sqlite3`** (`[POR CONFIRMAR 2; ver §8.1]`). Se recomienda `better-sqlite3` por transaccionalidad síncrona determinista, soporte nativo de triggers inmutables y ejecución limpia en tests.
+- **Estructura del Proyecto:** Monorepo ligero coordinado con scripts raíz y proxy de desarrollo Vite (`/api -> :3001`) (Recomendado) vs npm workspaces (`[POR CONFIRMAR 3; ver §8.1]`).
+- **Suites de Pruebas:**
+  - Pruebas unitarias de motor y validación: Vitest.
+  - Pruebas de integración de API: Vitest + Supertest.
+  - Pruebas E2E de navegador: Playwright (`D-06`).
+  - Prueba extra-funcional medible (C5): Test de reproducibilidad determinista histórica al 100% en Vitest (`tests/reproducibility/deterministic.test.ts`). k6 reservado únicamente para líneas base exploratorias opcionales sin SLA contractual vinculante (`DEC-11`, `clarificaciones.md` P4).
+- **Metas de Rendimiento y Operación:**
+  - Puesta en marcha en máquina limpia en menos de 15 minutos (Criterio C4 de la pauta docente; detallado en [quickstart.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/quickstart.md)).
+  - Tiempo de respuesta local del motor de evaluación: < 100 ms por caso.
+  - Usabilidad operativa: Acceso a consulta en ≤ 2 clics y ejecución de tareas clave en ≤ 3 minutos por un usuario sin inducción previa (`SC-005`, `clarificaciones.md` P5).
+
+### 2.2 Invariantes de Negocio del Motor de Evaluación (F4)
+1. **Cero Auto-Rechazo:** El sistema **nunca** emite una decisión de "rechazo automático". Salidas resolutivas únicas:
+   - `decision: 'APROBADO_AUTOMATICO'` (con `motivo: 'aprobado'`)
+   - `decision: 'DERIVADO_REVISION'` (con `motivo: 'alerta_fraude' | 'senal_bajo_minimo' | 'puntaje_bajo_umbral'`)
+2. **Orden de Evaluación Estricto (Precedencia RN-04):**
+   - Paso 1: Si `alertaFraudeActiva === true` → `DERIVADO_REVISION`, `motivo: 'alerta_fraude'` (máxima precedencia, ignora puntaje).
+   - Paso 2: Si alguna señal < mínimo propio → `DERIVADO_REVISION`, `motivo: 'senal_bajo_minimo'` (precede al puntaje).
+   - Paso 3: Si `scoreGlobal >= umbralAprobacion` (90 por defecto) sin fraude ni caídas bajo mínimo → `APROBADO_AUTOMATICO`, `motivo: 'aprobado'`.
+   - Paso 4: En cualquier otro caso (`scoreGlobal < umbralAprobacion`) → `DERIVADO_REVISION`, `motivo: 'puntaje_bajo_umbral'`.
+3. **Advertencia Informativa de Riesgo Alto (`riesgoAltoRechazo: boolean`):**
+   - Se evalúa con posterioridad a la decisión y **jamás la altera**.
+   - Regla de activación (al menos una de dos condiciones):
+     `riesgoAltoRechazo = (conteo(señales bajo mínimo) >= 2) || (scoreGlobal < umbralRiesgoAlto)`.
+   - Texto exacto en UI: *"Riesgo alto de rechazo: decide un operador"*.
+   - Prohibido el uso de la palabra "rechazado" para calificar la decisión del sistema (`DEC-08`, `DEC-E2-10(b)`, ENT6 [00:04:06]).
+4. **Comparaciones Numéricas sin Redondeo:** Las reglas se evalúan sobre los valores flotantes en memoria; el redondeo a 1 decimal es exclusivamente una regla de presentación en UI `[SUPUESTO del equipo]`.
+
+### 2.3 Reglas de Negocio de Gestión de Umbrales (F5)
+1. **Validaciones Estrictas de Entrada:**
+   - La suma de las tres ponderaciones debe ser exactamente 1.00 (`|pesoAut + pesoCruce + pesoCoh - 1.00| < 0.0001`). Cada peso entre 0.00 y 1.00.
+   - Todo umbral (`umbralAprobacion`, `umbralRiesgoAlto`) y mínimo propio (`minimoAutenticidad`, `minimoCruceFuentes`, `minimoCoherencia`) debe estar entre 0.0 y 100.0 inclusive.
+   - Consistencia de corte: `umbralAprobacion > umbralRiesgoAlto` (90 > 60 por defecto; impide inversión de rangos, `clarificaciones.md` P3).
+2. **Ciclo de Vida de Doble Control:**
+   - Estados: `'BORRADOR'`, `'APROBADO'`, `'DESESTIMADO'`.
+   - Límite de concurrencia: Máximo un único borrador activo por flujo de negocio a la vez.
+   - La acción de "enviar a revisión" no crea un estado nuevo en la base de datos; el borrador queda en `BORRADOR` visible para los Administradores `[SUPUESTO del equipo]`.
+   - Incompatibilidad absoluta: El usuario que propone un borrador (`proponente`) no puede aprobarlo ni desestimarlo (`PF-033`).
+   - Versión vigente: Corresponde a la versión con estado `'APROBADO'` de mayor identificador numérico `version` `[SUPUESTO del equipo]`.
+
+### 2.4 Delimitación del Alcance (Fuera de Alcance)
+- **Decisión Humana Final del Operador:** Conforme al supuesto de diseño propuesto por Lester en `spec.md §7.1(f)` (`[SUPUESTO propuesto por Lester, pendiente de confirmación de Rodrigo]`), la acción resolutiva final del Operador (aprobar o denegar el expediente derivado) queda fuera de este incremento. El sistema MIRA en F4 solo emite el dictamen de derivación asistida y la advertencia; no se diseñan pantallas ni endpoints de resolución humana.
+
+---
+
+## 3. Constitution Check
+
+Revisión exhaustiva y punto por punto contra los 11 principios de la Constitución del Proyecto MIRA ([.specify/memory/constitution.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/.specify/memory/constitution.md) v1.0.0):
+
+| Principio Constitucional | Regla Vinculante | Estado de Cumplimiento en el Plan Técnico | Evidencia en Diseño / Componente |
+| :--- | :--- | :--- | :--- |
+| **I. Prohibición Absoluta de Rechazo Automático** | Salidas exclusivas: `APROBADO_AUTOMATICO` o `DERIVADO_REVISION`. Prohibido usar "rechazado" en UI o código para una decisión del sistema. `riesgoAltoRechazo` es solo informativo (`DEC-08`, `DEC-E2-06`, `DEC-E2-10`, ENT6). | **CUMPLE ESTRICTAMENTE** | El contrato TypeScript en `data-model.md` tipa `DecisionSistema = 'APROBADO_AUTOMATICO' \| 'DERIVADO_REVISION'`. `evaluacion-engine.ts` implementa solo estas salidas. La UI usa *"Riesgo alto de rechazo: decide un operador"*. |
+| **II. Precedencia Estricta del Motor de Decisión (F4)** | Orden inalterable: (1) Fraude (`alerta_fraude`) → (2) Señal bajo mínimo (`senal_bajo_minimo`) → (3) Puntaje ≥ umbral (`aprobado`) → (4) Puntaje bajo umbral (`puntaje_bajo_umbral`) (MIRA §3, `DEC-01`, `DEC-E2-06`, `DEC-E2-10`). | **CUMPLE ESTRICTAMENTE** | Diseñado en `research.md §2.1` y formalizado en la función `evaluarCaso()` de `evaluacion-engine.ts`. Verificado unitariamente por `tests/unit/engine.test.ts`. |
+| **III. Gestión Dinámica, Versionamiento y Doble Control (F5)** | Todos los parámetros configurables. Separación obligatoria proponente/aprobador. Estados `BORRADOR`, `APROBADO`, `DESESTIMADO`. Versionamiento inmutable ascendente (`DEC-E2-10`, `D-03`, `D-04`, `PF-033`). | **CUMPLE ESTRICTAMENTE** | Diseñado en `data-model.md §2` y `contracts/api-umbrales-f5.md`. Tabla `umbrales_flujo` con PK compuesta `(id_flujo, version)` y restricción de doble control validada en backend. |
+| **IV. Inmutabilidad de Artefactos de la Entrega 1** | Directorio `fases-y-plan-de-trabajo/` es de solo lectura histórica. Prohibida su edición directa (`DEC-E2-01`, §2.f). | **CUMPLE ESTRICTAMENTE** | Ninguna tarea ni comando toca `fases-y-plan-de-trabajo/`. Todos los refinamientos se formalizan en `docs/entregable2/` y `specs/`. |
+| **V. Trazabilidad Canónica y Citación de Fuentes** | Convención canónica basada en `fase5-lester`. Citar siempre archivo fuente (`RQF-xxx [fase5-lester]`, `RQF-xxx [final-final]`) y `RQF-Bxx` solo si existe. Cero tolerancia a citas inventadas (`DEC-E2-02`, `DEC-E2-09`). | **CUMPLE ESTRICTAMENTE** | Todos los requisitos en `plan.md`, `research.md` y `data-model.md` llevan etiqueta de archivo fuente. Elementos de diseño del equipo van marcados `[SUPUESTO del equipo]`. |
+| **VI. Flujo SDD Obligatorio, Spec Única y Aislamiento** | Ciclo secuencial de Spec Kit. Prohibición de código prematuro: `types.ts` deriva del plan; código de producción prohibido antes de tasks y analyze. Spec única F5+F4 (`DEC-E2-10(c)`, `D-09`). | **CUMPLE ESTRICTAMENTE** | No se ha creado `src/` ni `types.ts`. El contrato tipado está contenido en `data-model.md`. Se mantiene spec única para F5+F4. |
+| **VII. Stack Tecnológico, Contrato Compartido y Datos Sintéticos** | Node.js + TypeScript + SQLite + React/Vite. Motor simulado con casos deterministas en `data/casos_prueba.json`. Prohibidos datos reales (`DEC-E2-05`, `D-01`, `D-02`, `R-10`). | **CUMPLE ESTRICTAMENTE** | Se seleccionó SQLite (`better-sqlite3`), Express y React/Vite. Casos sintéticos 100% ficticios cargados desde `data/casos_prueba.json`. |
+| **VIII. Matriz Exhaustiva de Pruebas y Reproducibilidad** | Cobertura de casos `CASO-MED-001` a `CASO-MED-006` (`AC-1` a `AC-6`), prueba unitaria `PU-1` y test extra-funcional de reproducibilidad al 100% (`RQNF-002 [fase5-lester]`, `SC-004`). | **CUMPLE ESTRICTAMENTE** | Trazabilidad completa en §5 de este plan. Test automatizado `tests/reproducibility/deterministic.test.ts` verifica reevaluación histórica al 100%. |
+| **IX. Convención Canónica de Commits y Trazabilidad Atómica** | Formato `[PREFIJO] [ID]: Descripción`. Aislamiento de correcciones humanas en `[HUMAN-FIX]`. Tareas atómicas de < 2 horas (§7.2). | **CUMPLE ESTRICTAMENTE** | El commit de este plan usará `[PLAN] UC-01 DEC-E2-05: plan técnico F5+F4`. Se respeta la separación de prefijos para tareas subsecuentes. |
+| **X. Registro de Intervención Humana y Medición de Retrabajo** | Registro obligatorio de intervenciones en `bitacora-intervenciones.md`. Cálculo de métricas TPR, TIH e IRF (`DEC-E2-08`, §7.7). | **CUMPLE ESTRICTAMENTE** | Intervenciones INT-001 e INT-002 ya registradas con hash verificable. Se mantiene gobernanza activa para las siguientes fases. |
+| **XI. Política de Ramas, Protección de Main y Flujo de Integración** | Prohibido commit/push directo a `main`. Ramas de feature. Integración vía PR con revisión cruzada. Tag final `v2.0` (§2.f, §5.3). | **CUMPLE ESTRICTAMENTE** | Trabajo activo en rama de feature `feat/plan-f5-f4`. Sin push a origin. Integración regulada por PR con revisión de Rodrigo y Jorge. |
+
+---
+
+## 4. Proposed Repository Structure
+
+A continuación se define la disposición física concreta del código en el repositorio, dando cumplimiento a la separación desacoplada entre backend, frontend, contratos compartidos, datos sintéticos y suites de pruebas:
+
+```text
+proyecto-llm/
+├── .specify/                                   # Gobernanza Spec Kit, constitution y workflows
+│   ├── memory/
+│   │   └── constitution.md                     # Constitución v1.0.0
+│   └── templates/
+├── specs/
+│   └── 001-f5-f4-umbrales-evaluacion/          # Artefactos SDD del incremento F5+F4
+│       ├── spec.md                             # Especificación técnica funcional consolidada
+│       ├── checklists/
+│       │   └── requirements.md                 # Lista de chequeo de completitud
+│       ├── plan.md                             # Este plan técnico de implementación
+│       ├── research.md                         # Investigación técnica y decisiones D-01..D-09
+│       ├── data-model.md                       # Modelo relacional y contratos TypeScript
+│       ├── quickstart.md                       # Guía de validación y puesta en marcha (< 15 min)
+│       ├── contracts/                          # Especificación formal de contratos de endpoints
+│       │   ├── api-umbrales-f5.md              # Contratos API de gestión y versionado de umbrales
+│       │   ├── api-evaluacion-f4.md            # Contratos API de evaluación determinista de casos
+│       │   └── session-simulada.md             # Contratos de cambio de identidad simulada
+│       └── tasks.md                            # Desglose de tareas (a generar por /speckit-tasks)
+├── data/
+│   ├── casos_prueba.json                       # 6 casos de prueba sintéticos fijados (AC-1..AC-6)
+│   ├── evidencias/                             # Documentos y comprobantes sintéticos de apoyo
+│   └── mira.db                                 # Base de datos SQLite relacional generada
+├── backend/                                    # Servicio HTTP REST (Node.js + Express + TypeScript)
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── env.ts                          # Variables de entorno y configuración
+│   │   ├── db/
+│   │   │   ├── database.ts                     # Conexión síncrona a SQLite con better-sqlite3
+│   │   │   ├── schema.sql                      # DDL de tablas umbrales, evaluaciones y triggers
+│   │   │   └── seeds/
+│   │   │       └── initial-seed.ts             # Semilla: versión 1 aprobada y carga de casos JSON
+│   │   ├── controllers/
+│   │   │   ├── umbrales-controller.ts          # Handlers para F5 (vigente, historial, borrador, resolver)
+│   │   │   ├── evaluacion-controller.ts        # Handlers para F4 (evaluar caso, reevaluar histórico)
+│   │   │   └── session-controller.ts           # Selector de identidades simuladas (D-04)
+│   │   ├── services/
+│   │   │   ├── umbrales-service.ts             # Lógica de negocio F5 (validación, doble control)
+│   │   │   ├── evaluacion-engine.ts            # Motor determinista F4 (precedencia y riesgoAltoRechazo)
+│   │   │   └── session-service.ts              # Gestión de usuario activo en memoria/sesión
+│   │   ├── routes/
+│   │   │   ├── umbrales-routes.ts              # Rutas /api/umbrales/*
+│   │   │   ├── evaluacion-routes.ts            # Rutas /api/evaluacion/*
+│   │   │   └── session-routes.ts               # Rutas /api/session/*
+│   │   ├── middlewares/
+│   │   │   ├── error-handler.ts                # Manejo centralizado de errores y códigos HTTP
+│   │   │   └── request-logger.ts               # Rastro de peticiones entrantes
+│   │   └── server.ts                           # Instanciación de Express y exportación de app
+│   ├── tests/
+│   │   ├── unit/
+│   │   │   ├── evaluacion-engine.test.ts       # Verificación de precedencia, AC-1..AC-6 y PU-1
+│   │   │   └── umbrales-validation.test.ts     # Validaciones de pesos, rangos y umbralAprob > riesgo
+│   │   ├── integration/
+│   │   │   ├── umbrales-api.test.ts            # Endpoints F5, doble aprobación y bloqueo auto-aprobación
+│   │   │   └── evaluacion-api.test.ts          # Endpoints F4 y persistencia de evaluaciones
+│   │   └── package.json
+│   └── tsconfig.json
+├── frontend/                                   # Interfaz de Usuario SPA (React + Vite + TypeScript)
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   │   ├── HeaderSelectorIdentidad.tsx # Selector superior con 5 identidades fijas (D-04)
+│   │   │   │   └── Navbar.tsx                  # Navegación entre Flujo F5 y Flujo F4 (≤ 2 clics)
+│   │   │   ├── umbrales/                       # Componentes de F5
+│   │   │   │   ├── PanelUmbralesVigentes.tsx   # Vista de configuración vigente
+│   │   │   │   ├── FormularioPropuesta.tsx     # Creación/edición de propuesta en BORRADOR
+│   │   │   │   ├── BandejaRevision.tsx         # Revisión por Administrador (Aprobar / Desestimar)
+│   │   │   │   └── HistorialVersiones.tsx      # Tabla cronológica de versiones inmutables
+│   │   │   └── evaluacion/                     # Componentes de F4
+│   │   │       ├── ListaCasosPrueba.tsx        # Selección de expediente sintético
+│   │   │       ├── FormularioEvaluacion.tsx    # Disparador de evaluación
+│   │   │       ├── VistaResultado.tsx          # Despliegue de decisión, motivo y desglose
+│   │   │       ├── AlertaRiesgoAlto.tsx        # Advertencia: "Riesgo alto de rechazo: decide un operador"
+│   │   │       └── HistorialEvaluaciones.tsx   # Reevaluación determinista contra versión de origen
+│   │   ├── hooks/
+│   │   │   ├── useSession.ts                   # Hook de identidad simulada activa
+│   │   │   ├── useUmbrales.ts                  # Hook de consulta y mutación de umbrales
+│   │   │   └── useEvaluacion.ts                # Hook de ejecución de evaluación
+│   │   ├── services/
+│   │   │   └── api-client.ts                   # Cliente HTTP (fetch hacia /api)
+│   │   ├── styles/
+│   │   │   └── app.css                         # Estilos Vanilla CSS modernos y responsivos
+│   │   ├── App.tsx                             # Enrutador principal y layout general
+│   │   ├── main.tsx                            # Punto de entrada Vite
+│   │   └── index.html
+│   ├── vite.config.ts                          # Configuración de Vite con proxy /api -> :3001
+│   ├── package.json
+│   └── tsconfig.json
+├── src/
+│   └── shared/
+│       └── types.ts                            # Contrato tipado único F5 <-> F4 (a crear tras [PLAN])
+├── tests/                                      # Pruebas transversales y E2E
+│   ├── e2e/
+│   │   ├── doble-control-f5.spec.ts            # Recorrido E2E Playwright de propuesta y aprobación
+│   │   └── evaluacion-f4.spec.ts               # Recorrido E2E Playwright de casos de negocio
+│   ├── reproducibility/
+│   │   └── deterministic.test.ts               # Test extra-funcional de reproducibilidad al 100% (SC-004)
+│   └── playwright.config.ts
+├── docs/
+│   └── entregable2/                            # Documentación y evidencias formales
+├── package.json                                # Scripts raíz orquestadores (npm run dev, test, db:seed)
+└── README.md                                   # Guía de instalación y puesta en marcha en < 15 min (C4)
+```
+
+---
+
+## 5. Traceability Matrix (Trazabilidad Requisito → Componente → Prueba)
+
+La siguiente matriz mapea de forma unívoca cada requerimiento funcional, criterio de aceptación de negocio (`AC-1` a `AC-6`), prueba unitaria (`PU-1`) y criterios de éxito medibles (`SC-001` a `SC-005`) con los componentes del diseño técnico y sus pruebas automatizadas de verificación:
+
+| Requisito Formal (Fuente) | Equivalente Alternativo / PDF | Criterio de Aceptación / Escenario (`spec.md`) | Componente de Backend (`backend/src/`) | Componente de Frontend (`frontend/src/`) | Prueba Automatizada de Verificación (`tests/`) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **FR-001** (`RQF-044 [final-final]`, `RQF-039 [fase5-lester]`) | `RQF-035 [final-final]`, `RQF-B09 [PDF pág. 9]` | **US4 / Esc. 4.1**: Diseñador propone modificación; queda en `BORRADOR` con autor registrado. | `services/umbrales-service.ts` (`crearBorrador`), `db/schema.sql` | `components/umbrales/FormularioPropuesta.tsx` | `backend/tests/integration/umbrales-api.test.ts:testCrearBorrador` |
+| **FR-002** (`RQF-039 [fase5-lester]`) | `RQF-035 [final-final]`, *sin equivalente PDF* | **US5 / Esc. 5.1 & 5.2**: Doble control; bloqueo de auto-aprobación; aprobación formal por Administrador (`SC-003`). | `services/umbrales-service.ts` (`aprobarBorrador`), `controllers/umbrales-controller.ts` | `components/umbrales/BandejaRevision.tsx` | `backend/tests/integration/umbrales-api.test.ts:testDobleControlBloqueoAutoAprobacion` |
+| **FR-003** (`RQF-044 [final-final]`, `D-08`) | *sin equivalente lester*, `RQF-B09 [PDF pág. 9]` | **US4 / Esc. 4.2**: Validación estricta: suma pesos = 1.00; rangos [0, 100]; `umbralAprobacion > umbralRiesgoAlto`. | `services/umbrales-service.ts` (`validarParametrosUmbrales`) | `components/umbrales/FormularioPropuesta.tsx` | `backend/tests/unit/umbrales-validation.test.ts:testValidacionesPesosYRangos` |
+| **FR-004** (`RQNF-002 [fase5-lester]`, `D-03`) | `RQNF-003 [final-final]`, *sin equivalente PDF* | **US6 / Esc. 6.1**: Historial cronológico inmutable de versiones (versión, fecha, proponente, aprobador, estado). | `db/schema.sql` (PK y triggers append-only), `services/umbrales-service.ts` | `components/umbrales/HistorialVersiones.tsx` | `backend/tests/integration/umbrales-api.test.ts:testHistorialInmutable` |
+| **FR-005** (`RQF-040 [fase5-lester]`, `D-08`) | `RQF-005 [final-final]`, `RQF-B10 [PDF pág. 9]` | Cálculo del puntaje ponderado continuo (`0.40*aut + 0.40*cruce + 0.20*coh`). | `services/evaluacion-engine.ts` (`calcularScoreGlobal`) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testCalculoPonderadoExacto` |
+| **FR-006** (`RQF-040 [fase5-lester]`, `DEC-01`) | `RQF-005 [final-final]`, `RQF-B10 [PDF pág. 9]` | **AC-1** (`CASO-MED-001`): Puntaje 94.0 ≥ 90, sin fraude ni caídas bajo mínimo → `APROBADO_AUTOMATICO`, `'aprobado'`, `riesgoAltoRechazo: false`. | `services/evaluacion-engine.ts` (`evaluarCaso`) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC1AprobacionAutomatica` |
+| **FR-007** (`RQF-023 [fase5-lester]`, `DEC-E2-06`) | `RQF-028 [final-final]`, `RQF-B12 [PDF pág. 9]` | **AC-3** (`CASO-MED-003`): Precedencia absoluta de fraude activa → `DERIVADO_REVISION`, `'alerta_fraude'`, ignora puntaje 94.0. | `services/evaluacion-engine.ts` (`evaluarCaso` Paso 1) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC3PrecedenciaFraude` |
+| **FR-008** (`RQF-041 [fase5-lester]`, `H-05`, `D-07`) | *sin equiv. final-final*, `RQF-B12 [PDF pág. 9]` | **AC-2** (`CASO-MED-002`): Señal `coherencia` = 55 (< 60) con puntaje 91.0 → `DERIVADO_REVISION`, `'senal_bajo_minimo'`, `riesgoAltoRechazo: false`. | `services/evaluacion-engine.ts` (`evaluarCaso` Paso 2) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC2SenalBajoMinimo` |
+| **FR-009** (`RQF-020 [fase5-lester]`, `DEC-08`) | *sin equiv. final-final*, `RQF-B11/B12` | **AC-5** (`CASO-MED-005`): Rango intermedio 75.0 (60 ≤ score < 90) sin caídas bajo mínimo → `DERIVADO_REVISION`, `'puntaje_bajo_umbral'`. | `services/evaluacion-engine.ts` (`evaluarCaso` Paso 4) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC5DerivacionPuntajeIntermedio` |
+| **FR-010** (Nuevo por `DEC-08`, `DEC-E2-06`, `DEC-E2-10(b)`) | Modifica `RQF-B12` (relacionado: `RQF-020 [fase5-lester]`) | **RN-01 / SC-002**: Cero rechazo automático por el sistema; lenguaje prohibido en UI y código. | Todo el backend y frontend | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testSC002CeroRechazoSistema` |
+| **FR-011** (Nuevo por `DEC-E2-10(b)`) | Modifica `RQF-B11/B12` (relacionado: `RQF-020 [fase5-lester]`) | **AC-4** (`CASO-MED-004`) y **AC-6** (`CASO-MED-006`): Activación de `riesgoAltoRechazo: true` por puntaje < 60 o multiseñal; texto informativo en UI. | `services/evaluacion-engine.ts` (`calcularRiesgoAltoRechazo`) | `components/evaluacion/AlertaRiesgoAlto.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC4RiesgoAlto` y `testAC6RiesgoAlto` |
+| **PU-1** (`spec.md §6.2`, `guia §2.d`) | Caso Unitario directo en motor | **PU-1**: Aut: 65, Cruce: 65, Coh: 100 (score = 72.0 ≥ 60) con 2 señales bajo mínimo → `DERIVADO_REVISION`, `'senal_bajo_minimo'`, `riesgoAltoRechazo: true`. | `services/evaluacion-engine.ts` (`calcularRiesgoAltoRechazo`) | N/A (Prueba de motor) | `backend/tests/unit/evaluacion-engine.test.ts:testPU1MultisenalRiesgoAlto` |
+| **FR-012** (`RQNF-002 [fase5-lester]`, `DEC-14`) | `RQNF-003 [final-final]`, *sin equivalente PDF* | **US6 / Esc. 6.2 / SC-004**: Reevaluación histórica contra versión archivada con 100% de consistencia determinista. | `services/evaluacion-engine.ts` (`reevaluarCasoHistorico`), `db/schema.sql` | `components/evaluacion/HistorialEvaluaciones.tsx` | `tests/reproducibility/deterministic.test.ts:testReproducibilidadHistorica100` |
+| **RQNF-001 [fase5-lester]** (`D-05`, `H-12`) | `RQNF-008`, `DEC-12` | Rastro de auditoría append-only protegido a nivel de motor de datos. | `db/schema.sql` (triggers `trg_prevent_update_rastro` y `trg_prevent_delete_rastro`) | N/A (Persistencia) | `backend/tests/integration/auditoria-inmutable.test.ts:testTriggersBloqueanUpdateDelete` |
+| **RQNF-004 [fase5-lester]** (`SC-005`, `clarificaciones.md` P5) | `RQNF-004 [final-final]` | Usabilidad: consulta en ≤ 2 clics y tareas clave en ≤ 3 minutos por usuario sin inducción. | `routes/` (diseño directo de rutas) | `components/common/Navbar.tsx` | `tests/e2e/usabilidad-recorrido.spec.ts` |
+
+---
+
+## 6. Estrategia de Arranque Rápido (< 15 minutos en Máquina Limpia — C4)
+
+Para asegurar el cumplimiento incondicional del **Criterio C4** de la evaluación docente (el sistema debe clonarse y ejecutarse en menos de 15 minutos en una máquina limpia), la arquitectura adopta un esquema con **cero contenedores Docker pesados** y **cero bases de datos externas de pago o en la nube**:
+
+1. **Prerrequisitos Mínimos Universales:**
+   - Node.js versión 20.x o superior (LTS) y `npm` versión 10.x.
+2. **Secuencia de Instalación y Puesta en Marcha (estimada en ~3 minutos):**
+   ```bash
+   # Paso 1: Clonar e instalar dependencias completas del ecosistema
+   git clone <repo-url>
+   cd proyecto-llm
+   npm install
+
+   # Paso 2: Crear esquema SQLite y sembrar datos iniciales (versión 1 y casos sintéticos)
+   npm run db:seed
+
+   # Paso 3: Iniciar simultáneamente Backend y Frontend en modo desarrollo
+   npm run dev
+   ```
+3. **Puntos de Contacto Verificables de Inmediato:**
+   - **Frontend (SPA React):** accesible en `http://localhost:5173`
+   - **Backend API (Express):** accesible en `http://localhost:3001/api`
+   - **Healthcheck / Configuración Vigente:** `curl http://localhost:3001/api/umbrales/vigente`
+4. **Verificación Automatizada Completa en un Solo Comando:**
+   ```bash
+   # Ejecuta suite unitaria, integración y reproducibilidad determinista
+   npm run test
+   ```
+*Nota:* El procedimiento paso a paso con ejemplos de payloads `curl` y validaciones de respuesta se encuentra documentado exhaustivamente en [quickstart.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/quickstart.md).
+
+---
+
+## 7. Estrategia de Reproducibilidad Determinista (RQNF-002 / SC-004)
+
+De acuerdo con `RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]`, `DEC-14`, `H-14` y la Clarificación 4 (`clarificaciones.md`), la prueba extra-funcional oficial para el criterio C5 de la Entrega 2 es la **reproducibilidad determinista histórica al 100% sobre versiones guardadas**:
+
+1. **Mecanismo de Preservación Histórica:**
+   - Cada evaluación almacena en la tabla SQLite `auditoria_evaluaciones`: `id_caso`, `score_global` (sin redondear), `decision`, `motivo`, `riesgo_alto_rechazo`, `version_umbrales_aplicada`, el vector exacto de señales de entrada (`senales_insumo_json`) y la estampa temporal UTC.
+2. **Protocolo del Test Automatizado (`tests/reproducibility/deterministic.test.ts`):**
+   - **Fase A (Estado Inicial):** Evaluar el expediente sintético `CASO-MED-001` contra la Versión 1 vigente (`umbralAprobacion = 90.0`, mínimos 70/70/60). Resultado almacenado: `score = 94.0`, `decision: 'APROBADO_AUTOMATICO'`, `motivo: 'aprobado'`.
+   - **Fase B (Cambio de Política Normativa en F5):** Mediante el flujo de doble control, proponer como `Diseñador 1` y aprobar como `Administrador 1` una nueva Versión 2 de umbrales con política restrictiva (`umbralAprobacion = 96.0`). La Versión 2 pasa a ser la vigente.
+   - **Fase C (Reevaluación Histórica en F4):** El sistema recibe la solicitud de reevaluar el caso histórico evaluado originalmente en Fase A solicitando su reproducción determinista:
+     - El motor recupera la Versión 1 archivada inmutable desde `umbrales_flujo`.
+     - El motor reejecuta la lógica determinista sobre las `senales_insumo_json` almacenadas.
+     - **Aserción de Consistencia (100% determinismo):** Se valida mediante `expect` que el puntaje sea idéntico (94.0), la decisión sea idéntica (`APROBADO_AUTOMATICO`), el motivo sea idéntico (`aprobado`) y la bandera `riesgoAltoRechazo` sea idéntica (`false`), aun cuando evaluado contra la versión vigente actual (Versión 2, corte 96.0) el caso resultaría derivado.
+3. **Carga y Desempeño:** No existe SLA cuantitativo de latencia (`DEC-11`, `clarificaciones.md` P4); herramientas como k6 quedan estrictamente como pruebas exploratorias opcionales sin valor contractual.
+
+---
+
+## 8. Riesgos Técnicos y Decisiones Pendientes para el Equipo
+
+### 8.1 Decisiones Técnicas no Cerradas (`[POR CONFIRMAR]`)
+Conforme a las reglas de honestidad, las decisiones de arquitectura que no estaban cerradas en la guía se presentan con opciones y recomendación técnica del agente, quedando supeditadas a la ratificación de Rodrigo Guerrero (Backend) y Jorge Alvarez (Frontend) en la **Compuerta 3**:
+
+| # | Decisión Técnica | Opciones Evaluadas | Recomendación del Agente | Justificación Técnica | Estado |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **PC-01** | **Framework HTTP de Backend** | (a) Express v4.19+ / v5<br>(b) Fastify v4+ | **Opción (a): Express** | Aunque Fastify ofrece mayor rendimiento en microbenchmarks sintéticos, Express tiene madurez absoluta, cero problemas con middlewares síncronos, integración directa y sin fricciones con `supertest` para pruebas de integración de API, y cumple holgadamente con los requerimientos locales de la Entrega 2. | `[POR CONFIRMAR 1; pendiente revisión Rodrigo/Jorge]` |
+| **PC-02** | **Driver SQLite para Node.js** | (a) `better-sqlite3`<br>(b) `sqlite3` (asíncrono con callbacks/promesas)<br>(c) ORM (Prisma / TypeORM) | **Opción (a): `better-sqlite3`** | `better-sqlite3` es el estándar moderno para SQLite en Node.js: su API síncrona elimina la sobrecarga de promises para bases locales, soporta transacciones atómicas nativas inmediatas, ejecuta triggers de forma transparente y garantiza determinismo absoluto en suites de pruebas unitarias sin condiciones de carrera. Se descartan ORMs pesados por violar el espíritu de simplicidad y rapidez de arranque (< 15 min). | `[POR CONFIRMAR 2; pendiente revisión Rodrigo/Jorge]` |
+| **PC-03** | **Coordinación de Monorepo y Proxy** | (a) npm workspaces con build TypeScript coordinado<br>(b) Directorios independientes coordinados por Vite Dev Proxy (`/api -> :3001`) y scripts en `package.json` raíz | **Opción (b): Vite Dev Proxy + scripts raíz** | La opción (b) evita la sobrecarga de enlaces simbólicos (`node_modules` cruzados) y problemas de resolución de tipos de npm workspaces. Permite que el frontend consuma `/api` sin configurar CORS en desarrollo y simplifica drásticamente el `npm install && npm run dev` para la evaluación docente en máquina limpia. | `[POR CONFIRMAR 3; pendiente revisión Rodrigo/Jorge]` |
+
+### 8.2 Supuestos Pendientes de Confirmación
+- **Delimitación de la Decisión Final del Operador (`spec.md §7.1(f)`):** Supuesto formulado por Lester pendiente de confirmación formal por Rodrigo Guerrero: la decisión humana final del Operador sobre un caso derivado (aprobar o denegar el reembolso tras su análisis) queda fuera del alcance de este incremento F5+F4. F4 concluye con la emisión de la derivación y la advertencia visual.
+
+### 8.3 Matriz de Riesgos del Incremento y Mitigaciones
+| Riesgo Técnico / Operativo | Severidad | Mitigación Planificada en el Diseño |
+| :--- | :--- | :--- |
+| **R-01: Discrepancia por redondeo de flotantes en comparaciones** | Media | La spec y este plan establecen formalmente que el motor evalúa sobre números flotantes directos sin redondear; el redondeo a 1 decimal es exclusivo de visualización en componentes React `[SUPUESTO del equipo]`. |
+| **R-02: Concurrencia de propuestas en borrador en F5** | Media | La tabla SQLite `umbrales_flujo` y el servicio `umbrales-service.ts` aplican verificación estricta: si existe un registro con `estado = 'BORRADOR'`, se rechaza con código HTTP 409 la creación de un nuevo borrador hasta que el existente sea resuelto (`APROBADO` o `DESESTIMADO`). |
+| **R-03: Falla en el tiempo de arranque en máquina limpia (Criterio C4)** | Alta | Se omiten dependencias externas, contenedores Docker y servicios cloud. La base de datos es un archivo local SQLite y los scripts de inicialización `npm run db:seed` crean el esquema y datos sintéticos en < 5 segundos. |
+| **R-04: Dependencia temporal para la prueba de usabilidad externa (Sábado 17)** | Alta | La interfaz de usuario implementará flujos de navegación directos (≤ 2 clics para cualquier vista) y formularios con validación visual interactiva en tiempo real para asegurar que un evaluador externo complete las tareas en ≤ 3 minutos (`SC-005`). |
+
+---
+
+## 9. Complexity Tracking
+
+> **Nota:** La arquitectura propuesta se ajusta estrictamente a los 11 principios de la Constitución del Proyecto MIRA (v1.0.0). No se introducen excepciones, patrones innecesarios ni complejidades arquitectónicas no autorizadas:
+
+| Componente Evaluado | Justificación de Necesidad | Alternativa Más Simple Descartada |
+| :--- | :--- | :--- |
+| **Triggers SQLite en rastro de auditoría** | Requisito formal de inmutabilidad append-only a nivel de motor de datos (`D-05`, `DEC-12`, `RQNF-001 [fase5-lester]`). | Control exclusivo por software en Express: descartado por no garantizar inalterabilidad si se accede directamente al archivo `.db`. |
+| **Doble control simulado con selector de 5 identidades** | Requisito formal de segregación de funciones (`D-04`, `PF-033`, ENT6 [00:21:16]) sin requerir infraestructura SSO corporativa en la Entrega 2 (`DEC-06`). | Sistema de login con contraseñas y JWT: descartado por agregar fricción innecesaria y ralentizar la puesta en marcha para evaluación docente. |
