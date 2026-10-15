@@ -17,7 +17,7 @@ Para satisfacer de manera garantizada el Criterio C4 de la rúbrica docente (arr
 
 ---
 
-## 2. Instalación y Arranque Rápido (< 5 minutos)
+## 2. Instalación y Arranque Rápido (estimación por medir: < 5 minutos)
 
 Desde la raíz del repositorio clonado, ejecutar los siguientes comandos estándar:
 
@@ -42,7 +42,7 @@ Una vez ejecutado `npm run dev`:
 ## 3. Escenarios de Validación Extremo a Extremo
 
 ### Escenario 1: Verificación de Umbrales Vigentes por Defecto (Versión 1)
-- **Objetivo:** Verificar que el sistema inicia con la configuración normativa ratificada en la Entrega 2.
+- **Objetivo:** Verificar que el sistema inicia con la configuración normativa ratificada en la Entrega 2 como carga inicial del sistema.
 - **Acción:**
   ```bash
   curl -s http://localhost:3001/api/umbrales/vigente | jq .
@@ -53,13 +53,23 @@ Una vez ejecutado `npm run dev`:
   - `umbralRiesgoAlto: 60.0`
   - `minimoAutenticidad: 70.0`, `minimoCruceFuentes: 70.0`, `minimoCoherencia: 60.0`
   - `pesoAutenticidad: 0.40`, `pesoCruceFuentes: 0.40`, `pesoCoherencia: 0.20`
+  - `proponente: "sistema"`
+  - `aprobador: "carga inicial del sistema (valores por defecto)"`
   - `estado: "APROBADO"`
 
 ---
 
 ### Escenario 2: Doble Control y Segregación de Funciones en F5 (`PF-033`)
-- **Objetivo:** Demostrar que quien propone un cambio no puede aprobarlo y que se requiere un Administrador independiente (`D-04`, `PF-033`).
-- **Paso 2.1: Crear propuesta como Diseñador 1**
+- **Objetivo:** Demostrar que quien propone un cambio no puede aprobarlo y que se requiere un Administrador independiente (`D-04`, `PF-033`). La identidad proviene de la sesión activa en `/api/session`.
+
+- **Paso 2.0: Conmutar sesión activa a Diseñador 1**
+  ```bash
+  curl -s -X POST http://localhost:3001/api/session/switch \
+    -H "Content-Type: application/json" \
+    -d '{"nuevoUsuario": "Diseñador 1"}' | jq .
+  ```
+
+- **Paso 2.1: Crear propuesta como Diseñador 1 (asigna versión 2 en BORRADOR)**
   ```bash
   curl -s -X POST http://localhost:3001/api/umbrales/borrador \
     -H "Content-Type: application/json" \
@@ -72,62 +82,59 @@ Una vez ejecutado `npm run dev`:
       "minimoCoherencia": 60.0,
       "pesoAutenticidad": 0.40,
       "pesoCruceFuentes": 0.40,
-      "pesoCoherencia": 0.20,
-      "usuarioProponente": "Diseñador 1"
+      "pesoCoherencia": 0.20
     }' | jq .
   ```
-  *Resultado:* Código 201 Created; versión 2 en estado `BORRADOR`.
-- **Paso 2.2: Intento de auto-aprobación por Diseñador 1 (Debe Fallar)**
+  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Diseñador 1"`.
+
+- **Paso 2.2: Intento de auto-aprobación con Diseñador 1 activo (Debe Fallar)**
   ```bash
   curl -s -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
     -H "Content-Type: application/json" \
     -d '{
-      "idFlujo": "reembolso-gastos-medicos",
-      "version": 2,
-      "usuarioAprobador": "Diseñador 1"
+      "idFlujo": "reembolso-gastos-medicos"
     }' | jq .
   ```
-  *Resultado:* Código 403 Forbidden (*"El usuario proponente no puede aprobar su propia propuesta"*).
-- **Paso 2.3: Aprobación legítima por Administrador 1**
+  *Resultado:* Código 403 Forbidden (*"Violación de segregación de funciones: El usuario proponente no puede aprobar su propia propuesta"*).
+
+- **Paso 2.3: Conmutar sesión activa a Administrador 1**
+  ```bash
+  curl -s -X POST http://localhost:3001/api/session/switch \
+    -H "Content-Type: application/json" \
+    -d '{"nuevoUsuario": "Administrador 1"}' | jq .
+  ```
+
+- **Paso 2.4: Aprobación legítima por Administrador 1**
   ```bash
   curl -s -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
     -H "Content-Type: application/json" \
     -d '{
-      "idFlujo": "reembolso-gastos-medicos",
-      "version": 2,
-      "usuarioAprobador": "Administrador 1"
+      "idFlujo": "reembolso-gastos-medicos"
     }' | jq .
   ```
-  *Resultado:* Código 200 OK; versión 2 pasa a `APROBADO` y entra en vigencia operativa.
+  *Resultado:* Código 200 OK; versión 2 pasa a `APROBADO` y entra en vigencia operativa con `aprobador: "Administrador 1"`.
 
 ---
 
 ### Escenario 3: Ejecución de la Matriz Canónica de Casos en F4 (`AC-1` a `AC-6`)
-- **Objetivo:** Verificar las 6 reglas de negocio de evaluación sobre casos sintéticos precalculados:
+- **Objetivo:** Verificar las 6 reglas de negocio de evaluación sobre casos sintéticos precalculados copiados exactamente de `entregable2/guia-implementacion-sdd.md §2.d`:
 
-| Criterio | Caso | Señales (Aut / Cruce / Coh / Fraude) | Puntaje | Decisión Esperada | Motivo Esperado | Advertencia Riesgo Alto |
+| Criterio | Caso | Señales de Entrada (Aut / Cruce / Coh / Fraude) | Puntaje | Decisión Esperada | Motivo Esperado | Advertencia Riesgo Alto |
 | :--- | :--- | :--- | :---: | :--- | :--- | :---: |
 | **AC-1** | `CASO-MED-001` | 95.0 / 95.0 / 90.0 / false | **94.0** | `APROBADO_AUTOMATICO` | `aprobado` | `false` |
-| **AC-2** | `CASO-MED-002` | 95.0 / 95.0 / 55.0 / false | **91.0** | `DERIVADO_REVISION` | `senal_bajo_minimo` | `false` |
+| **AC-2** | `CASO-MED-002` | 100.0 / 100.0 / 55.0 / false | **91.0** | `DERIVADO_REVISION` | `senal_bajo_minimo` | `false` |
 | **AC-3** | `CASO-MED-003` | 95.0 / 95.0 / 90.0 / **true** | **94.0** | `DERIVADO_REVISION` | `alerta_fraude` | `false` |
 | **AC-4** | `CASO-MED-004` | 40.0 / 40.0 / 60.0 / false | **44.0** | `DERIVADO_REVISION` | `senal_bajo_minimo` | **`true`** |
 | **AC-5** | `CASO-MED-005` | 75.0 / 75.0 / 75.0 / false | **75.0** | `DERIVADO_REVISION` | `puntaje_bajo_umbral` | `false` |
 | **AC-6** | `CASO-MED-006` | 0.0 / 70.0 / 60.0 / false | **40.0** | `DERIVADO_REVISION` | `senal_bajo_minimo` | **`true`** |
 
-*Comando para evaluar directamente un caso:*
+*Comando para evaluar directamente un caso (las señales se cargan en el servidor desde data/casos_prueba.json per D-02):*
 ```bash
 curl -s -X POST http://localhost:3001/api/evaluacion/evaluar \
   -H "Content-Type: application/json" \
   -d '{
     "idCaso": "CASO-MED-001",
-    "idFlujo": "reembolso-gastos-medicos",
-    "senales": {
-      "autenticidad_documentos": 95.0,
-      "cruce_fuentes": 95.0,
-      "coherencia_solicitud": 90.0,
-      "alertaFraudeActiva": false
-    },
-    "usuarioOperador": "Operador 1"
+    "idFlujo": "reembolso-gastos-medicos"
   }' | jq .
 ```
 
@@ -145,12 +152,16 @@ curl -s -X POST http://localhost:3001/api/evaluacion/evaluar \
 ---
 
 ### Escenario 5: Prueba Extra-funcional de Reproducibilidad Histórica (`SC-004`)
-- **Objetivo:** Comprobar la reproducibilidad determinista al 100% de decisiones históricas frente a versiones guardadas de umbrales (`RQNF-002 [fase5-lester]`, Criterio C5).
+- **Objetivo:** Comprobar la reproducibilidad determinista al 100% de decisiones históricas frente a versiones archivadas de umbrales (`RQNF-002 [fase5-lester]`, Criterio C5).
 - **Comando:**
   ```bash
   npm run test:reproducibility
   ```
-- **Resultado Esperado:** 100% de casos históricos coinciden exactamente en decisión, motivo y advertencia de riesgo alto (`PASS`).
+- **Aserción Explícita de No-Circularidad:**
+  La prueba no es circular porque valida explícitamente dos comportamientos opuestos sobre el mismo expediente `CASO-MED-001`:
+  1. Al evaluarlo contra la Versión 2 vigente (donde `umbralAprobacion = 96.0`), el caso resulta `decision: 'DERIVADO_REVISION'` con `motivo: 'puntaje_bajo_umbral'` (94.0 < 96.0).
+  2. Al reevaluar el mismo caso contra su Versión 1 archivada de origen (donde `umbralAprobacion = 90.0`), el sistema reproduce de forma exacta e idéntica `decision: 'APROBADO_AUTOMATICO'`, `motivo: 'aprobado'` y `riesgoAltoRechazo: false` (100% determinismo).
+- **Resultado Esperado:** 100% de casos históricos reproducen exactamente el dictamen original (`PASS`).
 
 ---
 

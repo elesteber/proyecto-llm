@@ -15,18 +15,18 @@ El propósito de esta fase de investigación técnica es resolver los aspectos a
 
 ## 2. Decisiones Técnicas Previamente Cerradas (Línea Base Rectora)
 
-Las siguientes decisiones fueron formalmente cerradas y ratificadas en la guía de implementación (§4.1) y en el acta de clarificación, constituyendo invariantes de diseño que el plan respeta integralmente:
+Las siguientes decisiones fueron formalmente cerradas y ratificadas en la guía de implementación (§4.1) y en el acta de clarificación, constituyendo invariantes de diseño que el plan respeta:
 
 | Identificador | Decisión Cerrada | Justificación / Origen | Fuente Formal |
 | :--- | :--- | :--- | :--- |
-| **D-01** | **Persistencia relacional en SQLite autocontenida** | Base de datos relacional ligera en archivo local (`mira.sqlite`), sin requerir contenedores Docker pesados ni bases de datos cliente-servidor externas (PostgreSQL/MySQL), permitiendo clonar y levantar el proyecto en menos de 15 minutos. | `D-01`, `DEC-E2-05`, Criterio C4 |
-| **D-02** | **Simulación determinista del motor y señales** | El motor de visión computacional y PLN sobre documentos/evidencias no se construye; se cargan casos de prueba sintéticos con señales numéricas precalculadas desde `data/casos_prueba.json` respaldadas en SQLite. | `D-02`, pauta §4.3 |
-| **D-03** | **Versionado inmutable de umbrales con estados BORRADOR, APROBADO y DESESTIMADO** | Cada modificación aprobada genera una versión inmutable con número incremental entero (`version`), impidiendo mutaciones destructivas (`UPDATE`) sobre versiones vigentes o pasadas. | `D-03`, `RQF-039 [fase5-lester]`, `DEC-01`, Clarify P2 |
-| **D-04** | **Autenticación simulada mediante selector de 5 identidades fijas** | Selector desplegable en la barra superior con las identidades fijas: `Diseñador 1`, `Diseñador 2`, `Administrador 1`, `Administrador 2` y `Operador 1`, garantizando segregación de roles para probar doble control (`PF-033`) sin autenticación OAuth o SSO corporativo en este incremento. | `D-04`, `H-06`, MIRA §2.13, `PF-033`, Clarify P2 |
-| **D-05** | **Rastro inalterable de auditoría append-only** | Registro persistente de eventos de cambio de umbrales y evaluaciones de casos con triggers SQLite que bloquean operaciones `UPDATE` y `DELETE` sobre las tablas de auditoría. | `D-05`, `H-12`, `RQNF-008` |
-| **D-06** | **Estrategia de testing con Vitest, Supertest y Playwright** | Vitest para tests unitarios y de integración de lógica de backend; Supertest para API HTTP; Playwright para recorrido E2E en navegador y prueba de usabilidad; test automatizado de reproducibilidad determinista al 100%. | `D-06`, `DEC-E2-05`, §6.5 |
+| **D-01** | **Persistencia relacional en SQLite autocontenida** | Base de datos relacional ligera en un único archivo local (`data/mira.db`), sin requerir contenedores Docker pesados ni bases de datos cliente-servidor externas (PostgreSQL/MySQL), permitiendo clonar y levantar el proyecto en menos de 15 minutos. Nombres de tablas: `umbrales_flujo` (precisión sobre `umbrales` de D-01 para incluir clave `id_flujo`), `auditoria_evaluaciones` y `rastro_auditoria`. | `D-01`, `DEC-E2-05`, Criterio C4 |
+| **D-02** | **Simulación determinista del motor y señales** | El motor de visión computacional y PLN sobre documentos/evidencias no se construye; se cargan casos de prueba sintéticos con señales numéricas precalculadas desde `data/casos_prueba.json` respaldadas en SQLite (`CASO-MED-001` a `CASO-MED-006`). | `D-02`, pauta §4.3 |
+| **D-03** | **Versionado inmutable de umbrales con estados BORRADOR, APROBADO y DESESTIMADO** | El número de versión se asigna al crear el borrador (`MAX(version) + 1`); si una versión es desestimada conserva su número, por lo que correlativo significa **ascendente con posibles huecos**. La versión vigente es siempre la `APROBADO` de mayor número. Quedan prohibidas mutaciones destructivas (`UPDATE`) sobre versiones aprobadas o desestimadas. | `D-03`, `RQF-039 [fase5-lester]`, `DEC-01`, Clarify P2 |
+| **D-04** | **Autenticación simulada mediante selector de 5 identidades fijas** | Selector desplegable en la barra superior con las identidades fijas: `Diseñador 1`, `Diseñador 2`, `Administrador 1`, `Administrador 2` y `Operador 1`, garantizando segregación de roles para probar doble control (`PF-033`) sin autenticación OAuth o SSO corporativo en este incremento. Quien propone un borrador jamás puede aprobarlo o desestimarlo. | `D-04`, `H-06`, MIRA §2.13, `PF-033`, Clarify P2 |
+| **D-05** | **Rastro inalterable de auditoría append-only** | Registro persistente de eventos de cambio de umbrales en `rastro_auditoria` (con triggers `trg_prevent_update_rastro_auditoria` y `trg_prevent_delete_rastro_auditoria`) y evaluaciones de casos en `auditoria_evaluaciones` (con triggers `trg_prevent_update_evaluaciones` y `trg_prevent_delete_evaluaciones`), bloqueando operaciones `UPDATE` y `DELETE` a nivel de motor de datos. | `D-05`, `H-12`, `RQNF-008` |
+| **D-06** | **Estrategia de testing con Vitest, Supertest y Playwright** | Vitest para tests unitarios y de integración de lógica de backend; Supertest para API HTTP; Playwright para recorrido E2E en navegador y prueba de usabilidad; test automatizado de reproducibilidad determinista al 100% sobre versiones guardadas (`RQNF-002 [fase5-lester]`, `SC-004`). | `D-06`, `DEC-E2-05`, §6.5 |
 | **D-07** | **Mínimos normativos por señal: Autenticidad 70, Cruce 70, Coherencia 60** | Valores base ratificados formalmente por el Representante del Cliente para el flujo de reembolso de gastos médicos. Modificables en F5 bajo doble control (rango válido 0 a 100 inclusive). | `D-07`, `H-05`, MIRA §2.6, ENT3 [00:21:47], Clarify P1 |
-| **D-08** | **Fórmula de agregación y ponderaciones: 0.40, 0.40, 0.20 (suma = 1.00)** | Promedio ponderado lineal: `scoreGlobal = 0.40 * aut + 0.40 * cruce + 0.20 * coh`. Suma obligatoria = 1.00. La fórmula y pesos son `[SUPUESTO del equipo]`, citando `RQF-043 [final-final]` para el concepto de puntaje 0-100 con desglose. | `D-08`, `RQF-043 [final-final]`, MIRA §2.6, Clarify P1 |
+| **D-08** | **Fórmula de agregación y ponderaciones: 0.40, 0.40, 0.20 (suma = 1.00)** | Promedio ponderado lineal: `scoreGlobal = 0.40 · aut + 0.40 · cruce + 0.20 · coh`. Suma obligatoria = 1.00 (tolerancia 0.0001 `[SUPUESTO del equipo]`). La fórmula y pesos son `[SUPUESTO del equipo]`, citando `RQF-043 [final-final]` para el concepto de puntaje 0-100 con desglose. | `D-08`, `RQF-043 [final-final]`, MIRA §2.6, Clarify P1 |
 | **D-09** | **Especificación única consolidada F5 + F4** | Gestión de umbrales y evaluación integradas en una sola especificación `spec.md`, con tareas etiquetadas `[F5]` y `[F4]` para mantener trazabilidad productor-consumidor. | `D-09`, `DEC-E2-10(c)` |
 
 ---
@@ -41,7 +41,7 @@ A continuación se registran las tres decisiones técnicas no zanjadas taxativam
 - **Alternativas Evaluadas:**
   - *Opción A (Recomendada): Express (v4.19+ o v5).*
     - *Ventajas:* Madurez industrial absoluta, API simple y minimalista, soporte nativo directo con `supertest` para pruebas de integración de endpoints sin necesidad de levantar listeners de red reales (`supertest(app)`), manejo transparente de JSON con `express.json()`, cero curva de aprendizaje para el equipo.
-    - *Desventajas:* Menor rendimiento teórico en benchmarks de microsegundos frente a Fastify (irrelevante para este incremento sin SLA de latencia y con casos sintéticos).
+    - *Desventajas:* Menor rendimiento teórico en benchmarks sintéticos frente a Fastify (irrelevante para este incremento sin SLA de latencia y con casos sintéticos).
   - *Opción B: Fastify.*
     - *Ventajas:* Validación basada en esquemas JSON Schema de alta velocidad, tipado TypeScript integrado en rutas.
     - *Desventajas:* Requiere configuración adicional (`fastify.inject()` o adapter para supertest), mayor complejidad en tipado de middlewares y hooks de ciclo de vida.
@@ -53,14 +53,14 @@ A continuación se registran las tres decisiones técnicas no zanjadas taxativam
 - **Alternativas Evaluadas:**
   - *Opción A (Recomendada): `better-sqlite3` con sentencias SQL preparadas nativas y migraciones DDL directas.*
     - *Ventajas:* Ejecución síncrona determinista de alto rendimiento (ideal para Node.js CLI y microservicios autocontenidos), manejo directo de triggers SQLite (`CREATE TRIGGER ... RAISE(ABORT, ...)`), transacciones nativas con `.transaction()`, cero abstracciones opacas, máxima velocidad en tests unitarios en memoria (`:memory:`).
-    - *Desventajas:* Requiere precompilación nativa (prebuild binaries provistos automáticamente por npm para Linux x64/arm64, macOS y Windows).
+    - *Desventajas y Riesgo:* `better-sqlite3` descarga binarios precompilados mediante `prebuild-install` en la etapa de postinstall (o intenta compilar desde código fuente con `node-gyp`, Python y Make si no encuentra un binario compatible precompilado para la plataforma y arquitectura). No debe asumirse que npm los provee automáticamente; requiere probar `npm install` en máquina limpia, congelar `package-lock.json` y disponer de plan alternativo (ver Riesgo R-05 en `plan.md`).
   - *Opción B: `sqlite3` asíncrono tradicional.*
     - *Ventajas:* Librería clásica por callbacks.
     - *Desventajas:* API basada en callbacks obsoleta que obliga a wrapping manual con Promesas; propensa a race conditions en pruebas consecutivas de lectura/escritura.
   - *Opción C: ORM pesado (Prisma / TypeORM).*
     - *Ventajas:* Generación automática de tipos y migraciones.
     - *Desventajas:* Descarga de binarios pesados (Prisma engine ~40MB), tiempos de inicio elevados, sobrecarga innecesaria para un modelo de datos acotado a 3 tablas, riesgo de superar los 15 minutos en máquina limpia (Criterio C4).
-- **Recomendación:** **Opción A (`better-sqlite3`).** Ofrece API síncrona limpia en TypeScript, soporte completo para DDL y triggers de inmutabilidad (D-05), y permite usar `:memory:` en tests de Vitest para ejecuciones instantáneas y deterministas al 100%.
+- **Recomendación:** **Opción A (`better-sqlite3`).** Ofrece API síncrona limpia en TypeScript, soporte completo para DDL y triggers de inmutabilidad (D-05), y permite usar `:memory:` en tests de Vitest para ejecuciones deterministas al 100%.
 
 ### Investigación 3: Estructura de Workspace y Comunicación Frontend ↔ Backend [POR CONFIRMAR 3]
 - **Pregunta:** *¿Cómo estructurar el repositorio y la ejecución concurrente para cumplir con el arranque en menos de 15 minutos sin problemas de CORS ni puertos colisionados?*
@@ -86,11 +86,11 @@ A continuación se registran las tres decisiones técnicas no zanjadas taxativam
 ## 4. Estrategia de Reproducibilidad Determinista (RQNF-002 / SC-004)
 
 Conforme a la clarificación 4 ratificada por el cliente, en la Entrega 2 no rige ningún SLA contractual de latencia. La prueba extra-funcional vinculante para el Criterio C5 es la **reproducibilidad determinista al 100%** de decisiones pasadas:
-1. **Mecanismo de Auditoría Histórica:** Al evaluar un caso en F4, el sistema almacena en la tabla `auditoria_evaluaciones`:
-   - `idEvaluacion` (UUID autonumérico/v4)
+1. **Mecanismo de Preservación Histórica:** Al evaluar un caso en F4, el sistema almacena en la tabla SQLite `auditoria_evaluaciones`:
+   - `idEvaluacion` (UUID)
    - `idCaso` (identificador del caso evaluado)
    - `versionUmbralesAplicada` (número exacto de la versión vigente utilizada)
-   - `senalesInsumo` (JSON con las señales exactas del caso en ese instante: `autenticidad_documentos`, `cruce_fuentes`, `coherencia_solicitud`, `alertaFraudeActiva`)
+   - `senalesInsumo` (JSON con las señales exactas del caso en ese instante)
    - `scoreGlobal` (número flotante exacto sin redondear)
    - `decision` (`APROBADO_AUTOMATICO` o `DERIVADO_REVISION`)
    - `motivo` (`aprobado`, `alerta_fraude`, `senal_bajo_minimo`, `puntaje_bajo_umbral`)
@@ -101,6 +101,10 @@ Conforme a la clarificación 4 ratificada por el cliente, en la Entrega 2 no rig
    - Recupera la versión histórica exacta de umbrales desde la tabla `umbrales_flujo` usando `versionUmbralesAplicada`.
    - Vuelve a ejecutar la función pura del motor de evaluación `evaluarCaso(senalesInsumo, umbralesHistoricos)`.
    - Valida que `decisionCalculada === decisionArchivada`, `motivoCalculado === motivoArchivado`, `scoreCalculado === scoreArchivado` y `riesgoAltoCalculado === riesgoAltoArchivado` en el 100% de las iteraciones.
+3. **Aserción Explícita de No-Circularidad:**
+   - Para demostrar que la prueba es no-trivial y no-circular, la suite ejecuta una aserción diferencial explícita:
+     - Evalúa `CASO-MED-001` (score 94.0) contra una Versión 2 vigente con política restrictiva (`umbralAprobacion = 96.0`), verificando que el motor resuelve `decision: 'DERIVADO_REVISION'` con `motivo: 'puntaje_bajo_umbral'`.
+     - Reevalúa a continuación el mismo caso contra su Versión 1 archivada de origen (`umbralAprobacion = 90.0`), verificando que reproduce idénticamente `decision: 'APROBADO_AUTOMATICO'` con `motivo: 'aprobado'` y `riesgoAltoRechazo: false`.
 
 ---
 

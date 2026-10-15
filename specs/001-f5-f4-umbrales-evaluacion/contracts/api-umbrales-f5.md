@@ -8,10 +8,10 @@
 ---
 
 ## 1. `GET /api/umbrales/vigente`
-Obtiene la configuración de umbrales actualmente vigente (la versión con estado `APROBADO` de mayor número correlativo).
+Obtiene la configuración de umbrales actualmente vigente (la versión con estado `APROBADO` de mayor número secuencial correlativo).
 
 - **Headers:** Ninguno requerido.
-- **Respuesta 200 OK:**
+- **Respuesta 200 OK (Versión inicial sembrada por defecto):**
 ```json
 {
   "idFlujo": "reembolso-gastos-medicos",
@@ -24,10 +24,10 @@ Obtiene la configuración de umbrales actualmente vigente (la versión con estad
   "pesoAutenticidad": 0.40,
   "pesoCruceFuentes": 0.40,
   "pesoCoherencia": 0.20,
-  "proponente": "Administrador 1",
-  "aprobador": "Administrador 2",
-  "fechaPropuesta": "2026-10-14T10:00:00.000Z",
-  "fechaResolucion": "2026-10-14T10:05:00.000Z",
+  "proponente": "sistema",
+  "aprobador": "carga inicial del sistema (valores por defecto)",
+  "fechaPropuesta": "2026-10-14T00:00:00.000Z",
+  "fechaResolucion": "2026-10-14T00:00:00.000Z",
   "estado": "APROBADO"
 }
 ```
@@ -46,7 +46,7 @@ Lista todas las versiones históricas de umbrales del flujo (aprobadas, desestim
 - **Respuesta 200 OK:**
 ```json
 {
-  "flujo": "reembolso-gastos-medicos",
+  "idFlujo": "reembolso-gastos-medicos",
   "borradorActivo": null,
   "versiones": [
     {
@@ -59,10 +59,10 @@ Lista todas las versiones históricas de umbrales del flujo (aprobadas, desestim
       "pesoAutenticidad": 0.40,
       "pesoCruceFuentes": 0.40,
       "pesoCoherencia": 0.20,
-      "proponente": "Administrador 1",
-      "aprobador": "Administrador 2",
-      "fechaPropuesta": "2026-10-14T10:00:00.000Z",
-      "fechaResolucion": "2026-10-14T10:05:00.000Z",
+      "proponente": "sistema",
+      "aprobador": "carga inicial del sistema (valores por defecto)",
+      "fechaPropuesta": "2026-10-14T00:00:00.000Z",
+      "fechaResolucion": "2026-10-14T00:00:00.000Z",
       "estado": "APROBADO"
     }
   ]
@@ -72,9 +72,12 @@ Lista todas las versiones históricas de umbrales del flujo (aprobadas, desestim
 ---
 
 ## 3. `POST /api/umbrales/borrador`
-Crea una nueva propuesta de umbrales en estado `BORRADOR` formulada por el usuario activo (rol Diseñador o Administrador).
+Crea una nueva propuesta de umbrales en estado `BORRADOR`.
+- **Autenticación e Identidad:** La identidad del proponente se extrae automáticamente en el servidor desde la sesión activa (`/api/session`). **No se envía en el cuerpo de la petición.**
+- **Control de Acceso:** El backend valida que la identidad activa posea el rol de **`Diseñador`** (ej. `'Diseñador 1'` o `'Diseñador 2'`). Si no es Diseñador, rechaza con código 403 Forbidden.
+- **Restricción de Concurrencia:** Bloqueado con error 409 Conflict si ya existe un borrador activo sin resolver en el flujo (garantizado por el índice único condicional SQLite).
+- **Asignación de Versión:** El backend asigna de inmediato el número secuencial `version = MAX(version) + 1`.
 
-- **Restricciones:** Bloqueado con error 409 si ya existe un borrador activo sin resolver en el flujo.
 - **Cuerpo de la Petición:**
 ```json
 {
@@ -86,12 +89,11 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR` formulada por el usuar
   "minimoCoherencia": 60.0,
   "pesoAutenticidad": 0.40,
   "pesoCruceFuentes": 0.40,
-  "pesoCoherencia": 0.20,
-  "usuarioProponente": "Diseñador 1"
+  "pesoCoherencia": 0.20
 }
 ```
 - **Validaciones:**
-  - `pesoAutenticidad + pesoCruceFuentes + pesoCoherencia === 1.00` (error 400 si la suma difiere de 1.00).
+  - `pesoAutenticidad + pesoCruceFuentes + pesoCoherencia === 1.00` (con tolerancia 0.0001 `[SUPUESTO del equipo]`; error 400 si difiere).
   - Cada peso entre `0.00` y `1.00`.
   - Umbrales y mínimos numéricos entre `0.0` y `100.0` inclusive.
   - `umbralAprobacion > umbralRiesgoAlto` estricto (error 400 si `umbralAprobacion <= umbralRiesgoAlto`).
@@ -124,6 +126,12 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR` formulada por el usuar
   "error": "Validación fallida: la suma de las ponderaciones debe ser exactamente 1.00 (suma actual: 0.95)."
 }
 ```
+- **Respuesta 403 Forbidden:**
+```json
+{
+  "error": "Acceso denegado: solo un usuario con rol Diseñador puede proponer modificaciones de umbrales."
+}
+```
 - **Respuesta 409 Conflict:**
 ```json
 {
@@ -133,21 +141,70 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR` formulada por el usuar
 
 ---
 
-## 4. `POST /api/umbrales/borrador/aprobar`
-Aprueba el borrador activo, promoviéndolo a estado `APROBADO` como nueva versión vigente inmutable.
+## 4. `PUT /api/umbrales/borrador`
+Modifica los parámetros numéricos de la propuesta actualmente en estado `BORRADOR`.
+- **Autenticación e Identidad:** La identidad del editor se extrae de la sesión activa (`/api/session`).
+- **Control de Acceso:** El backend valida que la identidad activa sea de rol **`Diseñador`**.
+- **Regla:** Actualiza los campos numéricos manteniendo el mismo número de `version` asignado previamente.
 
 - **Cuerpo de la Petición:**
 ```json
 {
   "idFlujo": "reembolso-gastos-medicos",
-  "version": 2,
-  "usuarioAprobador": "Administrador 1"
+  "umbralAprobacion": 89.0,
+  "umbralRiesgoAlto": 64.0,
+  "minimoAutenticidad": 70.0,
+  "minimoCruceFuentes": 70.0,
+  "minimoCoherencia": 60.0,
+  "pesoAutenticidad": 0.40,
+  "pesoCruceFuentes": 0.40,
+  "pesoCoherencia": 0.20
 }
 ```
-- **Validaciones:**
-  - `usuarioAprobador` debe tener rol de Administrador.
-  - **Incompatibilidad estricta de doble control:** `usuarioAprobador !== proponente` (error 403 Forbidden si el proponente intenta auto-aprobarse).
-  - La versión debe encontrarse actualmente en estado `BORRADOR`.
+- **Respuesta 200 OK:**
+```json
+{
+  "mensaje": "Borrador de umbrales actualizado exitosamente.",
+  "borrador": {
+    "idFlujo": "reembolso-gastos-medicos",
+    "version": 2,
+    "umbralAprobacion": 89.0,
+    "umbralRiesgoAlto": 64.0,
+    "minimoAutenticidad": 70.0,
+    "minimoCruceFuentes": 70.0,
+    "minimoCoherencia": 60.0,
+    "pesoAutenticidad": 0.40,
+    "pesoCruceFuentes": 0.40,
+    "pesoCoherencia": 0.20,
+    "proponente": "Diseñador 1",
+    "aprobador": null,
+    "fechaPropuesta": "2026-10-14T11:00:00.000Z",
+    "fechaResolucion": null,
+    "estado": "BORRADOR"
+  }
+}
+```
+- **Respuesta 404 Not Found:**
+```json
+{
+  "error": "No existe un borrador activo para modificar en este flujo."
+}
+```
+
+---
+
+## 5. `POST /api/umbrales/borrador/aprobar`
+Aprueba el borrador activo, promoviéndolo a estado `APROBADO` como nueva versión vigente inmutable.
+- **Autenticación e Identidad:** La identidad del aprobador se extrae de la sesión activa (`/api/session`). **No se envía en el cuerpo.**
+- **Control de Acceso:** El backend valida que la identidad activa tenga rol **`Administrador`**.
+- **Incompatibilidad estricta de doble control (`PF-033`):** El backend valida que `usuarioAprobador !== proponente`. Si el mismo usuario que propuso el borrador intenta aprobarlo, rechaza con 403 Forbidden.
+
+- **Cuerpo de la Petición:**
+```json
+{
+  "idFlujo": "reembolso-gastos-medicos"
+}
+```
 - **Respuesta 200 OK:**
 ```json
 {
@@ -161,34 +218,32 @@ Aprueba el borrador activo, promoviéndolo a estado `APROBADO` como nueva versi�
   }
 }
 ```
-- **Respuesta 403 Forbidden:**
+- **Respuesta 403 Forbidden (Auto-aprobación bloqueada):**
 ```json
 {
-  "error": "Violación de segregación de funciones: El usuario proponente ('Diseñador 1') no puede aprobar su propia propuesta de umbrales."
+  "error": "Violación de segregación de funciones: El usuario proponente no puede aprobar su propia propuesta de umbrales; se requiere un aprobador independiente."
 }
 ```
 
 ---
 
-## 5. `POST /api/umbrales/borrador/desestimar`
+## 6. `POST /api/umbrales/borrador/desestimar`
 Descarta y archiva el borrador activo, pasándolo a estado `DESESTIMADO` sin alterar la versión vigente.
+- **Autenticación e Identidad:** La identidad del resolutor se extrae de la sesión activa (`/api/session`). **No se envía en el cuerpo.**
+- **Control de Acceso:** El backend valida rol **`Administrador`** y regla de incompatibilidad `usuario !== proponente`.
+- **Efecto de Versionamiento:** La versión desestimada conserva su número de versión asignado en el historial inmutable (generando un hueco en la numeración correlativa de versiones aprobadas).
 
 - **Cuerpo de la Petición:**
 ```json
 {
   "idFlujo": "reembolso-gastos-medicos",
-  "version": 2,
-  "usuarioAprobador": "Administrador 1",
-  "motivoDesestimacion": "Ponderaciones incompatibles con política de riesgo de octubre."
+  "motivoDesestimacion": "Ponderaciones incompatibles con política de riesgo de octubre [SUPUESTO del equipo]."
 }
 ```
-- **Validaciones:**
-  - `usuarioAprobador` debe tener rol Administrador.
-  - `usuarioAprobador !== proponente`.
 - **Respuesta 200 OK:**
 ```json
 {
-  "mensaje": "Propuesta de umbrales desestimada y archivada.",
+  "mensaje": "Propuesta de umbrales desestimada y archivada. Conserva su número de versión histórica.",
   "versionDesestimada": {
     "idFlujo": "reembolso-gastos-medicos",
     "version": 2,
@@ -196,5 +251,11 @@ Descarta y archiva el borrador activo, pasándolo a estado `DESESTIMADO` sin alt
     "aprobador": "Administrador 1",
     "fechaResolucion": "2026-10-14T11:20:00.000Z"
   }
+}
+```
+- **Respuesta 403 Forbidden:**
+```json
+{
+  "error": "Violación de segregación de funciones: El usuario proponente no puede desestimar su propia propuesta; se requiere un Administrador independiente."
 }
 ```
