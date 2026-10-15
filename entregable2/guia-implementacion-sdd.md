@@ -458,7 +458,7 @@ Toda propuesta del agente que agregue campos, rutas o reglas no solicitadas en `
 - **Frente 4: Informe, Trazabilidad y Gobernanza SDD (Angel Salgado):** Informe PDF (6.1 a 6.8), matriz de trazabilidad, log de prompts, bitácora DEC, custodia de `.specify/memory/constitution.md`, diapositivas PPT.
 
 ### 5.2 Contrato de Datos Temprano F5 ↔ F4 (`src/shared/types.ts`)
-Congelado el **Martes 13 de Octubre (Día 1 de desarrollo)** para desacoplar el trabajo de interfaz y backend:
+Congelado el **Martes 13 de Octubre (Día 1 de desarrollo)** para desacoplar el trabajo de interfaz y backend (el contrato formal y vigente se detalla en `specs/001-f5-f4-umbrales-evaluacion/data-model.md §4`):
 
 ```typescript
 // src/shared/types.ts - Contrato de Interfaces F5 <-> F4
@@ -473,9 +473,11 @@ export interface UmbralesFlujo {
   pesoAutenticidad: number;    // D-08 (0.40) [SUPUESTO del equipo]
   pesoCruceFuentes: number;    // D-08 (0.40) [SUPUESTO del equipo]
   pesoCoherencia: number;      // D-08 (0.20) [SUPUESTO del equipo]
-  actualizadoPor: string;
-  fechaActualizacion: string;
-  estado: 'BORRADOR' | 'APROBADO';
+  proponente: string;          // Diseñador que crea la propuesta (D-04, PF-033)
+  aprobador?: string;          // Administrador independiente que aprueba/desestima (D-04, PF-033)
+  fechaPropuesta: string;      // ISO 8601 UTC
+  fechaResolucion?: string;    // ISO 8601 UTC
+  estado: 'BORRADOR' | 'APROBADO' | 'DESESTIMADO'; // 3 estados de ciclo de vida (D-03, D-04)
 }
 
 export interface SenalesCaso {
@@ -636,7 +638,7 @@ proyecto-llm/
 │   ├── sesion-aceptacion.md          # Acta de aceptación con Rodrigo Guerrero (representante del cliente en la E2)
 │   └── usabilidad.md                 # Registro de prueba con evaluador externo
 ├── data/
-│   ├── casos_prueba.json             # 5 casos ficticios de gastos médicos
+│   ├── casos_prueba.json             # 6 casos ficticios de gastos médicos (AC-1..AC-6)
 │   └── evidencias/                   # Documentos PDF/JPG ficticios
 ├── src/                              # Código fuente (backend, frontend, shared)
 └── tests/                            # Suites automatizadas (unitarias, e2e, reproducibilidad)
@@ -655,13 +657,16 @@ Campos: `ID Interacción`, `Fecha y Fase`, `Prompt Ingresado`, `Resumen Salida A
 
 | Requisito E1 | Fuente | Equivalente Alternativo (`final-final.md`) | Equivalente PDF (`RQF-Bxx`) | Criterio Aceptación Spec (`spec.md`) | Tarea (`tasks.md`) | Archivo Código Fuente (`src/`) | Commit Hash | Prueba Automatizada (`tests/`) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `RQF-040` | `fase5-lester` | `RQF-005` | `RQF-B10 (pág. 9)` (prueba usa umbral 85) | `AC-1: Aprobación automática >= 90` | `T-04` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testAutoApproval` |
-| `RQF-041` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-08/E2-06) | `AC-2: Derivación por señal bajo mínimo` | `T-05` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMinSignalGate` |
-| `RQF-023` | `fase5-lester` | `RQF-028` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-E2-06) | `AC-3: Precedencia de alerta de fraude` | `T-06` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testFraudPrecedence` |
-| `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B11 (pág. 9) y RQF-B12 (pág. 9)` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | `AC-4: Derivación con advertencia de riesgo alto (umbralRiesgoAlto = 60)` | `T-07` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testHighRiskWarning` |
-| `RQF-039` | `fase5-lester` | `RQF-035` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `AC-5: Edición y versionado de umbrales` | `T-02` | `src/backend/routes/umbrales.ts`| `[hash]` | `tests/integration/umbrales.test.ts` |
-| `RQF-044` | `final-final` | `[SIN EQUIVALENTE VERIFICADO en lester]` | `RQF-B09 (pág. 9)` | `AC-7: Configuración de umbrales por flujo/cliente` | `T-01` | `src/backend/routes/umbrales.ts`| `[hash]` | `tests/integration/umbrales.test.ts` |
-| `RQNF-002` | `fase5-lester` | `RQNF-003` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `AC-6: Reproducibilidad histórica 100%` | `T-12` | `src/backend/routes/eval.ts` | `[hash]` | `tests/reproducibility/deterministic.test.ts` |
+| `RQF-040` | `fase5-lester` | `RQF-005` | `RQF-B10 (pág. 9)` (prueba usa umbral 85) | `AC-1: Aprobación automática >= 90 (CASO-MED-001)` | `T-04` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testAutoApproval` |
+| `RQF-041` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-08/E2-06) | `AC-2: Derivación por señal bajo mínimo (CASO-MED-002)` | `T-05` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMinSignalGate` |
+| `RQF-023` | `fase5-lester` | `RQF-028` | `RQF-B12 (pág. 9)` (parcial; PDF dice "Rechazado", superado por DEC-E2-06) | `AC-3: Precedencia de alerta de fraude (CASO-MED-003)` | `T-06` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testFraudPrecedence` |
+| `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B11 (pág. 9) y RQF-B12 (pág. 9)` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | `AC-4: Derivación con advertencia de riesgo alto por puntaje crítico y 2 señales bajo mínimo (CASO-MED-004)` | `T-07` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testHighRiskWarning` |
+| `RQF-040` | `fase5-lester` | `RQF-005` | `RQF-B11 (pág. 9)` (rango intermedio 60-84) | `AC-5: Derivación estándar en rango intermedio de puntaje (CASO-MED-005)` | `T-08` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testIntermediateRange` |
+| `RQF-020` | `fase5-lester` | `[SIN EQUIVALENTE VERIFICADO]` | `RQF-B12 (pág. 9)` (superado por DEC-08 / DEC-E2-10) | `AC-6: Derivación con advertencia de riesgo alto por puntaje crítico con 1 sola señal bajo mínimo (CASO-MED-006)` | `T-09` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testCriticalScoreWarning` |
+| `DEC-E2-10(b)` | `equipo` | `[SIN EQUIVALENTE VERIFICADO]` | `[SIN EQUIVALENTE VERIFICADO]` (supuesto de diseño) | `PU-1: Condición lógica multiseñal bajo mínimo con puntaje alto (72.0)` | `T-10` | `src/backend/engine.ts` | `[hash]` | `tests/unit/engine.test.ts:testMultiSignalWarning` |
+| `RQF-044` | `final-final` | `[SIN EQUIVALENTE VERIFICADO en lester]` | `RQF-B09 (pág. 9)` | `US4 / Esc. 4.1 & 4.2: Configuración de umbrales por flujo y propuesta en borrador` | `T-01` | `src/backend/routes/umbrales.ts` | `[hash]` | `tests/integration/umbrales.test.ts` |
+| `RQF-039` | `fase5-lester` | `RQF-035` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `US5 / Esc. 5.1 & 5.2: Doble control y aprobación de umbrales (SC-003)` | `T-02` | `src/backend/routes/umbrales.ts` | `[hash]` | `tests/integration/umbrales.test.ts` |
+| `RQNF-002` | `fase5-lester` | `RQNF-003` | `[SIN EQUIVALENTE VERIFICADO]` (sin equivalente directo en PDF) | `SC-004: Reproducibilidad histórica determinista al 100% (US6 / Esc. 6.2)` | `T-12` | `src/backend/routes/eval.ts` | `[hash]` | `tests/reproducibility/deterministic.test.ts` |
 
 ### 7.5 Atribución de Origen de los Cambios
 Registro auditable distinguiendo cambios originados por el **Representante del Cliente**, el **Equipo de Desarrollo** y el **Agente**.
