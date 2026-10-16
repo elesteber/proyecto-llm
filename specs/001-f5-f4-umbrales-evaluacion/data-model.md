@@ -40,6 +40,7 @@ Representa el vector de entrada precalculado para un expediente médico sometido
 Representa la resolución determinista inmutable producida por el motor de F4.
 - **`idEvaluacion`** (`string` UUID): Identificador unívoco del registro de evaluación.
 - **`idCaso`** (`string`): Identificador del caso de prueba evaluado (ej. `'CASO-MED-001'`).
+- **`idFlujo`** (`string`): Identificador del flujo de negocio evaluado (ej. `'reembolso-gastos-medicos'`).
 - **`scoreGlobal`** (`number`): Valor numérico exacto sin redondear, producto de la fórmula lineal ponderada (`0.40·aut + 0.40·cruce + 0.20·coh`).
 - **`decision`** (`enum`): Salidas exclusivas del sistema: `'APROBADO_AUTOMATICO'` o `'DERIVADO_REVISION'`. Prohibido terminantemente calificar la decisión del sistema como "rechazado" (`DEC-08`, `DEC-E2-10(b)`, Principio I).
 - **`motivo`** (`enum`): Causa técnica gobernada por el orden de precedencia RN-04:
@@ -49,9 +50,10 @@ Representa la resolución determinista inmutable producida por el motor de F4.
   - `'puntaje_bajo_umbral'`
 - **`riesgoAltoRechazo`** (`boolean`): Advertencia informativa de severidad visual para el operador humano (*"Riesgo alto de rechazo: decide un operador"*). Se activa (`true`) si:
   `conteo(señales bajo mínimo) >= 2 || scoreGlobal < umbralRiesgoAlto`. Jamás altera la decisión (mantiene `DERIVADO_REVISION`).
-- **`senalesBajoMinimo`** (`string[]`): Lista de nombres de las señales que no alcanzaron su respectivo mínimo propio.
+- **`senalesBajoMinimo`** (`NombreSenal[]`): Lista de nombres de las señales que no alcanzaron su respectivo mínimo propio (valores posibles: `'autenticidad_documentos'`, `'cruce_fuentes'`, `'coherencia_solicitud'`).
 - **`desgloseComponentes`** (`object`): Valores puntuales de `{ autenticidad, cruceFuentes, coherencia }`.
 - **`senalesInsumo`** (`SenalesCaso`): Vector completo de entrada utilizado para la evaluación, preservado para auditoría y reproducibilidad histórica (`SC-004`).
+- **`usuarioOperador`** (`string`): Identidad del usuario operador que ejecutó la evaluación (ej. `'Operador 1'`).
 - **`versionUmbralesAplicada`** (`integer`): Número de versión de umbrales aplicada en el dictamen.
 - **`timestamp`** (`string` ISO 8601 UTC): Estampa de tiempo exacta de la evaluación.
 
@@ -251,6 +253,11 @@ export type IdentidadSimulada =
   | 'Administrador 2'
   | 'Operador 1';
 
+export type NombreSenal =
+  | 'autenticidad_documentos'
+  | 'cruce_fuentes'
+  | 'coherencia_solicitud';
+
 /**
  * F5: Parámetros de umbrales y ponderaciones de un flujo de negocio.
  * Satisface RQF-039 [fase5-lester], RQF-044 [final-final], RQF-B09 [PDF pág. 9], DEC-01, DEC-E2-10(a).
@@ -277,9 +284,9 @@ export interface UmbralesFlujo {
   
   // Auditoría y ciclo de vida de doble control (D-04, PF-033, Clarify P2)
   proponente: string;          // Usuario rol Diseñador (o 'sistema' en versión 1)
-  aprobador?: string;          // Usuario rol Administrador independiente (en v1: 'carga inicial del sistema (valores por defecto)')
+  aprobador?: string | null;   // Usuario rol Administrador independiente (en v1: 'carga inicial del sistema (valores por defecto)')
   fechaPropuesta: string;      // ISO 8601 UTC
-  fechaResolucion?: string;    // ISO 8601 UTC
+  fechaResolucion?: string | null; // ISO 8601 UTC
   estado: EstadoVersionUmbrales;
 }
 
@@ -316,6 +323,8 @@ export interface CasoPrueba {
 export interface ResultadoEvaluacion {
   idEvaluacion: string;
   idCaso: string;
+  /** Identificador del flujo de negocio evaluado (DDL auditoria_evaluaciones data-model.md §3, columna id_flujo) */
+  idFlujo: string;
   /** Puntaje global exacto sin redondear obtenido por la agregación ponderada (RN-03) */
   scoreGlobal: number;
   /** Decisión estricta del sistema: nunca es 'RECHAZADO' (DEC-08, Principio I) */
@@ -331,7 +340,7 @@ export interface ResultadoEvaluacion {
    */
   riesgoAltoRechazo: boolean;
   /** Nombres de las señales que cayeron bajo su respectivo mínimo propio */
-  senalesBajoMinimo: string[];
+  senalesBajoMinimo: NombreSenal[];
   /** Desglose numérico puntual de las tres señales evaluadas */
   desgloseComponentes: {
     autenticidad: number;
@@ -340,6 +349,8 @@ export interface ResultadoEvaluacion {
   };
   /** Vector exacto de señales de entrada utilizado para la evaluación (base de reproducibilidad SC-004) */
   senalesInsumo: SenalesCaso;
+  /** Identidad del usuario operador que ejecutó la evaluación (DDL auditoria_evaluaciones data-model.md §3, columna usuario_operador) */
+  usuarioOperador: string;
   /** Versión inmutable de umbrales aplicada en el dictamen */
   versionUmbralesAplicada: number;
   /** Estampa temporal ISO 8601 UTC de la evaluación */
