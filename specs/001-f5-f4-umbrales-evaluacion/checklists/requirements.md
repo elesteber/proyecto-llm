@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No pending clarifications or assumptions remain *(5 clarificaciones resueltas; queda 1 supuesto pendiente de confirmación en §7.1(f))*
+- [x] No pending clarifications or assumptions remain *(5 clarificaciones resueltas; supuesto (f) confirmado por Rodrigo Guerrero el 2026-10-15 en PR #16)*
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,7 +31,7 @@
 
 ## Notes
 
-- **Compuerta 2 (15/16 ítems cumplidos):** La sesión de `/speckit-clarify` fue ejecutada el 2026-10-14 con las 5 consultas ratificadas por el Representante del Cliente (Rodrigo Guerrero). Revisada por Lester Gonzalez; revisión pendiente de Jorge Alvarez y Angel Salgado (DEC-E2-03).
-- Queda 1 supuesto pendiente de confirmación formal por Rodrigo en §7.1(f) (delimitación de la decisión final del operador en F4).
+- **Compuerta 2 (16/16 ítems cumplidos):** La sesión de `/speckit-clarify` fue ejecutada el 2026-10-14 con las 5 consultas ratificadas por el Representante del Cliente (Rodrigo Guerrero). Revisada por Lester Gonzalez y Jorge Alvarez (mensaje del 2026-10-15); pendiente revisión de Angel Salgado (DEC-E2-03).
+- El supuesto (f) (delimitación de la decisión final del operador en F4) fue confirmado por Rodrigo Guerrero (representante del cliente) el 2026-10-15 (comentario en PR #16).
 - La especificación se encuentra completamente libre de detalles de implementación tecnológica, cumpliendo estrictamente con el Principio VI de la Constitución.
 

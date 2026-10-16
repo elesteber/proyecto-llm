@@ -3,7 +3,7 @@
 **Feature Identifier**: `001-f5-f4-umbrales-evaluacion`  
 **Feature Branch**: `feat/spec-f5-f4`  
 **Created**: 2026-10-14  
-**Status**: Validated by client; pending cross-review (Jorge, Angel)  
+**Status**: Validated by client; revisión cruzada: Jorge OK (mensaje del 2026-10-15), pendiente Angel  
 **Input**: Incremento conjunto F5 (Configuración de umbrales de decisión) y F4 (Evaluación de casos y decisión resolutiva) para el flujo de reembolso de gastos médicos de MIRA (DEC-E2-10(c), D-09).
 
 ---
@@ -327,19 +327,19 @@ Fuera de la suite de casos de negocio del dominio en interfaz, se define una pru
 6. **Regla de Precisión en Comparaciones:** Las comparaciones lógicas y matemáticas del motor de evaluación se ejecutan sobre los valores numéricos sin redondear; el redondeo a un decimal es una regla exclusiva de presentación visual en interfaz [SUPUESTO del equipo].
 
 ### 7.1 Estado de Supuestos y Decisiones Operativas
-Los supuestos operativos propuestos por el equipo de ingeniería para F5 y F4 fueron revisados en la sesión de clarificación del 2026-10-14 por el Representante del Cliente (Rodrigo Guerrero), quedando ratificados los puntos (a) a (e) y registrándose un supuesto pendiente de confirmación (f):
+Los supuestos operativos propuestos por el equipo de ingeniería para F5 y F4 fueron revisados en la sesión de clarificación del 2026-10-14 por el Representante del Cliente (Rodrigo Guerrero), quedando ratificados los puntos (a) a (e) y habiéndose confirmado el punto (f):
 - **(a) Mínimos y Ponderaciones:** Ratificados en 70/70/60 y 0,40/0,40/0,20 como `[SUPUESTO del equipo]` de dominio para el piloto de reembolso médico (DEC-05 / D-07 / D-08 / DEC-E2-10(a)).
 - **(b) Consistencia de Corte Paramétrico:** Ratificada la regla `umbralAprobacion > umbralRiesgoAlto` (90 > 60 por defecto) para preservar el rango de derivación ordinaria e impedir rangos invertidos en F5.
 - **(c) Concurrencia de Borradores y Doble Control:** Ratificado el límite de 1 solo borrador activo por flujo, con acciones de Aprobar y Desestimar por Administrador independiente y 5 identidades preconfiguradas fijas en selector (D-04 / PF-033).
 - **(d) Requisitos de Latencia y Reproducibilidad:** Ratificada la ausencia de SLA contractual vinculante de latencia en E2 (H-11), consagrando el 100% de reproducibilidad determinista histórica como la prueba extra-funcional oficial en C5 (H-14 / RQNF-002 [fase5-lester]).
 - **(e) Métrica de Usabilidad SC-005:** Ratificado el límite de ≤ 2 clics para consulta y ≤ 3 minutos para ejecución de tareas clave en la interfaz web por un evaluador sin inducción previa.
-- **(f) Delimitación de la Decisión Final del Operador en F4:** La decisión humana final del Operador sobre un caso derivado (aprobar o denegar tras su revisión) queda fuera de este incremento; F4 solo emite la derivación y la advertencia [SUPUESTO propuesto por Lester, pendiente de confirmación de Rodrigo].
+- **(f) Delimitación de la Decisión Final del Operador en F4:** La decisión humana final del Operador sobre un caso derivado (aprobar o denegar tras su revisión) queda fuera de este incremento; F4 solo emite la derivación y la advertencia. Confirmado por Rodrigo Guerrero (representante del cliente) el 2026-10-15, comentario en PR #16.
 
 ---
 
 ## 8. Registro de Clarificaciones Formales Realizadas
 
-Todas las consultas de clarificación han sido resueltas formalmente por el Representante del Cliente (Rodrigo Guerrero, DEC-E2-07) en la sesión del 2026-10-14 (revisada por Lester Gonzalez; revisión pendiente de Jorge Alvarez y Angel Salgado). Quedan exactamente **CERO marcadores `[NEEDS CLARIFICATION]` pendientes** en la especificación (con un supuesto pendiente de confirmación registrado en §7.1(f)):
+Todas las consultas de clarificación han sido resueltas formalmente por el Representante del Cliente (Rodrigo Guerrero, DEC-E2-07) en la sesión del 2026-10-14 (revisada por Lester Gonzalez; revisión de Jorge Alvarez OK según mensaje del 2026-10-15; revisión pendiente de Angel Salgado). Quedan exactamente **CERO marcadores `[NEEDS CLARIFICATION]` pendientes** en la especificación (con el supuesto (f) confirmado el 2026-10-15 en PR #16):
 
 ### Clarificación 1: Confirmación de Valores de Mínimos por Señal y Ponderaciones [RESUELTA - 2026-10-14]
 - **Resolución:** Ratificada formalmente la Opción A por el Representante del Cliente (Rodrigo Guerrero): Autenticidad (mín. 70, peso 0.40), Cruce de fuentes (mín. 70, peso 0.40) y Coherencia de solicitud (mín. 60, peso 0.20), con suma exacta de pesos = 1.00. La bandera de fraude (`alertaFraudeActiva`) se mantiene como variable booleana independiente (cierra formalmente el hallazgo H-05 / DEC-05 / D-07 / D-08).

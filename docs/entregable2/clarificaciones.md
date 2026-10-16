@@ -5,7 +5,7 @@
 **Incremento Funcional:** F5 (Gestión y Configuración de Umbrales) + F4 (Evaluación y Decisión por Umbrales)  
 **Fecha de Sesión:** Miércoles 14 de Octubre de 2026  
 **Artefacto Base:** [`specs/001-f5-f4-umbrales-evaluacion/spec.md`](../../specs/001-f5-f4-umbrales-evaluacion/spec.md)  
-**Estado de la Compuerta:** **Aprobada por el representante del cliente y revisada por Lester; pendiente de revisión de Jorge y Angel**  
+**Estado de la Compuerta:** **aprobada por el cliente; revisada por Lester y Jorge (mensaje del 2026-10-15); pendiente revisión de Angel**  
 
 ---
 
@@ -17,7 +17,7 @@ En cumplimiento del protocolo de mitigación formalizado en **`DEC-E2-03`** (par
 
 1. **Rodrigo Guerrero:** Representante del Cliente para la Entrega 2 (DEC-E2-07) y Desarrollador Backend. Ejecutó la sesión de clarificación interactiva con el agente y dictaminó las opciones vinculantes de negocio en representación del cliente piloto y del área de riesgo.
 2. **Lester Gonzalez:** Estrategia de Pruebas y Aseguramiento de Calidad (QA). No estuvo presente en la sesión interactiva; revisó el resultado el 2026-10-14 y lo aprobó formalmente con las correcciones registradas en la bitácora de intervenciones (`docs/entregable2/bitacora-intervenciones.md`).
-3. **Jorge Alvarez:** Desarrollador Frontend y Experiencia de Usuario (UI). No estuvo presente en la sesión interactiva; revisión pendiente.
+3. **Jorge Alvarez:** Desarrollador Frontend y Experiencia de Usuario (UI). No estuvo presente en la sesión interactiva; revisó y dio su visto bueno (mensaje del 2026-10-15).
 4. **Angel Salgado:** Redactor del Informe, Gobernanza Documental y Custodio de la Constitución. No estuvo presente en la sesión interactiva; revisión pendiente.
 
 ---
@@ -128,7 +128,7 @@ A continuación se registran las cinco preguntas estructuradas formuladas por el
 | **3** | Consistencia de Corte y Umbral 60 | Supuesto pendiente de corte | **Ratificado:** `umbralAprobacion > umbralRiesgoAlto` estricto; si `scoreGlobal < umbralRiesgoAlto` siempre deriva con `riesgoAltoRechazo: true` (motivo fijado por RN-04: por defecto `senal_bajo_minimo`, salvo que haya alerta de fraude, que tiene precedencia (`alerta_fraude`); con otra configuración `puntaje_bajo_umbral`) | `RQF-020 [fase5-lester]`, `DEC-08`, `DEC-E2-10(b)` |
 | **4** | Exigibilidad de SLA de Latencia | Duda H-11 / Parcialmente abierta | **Ratificado:** Sin SLA vinculante; reproducibilidad determinista al 100% como prueba medible | `H-11`, `H-14`, `DEC-E2-05`, `RQNF-002 [fase5-lester]` |
 | **5** | Métrica de Usabilidad SC-005 | Supuesto del equipo | **Ratificado:** Acceso en ≤ 2 clics; tareas clave completadas en ≤ 3 min sin inducción | `SC-005`, Criterios C4/C5, Compuertas 5 y 6 |
-| **6** | Delimitación Decisión Final del Operador | Propuesto por Lester en revisión | **Pendiente de confirmación por Rodrigo:** La decisión humana final del Operador sobre un caso derivado (aprobar o denegar tras su revisión) queda fuera de este incremento; F4 solo emite la derivación y la advertencia | MIRA §3, DEC-08, F4 emite derivación y advertencia |
+| **6** | Delimitación Decisión Final del Operador | Propuesto por Lester en revisión | **Ratificado:** La decisión humana final del Operador sobre un caso derivado (aprobar o denegar tras su revisión) queda fuera de este incremento; F4 solo emite la derivación y la advertencia (Confirmado por Rodrigo Guerrero, representante del cliente, el 2026-10-15, comentario en PR #16) | MIRA §3, DEC-08, F4 emite derivación y advertencia |
 
 ---
 
@@ -136,14 +136,14 @@ A continuación se registran las cinco preguntas estructuradas formuladas por el
 
 El Representante del Cliente y los revisores del equipo declaran:
 
-1. Que el archivo [`specs/001-f5-f4-umbrales-evaluacion/spec.md`](../../specs/001-f5-f4-umbrales-evaluacion/spec.md) refleja con fidelidad matemática y operativa las resoluciones acordadas, habiéndose resuelto las 5 consultas de clarificación y registrándose un supuesto pendiente de confirmación en §7.1(f) (delimitación de la decisión final del operador en F4).
-2. Que la lista de chequeo de calidad [`requirements.md`](../../specs/001-f5-f4-umbrales-evaluacion/checklists/requirements.md) alcanza 15/16 ítems cumplidos debido al supuesto 7.1(f) pendiente de confirmación formal por Rodrigo.
+1. Que el archivo [`specs/001-f5-f4-umbrales-evaluacion/spec.md`](../../specs/001-f5-f4-umbrales-evaluacion/spec.md) refleja con fidelidad matemática y operativa las resoluciones acordadas, habiéndose resuelto las 5 consultas de clarificación y habiéndose confirmado el supuesto (f) por Rodrigo Guerrero el 2026-10-15 en PR #16.
+2. Que la lista de chequeo de calidad [`requirements.md`](../../specs/001-f5-f4-umbrales-evaluacion/checklists/requirements.md) alcanza 16/16 ítems cumplidos.
 3. Que la especificación no contiene detalles prematuros de tecnologías, frameworks ni librerías de implementación, respetando el Principio VI de la Constitución.
-4. **Estado de la Compuerta 2:** "Aprobada por el representante del cliente y revisada por Lester; pendiente de revisión de Jorge y Angel".
+4. **Estado de la Compuerta 2:** "aprobada por el cliente; revisada por Lester y Jorge (mensaje del 2026-10-15); pendiente revisión de Angel".
 
 **Fecha de Sesión:** 14 de Octubre de 2026  
 **Revisión y Conformidad:**  
-- *Rodrigo Guerrero* (Representante del Cliente y Backend): Dictaminado y Aprobado (2026-10-14)  
+- *Rodrigo Guerrero* (Representante del Cliente y Backend): Dictaminado y Aprobado (2026-10-14; confirmación de supuesto (f) en PR #16 el 2026-10-15)  
 - *Lester Gonzalez* (Aseguramiento de Calidad y Pruebas): Revisado y Aprobado con correcciones en bitácora (2026-10-14)  
-- *Jorge Alvarez* (Frontend y Experiencia de Usuario): Pendiente  
+- *Jorge Alvarez* (Frontend y Experiencia de Usuario): Revisado OK (mensaje del 2026-10-15)  
 - *Angel Salgado* (Gobernanza y Custodia Documental): Pendiente  
