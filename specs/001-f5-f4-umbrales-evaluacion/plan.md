@@ -1,7 +1,7 @@
 # Implementation Plan: Incremento Consolidado F5 (Configuración de Umbrales) + F4 (Evaluación y Decisión) de MIRA
 
 **Branch**: `feat/plan-f5-f4` | **Fecha**: 2026-10-14 | **Spec**: [specs/001-f5-f4-umbrales-evaluacion/spec.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/spec.md)  
-**Estado**: **Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)**
+**Estado**: **Aprobada por Rodrigo Guerrero (backend) y Jorge Alvarez (frontend) mediante reviews en PR #16, 2026-10-15**
 
 **Insumos de Entrada**:
 - Especificación funcional consolidada: [spec.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/spec.md) y [requirements.md](file:///home/lester/Documents/LLMtareas/tareas/trabajo-final/proyecto-llm/specs/001-f5-f4-umbrales-evaluacion/checklists/requirements.md)
@@ -21,17 +21,17 @@ El plan adopta los lineamientos de las decisiones de la guía metodológica (§4
 1. **Persistencia Relacional SQLite (`D-01`, `D-05`):** Base de datos relacional autocontenida en un único archivo (`data/mira.db`). Se definen los nombres de las tablas para resolver los requerimientos técnicos y de multitenancy: la tabla de umbrales se denomina `umbrales_flujo` (en lugar de `umbrales` de D-01) para incluir la clave `id_flujo` de forma multitenant; la tabla de eventos de auditoría append-only se unifica bajo el nombre canónico de D-05: `rastro_auditoria` (con triggers `trg_prevent_update_rastro_auditoria` y `trg_prevent_delete_rastro_auditoria`); y las evaluaciones históricas se registran en `auditoria_evaluaciones` (con triggers `trg_prevent_update_evaluaciones` y `trg_prevent_delete_evaluaciones`). Ambas tablas de auditoría están protegidas por triggers `BEFORE UPDATE` y `BEFORE DELETE` con `RAISE(ABORT)`.
 2. **Simulación Determinista del Motor (`D-02`):** El motor no procesa imágenes o PDFs en tiempo real; se cargan casos de prueba sintéticos con señales numéricas precalculadas desde el archivo de datos `data/casos_prueba.json` (`CASO-MED-001` a `CASO-MED-006`).
 3. **Versionado Inmutable de Umbrales (`D-03`):** El número de versión se asigna al crear el borrador (`MAX(version) + 1`); si una versión es desestimada conserva su número asignado, por lo que "correlativo" significa estrictamente **ascendente con posibles huecos**. La versión vigente es siempre la `APROBADO` de mayor número. Quedan prohibidas mutaciones destructivas (`UPDATE`) sobre versiones aprobadas o desestimadas.
-4. **Mecanismo de Doble Control y Autenticación Simulada (`D-04`):** Selector superior en interfaz con 5 identidades preconfiguradas fijas (`Diseñador 1`, `Diseñador 2`, `Administrador 1`, `Administrador 2`, `Operador 1`). La identidad se extrae de la sesión activa (`/api/session`). Pueden proponer un borrador usuarios con rol Diseñador (`spec.md §5.1 FR-001`, `US4`) o Administrador (`PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio'`). Quien propone un borrador jamás puede aprobarlo o desestimarlo (`proponente !== aprobador`, `PF-033`, ENT6 [00:21:16]).
+4. **Mecanismo de Doble Control y Autenticación Simulada (`D-04`):** Selector superior en interfaz con 5 identidades preconfiguradas fijas (`Diseñador 1`, `Diseñador 2`, `Administrador 1`, `Administrador 2`, `Operador 1`). La identidad se extrae de la sesión activa (`/api/session`). Solo los usuarios con rol Diseñador pueden proponer y editar borradores (`spec.md §5.1 FR-001`, `US4`, `P2`; confirmado por Rodrigo Guerrero como representante del cliente en PR #16, 2026-10-15); los Administradores solo pueden aprobar o desestimar. Quien propone un borrador jamás puede aprobarlo o desestimarlo (`aprobador !== proponente` como regla de defensa en profundidad, ENT6 [00:21:16]). `PF-033` (heredada: 'un administrador ajusta el umbral') se adapta: el proponente es Diseñador por decisión del cliente (PR #16, 2026-10-15).
 5. **Estrategia de Pruebas E2E y Reproducibilidad Determinista (`D-06`):** Suite Playwright para recorridos de usuario y suite automatizada en Vitest que evalúa el 100% de consistencia decisional sobre versiones históricas (`RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]`, `SC-004`).
 6. **Mínimos por Señal Ratificados (`D-07`):** Autenticidad = 70.0, Cruce de fuentes = 70.0, Coherencia = 60.0 (`[SUPUESTO del equipo]` ratificado en `clarificaciones.md` P1).
 7. **Fórmula de Agregación Ponderada (`D-08`):** `0.40 · aut + 0.40 · cruce + 0.20 · coh` (`[SUPUESTO del equipo]` ratificado en `clarificaciones.md` P1; no proviene de ningún RQF; tolerancia de suma 0.0001 `[SUPUESTO del equipo]`).
 8. **Especificación Única Consolidada (`D-09`):** Spec única para F5+F4 con contratos desacoplados y tareas etiquetadas `[F5]` y `[F4]`.
 
-### Desviaciones respecto a la guía, pendientes de confirmar por Rodrigo:
-1. **(a) Tablas no creadas (`flujos`, `casos`, `senales`):** En D-01 de la guía se mencionan tablas relacionales para `flujos`, `casos` y `senales`. En este plan técnico no se crean tablas de `flujos`, `casos` ni `senales`; los casos de prueba y sus señales se cargan directamente en el servidor desde el archivo `data/casos_prueba.json` conforme a D-02 (se retira la mención de "respaldadas en SQLite"). *Recomendación del agente:* Mantener la carga desde `data/casos_prueba.json` sin persistir una tabla relacional `casos` en SQLite para este incremento, debido a que son 6 casos sintéticos fijos de negocio y evita migraciones o seedings redundantes en máquina limpia (< 15 min, C4).
+### Desviaciones y Precisiones de Diseño:
+1. **(a) Tablas no creadas (`flujos`, `casos`, `senales`):** En D-01 de la guía se mencionan tablas relacionales para `flujos`, `casos` y `senales`. En este plan técnico no se crean tablas de `flujos`, `casos` ni `senales`; los casos de prueba y sus señales se cargan directamente en el servidor desde el archivo `data/casos_prueba.json` conforme a D-02 (se retira la mención de "respaldadas en SQLite"). Se mantiene la carga desde `data/casos_prueba.json` sin persistir una tabla relacional `casos` en SQLite para este incremento, debido a que son 6 casos sintéticos fijos de negocio y evita migraciones o seedings redundantes en máquina limpia (< 15 min, C4).
 2. **(b) Nombres de tablas físicas frente a D-01:** En D-01 se proponían los nombres `umbrales` y `auditoria_cambios`. El plan utiliza `umbrales_flujo` (para soportar explícitamente la clave multitenant `id_flujo`), `auditoria_evaluaciones` (para el registro histórico de evaluaciones de F4 sin mezclarlo con eventos de configuración) y `rastro_auditoria` (nombre unificado canónico de D-05 para los eventos de umbrales con triggers de inmutabilidad).
-3. **(c) Estructura de directorios del plan frente a guía §7.1 y §7.4:** El plan organiza el repositorio en módulos independientes `backend/`, `frontend/`, `src/shared/` (contrato común) y `tests/` raíz, mientras que la guía §7.1 y §7.4 planteaba una jerarquía anidada bajo `src/` (`src/backend/`, `src/frontend/`, `src/shared/`). Se mantiene la coordinación vía scripts en `package.json` raíz.
-4. **(d) Rol proponente de umbrales en F5:** El plan técnico habilita la propuesta y edición de borradores tanto a usuarios con rol `Diseñador` como `Administrador` para dar cobertura directa a la prueba funcional `PF-033` (`fase6/pruebas-funcionales.md`, línea 69: *"Un administrador ajusta el umbral y guarda el cambio. El cambio queda pendiente, sin aplicarse, hasta que un segundo administrador distinto lo aprueba"*). En contraste, `spec.md` (§5.1 FR-001, US4, tabla de actores) y el acta de clarify (`clarificaciones.md` P2) asignan la acción de proponer exclusivamente al rol `Diseñador`. Esta discrepancia queda registrada como desviación técnica pendiente de confirmación formal por Rodrigo Guerrero como representante del cliente y, de confirmarse, de actualizar `spec.md` y el acta en un commit `[HUMAN-FIX]` aparte.
+3. **(c) Estructura de directorios frente a guía §7.1 y §7.4:** Resuelta: estructura separada por decisión del equipo (D3). El plan adopta plenamente la estructura de la guía §7.1 (`src/backend`, `src/frontend`, `src/shared`, `tests/` en raíz) coordinada mediante scripts en `package.json` raíz.
+4. **(d) Rol proponente de umbrales en F5:** Resuelta: confirmada por Rodrigo Guerrero en PR #16, 2026-10-15. Solo el Diseñador propone y edita borradores; el Administrador solo aprueba o desestima. PF-033 (heredada: 'un administrador ajusta el umbral') se adapta: el proponente es Diseñador por decisión del cliente (PR #16, 2026-10-15). Se mantiene la regla `aprobador !== proponente` como defensa en profundidad.
 
 ---
 
@@ -39,10 +39,10 @@ El plan adopta los lineamientos de las decisiones de la guía metodológica (§4
 
 ### 2.1 Stack Tecnológico y Dependencias
 - **Lenguaje y Entorno:** Node.js v20+ LTS con TypeScript 5.x (`DEC-E2-05`).
-- **Backend Framework:** **Express** (Recomendado) vs **Fastify** (`[POR CONFIRMAR 1; ver §8.1]`). Se propone Express v4.19+ / v5 por simplicidad de arranque, integración nativa con Supertest y cero fricción en demostración evaluativa.
+- **Backend Framework:** **Express** (Confirmado por Rodrigo Guerrero en PR #16, 2026-10-15). Se adopta Express v4.19+ / v5 por simplicidad de arranque, integración nativa con Supertest y cero fricción en demostración evaluativa (PC-01).
 - **Frontend Framework:** React 18+ estructurado con Vite, estilizado con CSS moderno en español neutro profesional (`DEC-E2-05`).
-- **Motor de Base de Datos y Driver:** SQLite 3 relacional (`data/mira.db`) manejado vía driver nativo síncrono **`better-sqlite3`** (Recomendado) vs **`sqlite3`** (`[POR CONFIRMAR 2; ver §8.1]`). Se recomienda `better-sqlite3` por transaccionalidad síncrona determinista, soporte nativo de triggers inmutables y ejecución limpia en tests.
-- **Estructura del Proyecto:** Monorepo ligero coordinado con scripts raíz y proxy de desarrollo Vite (`/api -> :3001`) (Recomendado) vs npm workspaces (`[POR CONFIRMAR 3; ver §8.1]`).
+- **Motor de Base de Datos y Driver:** SQLite 3 relacional (`data/mira.db`) manejado vía driver nativo síncrono **`better-sqlite3`** (Confirmado por Rodrigo Guerrero en PR #16, 2026-10-15). Transaccionalidad síncrona determinista, soporte nativo de triggers inmutables y ejecución limpia en tests (PC-02).
+- **Estructura del Proyecto:** Estructura separada (`src/backend`, `src/frontend`, `src/shared`, `tests/` en raíz) coordinada con scripts en `package.json` raíz y proxy de desarrollo Vite (`/api -> :3001`) (Confirmado por Rodrigo Guerrero y Jorge Alvarez en PR #16, 2026-10-15; D3, PC-03).
 - **Suites de Pruebas:**
   - Pruebas unitarias de motor y validación: Vitest.
   - Pruebas de integración de API: Vitest + Supertest.
@@ -82,12 +82,12 @@ El plan adopta los lineamientos de las decisiones de la guía metodológica (§4
    - La versión vigente es siempre la versión en estado `APROBADO` de mayor número.
    - Restricción de concurrencia: Máximo 1 borrador activo por flujo simultáneamente (garantizado en base de datos por `CREATE UNIQUE INDEX idx_un_solo_borrador_por_flujo ON umbrales_flujo(id_flujo) WHERE estado = 'BORRADOR';`).
    - La acción de "enviar a revisión" no crea un estado nuevo en la base de datos; el borrador permanece en `BORRADOR` visible para los Administradores `[SUPUESTO del equipo]`.
-   - Modificación de borrador: Un Diseñador o Administrador puede modificar los parámetros numéricos de un borrador existente sin crear registros adicionales.
-   - Incompatibilidad y segregación de roles (`PF-033`): Pueden proponer o modificar borradores usuarios con rol Diseñador (`spec.md §5.1 FR-001`, `US4`) o Administrador (`PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio'`). Solo usuarios con rol Administrador pueden aprobar o desestimar propuestas. Quien propone un borrador jamás puede aprobarlo o desestimarlo (`aprobador !== proponente`, `PF-033`, ENT6 [00:21:16]).
+   - Modificación de borrador: Un Diseñador puede modificar los parámetros numéricos de un borrador existente sin crear registros adicionales.
+   - Incompatibilidad y segregación de roles: Solo usuarios con rol Diseñador pueden proponer o modificar borradores (`spec.md §5.1 FR-001`, `US4`, `P2`; confirmado en PR #16). Solo usuarios con rol Administrador pueden aprobar o desestimar propuestas. Como regla de defensa en profundidad, quien propone un borrador jamás puede aprobarlo o desestimarlo (`aprobador !== proponente`, ENT6 [00:21:16]). `PF-033` (heredada: 'un administrador ajusta el umbral') se adapta: el proponente es Diseñador por decisión del cliente (PR #16, 2026-10-15).
    - Versión 1 inicial: Se registra como `'carga inicial del sistema (valores por defecto)'`, sin aprobaciones humanas inventadas; el protocolo de doble control rige desde la versión 2.
 
 ### 2.4 Delimitación del Alcance (Fuera de Alcance)
-- **Decisión Humana Final del Operador:** Conforme al supuesto de diseño propuesto por Lester en `spec.md §7.1(f)` (`[SUPUESTO propuesto por Lester, pendiente de confirmación de Rodrigo]`), la acción resolutiva final del Operador (aprobar o denegar el expediente derivado) queda fuera de este incremento. El sistema MIRA en F4 solo emite el dictamen de derivación asistida y la advertencia; no se diseñan pantallas ni endpoints de resolución humana.
+- **Decisión Humana Final del Operador:** Conforme a la confirmación de Rodrigo Guerrero (representante del cliente) el 2026-10-15 en comentario de PR #16 (ratificando el supuesto de `spec.md §7.1(f)` y `clarificaciones.md` fila 6), la acción resolutiva final del Operador (aprobar o denegar el expediente derivado) queda fuera de este incremento. El sistema MIRA en F4 solo emite el dictamen de derivación asistida y la advertencia; no se diseñan pantallas ni endpoints de resolución humana.
 
 ---
 
@@ -139,8 +139,8 @@ proyecto-llm/
 │   ├── casos_prueba.json                       # 6 casos de prueba sintéticos fijados (AC-1..AC-6)
 │   ├── evidencias/                             # Documentos y comprobantes sintéticos de apoyo
 │   └── mira.db                                 # Base de datos SQLite relacional única generada
-├── backend/                                    # Servicio HTTP REST (Node.js + Express + TypeScript)
-│   ├── src/
+├── src/                                        # Código fuente de la aplicación (D3, guía §7.1)
+│   ├── backend/                                # Servicio HTTP REST (Node.js + Express + TypeScript)
 │   │   ├── config/
 │   │   │   └── env.ts                          # Variables de entorno y configuración
 │   │   ├── db/
@@ -164,18 +164,7 @@ proyecto-llm/
 │   │   │   ├── error-handler.ts                # Manejo centralizado de errores y códigos HTTP
 │   │   │   └── request-logger.ts               # Rastro de peticiones entrantes
 │   │   └── server.ts                           # Instanciación de Express y exportación de app
-│   ├── tests/
-│   │   ├── unit/
-│   │   │   ├── evaluacion-engine.test.ts       # Verificación de precedencia, AC-1..AC-6 y PU-1
-│   │   │   └── umbrales-validation.test.ts     # Validaciones de pesos, rangos y umbralAprob > riesgo
-│   │   └── integration/
-│   │       ├── umbrales-api.test.ts            # Endpoints F5, doble aprobación y bloqueo auto-aprobación
-│   │       ├── evaluacion-api.test.ts          # Endpoints F4 y persistencia de evaluaciones
-│   │       └── auditoria-inmutable.test.ts     # Triggers de bloqueo UPDATE/DELETE en rastro y evaluaciones
-│   ├── package.json
-│   └── tsconfig.json
-├── frontend/                                   # Interfaz de Usuario SPA (React + Vite + TypeScript)
-│   ├── src/
+│   ├── frontend/                               # Interfaz de Usuario SPA (React + Vite + TypeScript)
 │   │   ├── components/
 │   │   │   ├── common/
 │   │   │   │   ├── HeaderSelectorIdentidad.tsx # Selector superior con 5 identidades fijas (D-04)
@@ -201,14 +190,18 @@ proyecto-llm/
 │   │   │   └── app.css                         # Estilos Vanilla CSS modernos y responsivos
 │   │   ├── App.tsx                             # Enrutador principal y layout general
 │   │   ├── main.tsx                            # Punto de entrada Vite
-│   │   └── index.html
-│   ├── vite.config.ts                          # Configuración de Vite con proxy /api -> :3001
-│   ├── package.json
-│   └── tsconfig.json
-├── src/
+│   │   ├── index.html
+│   │   └── vite.config.ts                      # Configuración de Vite con proxy /api -> :3001
 │   └── shared/
 │       └── types.ts                            # Contrato tipado único F5 <-> F4 (a crear tras [PLAN])
-├── tests/                                      # Pruebas transversales y E2E
+├── tests/                                      # Suites automatizadas en la raíz (unitarias, integración, e2e, reproducibilidad)
+│   ├── unit/
+│   │   ├── evaluacion-engine.test.ts           # Verificación de precedencia, AC-1..AC-6 y PU-1
+│   │   └── umbrales-validation.test.ts         # Validaciones de pesos, rangos y umbralAprob > riesgo
+│   ├── integration/
+│   │   ├── umbrales-api.test.ts                # Endpoints F5, doble aprobación y bloqueo auto-aprobación
+│   │   ├── evaluacion-api.test.ts              # Endpoints F4 y persistencia de evaluaciones
+│   │   └── auditoria-inmutable.test.ts         # Triggers de bloqueo UPDATE/DELETE en rastro y evaluaciones
 │   ├── e2e/
 │   │   ├── doble-control-f5.spec.ts            # Recorrido E2E Playwright de propuesta y aprobación
 │   │   ├── evaluacion-f4.spec.ts               # Recorrido E2E Playwright de casos de negocio
@@ -219,6 +212,7 @@ proyecto-llm/
 ├── docs/
 │   └── entregable2/                            # Documentación y evidencias formales
 ├── package.json                                # Scripts raíz orquestadores (npm run dev, test, db:seed)
+├── tsconfig.json                               # Configuración TypeScript base y path aliases
 └── README.md                                   # Guía de instalación y puesta en marcha en < 15 min (C4)
 ```
 
@@ -228,23 +222,23 @@ proyecto-llm/
 
 La siguiente matriz mapea de forma unívoca cada requerimiento funcional copiado textualmente de `spec.md §5.1`, los criterios de aceptación de negocio (`AC-1` a `AC-6`), la prueba unitaria (`PU-1`) y los criterios de éxito medibles (`SC-001` a `SC-005`) con los componentes del diseño técnico y sus pruebas automatizadas de verificación:
 
-| ID Requisito | Requisito Origen (Fuente E1) [Texto Canónico de spec.md §5.1] | Equivalente PDF E1 (`RQF-Bxx`) [Texto Canónico de spec.md §5.1] | Criterio de Aceptación / Escenario (`spec.md`) | Componente de Backend (`backend/src/`) | Componente de Frontend (`frontend/src/`) | Prueba Automatizada de Verificación (`backend/tests/` o `tests/`) |
+| ID Requisito | Requisito Origen (Fuente E1) [Texto Canónico de spec.md §5.1] | Equivalente PDF E1 (`RQF-Bxx`) [Texto Canónico de spec.md §5.1] | Criterio de Aceptación / Escenario (`spec.md`) | Componente de Backend (`src/backend/`) | Componente de Frontend (`src/frontend/`) | Prueba Automatizada de Verificación (`tests/`) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **FR-001** | `RQF-044 [final-final]` (configuración de umbrales) y `RQF-039 [fase5-lester]` (propuesta en borrador) | `RQF-B09 [PDF pág. 9]` (para configuración de umbrales) / *sin equivalente en PDF* (para propuesta en borrador de doble aprobación) | **US4 / Esc. 4.1**: Diseñador propone modificación; queda en `BORRADOR` con autor registrado. | `services/umbrales-service.ts` (`crearBorrador`), `db/schema.sql` | `components/umbrales/FormularioPropuesta.tsx` | `backend/tests/integration/umbrales-api.test.ts:testCrearBorrador` |
-| **FR-002** | `RQF-039 [fase5-lester]` | *sin equivalente en PDF* | **US5 / Esc. 5.1 & 5.2**: Doble control; bloqueo de auto-aprobación; aprobación formal por Administrador (`SC-003`). | `services/umbrales-service.ts` (`aprobarBorrador`), `controllers/umbrales-controller.ts` | `components/umbrales/BandejaRevision.tsx` | `backend/tests/integration/umbrales-api.test.ts:testDobleControlBloqueoAutoAprobacion` |
-| **FR-003** | `RQF-044 [final-final]` | `RQF-B09 [PDF pág. 9]` | **US4 / Esc. 4.2**: Validación estricta: suma pesos = 1.00; rangos [0, 100]; `umbralAprobacion > umbralRiesgoAlto`. | `services/umbrales-service.ts` (`validarParametrosUmbrales`) | `components/umbrales/FormularioPropuesta.tsx` | `backend/tests/unit/umbrales-validation.test.ts:testValidacionesPesosYRangos` |
-| **FR-004** | `RQNF-002 [fase5-lester]` | *sin equivalente en PDF* | **US6 / Esc. 6.1**: Historial cronológico inmutable de versiones (versión, fecha, proponente, aprobador, estado). | `db/schema.sql` (PK y triggers append-only), `services/umbrales-service.ts` | `components/umbrales/HistorialVersiones.tsx` | `backend/tests/integration/umbrales-api.test.ts:testHistorialInmutable` |
-| **FR-005** | `RQF-040 [fase5-lester]` | `RQF-B10 [PDF pág. 9]` | Cálculo del puntaje ponderado continuo (`0.40·aut + 0.40·cruce + 0.20·coh`). | `services/evaluacion-engine.ts` (`calcularScoreGlobal`) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testCalculoPonderadoExacto` |
-| **FR-006** | `RQF-040 [fase5-lester]` | `RQF-B10 [PDF pág. 9]` (prueba en PDF usa umbral 85) | **AC-1** (`CASO-MED-001`): Puntaje 94.0 ≥ 90, sin fraude ni caídas bajo mínimo → `APROBADO_AUTOMATICO`, `'aprobado'`, `riesgoAltoRechazo: false`. | `services/evaluacion-engine.ts` (`evaluarCaso`) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC1AprobacionAutomatica` |
-| **FR-007** | `RQF-023 [fase5-lester]` | `RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; el PDF estipula rechazo automático ante fraude, superado por DEC-E2-06; prueba PF-018 en pág. 13 cita RQF-023) | **AC-3** (`CASO-MED-003`): Precedencia absoluta de fraude activa → `DERIVADO_REVISION`, `'alerta_fraude'`, ignora puntaje 94.0. | `services/evaluacion-engine.ts` (`evaluarCaso` Paso 1) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC3PrecedenciaFraude` |
-| **FR-008** | `RQF-041 [fase5-lester]` | `RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; PDF dice "Rechazado", superado por DEC-08/E2-06) | **AC-2** (`CASO-MED-002`): Aut 100, Cruce 100, Coh 55 (< 60) con puntaje 91.0 → `DERIVADO_REVISION`, `'senal_bajo_minimo'`, `riesgoAltoRechazo: false`. | `services/evaluacion-engine.ts` (`evaluarCaso` Paso 2) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC2SenalBajoMinimo` |
-| **FR-009** | `RQF-004 [final-final] (sin equivalente verificado en fase5-lester; RQF-020 [fase5-lester] cubre solo puntaje < 60)` | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; RQF-B11 rango intermedio 60-84 y RQF-B12 rechazo bajo umbral mínimo, superado por DEC-08) | **AC-5** (`CASO-MED-005`): Rango intermedio 75.0 (60 ≤ score < 90) sin caídas bajo mínimo → `DERIVADO_REVISION`, `'puntaje_bajo_umbral'`. | `services/evaluacion-engine.ts` (`evaluarCaso` Paso 4) | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC5DerivacionPuntajeIntermedio` |
-| **FR-010** | Nuevo por decisión del equipo (DEC-08, DEC-E2-06, DEC-E2-10(b)); modifica RQF-B12 (relacionado: `RQF-020 [fase5-lester]`) | Modificado respecto a RQF-B12 (reemplazado por DEC-08, DEC-E2-06 y DEC-E2-10) | **RN-01 / SC-002**: Cero rechazo automático por el sistema; lenguaje prohibido en UI y código. | Todo el backend y frontend | `components/evaluacion/VistaResultado.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testSC002CeroRechazoSistema` |
-| **FR-011** | Nuevo por decisión del equipo (DEC-E2-10(b)) (relacionado: `RQF-020 [fase5-lester]`) | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | **AC-4** (`CASO-MED-004`) y **AC-6** (`CASO-MED-006`): Activación de `riesgoAltoRechazo: true` por puntaje < 60 o multiseñal; texto informativo en UI. | `services/evaluacion-engine.ts` (`calcularRiesgoAltoRechazo`) | `components/evaluacion/AlertaRiesgoAlto.tsx` | `backend/tests/unit/evaluacion-engine.test.ts:testAC4RiesgoAlto` y `testAC6RiesgoAlto` |
-| **PU-1** | `spec.md §6.2` / `guia §2.d` | *sin equivalente en PDF* | **PU-1**: Aut: 65, Cruce: 65, Coh: 100 (score = 72.0 ≥ 60) con 2 señales bajo mínimo → `DERIVADO_REVISION`, `'senal_bajo_minimo'`, `riesgoAltoRechazo: true`. | `services/evaluacion-engine.ts` (`calcularRiesgoAltoRechazo`) | N/A (Prueba de motor) | `backend/tests/unit/evaluacion-engine.test.ts:testPU1MultisenalRiesgoAlto` |
-| **FR-012** | `RQNF-002 [fase5-lester]` | *sin equivalente en PDF* | **US6 / Esc. 6.2 / SC-004**: Reevaluación histórica contra versión archivada con 100% de consistencia determinista. | `services/evaluacion-engine.ts` (`reevaluarCasoHistorico`), `db/schema.sql` | `components/evaluacion/HistorialEvaluaciones.tsx` | `tests/reproducibility/deterministic.test.ts:testReproducibilidadHistorica100` |
-| **FR-004 (soporte técnico)** | `RQF-036 [fase5-lester]` / `RQF-013 [final-final]` (`D-05`, `H-12`, Principio IV; RQF-036 [fase5-lester] / RQF-013 [final-final] verificados; no están citados en spec §5.1 FR-004, que cita `RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]`) | *sin equivalente en PDF* | Rastro de auditoría append-only protegido a nivel de motor de datos (bloqueo de modificaciones y borrados en auditoría). | `db/schema.sql` (triggers `trg_prevent_update_rastro_auditoria` y `trg_prevent_delete_rastro_auditoria`) | N/A (Persistencia) | `backend/tests/integration/auditoria-inmutable.test.ts:testTriggersBloqueanUpdateDelete` |
-| **SC-005** | SC-005 (meta del equipo, spec §6.3; `clarificaciones.md` P5) | *sin equivalente en PDF* | Usabilidad: consulta en ≤ 2 clics y tareas clave en ≤ 3 minutos por usuario sin inducción. | `routes/` (diseño directo de rutas) | `components/common/Navbar.tsx` | `tests/e2e/usabilidad-recorrido.spec.ts` |
+| **FR-001** | `RQF-044 [final-final]` (configuración de umbrales) y `RQF-039 [fase5-lester]` (propuesta en borrador) | `RQF-B09 [PDF pág. 9]` (para configuración de umbrales) / *sin equivalente en PDF* (para propuesta en borrador de doble aprobación) | **US4 / Esc. 4.1**: Diseñador propone modificación; queda en `BORRADOR` con autor registrado. | `src/backend/services/umbrales-service.ts` (`crearBorrador`), `src/backend/db/schema.sql` | `src/frontend/components/umbrales/FormularioPropuesta.tsx` | `tests/integration/umbrales-api.test.ts:testCrearBorrador` |
+| **FR-002** | `RQF-039 [fase5-lester]` | *sin equivalente en PDF* | **US5 / Esc. 5.1 & 5.2**: Doble control; bloqueo de auto-aprobación; aprobación formal por Administrador (`SC-003`). | `src/backend/services/umbrales-service.ts` (`aprobarBorrador`), `src/backend/controllers/umbrales-controller.ts` | `src/frontend/components/umbrales/BandejaRevision.tsx` | `tests/integration/umbrales-api.test.ts:testDobleControlBloqueoAutoAprobacion` |
+| **FR-003** | `RQF-044 [final-final]` | `RQF-B09 [PDF pág. 9]` | **US4 / Esc. 4.2**: Validación estricta: suma pesos = 1.00; rangos [0, 100]; `umbralAprobacion > umbralRiesgoAlto`. | `src/backend/services/umbrales-service.ts` (`validarParametrosUmbrales`) | `src/frontend/components/umbrales/FormularioPropuesta.tsx` | `tests/unit/umbrales-validation.test.ts:testValidacionesPesosYRangos` |
+| **FR-004** | `RQNF-002 [fase5-lester]` | *sin equivalente en PDF* | **US6 / Esc. 6.1**: Historial cronológico inmutable de versiones (versión, fecha, proponente, aprobador, estado). | `src/backend/db/schema.sql` (PK y triggers append-only), `src/backend/services/umbrales-service.ts` | `src/frontend/components/umbrales/HistorialVersiones.tsx` | `tests/integration/umbrales-api.test.ts:testHistorialInmutable` |
+| **FR-005** | `RQF-040 [fase5-lester]` | `RQF-B10 [PDF pág. 9]` | Cálculo del puntaje ponderado continuo (`0.40·aut + 0.40·cruce + 0.20·coh`). | `src/backend/services/evaluacion-engine.ts` (`calcularScoreGlobal`) | `src/frontend/components/evaluacion/VistaResultado.tsx` | `tests/unit/evaluacion-engine.test.ts:testCalculoPonderadoExacto` |
+| **FR-006** | `RQF-040 [fase5-lester]` | `RQF-B10 [PDF pág. 9]` (prueba en PDF usa umbral 85) | **AC-1** (`CASO-MED-001`): Puntaje 94.0 ≥ 90, sin fraude ni caídas bajo mínimo → `APROBADO_AUTOMATICO`, `'aprobado'`, `riesgoAltoRechazo: false`. | `src/backend/services/evaluacion-engine.ts` (`evaluarCaso`) | `src/frontend/components/evaluacion/VistaResultado.tsx` | `tests/unit/evaluacion-engine.test.ts:testAC1AprobacionAutomatica` |
+| **FR-007** | `RQF-023 [fase5-lester]` | `RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; el PDF estipula rechazo automático ante fraude, superado por DEC-E2-06; prueba PF-018 en pág. 13 cita RQF-023) | **AC-3** (`CASO-MED-003`): Precedencia absoluta de fraude activa → `DERIVADO_REVISION`, `'alerta_fraude'`, ignora puntaje 94.0. | `src/backend/services/evaluacion-engine.ts` (`evaluarCaso` Paso 1) | `src/frontend/components/evaluacion/VistaResultado.tsx` | `tests/unit/evaluacion-engine.test.ts:testAC3PrecedenciaFraude` |
+| **FR-008** | `RQF-041 [fase5-lester]` | `RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; PDF dice "Rechazado", superado por DEC-08/E2-06) | **AC-2** (`CASO-MED-002`): Aut 100, Cruce 100, Coh 55 (< 60) con puntaje 91.0 → `DERIVADO_REVISION`, `'senal_bajo_minimo'`, `riesgoAltoRechazo: false`. | `src/backend/services/evaluacion-engine.ts` (`evaluarCaso` Paso 2) | `src/frontend/components/evaluacion/VistaResultado.tsx` | `tests/unit/evaluacion-engine.test.ts:testAC2SenalBajoMinimo` |
+| **FR-009** | `RQF-004 [final-final] (sin equivalente verificado en fase5-lester; RQF-020 [fase5-lester] cubre solo puntaje < 60)` | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (cobertura parcial por contenido; RQF-B11 rango intermedio 60-84 y RQF-B12 rechazo bajo umbral mínimo, superado por DEC-08) | **AC-5** (`CASO-MED-005`): Rango intermedio 75.0 (60 ≤ score < 90) sin caídas bajo mínimo → `DERIVADO_REVISION`, `'puntaje_bajo_umbral'`. | `src/backend/services/evaluacion-engine.ts` (`evaluarCaso` Paso 4) | `src/frontend/components/evaluacion/VistaResultado.tsx` | `tests/unit/evaluacion-engine.test.ts:testAC5DerivacionPuntajeIntermedio` |
+| **FR-010** | Nuevo por decisión del equipo (DEC-08, DEC-E2-06, DEC-E2-10(b)); modifica RQF-B12 (relacionado: `RQF-020 [fase5-lester]`) | Modificado respecto a RQF-B12 (reemplazado por DEC-08, DEC-E2-06 y DEC-E2-10) | **RN-01 / SC-002**: Cero rechazo automático por el sistema; lenguaje prohibido en UI y código. | `src/backend/` (cero rechazo en todo el backend) | `src/frontend/components/evaluacion/VistaResultado.tsx` | `tests/unit/evaluacion-engine.test.ts:testSC002CeroRechazoSistema` |
+| **FR-011** | Nuevo por decisión del equipo (DEC-E2-10(b)) (relacionado: `RQF-020 [fase5-lester]`) | `RQF-B11 [PDF pág. 9] y RQF-B12 [PDF pág. 9]` (Modificado: rechazo automático → derivación con advertencia de riesgo alto [umbralRiesgoAlto = 60]. Origen: equipo, con base en ENT6) | **AC-4** (`CASO-MED-004`) y **AC-6** (`CASO-MED-006`): Activación de `riesgoAltoRechazo: true` por puntaje < 60 o multiseñal; texto informativo en UI. | `src/backend/services/evaluacion-engine.ts` (`calcularRiesgoAltoRechazo`) | `src/frontend/components/evaluacion/AlertaRiesgoAlto.tsx` | `tests/unit/evaluacion-engine.test.ts:testAC4RiesgoAlto` y `testAC6RiesgoAlto` |
+| **PU-1** | `spec.md §6.2` / `guia §2.d` | *sin equivalente en PDF* | **PU-1**: Aut: 65, Cruce: 65, Coh: 100 (score = 72.0 ≥ 60) con 2 señales bajo mínimo → `DERIVADO_REVISION`, `'senal_bajo_minimo'`, `riesgoAltoRechazo: true`. | `src/backend/services/evaluacion-engine.ts` (`calcularRiesgoAltoRechazo`) | N/A (Prueba de motor) | `tests/unit/evaluacion-engine.test.ts:testPU1MultisenalRiesgoAlto` |
+| **FR-012** | `RQNF-002 [fase5-lester]` | *sin equivalente en PDF* | **US6 / Esc. 6.2 / SC-004**: Reevaluación histórica contra versión archivada con 100% de consistencia determinista. | `src/backend/services/evaluacion-engine.ts` (`reevaluarCasoHistorico`), `src/backend/db/schema.sql` | `src/frontend/components/evaluacion/HistorialEvaluaciones.tsx` | `tests/reproducibility/deterministic.test.ts:testReproducibilidadHistorica100` |
+| **FR-004 (soporte técnico)** | `RQF-036 [fase5-lester]` / `RQF-013 [final-final]` (`D-05`, `H-12`, Principio IV; RQF-036 [fase5-lester] / RQF-013 [final-final] verificados; no están citados en spec §5.1 FR-004, que cita `RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]`) | *sin equivalente en PDF* | Rastro de auditoría append-only protegido a nivel de motor de datos (bloqueo de modificaciones y borrados en auditoría). | `src/backend/db/schema.sql` (triggers `trg_prevent_update_rastro_auditoria` y `trg_prevent_delete_rastro_auditoria`) | N/A (Persistencia) | `tests/integration/auditoria-inmutable.test.ts:testTriggersBloqueanUpdateDelete` |
+| **SC-005** | SC-005 (meta del equipo, spec §6.3; `clarificaciones.md` P5) | *sin equivalente en PDF* | Usabilidad: consulta en ≤ 2 clics y tareas clave en ≤ 3 minutos por usuario sin inducción. | `src/backend/routes/` (diseño directo de rutas) | `src/frontend/components/common/Navbar.tsx` | `tests/e2e/usabilidad-recorrido.spec.ts` |
 
 ---
 
@@ -298,19 +292,19 @@ De acuerdo con `RQNF-002 [fase5-lester]` / `RQNF-003 [final-final]`, `DEC-14`, `
 
 ---
 
-## 8. Riesgos Técnicos y Decisiones Pendientes para el Equipo
+## 8. Riesgos Técnicos y Resoluciones de Arquitectura
 
-### 8.1 Decisiones Técnicas no Cerradas (`[POR CONFIRMAR]`)
-Conforme a las reglas de honestidad, las decisiones de arquitectura que no estaban cerradas en la guía se presentan con opciones y recomendación técnica del agente, quedando supeditadas a la ratificación de Rodrigo Guerrero (Backend) y Jorge Alvarez (Frontend) en la **Compuerta 3**:
+### 8.1 Decisiones Técnicas Ratificadas por el Representante del Cliente y Frontend
+Las tres decisiones de arquitectura fueron ratificadas formalmente por Rodrigo Guerrero (Backend y Representante del Cliente) y Jorge Alvarez (Frontend) en la **Compuerta 3** (reviews en PR #16, 2026-10-15):
 
-| # | Decisión Técnica | Opciones Evaluadas | Recomendación del Agente | Justificación Técnica | Estado |
+| # | Decisión Técnica | Opciones Evaluadas | Decisión Adoptada | Fundamento Resumido | Estado |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **PC-01** | **Framework HTTP de Backend** | (a) Express v4.19+ / v5<br>(b) Fastify v4+ | **Opción (a): Express** | Aunque Fastify ofrece mayor rendimiento en microbenchmarks sintéticos, Express tiene madurez absoluta, cero problemas con middlewares síncronos, integración directa y sin fricciones con `supertest` para pruebas de integración de API, y cumple holgadamente con los requerimientos locales de la Entrega 2. | `[POR CONFIRMAR 1; pendiente revisión Rodrigo/Jorge]` |
-| **PC-02** | **Driver SQLite para Node.js** | (a) `better-sqlite3`<br>(b) `sqlite3` (asíncrono con callbacks/promesas)<br>(c) ORM (Prisma / TypeORM) | **Opción (a): `better-sqlite3`** | `better-sqlite3` es el estándar moderno para SQLite en Node.js: su API síncrona elimina la sobrecarga de promises para bases locales, soporta transacciones atómicas nativas inmediatas, ejecuta triggers de forma transparente y garantiza determinismo absoluto en suites de pruebas unitarias sin condiciones de carrera. Se descartan ORMs pesados por violar el espíritu de simplicidad y rapidez de arranque (< 15 min). | `[POR CONFIRMAR 2; pendiente revisión Rodrigo/Jorge]` |
-| **PC-03** | **Coordinación de Monorepo y Proxy** | (a) npm workspaces con build TypeScript coordinado<br>(b) Directorios independientes coordinados por Vite Dev Proxy (`/api -> :3001`) y scripts en `package.json` raíz | **Opción (b): Vite Dev Proxy + scripts raíz** | La opción (b) evita la sobrecarga de enlaces simbólicos (`node_modules` cruzados) y problemas de resolución de tipos de npm workspaces. Permite que el frontend consuma `/api` sin configurar CORS en desarrollo y simplifica drásticamente el `npm install && npm run dev` para la evaluación docente en máquina limpia. | `[POR CONFIRMAR 3; pendiente revisión Rodrigo/Jorge]` |
+| **PC-01** | **Framework HTTP de Backend** | (a) Express v4.19+ / v5<br>(b) Fastify v4+ | **Opción (a): Express** | Madurez absoluta, cero problemas con middlewares síncronos, integración directa con `supertest` para pruebas de integración de API, y simplicidad de arranque en máquina limpia. | **Confirmado por Rodrigo Guerrero (PR #16, 2026-10-15)** |
+| **PC-02** | **Driver SQLite para Node.js** | (a) `better-sqlite3`<br>(b) `sqlite3` (asíncrono con callbacks/promesas)<br>(c) ORM (Prisma / TypeORM) | **Opción (a): `better-sqlite3`** | API síncrona determinista, soporte nativo de triggers inmutables y transacciones atómicas, ejecución limpia en tests y cero sobrecarga de ORMs. | **Confirmado por Rodrigo Guerrero (PR #16, 2026-10-15)** |
+| **PC-03** | **Coordinación de Monorepo y Proxy** | (a) npm workspaces con build TypeScript coordinado<br>(b) Estructura separada con Vite Dev Proxy (`/api -> :3001`) y scripts en `package.json` raíz | **Opción (b): Estructura separada + Vite Dev Proxy** | Estructura separada (`src/backend`, `src/frontend`, `src/shared`, `tests/` en raíz) coordinada con scripts raíz; evita sobrecarga de enlaces simbólicos y problemas de resolución de tipos, garantizando experiencia desacoplada sin fricciones CORS. | **Confirmado por Rodrigo Guerrero (PR #16, 2026-10-15)** |
 
-### 8.2 Supuestos Pendientes de Confirmación
-- **Delimitación de la Decisión Final del Operador (`spec.md §7.1(f)`):** Supuesto formulado por Lester pendiente de confirmación formal por Rodrigo Guerrero: la decisión humana final del Operador sobre un caso derivado (aprobar o denegar el reembolso tras su análisis) queda fuera del alcance de este incremento F5+F4. F4 concluye con la emisión de la derivación y la advertencia visual.
+### 8.2 Supuestos Ratificados
+- **Delimitación de la Decisión Final del Operador (`spec.md §7.1(f)`):** Confirmado por Rodrigo Guerrero (representante del cliente) el 2026-10-15 en comentario de PR #16: la decisión humana final del Operador sobre un caso derivado (aprobar o denegar el reembolso tras su análisis) queda fuera del alcance de este incremento F5+F4. F4 concluye con la emisión de la derivación y la advertencia visual.
 
 ### 8.3 Matriz de Riesgos del Incremento y Mitigaciones
 | Riesgo Técnico / Operativo | Severidad | Mitigación Planificada en el Diseño |

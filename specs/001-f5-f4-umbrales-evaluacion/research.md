@@ -2,7 +2,7 @@
 
 **Incremento:** F5 (Configuración y Gestión de Umbrales) + F4 (Evaluación y Decisión por Umbrales)  
 **Ruta:** `specs/001-f5-f4-umbrales-evaluacion/research.md`  
-**Estado:** Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)  
+**Estado:** Aprobada por Rodrigo Guerrero (backend) y Jorge Alvarez (frontend) mediante reviews en PR #16, 2026-10-15  
 **Fecha:** 2026-10-14  
 
 ---
@@ -31,13 +31,13 @@ Las siguientes decisiones fueron formalmente cerradas y ratificadas en la guía 
 
 ---
 
-## 3. Decisiones Técnicas Abiertas y Recomendaciones [POR CONFIRMAR]
+## 3. Decisiones Técnicas Ratificadas por el Representante del Cliente y Frontend (PR #16)
 
-A continuación se registran las tres decisiones técnicas no zanjadas taxativamente en la guía de implementación, formuladas con sus alternativas evaluadas y la recomendación técnica fundamentada para revisión del equipo (Compuerta 3):
+A continuación se registran las tres decisiones técnicas formalmente ratificadas en la **Compuerta 3** por Rodrigo Guerrero (Backend y Representante del Cliente) y Jorge Alvarez (Frontend) mediante reviews en PR #16 (2026-10-15):
 
-### Investigación 1: Framework HTTP para el Backend Node.js [POR CONFIRMAR 1]
+### Investigación 1: Framework HTTP para el Backend Node.js (PC-01 - Confirmado por Rodrigo Guerrero, PR #16)
 - **Pregunta:** *¿Qué framework HTTP debe emplearse en el backend Node.js (v20+ LTS) para exponer los endpoints de F5 y F4?*
-- **Contexto:** En `entregable2/guia-implementacion-sdd.md` DEC-E2-05 figura "Node.js (v20+ LTS) con TypeScript y Express / Fastify", mientras que la Constitución (Principio VII) consigna "arquitectura liviana Express [POR CONFIRMAR]".
+- **Contexto:** En `entregable2/guia-implementacion-sdd.md` DEC-E2-05 figuraba "Node.js (v20+ LTS) con TypeScript y Express / Fastify".
 - **Alternativas Evaluadas:**
   - *Opción A (Recomendada): Express (v4.19+ o v5).*
     - *Ventajas:* Madurez industrial absoluta, API simple y minimalista, soporte nativo directo con `supertest` para pruebas de integración de endpoints sin necesidad de levantar listeners de red reales (`supertest(app)`), manejo transparente de JSON con `express.json()`, cero curva de aprendizaje para el equipo.
@@ -45,33 +45,34 @@ A continuación se registran las tres decisiones técnicas no zanjadas taxativam
   - *Opción B: Fastify.*
     - *Ventajas:* Validación basada en esquemas JSON Schema de alta velocidad, tipado TypeScript integrado en rutas.
     - *Desventajas:* Requiere configuración adicional (`fastify.inject()` o adapter para supertest), mayor complejidad en tipado de middlewares y hooks de ciclo de vida.
-- **Recomendación:** **Opción A (Express).** Permite implementar la API REST en pocas líneas de código limpio, facilita la testing suite con `supertest` y asegura levantar el backend de forma confiable en cualquier máquina limpia sin complicaciones de compatibilidad.
+- **Decisión Adoptada:** **Opción A (Express).** Confirmado por Rodrigo Guerrero en PR #16 (2026-10-15). Permite implementar la API REST en pocas líneas de código limpio, facilita la testing suite con `supertest` y asegura levantar el backend de forma confiable en cualquier máquina limpia sin complicaciones de compatibilidad.
 
-### Investigación 2: Driver de Conexión y Gestión de Base de Datos SQLite [POR CONFIRMAR 2]
+### Investigación 2: Driver de Conexión y Gestión de Base de Datos SQLite (PC-02 - Confirmado por Rodrigo Guerrero, PR #16)
 - **Pregunta:** *¿Qué librería o driver debe utilizar el backend TypeScript para interactuar con el archivo de base de datos SQLite y garantizar triggers de auditoría inmutables?*
 - **Contexto:** Las decisiones D-01 y D-05 exigen persistencia SQLite relacional y rastro de auditoría append-only con triggers.
 - **Alternativas Evaluadas:**
   - *Opción A (Recomendada): `better-sqlite3` con sentencias SQL preparadas nativas y migraciones DDL directas.*
     - *Ventajas:* Ejecución síncrona determinista de alto rendimiento (ideal para Node.js CLI y microservicios autocontenidos), manejo directo de triggers SQLite (`CREATE TRIGGER ... RAISE(ABORT, ...)`), transacciones nativas con `.transaction()`, cero abstracciones opacas, máxima velocidad en tests unitarios en memoria (`:memory:`).
-    - *Desventajas y Riesgo:* `better-sqlite3` descarga binarios precompilados mediante `prebuild-install` en la etapa de postinstall (o intenta compilar desde código fuente con `node-gyp`, Python y Make si no encuentra un binario compatible precompilado para la plataforma y arquitectura). No debe asumirse que npm los provee automáticamente; requiere probar `npm install` en máquina limpia, congelar `package-lock.json` y disponer de plan alternativo (ver Riesgo R-05 en `plan.md`).
+    - *Desventajas y Riesgo:* `better-sqlite3` descarga binarios precompilados mediante `prebuild-install` en la etapa de postinstall (o intenta compilar desde código fuente con `node-gyp`, Python y Make si no encuentra un binario compatible precompilado para la plataforma y arquitectura). Requiere congelar `package-lock.json` y disponer de plan alternativo (ver Riesgo R-05 en `plan.md`).
   - *Opción B: `sqlite3` asíncrono tradicional.*
     - *Ventajas:* Librería clásica por callbacks.
     - *Desventajas:* API basada en callbacks obsoleta que obliga a wrapping manual con Promesas; propensa a race conditions en pruebas consecutivas de lectura/escritura.
   - *Opción C: ORM pesado (Prisma / TypeORM).*
     - *Ventajas:* Generación automática de tipos y migraciones.
     - *Desventajas:* Descarga de binarios pesados (Prisma engine ~40MB), tiempos de inicio elevados, sobrecarga innecesaria para un modelo de datos acotado a 3 tablas, riesgo de superar los 15 minutos en máquina limpia (Criterio C4).
-- **Recomendación:** **Opción A (`better-sqlite3`).** Ofrece API síncrona limpia en TypeScript, soporte completo para DDL y triggers de inmutabilidad (D-05), y permite usar `:memory:` en tests de Vitest para ejecuciones deterministas al 100%.
+- **Decisión Adoptada:** **Opción A (`better-sqlite3`).** Confirmado por Rodrigo Guerrero en PR #16 (2026-10-15). Ofrece API síncrona limpia en TypeScript, soporte completo para DDL y triggers de inmutabilidad (D-05), y permite transacciones atómicas y determinismo absoluto en tests de Vitest.
 
-### Investigación 3: Estructura de Workspace y Comunicación Frontend ↔ Backend [POR CONFIRMAR 3]
+### Investigación 3: Estructura de Workspace y Comunicación Frontend ↔ Backend (PC-03 - Confirmado por Rodrigo Guerrero y Jorge Alvarez, PR #16)
 - **Pregunta:** *¿Cómo estructurar el repositorio y la ejecución concurrente para cumplir con el arranque en menos de 15 minutos sin problemas de CORS ni puertos colisionados?*
 - **Contexto:** Se requiere frontend React + Vite y backend Node.js en español neutro, ejecutables mediante un único comando en la raíz del repositorio (`npm install && npm run dev`).
 - **Alternativas Evaluadas:**
-  - *Opción A (Recomendada): Monorepo liviano con carpetas `backend/` y `frontend/` y `package.json` raíz coordinado con `concurrently` y Vite Proxy.*
+  - *Opción A (Recomendada): Estructura separada (`src/backend`, `src/frontend`, `src/shared`, `tests/` en raíz) con `package.json` raíz coordinado con `concurrently` y Vite Proxy (conforme a guía §7.1).*
     - *Estructura:*
       - Raíz: `package.json` con scripts `"dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""`.
-      - `backend/`: corre en puerto `3001` (configurable vía variable `PORT`).
-      - `frontend/`: Vite dev server corre en puerto `5173` con proxy inverso configurado en `vite.config.ts`: `/api` redirige a `http://localhost:3001`.
+      - `src/backend/`: corre en puerto `3001` (configurable vía variable `PORT`).
+      - `src/frontend/`: Vite dev server corre en puerto `5173` con proxy inverso configurado en `src/frontend/vite.config.ts`: `/api` redirige a `http://localhost:3001`.
       - Tipos compartidos: Contrato TypeScript en `src/shared/types.ts` accesible por ambos frentes mediante path aliases de TypeScript.
+      - Suites de pruebas: `tests/` en raíz (`unit/`, `integration/`, `e2e/`, `reproducibility/`).
     - *Ventajas:* Elimina por diseño los errores de CORS en el navegador; permite levantar tanto la API como la interfaz con un solo comando; el evaluador abre `http://localhost:5173` y la aplicación opera fluidamente.
   - *Opción B: Single-package unificado donde Express sirve los estáticos compilados de Vite.*
     - *Ventajas:* Un solo proceso en ejecución.
@@ -79,7 +80,7 @@ A continuación se registran las tres decisiones técnicas no zanjadas taxativam
   - *Opción C: Workspaces npm formales (`npm workspaces`).*
     - *Ventajas:* Separación estricta de dependencias de node_modules.
     - *Desventajas:* Mayor complejidad de configuración y riesgos de enlaces simbólicos rotos en diferentes sistemas operativos o entornos Docker restringidos.
-- **Recomendación:** **Opción A (Monorepo liviano con proxy de Vite).** Garantiza experiencia de desarrollo desacoplada para Rodrigo (Backend) y Jorge (Frontend), elimina la fricción de CORS y asegura que el comando unificado `npm run dev` levante todo el ecosistema de inmediato.
+- **Decisión Adoptada:** **Opción A (Estructura separada con proxy de Vite per guía §7.1).** Confirmado por Rodrigo Guerrero y Jorge Alvarez en PR #16 (2026-10-15; D3). Garantiza experiencia de desarrollo desacoplada para Rodrigo (Backend) y Jorge (Frontend), adopta la jerarquía oficial de la guía §7.1 (`src/backend`, `src/frontend`, `src/shared`, `tests/` en raíz), elimina la fricción de CORS y asegura que el comando unificado `npm run dev` levante todo el ecosistema de inmediato.
 
 ---
 

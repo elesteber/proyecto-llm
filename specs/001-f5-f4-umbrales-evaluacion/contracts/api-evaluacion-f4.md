@@ -1,7 +1,7 @@
 # Contrato de API: Evaluación de Casos y Motor de Decisión (F4)
 
 **Ruta:** `specs/001-f5-f4-umbrales-evaluacion/contracts/api-evaluacion-f4.md`  
-**Estado:** Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)  
+**Estado:** Aprobada por Rodrigo Guerrero (backend) y Jorge Alvarez (frontend) mediante reviews en PR #16, 2026-10-15  
 **Protocolo:** HTTP / REST (JSON)  
 **Prefijo Base:** `/api/evaluacion`  
 

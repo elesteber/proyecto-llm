@@ -2,7 +2,7 @@
 
 **Incremento:** F5 (Configuración y Gestión de Umbrales) + F4 (Evaluación y Decisión por Umbrales)  
 **Ruta:** `specs/001-f5-f4-umbrales-evaluacion/data-model.md`  
-**Estado:** Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)  
+**Estado:** Aprobada por Rodrigo Guerrero (backend) y Jorge Alvarez (frontend) mediante reviews en PR #16, 2026-10-15  
 **Fecha:** 2026-10-14  
 
 ---
@@ -23,8 +23,8 @@ Representa una configuración paramétrica completa e independiente para un fluj
 - **`pesoAutenticidad`** (`number`): Ponderación de autenticidad (por defecto `0.40`, `D-08`, `clarificaciones.md` P1 `[SUPUESTO del equipo]`). Rango: `[0.00, 1.00]`.
 - **`pesoCruceFuentes`** (`number`): Ponderación de cruce de fuentes (por defecto `0.40`, `D-08`, `clarificaciones.md` P1 `[SUPUESTO del equipo]`). Rango: `[0.00, 1.00]`.
 - **`pesoCoherencia`** (`number`): Ponderación de coherencia (por defecto `0.20`, `D-08`, `clarificaciones.md` P1 `[SUPUESTO del equipo]`). Rango: `[0.00, 1.00]`.
-- **`proponente`** (`string`): Identidad del usuario que formuló la propuesta (rol Diseñador según `spec.md §5.1 FR-001` o Administrador per `(PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio')`). En la versión 1 inicial figura como `'sistema'`.
-- **`aprobador`** (`string | null`): Identidad del usuario Administrador independiente que autorizó la propuesta (obligatorio si `estado === 'APROBADO'` o `'DESESTIMADO'` para versiones >= 2; `aprobador !== proponente`, `PF-033`). En la versión 1 inicial figura como `'carga inicial del sistema (valores por defecto)'` (no se inventan aprobaciones humanas; el doble control rige desde la versión 2).
+- **`proponente`** (`string`): Identidad del usuario Diseñador que formuló la propuesta (rol Diseñador según `spec.md §5.1 FR-001`, `US4`, `P2`; confirmado en PR #16). En la versión 1 inicial figura como `'sistema'`.
+- **`aprobador`** (`string | null`): Identidad del usuario Administrador independiente que autorizó la propuesta (obligatorio si `estado === 'APROBADO'` o `'DESESTIMADO'` para versiones >= 2; `aprobador !== proponente` como defensa en profundidad, `PF-033`). En la versión 1 inicial figura como `'carga inicial del sistema (valores por defecto)'` (no se inventan aprobaciones humanas; el doble control rige desde la versión 2).
 - **`fechaPropuesta`** (`string` ISO 8601 UTC): Momento de creación del borrador.
 - **`fechaResolucion`** (`string | null` ISO 8601 UTC): Momento en que la propuesta fue resuelta (aprobada o desestimada).
 - **`estado`** (`enum`): Estado en el ciclo de vida: `'BORRADOR'`, `'APROBADO'` o `'DESESTIMADO'` (`D-03`, `clarificaciones.md` P2).
@@ -67,19 +67,19 @@ A continuación se formaliza la tabla canónica con los datos de entrada, cálcu
 | **`CASO-MED-004`** | Procedimiento ambulatorio (60.000 CLP); `recibo_ambulatorio_004.pdf` | **Aut: 40 (< 70)**, **Cruce: 40 (< 70)**, Coh: 60, Fraude: **false** | `0.40·40 + 0.40·40 + 0.20·60 = 16.0 + 16.0 + 12.0` | **44.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Puntaje 44 < 60 y 2 señales bajo mínimo activan `riesgoAltoRechazo: true` sin rechazo automático (`DEC-08`, `DEC-E2-10`). |
 | **`CASO-MED-005`** | Consulta médica especialista (50.000 CLP); `bono_consulta_005.pdf` | Aut: 75, Cruce: 75, Coh: 75, Fraude: **false** | `0.40·75 + 0.40·75 + 0.20·75 = 30.0 + 30.0 + 15.0` | **75.0** | `DERIVADO_REVISION` | `'puntaje_bajo_umbral'` | `false` | Todas las señales cumplen mínimos; puntaje en rango intermedio 60 ≤ 75 < 90. |
 | **`CASO-MED-006`** | Reembolso exámenes complejos con documentación ilegible (95.000 CLP); `examen_complejo_006.pdf` | **Aut: 0 (< 70)**, Cruce: 70, Coh: 60, Fraude: **false** | `0.40·0 + 0.40·70 + 0.20·60 = 0.0 + 28.0 + 12.0` | **40.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Deriva por autenticidad 0 < 70; activa riesgo alto por puntaje crítico 40.0 < 60 con 1 sola señal bajo mínimo. |
-| **`PU-1`** | Prueba unitaria directa de motor (`backend/tests/unit/evaluacion-engine.test.ts`) | **Aut: 65 (< 70)**, **Cruce: 65 (< 70)**, Coh: 100, Fraude: **false** | `0.40·65 + 0.40·65 + 0.20·100 = 26.0 + 26.0 + 20.0` | **72.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Aísla la regla de multiseñal: 2 señales bajo mínimo activan `riesgoAltoRechazo: true` aun con puntaje no crítico 72.0 ≥ 60. |
+| **`PU-1`** | Prueba unitaria directa de motor (`tests/unit/evaluacion-engine.test.ts`) | **Aut: 65 (< 70)**, **Cruce: 65 (< 70)**, Coh: 100, Fraude: **false** | `0.40·65 + 0.40·65 + 0.20·100 = 26.0 + 26.0 + 20.0` | **72.0** | `DERIVADO_REVISION` | `'senal_bajo_minimo'` | **`true`** | Aísla la regla de multiseñal: 2 señales bajo mínimo activan `riesgoAltoRechazo: true` aun con puntaje no crítico 72.0 ≥ 60. |
 
 ---
 
 ## 2. Ciclo de Vida y Transiciones de Estado de Umbrales
 
 ```text
-                  [Diseñador o Administrador propone]
+                  [Diseñador propone]
                   (Asigna version = MAX + 1)
                            │
                            ▼
                    ┌───────────────┐
-                   │   BORRADOR    │ <─── [Diseñador o Administrador modifica borrador existente]
+                   │   BORRADOR    │ <─── [Diseñador modifica borrador existente]
                    └───────┬───────┘      (Visible en bandeja de Administradores)
                            │
           ┌────────────────┴────────────────┐
@@ -99,16 +99,16 @@ A continuación se formaliza la tabla canónica con los datos de entrada, cálcu
 4. **Definición de Versión Vigente Operativa:** La versión vigente que utiliza F4 para evaluar casos nuevos es siempre **la versión en estado `APROBADO` de mayor número secuencial (`MAX(version) WHERE estado = 'APROBADO'`)**.
 5. **Restricción de Concurrencia:** Solo puede existir **máximo un único `BORRADOR` activo por flujo simultáneamente**. Esta regla se garantiza a nivel de base de datos mediante un índice único condicional:
    `CREATE UNIQUE INDEX idx_un_solo_borrador_por_flujo ON umbrales_flujo(id_flujo) WHERE estado = 'BORRADOR';`.
-6. **Modificación de Borrador:** Mientras una propuesta se encuentre en estado `BORRADOR`, un usuario con rol Diseñador (según `spec.md §5.1 FR-001`) o Administrador `(PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio')` puede modificar sus parámetros numéricos sin alterar el número de versión asignado ni crear registros adicionales.
-7. **Incompatibilidad de Roles:** El Administrador que aprueba o desestima un borrador no puede ser el mismo usuario que lo propuso (`aprobador !== proponente`, `PF-033`).
+6. **Modificación de Borrador:** Mientras una propuesta se encuentre en estado `BORRADOR`, un usuario con rol Diseñador (`spec.md §5.1 FR-001`, `US4`; confirmado en PR #16) puede modificar sus parámetros numéricos sin alterar el número de versión asignado ni crear registros adicionales.
+7. **Incompatibilidad de Roles y Defensa en Profundidad:** Solo los usuarios con rol Diseñador pueden proponer borradores y solo los Administradores pueden resolverlos. Como regla de defensa en profundidad, el Administrador que aprueba o desestima un borrador no puede ser el mismo usuario que lo propuso (`aprobador !== proponente`, ENT6 [00:21:16]). `PF-033` (heredada: 'un administrador ajusta el umbral') se adapta: el proponente es Diseñador por decisión del cliente (PR #16, 2026-10-15).
 
 | Estado Origen | Evento / Acción | Rol Ejecutor | Estado Destino | Regla de Validación y Restricciones |
 | :--- | :--- | :--- | :--- | :--- |
-| *(Ninguno)* | `Crear Borrador` | Diseñador (1 o 2, según `spec.md §5.1 FR-001`) o Administrador (1 o 2; `PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio'`) | `BORRADOR` | Bloqueado si ya existe otro `BORRADOR` activo en el flujo. Asigna `version = MAX(version) + 1`. Valida `sum(pesos) = 1.00`, rangos `[0, 100]` y `umbralAprobacion > umbralRiesgoAlto`. Registra el usuario creador en `proponente`. |
-| `BORRADOR` | `Modificar Borrador` | Diseñador (1 o 2, según `spec.md §5.1 FR-001`) o Administrador (1 o 2; `PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio'`) | `BORRADOR` | Permite actualizar parámetros del borrador existente. Valida las mismas reglas numéricas. |
-| `BORRADOR` | `Enviar a revisión` | Diseñador o Administrador | `BORRADOR` | **No crea un estado nuevo.** Permanece en `BORRADOR` visible para los Administradores `[SUPUESTO del equipo]`. |
-| `BORRADOR` | `Aprobar Borrador` | Administrador (1 o 2) | `APROBADO` | **Incompatibilidad estricta:** `aprobador !== proponente` (`D-04`, `PF-033`). Pasa a ser la versión vigente. Inmutable. |
-| `BORRADOR` | `Desestimar Borrador` | Administrador (1 o 2) | `DESESTIMADO` | **Incompatibilidad estricta:** `aprobador !== proponente`. Conserva su número de versión; queda archivado inmutable. |
+| *(Ninguno)* | `Crear Borrador` | Diseñador (1 o 2, `spec.md §5.1 FR-001`; confirmado en PR #16) | `BORRADOR` | Bloqueado si ya existe otro `BORRADOR` activo en el flujo. Asigna `version = MAX(version) + 1`. Valida `sum(pesos) = 1.00`, rangos `[0, 100]` y `umbralAprobacion > umbralRiesgoAlto`. Registra el usuario creador en `proponente`. |
+| `BORRADOR` | `Modificar Borrador` | Diseñador (1 o 2, `spec.md §5.1 FR-001`; confirmado en PR #16) | `BORRADOR` | Permite actualizar parámetros del borrador existente. Valida las mismas reglas numéricas. |
+| `BORRADOR` | `Enviar a revisión` | Diseñador (1 o 2) | `BORRADOR` | **No crea un estado nuevo.** Permanece en `BORRADOR` visible para los Administradores `[SUPUESTO del equipo]`. |
+| `BORRADOR` | `Aprobar Borrador` | Administrador (1 o 2) | `APROBADO` | **Incompatibilidad estricta:** `aprobador !== proponente` como defensa en profundidad (`D-04`, `PF-033` adaptada). Pasa a ser la versión vigente. Inmutable. |
+| `BORRADOR` | `Desestimar Borrador` | Administrador (1 o 2) | `DESESTIMADO` | **Incompatibilidad estricta:** `aprobador !== proponente` como defensa en profundidad. Conserva su número de versión; queda archivado inmutable. |
 | `APROBADO` | *(Cualquiera)* | *(Ninguno)* | *(Inmutable)* | Prohibido modificar o eliminar versiones aprobadas (`D-03`, `D-05`). |
 | `DESESTIMADO` | *(Cualquiera)* | *(Ninguno)* | *(Inmutable)* | Prohibido modificar o reactivar versiones desestimadas (`D-03`, `D-05`). |
 

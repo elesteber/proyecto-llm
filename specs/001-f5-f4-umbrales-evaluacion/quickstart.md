@@ -2,7 +2,7 @@
 
 **Incremento:** F5 (Configuración y Gestión de Umbrales) + F4 (Evaluación y Decisión por Umbrales)  
 **Ruta:** `specs/001-f5-f4-umbrales-evaluacion/quickstart.md`  
-**Estado:** Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)  
+**Estado:** Aprobada por Rodrigo Guerrero (backend) y Jorge Alvarez (frontend) mediante reviews en PR #16, 2026-10-15  
 **Fecha:** 2026-10-14  
 
 ---
@@ -59,17 +59,17 @@ Una vez ejecutado `npm run dev`:
 
 ---
 
-### Escenario 2: Doble Control y Segregación de Funciones en F5 (`PF-033`)
-- **Objetivo:** Demostrar que quien propone un cambio no puede aprobarlo y que se requiere un segundo Administrador independiente (`D-04`, `PF-033`). La identidad proviene de la cookie de sesión activa (`mira_session`) gestionada con `-c cookies.txt -b cookies.txt`.
+### Escenario 2: Doble Control y Segregación de Funciones en F5 (`PF-033` adaptada)
+- **Objetivo:** Demostrar que solo el Diseñador propone borradores (`D1`), que quien propone no puede aprobar (403 por rol) y que un Administrador independiente aprueba la propuesta (`D-01`, `D-04`, `PF-033` adaptada per PR #16). La identidad proviene de la cookie de sesión activa (`mira_session`) gestionada con `-c cookies.txt -b cookies.txt`.
 
-- **Paso 2.0: Conmutar sesión activa a Administrador 1**
+- **Paso 2.0: Conmutar sesión activa a Diseñador 1**
   ```bash
   curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/session/switch \
     -H "Content-Type: application/json" \
-    -d '{"nuevoUsuario": "Administrador 1"}' | jq .
+    -d '{"nuevoUsuario": "Diseñador 1"}' | jq .
   ```
 
-- **Paso 2.1: Crear propuesta como Administrador 1 (asigna versión 2 en BORRADOR)**
+- **Paso 2.1: Crear propuesta como Diseñador 1 (asigna versión 2 en BORRADOR)**
   ```bash
   curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/umbrales/borrador \
     -H "Content-Type: application/json" \
@@ -85,9 +85,9 @@ Una vez ejecutado `npm run dev`:
       "pesoCoherencia": 0.20
     }' | jq .
   ```
-  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Administrador 1"` `(PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio')`.
+  *Resultado:* Código 201 Created; versión 2 registrada en estado `BORRADOR` con `proponente: "Diseñador 1"`.
 
-- **Paso 2.2: Intento de auto-aprobación con Administrador 1 activo (Debe Fallar con 403)**
+- **Paso 2.2: Intento de auto-aprobación con Diseñador 1 activo (Debe Fallar con 403 por rol)**
   ```bash
   curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
     -H "Content-Type: application/json" \
@@ -95,16 +95,16 @@ Una vez ejecutado `npm run dev`:
       "idFlujo": "reembolso-gastos-medicos"
     }' | jq .
   ```
-  *Resultado:* Código 403 Forbidden (*"Violación de segregación de funciones: El usuario proponente no puede aprobar su propia propuesta de umbrales; se requiere un aprobador independiente"*).
+  *Resultado:* Código 403 Forbidden (*"Acceso denegado: solo un usuario con rol Administrador puede resolver propuestas de umbrales"*).
 
-- **Paso 2.3: Conmutar sesión activa a Administrador 2**
+- **Paso 2.3: Conmutar sesión activa a Administrador 1**
   ```bash
   curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/session/switch \
     -H "Content-Type: application/json" \
-    -d '{"nuevoUsuario": "Administrador 2"}' | jq .
+    -d '{"nuevoUsuario": "Administrador 1"}' | jq .
   ```
 
-- **Paso 2.4: Aprobación legítima por Administrador 2**
+- **Paso 2.4: Aprobación legítima por Administrador 1**
   ```bash
   curl -s -c cookies.txt -b cookies.txt -X POST http://localhost:3001/api/umbrales/borrador/aprobar \
     -H "Content-Type: application/json" \
@@ -112,7 +112,7 @@ Una vez ejecutado `npm run dev`:
       "idFlujo": "reembolso-gastos-medicos"
     }' | jq .
   ```
-  *Resultado:* Código 200 OK; versión 2 pasa a `APROBADO` y entra en vigencia operativa con `aprobador: "Administrador 2"`.
+  *Resultado:* Código 200 OK; versión 2 pasa a `APROBADO` y entra en vigencia operativa con `aprobador: "Administrador 1"`.
 
 ---
 

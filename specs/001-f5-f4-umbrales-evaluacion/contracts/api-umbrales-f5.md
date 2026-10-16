@@ -1,7 +1,7 @@
 # Contrato de API: Gestión de Umbrales (F5)
 
 **Ruta:** `specs/001-f5-f4-umbrales-evaluacion/contracts/api-umbrales-f5.md`  
-**Estado:** Propuesto; pendiente de revisión de Rodrigo y Jorge (Compuerta 3)  
+**Estado:** Aprobada por Rodrigo Guerrero (backend) y Jorge Alvarez (frontend) mediante reviews en PR #16, 2026-10-15  
 **Protocolo:** HTTP / REST (JSON)  
 **Prefijo Base:** `/api/umbrales`  
 
@@ -77,7 +77,7 @@ Lista todas las versiones históricas de umbrales del flujo (aprobadas, desestim
 ## 3. `POST /api/umbrales/borrador`
 Crea una nueva propuesta de umbrales en estado `BORRADOR`.
 - **Autenticación e Identidad:** La identidad del proponente se extrae automáticamente en el servidor desde la sesión activa (`/api/session`). **No se envía en el cuerpo de la petición.**
-- **Control de Acceso:** El backend valida que la identidad activa posea el rol de **`Diseñador`** (según `spec.md §5.1 FR-001`, `US4`) o **`Administrador`** (`PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio'`). Si no posee este rol, rechaza con código 403 Forbidden.
+- **Control de Acceso:** El backend valida que la identidad activa posea el rol de **`Diseñador`** (según `spec.md §5.1 FR-001`, `US4`; confirmado en PR #16). Si no posee este rol, rechaza con código 403 Forbidden.
 - **Restricción de Concurrencia:** Bloqueado con error 409 Conflict si ya existe un borrador activo sin resolver en el flujo (garantizado por el índice único condicional SQLite).
 - **Asignación de Versión:** El backend asigna de inmediato el número secuencial `version = MAX(version) + 1`.
 
@@ -132,7 +132,7 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR`.
 - **Respuesta 403 Forbidden:**
 ```json
 {
-  "error": "Acceso denegado: solo un usuario con rol Diseñador o Administrador puede proponer modificaciones de umbrales."
+  "error": "Acceso denegado: solo un usuario con rol Diseñador puede proponer modificaciones de umbrales."
 }
 ```
 - **Respuesta 409 Conflict:**
@@ -147,7 +147,7 @@ Crea una nueva propuesta de umbrales en estado `BORRADOR`.
 ## 4. `PUT /api/umbrales/borrador`
 Modifica los parámetros numéricos de la propuesta actualmente en estado `BORRADOR`.
 - **Autenticación e Identidad:** La identidad del editor se extrae de la sesión activa (`/api/session`).
-- **Control de Acceso:** El backend valida que la identidad activa sea de rol **`Diseñador`** (según `spec.md §5.1 FR-001`, `US4`) o **`Administrador`** (`PF-033 [fase6/pruebas-funcionales.md, línea 69]: 'Un administrador ajusta el umbral y guarda el cambio'`).
+- **Control de Acceso:** El backend valida que la identidad activa sea de rol **`Diseñador`** (según `spec.md §5.1 FR-001`, `US4`; confirmado en PR #16). Si no posee este rol, rechaza con código 403 Forbidden.
 - **Regla:** Actualiza los campos numéricos manteniendo el mismo número de `version` asignado previamente.
 
 - **Cuerpo de la Petición:**
