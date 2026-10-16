@@ -148,6 +148,8 @@ proyecto-llm/
 │   │   │   ├── schema.sql                      # DDL de tablas umbrales_flujo, auditoria_evaluaciones, rastro_auditoria y triggers
 │   │   │   └── seeds/
 │   │   │       └── initial-seed.ts             # Semilla: versión 1 por defecto y carga de casos JSON
+│   │   ├── repositories/
+│   │   │   └── umbrales-repo.ts                # Repositorio de lectura de versión vigente para F4 y F5
 │   │   ├── controllers/
 │   │   │   ├── umbrales-controller.ts          # Handlers para F5 (vigente, historial, borrador, modificar, resolver)
 │   │   │   ├── evaluacion-controller.ts        # Handlers para F4 (evaluar caso, reevaluar histórico)
@@ -199,6 +201,7 @@ proyecto-llm/
 │   │   ├── evaluacion-engine.test.ts           # Verificación de precedencia, AC-1..AC-6 y PU-1
 │   │   └── umbrales-validation.test.ts         # Validaciones de pesos, rangos y umbralAprob > riesgo
 │   ├── integration/
+│   │   ├── session-api.test.ts                 # Endpoints de sesión simulada y persistencia en cookie
 │   │   ├── umbrales-api.test.ts                # Endpoints F5, doble aprobación y bloqueo auto-aprobación
 │   │   ├── evaluacion-api.test.ts              # Endpoints F4 y persistencia de evaluaciones
 │   │   └── auditoria-inmutable.test.ts         # Triggers de bloqueo UPDATE/DELETE en rastro y evaluaciones

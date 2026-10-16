@@ -18,18 +18,19 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 
 ## Phase 0: Infraestructura y Configuración Base (Shared Infrastructure)
 
-**Propósito**: Inicialización del monorepo modular, configuración de TypeScript y Vite, base de datos relacional SQLite con triggers inmutables y claves foráneas activas, carga de casos sintéticos, sesión simulada en backend, repositorio de lectura de umbrales y servidor Express base.
+**Propósito**: Inicialización del monorepo modular, configuración de TypeScript y Vite, base de datos relacional SQLite con triggers inmutables y claves foráneas activas, carga de casos sintéticos, sesión simulada en backend y frontend (selector de identidades), repositorio de lectura de umbrales y servidor Express base.
 
-- [ ] T001 [INFRA] [P] Inicializar configuración raíz en `package.json` y `tsconfig.json` con dependencias base (Node 20+, Express, better-sqlite3, React, Vite, Vitest, Supertest, Playwright, tsx, concurrently), scripts dev (backend + vite con `--config src/frontend/vite.config.ts`), db:seed (vía `tsx src/backend/db/seeds/initial-seed.ts`), build, test (unit, integration, e2e, reproducibility) y path aliases (Cubre: PC-01, PC-02, PC-03, Criterio C4; Responsable sugerido: Rodrigo)
+- [ ] T001 [INFRA] [P] Inicializar configuración raíz en `package.json` y `tsconfig.json` con dependencias base (Node 20+, Express, better-sqlite3, React, Vite, Vitest, Supertest, Playwright, tsx, concurrently), creación de `tests/playwright.config.ts` (con bloque webServer para backend en :3001 y frontend en :5173), scripts dev (backend + vite con `--config src/frontend/vite.config.ts`), db:seed (vía `tsx src/backend/db/seeds/initial-seed.ts`), build, test:e2e (confirmando que ejecuta Playwright usando `tests/playwright.config.ts`), test (unit, integration, e2e, reproducibility) y path aliases (Cubre: PC-01, PC-02, PC-03, Criterio C4; Responsable sugerido: Rodrigo)
 - [ ] T002 [INFRA] [P] Configurar empaquetador Vite con `root: 'src/frontend'`, `build.outDir: '../../dist'` y proxy inverso `/api -> http://localhost:3001` en `src/frontend/vite.config.ts` (Cubre: PC-03, Criterio C4; Responsable sugerido: Jorge)
 - [ ] T003 [INFRA] [PLAN] - la hace Lester: Crear contrato TypeScript canónico compartido F5 <-> F4 (`UmbralesFlujo`, `SenalesCaso`, `CasoPrueba`, `ResultadoEvaluacion`, `IdentidadSimulada`) desde `data-model.md §4` en `src/shared/types.ts` (Cubre: DEC-E2-10, D-03, D-04, Principio VII; Responsable sugerido: Lester)
-- [ ] T004 [INFRA] Crear esquema DDL relacional en SQLite con tablas `umbrales_flujo`, `auditoria_evaluaciones`, `rastro_auditoria`, triggers append-only (`trg_prevent_update_*`, `trg_prevent_delete_*`) e índice único parcial `idx_un_solo_borrador_por_flujo` en `src/backend/db/schema.sql` y conexión síncrona con driver nativo `better-sqlite3` ejecutando explícitamente `PRAGMA foreign_keys = ON al abrir la conexión en src/backend/db/database.ts` (Cubre: RQF-036 [fase5-lester], RQF-013 [final-final], FR-004 soporte técnico, PC-02, D-01, D-05; Responsable sugerido: Rodrigo)
-- [ ] T005 [INFRA] [P] Generar archivo de casos sintéticos de prueba con los 6 casos de reembolso médico copiados de guía §2.d en `data/casos_prueba.json` e implementar script de inicialización y siembra en `src/backend/db/seeds/initial-seed.ts` (carga de casos y registro de versión 1 por defecto con proponente 'sistema' y aprobador 'carga inicial del sistema (valores por defecto)') (Cubre: RQF-040 [fase5-lester], RQF-041 [fase5-lester], RQF-023 [fase5-lester], RQF-004 [final-final], D-02, AC-1..AC-6; Responsable sugerido: Rodrigo)
-- [ ] T006 [INFRA] Configurar servidor Express con middlewares de parseo JSON, manejo de cookies (para `mira_session`), registro de peticiones en `src/backend/middlewares/request-logger.ts`, manejador centralizado de errores en `src/backend/middlewares/error-handler.ts`, configuración de entorno en `src/backend/config/env.ts` y arranque en `src/backend/server.ts` (Cubre: PC-01, Criterio C4; Responsable sugerido: Rodrigo)
+- [ ] T004 [INFRA] Crear esquema DDL relacional en SQLite con tablas `umbrales_flujo`, `auditoria_evaluaciones`, `rastro_auditoria`, triggers append-only (`trg_prevent_update_*`, `trg_prevent_delete_*`) e índice único parcial `idx_un_solo_borrador_por_flujo` en `src/backend/db/schema.sql` y conexión síncrona con driver nativo `better-sqlite3` ejecutando explícitamente `PRAGMA foreign_keys = ON al abrir la conexión en src/backend/db/database.ts`, aplicando `src/backend/db/schema.sql` de forma idempotente al conectar (`CREATE ... IF NOT EXISTS` para tablas, triggers e índice) (Cubre: RQF-036 [fase5-lester], RQF-013 [final-final], FR-004 soporte técnico, PC-02, D-01, D-05; Responsable sugerido: Rodrigo)
+- [ ] T005 [INFRA] [P] Generar archivo de casos sintéticos de prueba con los 6 casos de reembolso médico copiados de guía §2.d en `data/casos_prueba.json` e implementar script de inicialización y siembra en `src/backend/db/seeds/initial-seed.ts` (carga de casos y registro de versión 1 por defecto con proponente 'sistema' y aprobador 'carga inicial del sistema (valores por defecto)'), asegurando que el seed pueda ejecutarse dos veces de forma idempotente sin duplicar la versión 1 (permitiendo que `npm run db:seed` funcione en máquina limpia) (Cubre: RQF-040 [fase5-lester], RQF-041 [fase5-lester], RQF-023 [fase5-lester], RQF-004 [final-final], D-02, AC-1..AC-6; Responsable sugerido: Rodrigo)
+- [ ] T006 [INFRA] Configurar servidor Express exportando la instancia `app` desde un módulo separado de la llamada a `listen()` (para que supertest la consuma sin abrir puerto) y montando los enrutadores base (`/api/session`, `/api/evaluacion`, `/api/umbrales`) en `src/backend/server.ts`, con middlewares de parseo JSON, manejo de cookies (para `mira_session`), registro de peticiones en `src/backend/middlewares/request-logger.ts`, manejador centralizado de errores en `src/backend/middlewares/error-handler.ts` y configuración de entorno en `src/backend/config/env.ts` (Cubre: PC-01, Criterio C4; Responsable sugerido: Rodrigo)
 - [ ] T007 [INFRA] [P] Configurar armazón SPA de Frontend en React con punto de entrada HTML en `src/frontend/index.html`, montaje en `src/frontend/main.tsx`, layout principal en `src/frontend/App.tsx`, tokens de diseño CSS moderno en `src/frontend/styles/app.css` y cliente HTTP base en `src/frontend/services/api-client.ts` (Cubre: PC-03, Principio VII; Responsable sugerido: Jorge)
-- [ ] T031 [INFRA] [P] (movida desde Fase 5; ID conservado) Escribir pruebas de integración fallidas para gestión de sesión simulada en `tests/integration/session-api.test.ts` (verificar `GET /api/session/current`, `POST /api/session/switch` con cuerpo `{"nuevoUsuario": "..."}`, conmutación entre las 5 identidades fijas, persistencia en cookie `mira_session` y valor por defecto `'Diseñador 1'` per `contracts/session-simulada.md`) (Cubre: D-04, PF-033 adaptada, SC-003; Responsable sugerido: Rodrigo)
-- [ ] T034 [INFRA] (movida desde Fase 5; ID conservado) Implementar servicio y controlador de sesión simulada en `src/backend/services/session-service.ts`, `src/backend/controllers/session-controller.ts` y `src/backend/routes/session-routes.ts` gestionando lectura y emisión de cookie HTTP `mira_session`, endpoints `GET /api/session/current` y `POST /api/session/switch` (con cuerpo `nuevoUsuario`), y middleware de resolución de identidad activa (Cubre: D-04, PF-033 adaptada; Responsable sugerido: Rodrigo)
-- [ ] T051 [INFRA] [P] Implementar repositorio de acceso a datos en `src/backend/repositories/umbrales-repo.ts` con `obtenerVigente(idFlujo)` para consultar la versión APROBADA más reciente desde SQLite, desacoplando la lectura para el motor F4 y umbrales-service (Cubre: RQF-044 [final-final], FR-001, FR-005, D-01; Responsable sugerido: Rodrigo)
+- [ ] T031 [INFRA] [P] (movida desde Fase 5; ID conservado) Escribir pruebas de integración fallidas para gestión de sesión simulada en `tests/integration/session-api.test.ts` (verificar `GET /api/session/current`, `POST /api/session/switch` con cuerpo `{"nuevoUsuario": "..."}`, conmutación entre las 5 identidades fijas, persistencia en cookie `mira_session` y valor por defecto `'Diseñador 1'` per `contracts/session-simulada.md`) (Depende de: T006) (Cubre: D-04, PF-033 adaptada, SC-003; Responsable sugerido: Rodrigo)
+- [ ] T034 [INFRA] (movida desde Fase 5; ID conservado) Implementar servicio y controlador de sesión simulada en `src/backend/services/session-service.ts`, `src/backend/controllers/session-controller.ts` y `src/backend/routes/session-routes.ts` gestionando lectura y emisión de cookie HTTP `mira_session`, endpoints `GET /api/session/current` y `POST /api/session/switch` (con cuerpo `nuevoUsuario`), y middleware de resolución de identidad activa (Depende de: T006) (Cubre: D-04, PF-033 adaptada; Responsable sugerido: Rodrigo)
+- [ ] T037 [INFRA] [P] (movida desde Fase 5; ID conservado) Implementar hook de sesión y componente selector de identidad `src/frontend/hooks/useSession.ts` y `src/frontend/components/common/HeaderSelectorIdentidad.tsx` en la barra superior desplegando el selector con las 5 identidades fijas y conmutando dinámicamente la cookie de sesión (Cubre: D-04, PF-033 adaptada; Responsable sugerido: Jorge)
+- [ ] T051 [INFRA] Implementar repositorio de acceso a datos en `src/backend/repositories/umbrales-repo.ts` con `obtenerVigente(idFlujo)` para consultar la versión APROBADA más reciente desde SQLite, desacoplando la lectura para el motor F4 y umbrales-service (Depende de: T004) (Cubre: RQF-044 [final-final], FR-001, FR-005, D-01; Responsable sugerido: Rodrigo)
 
 ---
 
@@ -112,7 +113,6 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 ### Implementación
 - [ ] T035 [F5] [US5] Implementar lógica de resolución formal de borradores en `src/backend/services/umbrales-service.ts` (`aprobarBorrador()` y `desestimarBorrador()`), exigiendo rol Administrador, comprobando `aprobador !== proponente`, actualizando registro inmutable en `umbrales_flujo` e insertando eventos `PROPUESTA_APROBADA` o `PROPUESTA_DESESTIMADA` en `rastro_auditoria` (Cubre: RQF-039 [fase5-lester], FR-002, SC-003, D-05; Responsable sugerido: Rodrigo)
 - [ ] T036 [F5] [US5] Implementar endpoints de aprobación y desestimación en `src/backend/controllers/umbrales-controller.ts` y `src/backend/routes/umbrales-routes.ts` para `POST /api/umbrales/borrador/aprobar` y `POST /api/umbrales/borrador/desestimar` (Cubre: RQF-039 [fase5-lester], FR-002, SC-003; Responsable sugerido: Rodrigo)
-- [ ] T037 [F5] [US5] [P] Implementar hook de sesión y componente selector de identidad `src/frontend/hooks/useSession.ts` y `src/frontend/components/common/HeaderSelectorIdentidad.tsx` en la barra superior desplegando el selector con las 5 identidades fijas y conmutando dinámicamente la cookie de sesión (Cubre: D-04, PF-033 adaptada; Responsable sugerido: Jorge)
 - [ ] T038 [F5] [US5] [P] Implementar bandeja de revisión administrativa `src/frontend/components/umbrales/BandejaRevision.tsx` para que el Administrador audite los cambios propuestos respecto a la versión vigente y ejecute las acciones de "Aprobar Propuesta" o "Desestimar Propuesta" con bloqueo preventivo si la sesión coincide con el proponente (Depende de: T037) (Cubre: RQF-039 [fase5-lester], FR-002, SC-003, US5; Responsable sugerido: Jorge)
 
 ---
@@ -152,7 +152,7 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 ### Dependencias entre Fases
 
 ```
-[Phase 0: Infraestructura Base, Sesión y Repositorio] (T001..T007, T031, T034, T051)
+[Phase 0: Infraestructura Base, Sesión y Repositorio] (T001..T007, T031, T034, T037, T051)
          │
          ├───> [Phase 1: US1 - Precedencia Fraude / Señal Mínimo] (T008..T013)
          │              │
@@ -162,18 +162,18 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
          │
          └───> [Phase 4: US4 - Propuesta Umbrales Borrador] (T024..T030)
                         │ [T025 y T027 dependen de T034; T026 depende de T051; T030 depende de T037]
-                        └───> [Phase 5: US5 - Doble Control y Aprobación] (T032, T033, T035..T038)
+                        └───> [Phase 5: US5 - Doble Control y Aprobación] (T032, T033, T035, T036, T038)
                                        │ [T032 depende de T034; T038 depende de T037]
                                        └───> [Phase 6: US6 - Historial y Reproducibilidad] (T039..T044)
                                                       │
 [Phase 7: Polish, Usabilidad SC-005, E2E y Cierre de Calidad] <───┘ (T045..T050)
 ```
 
-1. **Phase 0 (Infraestructura, Sesión y Repositorio)**: Bloqueante para todo el equipo. Requiere T001, T002, T003 (`[PLAN] - types.ts`), T004 (BD SQLite con PRAGMA foreign_keys = ON), T005 (datos JSON y seed), T006 (Express), T007 (Vite React), T031/T034 (sesión simulada) y T051 (repositorio de umbrales).
+1. **Phase 0 (Infraestructura, Sesión y Repositorio)**: Bloqueante para todo el equipo. Requiere T001 (Playwright config y scripts), T002 (Vite proxy), T003 (`[PLAN] - types.ts`), T004 (BD SQLite con PRAGMA foreign_keys = ON y schema idempotente), T005 (datos JSON y seed idempotente), T006 (Express modular con app separada de listen), T007 (Vite React), T031/T034 (sesión simulada backend dependiente de T006), T037 (selector de identidad frontend) y T051 (repositorio de umbrales dependiente de T004).
 2. **Frente F4 (Evaluación)**: Puede ejecutarse en orden prioritario P1: US1 → US2 (MVP) → US3. T016 requiere T051 para obtener la versión vigente desde el repositorio.
-3. **Frente F5 (Gestión de Umbrales)**: Puede ejecutarse en orden prioritario P2: US4 → US5 → US6. T025 y T027 requieren el middleware de sesión T034; T026 delega en T051; T032 requiere T034; T030 y T038 requieren el componente selector T037.
+3. **Frente F5 (Gestión de Umbrales)**: Puede ejecutarse en orden prioritario P2: US4 → US5 → US6. T025 y T027 requieren el middleware de sesión T034; T026 delega en T051; T032 requiere T034; T030 y T038 requieren el componente selector T037 (disponible desde Phase 0).
 4. **Desacoplamiento Frontend/Backend**:
-   - Jorge (Frontend) puede comenzar las tareas de UI (`T012`, `T013`, `T018`, `T019`, `T023`, `T028`, `T029`, `T030`, `T037`, `T038`, `T043`, `T044`, `T045`) inmediatamente después de Phase 0, consumiendo los contratos estables de `contracts/` y `src/shared/types.ts`.
+   - Jorge (Frontend) puede comenzar las tareas de UI (`T012`, `T013`, `T018`, `T019`, `T023`, `T028`, `T029`, `T030`, `T038`, `T043`, `T044`, `T045`) inmediatamente después de Phase 0 (habiendo completado T007 y T037), consumiendo los contratos estables de `contracts/` y `src/shared/types.ts`.
    - Rodrigo (Backend) implementa la persistencia, repositorio, servicios de cálculo y endpoints REST.
 5. **Phase 7 (Polish y E2E)**: Requiere la integración completa de F4 y F5 para verificar flujos cruzados de doble control, evaluación de casos y usabilidad en navegador.
 
@@ -188,36 +188,39 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 
 El camino crítico determina la duración mínima obligatoria para completar el incremento funcional integrado, calculado paso a paso con las duraciones estimadas de cada tarea secuencial:
 
-- **Paso 1: Phase 0 (Infraestructura, BD con FK, semillas, sesión simulada y repositorio)**
-  - Tareas: `T001` (1.0h) + `T003` (1.0h) + `T004` (1.5h) + `T005` (1.0h) + `T034` (1.5h) + `T051` (1.0h)
-  - Subtotal Paso 1: **7.0 horas** (acumulado: 7.0 horas)
+- **Paso 1: Phase 0 (Infraestructura, BD con FK, semillas, Express modular, sesión simulada y repositorio)**
+  - Tareas: `T001` (1.0h) + `T003` (1.0h) + `T004` (1.5h) + `T005` (1.0h) + `T006` (1.0h) + `T034` (1.5h) + `T037` (1.0h) + `T051` (1.0h)
+  - Subtotal Paso 1: **9.0 horas** (acumulado: 9.0 horas)
 
 - **Paso 2: US1 (Motor F4: precedencia de fraude y señales bajo mínimo)**
   - Tareas: `T008` (1.0h) + `T010` (1.5h) + `T011` (1.0h)
-  - Subtotal Paso 2: **3.5 horas** (acumulado: 7.0 + 3.5 = 10.5 horas)
+  - Subtotal Paso 2: **3.5 horas** (acumulado: 9.0 + 3.5 = 12.5 horas)
 
 - **Paso 3: US2 (Motor F4: agregación ponderada y aprobación automática / MVP)**
   - Tareas: `T014` (1.0h) + `T016` (1.5h) + `T017` (1.0h)
-  - Subtotal Paso 3: **3.5 horas** (acumulado: 10.5 + 3.5 = 14.0 horas)
+  - Subtotal Paso 3: **3.5 horas** (acumulado: 12.5 + 3.5 = 16.0 horas)
 
 - **Paso 4: US3 (Motor F4: cálculo de riesgo alto y garantía de cero rechazo)**
   - Tareas: `T020` (1.0h) + `T022` (1.5h)
-  - Subtotal Paso 4: **2.5 horas** (acumulado: 14.0 + 2.5 = 16.5 horas)
+  - Subtotal Paso 4: **2.5 horas** (acumulado: 16.0 + 2.5 = 18.5 horas)
 
 - **Paso 5: US4 (Gestión F5: validación y persistencia de borradores con sesión activa)**
   - Tareas: `T024` (1.0h) + `T026` (1.5h) + `T027` (1.0h)
-  - Subtotal Paso 5: **3.5 horas** (acumulado: 16.5 + 3.5 = 20.0 horas)
+  - Subtotal Paso 5: **3.5 horas** (acumulado: 18.5 + 3.5 = 22.0 horas)
 
 - **Paso 6: US5 (Gestión F5: doble control, bloqueo auto-aprobación y resolución formal)**
   - Tareas: `T032` (1.5h) + `T035` (1.5h) + `T036` (1.0h)
-  - Subtotal Paso 6: **4.0 horas** (acumulado: 20.0 + 4.0 = 24.0 horas)
+  - Subtotal Paso 6: **4.0 horas** (acumulado: 22.0 + 4.0 = 26.0 horas)
 
 - **Paso 7: US6 (Historial y Reproducibilidad: triggers inmutables y consistencia histórica al 100%)**
   - Tareas: `T039` (1.0h) + `T040` (1.5h) + `T041` (1.0h) + `T042` (1.5h)
-  - Subtotal Paso 7: **5.0 horas** (acumulado: 24.0 + 5.0 = 29.0 horas)
+  - Subtotal Paso 7: **5.0 horas** (acumulado: 26.0 + 5.0 = 31.0 horas)
 
 - **Paso 8: Phase 7 (Cierre: E2E Playwright, test de usabilidad SC-005 y README C4)**
   - Tareas: `T046` (1.5h) + `T047` (1.0h) + `T048` (1.5h) + `T049` (1.0h)
-  - Subtotal Paso 8: **5.0 horas** (acumulado: 29.0 + 5.0 = 34.0 horas)
+  - Subtotal Paso 8: **5.0 horas** (acumulado: 31.0 + 5.0 = 36.0 horas)
 
-**Duración total estimada en ruta crítica**: **34.0 horas** de trabajo de ingeniería secuencial en el tronco principal.
+**Duración total estimada en ruta crítica**: **36.0 horas** de trabajo de ingeniería secuencial en el tronco principal.
+
+> [!NOTE]
+> Las duraciones son estimaciones de planificación; las tareas fuera del camino crítico no tienen estimación individual.
