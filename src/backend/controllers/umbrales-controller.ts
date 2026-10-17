@@ -14,6 +14,12 @@ export class UmbralesController {
     res.status(200).json(vigente);
   }
 
+  obtenerHistorial(req: Request, res: Response): void {
+    const idFlujo = (req.query.idFlujo as string) || 'reembolso-gastos-medicos';
+    const historial = umbralesService.obtenerHistorial(idFlujo);
+    res.status(200).json(historial);
+  }
+
   crearBorrador(req: Request, res: Response): void {
     if (!req.user || req.user.rol !== 'Diseñador') {
       res.status(403).json({

@@ -4,6 +4,7 @@ import { umbralesController } from '../controllers/umbrales-controller.js';
 export const umbralesRouter = Router();
 
 umbralesRouter.get('/vigente', (req, res) => umbralesController.obtenerVigente(req, res));
+umbralesRouter.get('/historial', (req, res) => umbralesController.obtenerHistorial(req, res));
 umbralesRouter.post('/borrador', (req, res) => umbralesController.crearBorrador(req, res));
 umbralesRouter.put('/borrador', (req, res) => umbralesController.modificarBorrador(req, res));
 umbralesRouter.post('/borrador/aprobar', (req, res) => umbralesController.aprobarBorrador(req, res));

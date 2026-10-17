@@ -23,6 +23,18 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
     expect(res.body.umbralRiesgoAlto).toBe(60.0);
   });
 
+  it('GET /api/umbrales/historial retorna la lista de versiones y el borrador activo si existe', async () => {
+    const res = await request(app).get('/api/umbrales/historial');
+
+    expect(res.status).toBe(200);
+    expect(res.body.idFlujo).toBe('reembolso-gastos-medicos');
+    expect(res.body.borradorActivo).toBeNull();
+    expect(Array.isArray(res.body.versiones)).toBe(true);
+    expect(res.body.versiones.length).toBeGreaterThanOrEqual(1);
+    expect(res.body.versiones[0].version).toBe(1);
+    expect(res.body.versiones[0].estado).toBe('APROBADO');
+  });
+
   it('POST /api/umbrales/borrador rechaza con 403 Forbidden si el rol no es Diseñador', async () => {
     const res = await request(app)
       .post('/api/umbrales/borrador')
