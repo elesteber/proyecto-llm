@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { evaluacionEngine } from '@backend/services/evaluacion-engine';
 import { UmbralesFlujo, SenalesCaso } from '@shared/types';
 
-describe('Motor de Evaluación F4 - Precedencia de Fraude y Señal Bajo Mínimo (US1)', () => {
+describe('Motor de Evaluación F4', () => {
   const umbralesV1: UmbralesFlujo = {
     idFlujo: 'reembolso-gastos-medicos',
     version: 1,
@@ -21,38 +21,105 @@ describe('Motor de Evaluación F4 - Precedencia de Fraude y Señal Bajo Mínimo 
     estado: 'APROBADO',
   };
 
-  it('Paso 1: Precedencia absoluta de alerta de fraude deriva a revisión ignorando puntaje alto (AC-3, CASO-MED-003)', () => {
-    const senalesCaso003: SenalesCaso = {
-      autenticidad_documentos: 95.0,
-      cruce_fuentes: 95.0,
-      coherencia_solicitud: 90.0,
-      alertaFraudeActiva: true,
-    };
+  describe('User Story 1 - Precedencia de Fraude y Señal Bajo Mínimo', () => {
+    it('Paso 1: Precedencia absoluta de alerta de fraude deriva a revisión ignorando puntaje alto (AC-3, CASO-MED-003)', () => {
+      const senalesCaso003: SenalesCaso = {
+        autenticidad_documentos: 95.0,
+        cruce_fuentes: 95.0,
+        coherencia_solicitud: 90.0,
+        alertaFraudeActiva: true,
+      };
 
-    const resultado = evaluacionEngine.evaluar(senalesCaso003, umbralesV1);
+      const resultado = evaluacionEngine.evaluar(senalesCaso003, umbralesV1);
 
-    expect(resultado.decision).toBe('DERIVADO_REVISION');
-    expect(resultado.motivo).toBe('alerta_fraude');
-    expect(resultado.scoreGlobal).toBe(94.0);
-    expect(resultado.decision).not.toBe('APROBADO_AUTOMATICO');
-    expect((resultado.decision as string)).not.toBe('RECHAZADO');
+      expect(resultado.decision).toBe('DERIVADO_REVISION');
+      expect(resultado.motivo).toBe('alerta_fraude');
+      expect(resultado.scoreGlobal).toBe(94.0);
+      expect(resultado.decision).not.toBe('APROBADO_AUTOMATICO');
+      expect((resultado.decision as string)).not.toBe('RECHAZADO');
+    });
+
+    it('Paso 2: Señal individual bajo mínimo propio deriva a revisión con motivo senal_bajo_minimo aunque score >= 90 (AC-2, CASO-MED-002)', () => {
+      const senalesCaso002: SenalesCaso = {
+        autenticidad_documentos: 100.0,
+        cruce_fuentes: 100.0,
+        coherencia_solicitud: 55.0, // Bajo mínimo de 60.0
+        alertaFraudeActiva: false,
+      };
+
+      const resultado = evaluacionEngine.evaluar(senalesCaso002, umbralesV1);
+
+      expect(resultado.decision).toBe('DERIVADO_REVISION');
+      expect(resultado.motivo).toBe('senal_bajo_minimo');
+      expect(resultado.scoreGlobal).toBe(91.0);
+      expect(resultado.senalesBajoMinimo).toEqual(['coherencia_solicitud']);
+      expect(resultado.decision).not.toBe('APROBADO_AUTOMATICO');
+      expect((resultado.decision as string)).not.toBe('RECHAZADO');
+    });
   });
 
-  it('Paso 2: Señal individual bajo mínimo propio deriva a revisión con motivo senal_bajo_minimo aunque score >= 90 (AC-2, CASO-MED-002)', () => {
-    const senalesCaso002: SenalesCaso = {
-      autenticidad_documentos: 100.0,
-      cruce_fuentes: 100.0,
-      coherencia_solicitud: 55.0, // Bajo mínimo de 60.0
-      alertaFraudeActiva: false,
-    };
+  describe('User Story 2 - Aprobación Automática y Rango Intermedio', () => {
+    it('Cálculo ponderado continuo exacto sin redondear (calcularScoreGlobal)', () => {
+      const senales: SenalesCaso = {
+        autenticidad_documentos: 95.0,
+        cruce_fuentes: 95.0,
+        coherencia_solicitud: 90.0,
+        alertaFraudeActiva: false,
+      };
 
-    const resultado = evaluacionEngine.evaluar(senalesCaso002, umbralesV1);
+      const score = evaluacionEngine.calcularScoreGlobal(senales, umbralesV1);
+      expect(score).toBe(94.0);
+    });
 
-    expect(resultado.decision).toBe('DERIVADO_REVISION');
-    expect(resultado.motivo).toBe('senal_bajo_minimo');
-    expect(resultado.scoreGlobal).toBe(91.0);
-    expect(resultado.senalesBajoMinimo).toEqual(['coherencia_solicitud']);
-    expect(resultado.decision).not.toBe('APROBADO_AUTOMATICO');
-    expect((resultado.decision as string)).not.toBe('RECHAZADO');
+    it('Paso 3: Aprobación automática holgada con score >= 90 sin fraude ni caídas (AC-1, CASO-MED-001)', () => {
+      const senalesCaso001: SenalesCaso = {
+        autenticidad_documentos: 95.0,
+        cruce_fuentes: 95.0,
+        coherencia_solicitud: 90.0,
+        alertaFraudeActiva: false,
+      };
+
+      const resultado = evaluacionEngine.evaluar(senalesCaso001, umbralesV1);
+
+      expect(resultado.decision).toBe('APROBADO_AUTOMATICO');
+      expect(resultado.motivo).toBe('aprobado');
+      expect(resultado.scoreGlobal).toBe(94.0);
+      expect(resultado.scoreVisual).toBe('94.0');
+      expect(resultado.riesgoAltoRechazo).toBe(false);
+      expect(resultado.senalesBajoMinimo).toHaveLength(0);
+    });
+
+    it('Paso 3 (caso límite inclusivo): Puntaje exacto scoreGlobal === 90.0 aprueba automáticamente', () => {
+      const senalesLimite: SenalesCaso = {
+        autenticidad_documentos: 90.0,
+        cruce_fuentes: 90.0,
+        coherencia_solicitud: 90.0,
+        alertaFraudeActiva: false,
+      };
+
+      const resultado = evaluacionEngine.evaluar(senalesLimite, umbralesV1);
+
+      expect(resultado.scoreGlobal).toBe(90.0);
+      expect(resultado.decision).toBe('APROBADO_AUTOMATICO');
+      expect(resultado.motivo).toBe('aprobado');
+    });
+
+    it('Paso 4: Derivación por rango intermedio 60 <= score < 90 con motivo puntaje_bajo_umbral (AC-5, CASO-MED-005)', () => {
+      const senalesCaso005: SenalesCaso = {
+        autenticidad_documentos: 75.0,
+        cruce_fuentes: 75.0,
+        coherencia_solicitud: 75.0,
+        alertaFraudeActiva: false,
+      };
+
+      const resultado = evaluacionEngine.evaluar(senalesCaso005, umbralesV1);
+
+      expect(resultado.scoreGlobal).toBe(75.0);
+      expect(resultado.decision).toBe('DERIVADO_REVISION');
+      expect(resultado.motivo).toBe('puntaje_bajo_umbral');
+      expect(resultado.riesgoAltoRechazo).toBe(false);
+      expect(resultado.senalesBajoMinimo).toHaveLength(0);
+      expect((resultado.decision as string)).not.toBe('RECHAZADO');
+    });
   });
 });
