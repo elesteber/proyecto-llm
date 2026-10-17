@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import { HeaderSelectorIdentidad } from './components/common/HeaderSelectorIdentidad';
+import { Navbar, type NavTabId } from './components/common/Navbar';
 import { useSession } from './hooks/useSession';
 import { useEvaluacion } from './hooks/useEvaluacion';
+import { useUmbrales } from './hooks/useUmbrales';
+
+// Componentes F4
 import { ListaCasosPrueba } from './components/evaluacion/ListaCasosPrueba';
 import { FormularioEvaluacion } from './components/evaluacion/FormularioEvaluacion';
 import { VistaResultado } from './components/evaluacion/VistaResultado';
 
-type TabView = 'evaluacion' | 'umbrales' | 'auditoria';
+// Componentes F5
+import { PanelUmbralesVigentes } from './components/umbrales/PanelUmbralesVigentes';
+import { FormularioPropuesta } from './components/umbrales/FormularioPropuesta';
+import { BandejaRevision } from './components/umbrales/BandejaRevision';
+import { HistorialVersiones } from './components/umbrales/HistorialVersiones';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabView>('evaluacion');
-  const { backendConectado } = useSession();
+  const [activeTab, setActiveTab] = useState<NavTabId>('evaluacion');
+  const { backendConectado, usuarioActivo } = useSession();
+
+  // Estado del Motor F4
   const {
     casos,
     casoSeleccionado,
@@ -21,6 +31,21 @@ export const App: React.FC = () => {
     ejecutarEvaluacion,
     limpiarResultado,
   } = useEvaluacion();
+
+  // Estado de Gestión Normativa F5
+  const {
+    vigente,
+    borradorActivo,
+    versiones,
+    cargando: cargandoUmbrales,
+    procesando: procesandoUmbrales,
+    error: errorUmbrales,
+    mensajeExito: mensajeExitoUmbrales,
+    crearPropuestaBorrador,
+    aprobarPropuesta,
+    desestimarPropuesta,
+    limpiarMensajes: limpiarMensajesUmbrales,
+  } = useUmbrales();
 
   return (
     <div className="app-container">
@@ -44,33 +69,15 @@ export const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Pestañas de Navegación Principal (Navegación limpia en ≤ 2 clics per SC-005) */}
-      <nav className="nav-tabs" aria-label="Navegación del sistema MIRA">
-        <button
-          type="button"
-          className={`tab-btn ${activeTab === 'evaluacion' ? 'active' : ''}`}
-          onClick={() => setActiveTab('evaluacion')}
-          id="tab-evaluacion"
-        >
-          Evaluación de Casos (F4)
-        </button>
-        <button
-          type="button"
-          className={`tab-btn ${activeTab === 'umbrales' ? 'active' : ''}`}
-          onClick={() => setActiveTab('umbrales')}
-          id="tab-umbrales"
-        >
-          Gestión de Umbrales (F5)
-        </button>
-        <button
-          type="button"
-          className={`tab-btn ${activeTab === 'auditoria' ? 'active' : ''}`}
-          onClick={() => setActiveTab('auditoria')}
-          id="tab-auditoria"
-        >
-          Historial y Auditoría
-        </button>
-      </nav>
+      {/* Barra de Navegación Principal en ≤ 2 clics (SC-005, T045) */}
+      <Navbar
+        activeTab={activeTab}
+        onSelectTab={(tab) => {
+          setActiveTab(tab);
+          limpiarMensajesUmbrales();
+        }}
+        tieneBorradorPendiente={!!borradorActivo}
+      />
 
       {/* Contenido Principal según Pestaña Activa */}
       <main className="main-content">
@@ -91,7 +98,7 @@ export const App: React.FC = () => {
           >
             <span>
               ℹ️ <strong>Modo Frontend Desacoplado:</strong> El backend Express (:3001) aún no responde peticiones en <code>/api</code>.
-              Las vistas se despliegan en modo plantilla estructurada.
+              Las vistas y la conmutación de identidades operan en modo tolerante a fallos local.
             </span>
             <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.78rem' }}>
               Proxy Vite activo hacia :3001
@@ -99,31 +106,86 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Métrica General y Estado del Sistema */}
-        <section className="metrics-grid" aria-label="Métricas del sistema">
+        {/* Notificaciones globales de éxito o error en F5 */}
+        {mensajeExitoUmbrales && (
+          <div
+            style={{
+              background: 'rgba(16, 185, 129, 0.12)',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.85rem 1.25rem',
+              marginBottom: '1.5rem',
+              fontSize: '0.875rem',
+              color: '#34d399',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span>✅ {mensajeExitoUmbrales}</span>
+            <button
+              type="button"
+              onClick={limpiarMensajesUmbrales}
+              style={{ background: 'transparent', border: 'none', color: '#6ee7b7', cursor: 'pointer' }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        {errorUmbrales && (
+          <div
+            style={{
+              background: 'rgba(239, 68, 68, 0.12)',
+              border: '1px solid rgba(239, 68, 68, 0.35)',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.85rem 1.25rem',
+              marginBottom: '1.5rem',
+              fontSize: '0.875rem',
+              color: '#fca5a5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span>⚠️ {errorUmbrales}</span>
+            <button
+              type="button"
+              onClick={limpiarMensajesUmbrales}
+              style={{ background: 'transparent', border: 'none', color: '#fca5a5', cursor: 'pointer' }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        {/* Grilla de Métricas Generales del Sistema */}
+        <section className="metrics-grid" aria-label="Métricas del sistema MIRA">
           <div className="metric-card">
-            <div className="metric-label">Flujo de Negocio Activo</div>
-            <div className="metric-value" style={{ fontSize: '1.25rem' }}>
+            <div className="metric-label">Flujo de Negocio</div>
+            <div className="metric-value" style={{ fontSize: '1.2rem' }}>
               Reembolso Médico
             </div>
             <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
-              reembolso-gastos-medicos
+              {vigente.idFlujo}
             </span>
           </div>
 
           <div className="metric-card">
-            <div className="metric-label">Política de Umbrales</div>
-            <div className="metric-value">v1</div>
+            <div className="metric-label">Política Vigente</div>
+            <div className="metric-value">v{vigente.version}</div>
             <span style={{ fontSize: '0.75rem', color: 'var(--color-approved)' }}>
-              ● Vigente (Aprobada)
+              ● Aprobada (Apr: {vigente.umbralAprobacion} | Riesgo: {vigente.umbralRiesgoAlto})
             </span>
           </div>
 
           <div className="metric-card">
-            <div className="metric-label">Expedientes Sintéticos</div>
-            <div className="metric-value">6</div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
-              CASO-MED-001 a 006
+            <div className="metric-label">Estado de Propuestas</div>
+            <div className="metric-value" style={{ fontSize: '1.15rem' }}>
+              {borradorActivo ? `Borrador v${borradorActivo.version}` : 'Sin Borrador'}
+            </div>
+            <span style={{ fontSize: '0.75rem', color: borradorActivo ? 'var(--color-derived)' : 'var(--color-text-secondary)' }}>
+              {borradorActivo ? `Por ${borradorActivo.proponente}` : 'Lista para nueva propuesta'}
             </span>
           </div>
 
@@ -152,7 +214,7 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Vista: Evaluación de Casos (F4) */}
+        {/* Vista 1: Evaluación de Casos (F4) */}
         {activeTab === 'evaluacion' && (
           <div className="evaluacion-layout-grid" id="vista-evaluacion">
             {/* Columna Izquierda: Catálogo de Casos Sintéticos y Formulario */}
@@ -179,82 +241,44 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Vista: Gestión de Umbrales (F5) */}
+        {/* Vista 2: Gestión de Umbrales (F5) */}
         {activeTab === 'umbrales' && (
-          <section className="card" id="vista-umbrales">
-            <div className="card-header">
-              <div>
-                <h2 className="card-title">Módulo de Gestión de Umbrales (F5)</h2>
-                <p className="card-subtitle">
-                  Administración normativa dinámica, versionamiento inmutable y protocolo de doble control (D-04).
-                </p>
-              </div>
-              <span className="badge badge-derived">Protocolo Doble Control</span>
+          <div className="umbrales-layout-grid" id="vista-umbrales">
+            {/* Columna Izquierda: Política Vigente y Bandeja de Revisión con Doble Aprobación */}
+            <div className="umbrales-col-left">
+              <PanelUmbralesVigentes vigente={vigente} cargando={cargandoUmbrales} />
+              <BandejaRevision
+                borradorActivo={borradorActivo}
+                vigente={vigente}
+                usuarioActivo={usuarioActivo}
+                procesando={procesandoUmbrales}
+                onAprobar={aprobarPropuesta}
+                onDesestimar={desestimarPropuesta}
+              />
             </div>
 
-            <div style={{ padding: '1rem 0', color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-              <p style={{ marginBottom: '1rem' }}>
-                Este módulo acogerá los componentes <code>PanelUmbralesVigentes</code>, <code>FormularioPropuesta</code> y{' '}
-                <code>BandejaRevision</code> (tareas T029, T030, T038).
-              </p>
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px dashed var(--color-border)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '2rem',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>⚖️</div>
-                <h3 style={{ fontSize: '1.05rem', color: '#ffffff', marginBottom: '0.5rem' }}>
-                  Armazón Normativo Preparado
-                </h3>
-                <p style={{ fontSize: '0.85rem', maxWidth: '600px', margin: '0 auto' }}>
-                  Listo para integrar la visualización de la versión vigente y el formulario de propuestas con validación reactiva de suma de pesos = 1.00.
-                </p>
-              </div>
+            {/* Columna Derecha: Formulario de Nueva Propuesta con Validación de Suma de Pesos = 1.00 */}
+            <div className="umbrales-col-right">
+              <FormularioPropuesta
+                vigente={vigente}
+                borradorActivo={borradorActivo}
+                usuarioActivo={usuarioActivo}
+                procesando={procesandoUmbrales}
+                onCrearPropuesta={crearPropuestaBorrador}
+              />
             </div>
-          </section>
+          </div>
         )}
 
-        {/* Vista: Historial y Auditoría */}
+        {/* Vista 3: Historial Inmutable y Auditoría (US6) */}
         {activeTab === 'auditoria' && (
-          <section className="card" id="vista-auditoria">
-            <div className="card-header">
-              <div>
-                <h2 className="card-title">Historial Inmutable y Auditoría (US6)</h2>
-                <p className="card-subtitle">
-                  Trazabilidad append-only de versiones pasadas y reproducibilidad determinista al 100% (SC-004).
-                </p>
-              </div>
-              <span className="badge badge-approved">Append-Only</span>
-            </div>
-
-            <div style={{ padding: '1rem 0', color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-              <p style={{ marginBottom: '1rem' }}>
-                Este módulo acogerá los componentes <code>HistorialVersiones</code> e <code>HistorialEvaluaciones</code>{' '}
-                (tareas T043, T044).
-              </p>
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px dashed var(--color-border)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '2rem',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>🏛️</div>
-                <h3 style={{ fontSize: '1.05rem', color: '#ffffff', marginBottom: '0.5rem' }}>
-                  Registro de Auditoría Preparado
-                </h3>
-                <p style={{ fontSize: '0.85rem', maxWidth: '600px', margin: '0 auto' }}>
-                  Consulta histórica de versiones archivadas y reevaluación determinista sin circularidad.
-                </p>
-              </div>
-            </div>
-          </section>
+          <div id="vista-auditoria">
+            <HistorialVersiones
+              versiones={versiones}
+              versionVigenteNumero={vigente.version}
+              cargando={cargandoUmbrales}
+            />
+          </div>
         )}
       </main>
 
