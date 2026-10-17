@@ -40,7 +40,7 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 **Criterio de Prueba Independiente**: Evaluar `CASO-MED-003` (alerta de fraude activa) y `CASO-MED-002` (coherencia 55 < 60) verificando salida `DERIVADO_REVISION`, motivos respectivos `alerta_fraude` y `senal_bajo_minimo`, y ausencia de aprobación automática.
 
 ### Tests Unitarios e Integración (TDD: escribir primero, deben fallar)
-- [ ] T008 [F4] [US1] [P] Escribir pruebas unitarias fallidas de precedencia de alerta de fraude (`AC-3`, `CASO-MED-003`, ignora puntaje 94.0 -> `alerta_fraude`) y derivación por señal individual bajo mínimo (`AC-2`, `CASO-MED-002`, coherencia 55 < 60 con puntaje 91.0 -> `senal_bajo_minimo`) en `tests/unit/evaluacion-engine.test.ts` (Cubre: RQF-023 [fase5-lester], RQF-041 [fase5-lester], FR-007, FR-008, AC-2, AC-3; Responsable sugerido: Rodrigo)
+- [x] T008 [F4] [US1] [P] Escribir pruebas unitarias fallidas de precedencia de alerta de fraude (`AC-3`, `CASO-MED-003`, ignora puntaje 94.0 -> `alerta_fraude`) y derivación por señal individual bajo mínimo (`AC-2`, `CASO-MED-002`, coherencia 55 < 60 con puntaje 91.0 -> `senal_bajo_minimo`) en `tests/unit/evaluacion-engine.test.ts` (Cubre: RQF-023 [fase5-lester], RQF-041 [fase5-lester], FR-007, FR-008, AC-2, AC-3; Responsable sugerido: Rodrigo)
 - [ ] T009 [F4] [US1] [P] Escribir prueba de integración fallida para endpoint `POST /api/evaluacion/evaluar` en `tests/integration/evaluacion-api.test.ts` validando derivación resolutiva `DERIVADO_REVISION` con motivos `alerta_fraude` para CASO-MED-003 y `senal_bajo_minimo` para CASO-MED-002 (Cubre: RQF-023 [fase5-lester], RQF-041 [fase5-lester], FR-007, FR-008, AC-2, AC-3; Responsable sugerido: Rodrigo)
 
 ### Implementación
