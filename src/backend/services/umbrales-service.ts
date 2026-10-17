@@ -152,6 +152,93 @@ export class UmbralesService {
 
     return actualizado;
   }
+
+  aprobarBorrador(idFlujo: string, aprobador: string) {
+    const borrador = umbralesRepo.obtenerBorrador(idFlujo);
+    if (!borrador) {
+      const err: any = new Error('No existe un borrador activo para aprobar en este flujo.');
+      err.statusCode = 404;
+      throw err;
+    }
+
+    if (aprobador === borrador.proponente) {
+      const err: any = new Error(
+        'Violación de segregación de funciones: El usuario proponente no puede aprobar su propia propuesta de umbrales; se requiere un aprobador independiente.'
+      );
+      err.statusCode = 403;
+      throw err;
+    }
+
+    const fechaResolucion = new Date().toISOString();
+    const aprobado = umbralesRepo.resolverBorrador(
+      idFlujo,
+      borrador.version,
+      'APROBADO',
+      aprobador,
+      fechaResolucion
+    );
+
+    const db = getDatabase();
+    db.prepare(`
+      INSERT INTO rastro_auditoria (id_flujo, version, accion, usuario, detalles_json, timestamp)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(idFlujo, borrador.version, 'PROPUESTA_APROBADA', aprobador, JSON.stringify(aprobado), fechaResolucion);
+
+    return {
+      idFlujo: aprobado.idFlujo,
+      version: aprobado.version,
+      estado: aprobado.estado,
+      aprobador: aprobado.aprobador!,
+      fechaResolucion: aprobado.fechaResolucion!,
+    };
+  }
+
+  desestimarBorrador(idFlujo: string, resolutor: string, motivoDesestimacion?: string) {
+    const borrador = umbralesRepo.obtenerBorrador(idFlujo);
+    if (!borrador) {
+      const err: any = new Error('No existe un borrador activo para desestimar en este flujo.');
+      err.statusCode = 404;
+      throw err;
+    }
+
+    if (resolutor === borrador.proponente) {
+      const err: any = new Error(
+        'Violación de segregación de funciones: El usuario proponente no puede desestimar su propia propuesta; se requiere un Administrador independiente.'
+      );
+      err.statusCode = 403;
+      throw err;
+    }
+
+    const fechaResolucion = new Date().toISOString();
+    const desestimado = umbralesRepo.resolverBorrador(
+      idFlujo,
+      borrador.version,
+      'DESESTIMADO',
+      resolutor,
+      fechaResolucion
+    );
+
+    const db = getDatabase();
+    db.prepare(`
+      INSERT INTO rastro_auditoria (id_flujo, version, accion, usuario, detalles_json, timestamp)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      idFlujo,
+      borrador.version,
+      'PROPUESTA_DESESTIMADA',
+      resolutor,
+      JSON.stringify({ ...desestimado, motivoDesestimacion }),
+      fechaResolucion
+    );
+
+    return {
+      idFlujo: desestimado.idFlujo,
+      version: desestimado.version,
+      estado: desestimado.estado,
+      aprobador: desestimado.aprobador!,
+      fechaResolucion: desestimado.fechaResolucion!,
+    };
+  }
 }
 
 export const umbralesService = new UmbralesService();
