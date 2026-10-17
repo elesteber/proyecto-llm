@@ -6,9 +6,9 @@ import { getDatabase } from '@backend/db/database';
 
 describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
   beforeEach(() => {
-    // Limpiar borradores pendientes y asegurar v1
+    // Resetear a solo versión 1 aprobada para aislamiento estricto
     const db = getDatabase();
-    db.prepare("DELETE FROM umbrales_flujo WHERE estado = 'BORRADOR'").run();
+    db.prepare('DELETE FROM umbrales_flujo WHERE version > 1').run();
     initialSeed();
   });
 
@@ -261,8 +261,8 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
     });
 
     it('POST /api/umbrales/borrador/desestimar desestima borrador, conserva versión histórica y libera índice único', async () => {
-      // 1. Crear borrador v2 como Diseñador 1
-      await request(app)
+      // 1. Crear borrador como Diseñador 1
+      const resCrear = await request(app)
         .post('/api/umbrales/borrador')
         .set('Cookie', [`mira_session=${encodeURIComponent('Diseñador 1')}`])
         .send({
@@ -277,7 +277,9 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
           pesoCoherencia: 0.20,
         });
 
-      // 2. Administrador 1 desestima borrador v2
+      const versionCreada = resCrear.body.borrador.version;
+
+      // 2. Administrador 1 desestima borrador
       const resDesestimar = await request(app)
         .post('/api/umbrales/borrador/desestimar')
         .set('Cookie', [`mira_session=${encodeURIComponent('Administrador 1')}`])
@@ -288,16 +290,18 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
 
       expect(resDesestimar.status).toBe(200);
       expect(resDesestimar.body.versionDesestimada).toBeDefined();
-      expect(resDesestimar.body.versionDesestimada.version).toBe(2);
+      expect(resDesestimar.body.versionDesestimada.version).toBe(versionCreada);
       expect(resDesestimar.body.versionDesestimada.estado).toBe('DESESTIMADO');
 
-      // 3. Verificar que la versión 2 se conserva en la base de datos como DESESTIMADO
+      // 3. Verificar que la versión se conserva en la base de datos como DESESTIMADO
       const db = getDatabase();
-      const v2 = db.prepare("SELECT * FROM umbrales_flujo WHERE id_flujo = 'reembolso-gastos-medicos' AND version = 2").get() as any;
-      expect(v2).toBeDefined();
-      expect(v2.estado).toBe('DESESTIMADO');
+      const v = db
+        .prepare("SELECT * FROM umbrales_flujo WHERE id_flujo = 'reembolso-gastos-medicos' AND version = ?")
+        .get(versionCreada) as any;
+      expect(v).toBeDefined();
+      expect(v.estado).toBe('DESESTIMADO');
 
-      // 4. Verificar que se puede crear un nuevo borrador (índice único liberado) asignando versión 3
+      // 4. Verificar que se puede crear un nuevo borrador (índice único liberado) asignando versión siguiente
       const resNuevoBorrador = await request(app)
         .post('/api/umbrales/borrador')
         .set('Cookie', [`mira_session=${encodeURIComponent('Diseñador 2')}`])
@@ -314,7 +318,7 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
         });
 
       expect(resNuevoBorrador.status).toBe(201);
-      expect(resNuevoBorrador.body.borrador.version).toBe(3);
+      expect(resNuevoBorrador.body.borrador.version).toBe(versionCreada + 1);
       expect(resNuevoBorrador.body.borrador.estado).toBe('BORRADOR');
     });
   });

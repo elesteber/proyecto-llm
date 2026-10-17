@@ -103,6 +103,54 @@ export class UmbralesController {
       res.status(err.statusCode || 500).json({ error: err.message });
     }
   }
+
+  aprobarBorrador(req: Request, res: Response): void {
+    if (!req.user || req.user.rol !== 'Administrador') {
+      res.status(403).json({
+        error: 'Acceso denegado: solo un usuario con rol Administrador puede aprobar propuestas de umbrales.',
+      });
+      return;
+    }
+
+    const { idFlujo = 'reembolso-gastos-medicos' } = req.body || {};
+
+    try {
+      const versionAprobada = umbralesService.aprobarBorrador(idFlujo, req.user.nombre);
+
+      res.status(200).json({
+        mensaje: `Propuesta de umbrales aprobada exitosamente. Nueva versión vigente: ${versionAprobada.version}.`,
+        versionAprobada,
+      });
+    } catch (err: any) {
+      res.status(err.statusCode || 500).json({ error: err.message });
+    }
+  }
+
+  desestimarBorrador(req: Request, res: Response): void {
+    if (!req.user || req.user.rol !== 'Administrador') {
+      res.status(403).json({
+        error: 'Acceso denegado: solo un usuario con rol Administrador puede desestimar propuestas de umbrales.',
+      });
+      return;
+    }
+
+    const { idFlujo = 'reembolso-gastos-medicos', motivoDesestimacion } = req.body || {};
+
+    try {
+      const versionDesestimada = umbralesService.desestimarBorrador(
+        idFlujo,
+        req.user.nombre,
+        motivoDesestimacion
+      );
+
+      res.status(200).json({
+        mensaje: 'Propuesta de umbrales desestimada y archivada. Conserva su número de versión histórica.',
+        versionDesestimada,
+      });
+    } catch (err: any) {
+      res.status(err.statusCode || 500).json({ error: err.message });
+    }
+  }
 }
 
 export const umbralesController = new UmbralesController();

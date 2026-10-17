@@ -112,7 +112,7 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 
 ### Implementación
 - [x] T035 [F5] [US5] Implementar lógica de resolución formal de borradores en `src/backend/services/umbrales-service.ts` (`aprobarBorrador()` y `desestimarBorrador()`), exigiendo rol Administrador, comprobando `aprobador !== proponente`, actualizando registro inmutable en `umbrales_flujo` e insertando eventos `PROPUESTA_APROBADA` o `PROPUESTA_DESESTIMADA` en `rastro_auditoria` (Cubre: RQF-039 [fase5-lester], FR-002, SC-003, D-05; Responsable sugerido: Rodrigo)
-- [ ] T036 [F5] [US5] Implementar endpoints de aprobación y desestimación en `src/backend/controllers/umbrales-controller.ts` y `src/backend/routes/umbrales-routes.ts` para `POST /api/umbrales/borrador/aprobar` y `POST /api/umbrales/borrador/desestimar` (Cubre: RQF-039 [fase5-lester], FR-002, SC-003; Responsable sugerido: Rodrigo)
+- [x] T036 [F5] [US5] Implementar endpoints de aprobación y desestimación en `src/backend/controllers/umbrales-controller.ts` y `src/backend/routes/umbrales-routes.ts` para `POST /api/umbrales/borrador/aprobar` y `POST /api/umbrales/borrador/desestimar` (Cubre: RQF-039 [fase5-lester], FR-002, SC-003; Responsable sugerido: Rodrigo)
 - [x] T038 [F5] [US5] [P] Implementar bandeja de revisión administrativa `src/frontend/components/umbrales/BandejaRevision.tsx` para que el Administrador audite los cambios propuestos respecto a la versión vigente y ejecute las acciones de "Aprobar Propuesta" o "Desestimar Propuesta" con bloqueo preventivo si la sesión coincide con el proponente (Depende de: T037) (Cubre: RQF-039 [fase5-lester], FR-002, SC-003, US5; Responsable sugerido: Jorge)
 
 ---
