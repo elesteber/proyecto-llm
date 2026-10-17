@@ -1,11 +1,11 @@
 /**
- * MIRA — Hook reactivo de gestión de sesión simulada (D-04, PF-033 adaptada)
+ * MIRA — Hook reactivo y Contexto Global de sesión simulada (D-04, PF-033 adaptada)
  * Permite conmutar entre las 5 identidades fijas preconfiguradas con persistencia
- * transparente de la cookie HTTP 'mira_session'.
+ * reactiva global (React Context + localStorage) y sincronización con cookie HTTP 'mira_session'.
  * Cumple: T037, contracts/session-simulada.md, Clarificación 2
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { sessionApi } from '../services/api-client';
 import type { IdentidadSimulada, RolUsuario, UsuarioActivo } from '../../shared/types';
 
@@ -44,6 +44,19 @@ export const CATALOGO_IDENTIDADES: {
   },
 ];
 
+const LOCAL_STORAGE_KEY = 'mira_simulated_user';
+
+function getUsuarioInicial(): UsuarioActivo {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const guardado = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (guardado) {
+      const coincidencia = CATALOGO_IDENTIDADES.find((id) => id.nombre === guardado);
+      if (coincidencia) return coincidencia;
+    }
+  }
+  return CATALOGO_IDENTIDADES[0];
+}
+
 export interface UseSessionReturn {
   usuarioActivo: UsuarioActivo;
   catalogoIdentidades: typeof CATALOGO_IDENTIDADES;
@@ -55,8 +68,17 @@ export interface UseSessionReturn {
   recargarSesion: () => Promise<void>;
 }
 
-export function useSession(): UseSessionReturn {
-  const [usuarioActivo, setUsuarioActivo] = useState<UsuarioActivo>(CATALOGO_IDENTIDADES[0]);
+export const SessionContext = createContext<UseSessionReturn | null>(null);
+
+export interface SessionProviderProps {
+  children: React.ReactNode;
+}
+
+/**
+ * Provider global para compartir el estado reactivo de sesión entre toda la jerarquía de componentes
+ */
+export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) => {
+  const [usuarioActivo, setUsuarioActivo] = useState<UsuarioActivo>(getUsuarioInicial);
   const [cargando, setCargando] = useState<boolean>(true);
   const [conmutando, setConmutando] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -70,10 +92,13 @@ export function useSession(): UseSessionReturn {
       if (respuesta && respuesta.usuarioActivo) {
         setUsuarioActivo(respuesta.usuarioActivo);
         setBackendConectado(true);
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem(LOCAL_STORAGE_KEY, respuesta.usuarioActivo.nombre);
+        }
       }
     } catch {
       // Si el backend Express en :3001 no está respondiendo todavía,
-      // operamos en modo simulado local preservando la reactividad para el frontend.
+      // operamos en modo simulado local preservando la reactividad global.
       setBackendConectado(false);
     } finally {
       setCargando(false);
@@ -97,6 +122,12 @@ export function useSession(): UseSessionReturn {
         descripcion: 'Usuario activo en sesión simulada.',
       };
 
+      // Actualización reactiva global inmediata en memoria y persistencia
+      setUsuarioActivo(fallbackUsuario);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, nuevoUsuario);
+      }
+
       try {
         const respuesta = await sessionApi.conmutarIdentidad(nuevoUsuario);
         if (respuesta && respuesta.usuarioActivo) {
@@ -110,14 +141,12 @@ export function useSession(): UseSessionReturn {
           setUsuarioActivo(fallbackUsuario);
         }
       } catch (err) {
-        // En caso de que el backend no esté activo, actualizamos de todas formas
-        // el estado en memoria para permitir al desarrollador frontend probar la alternancia
+        // En modo desacoplado, mantenemos el usuario conmutado en memoria
         setUsuarioActivo(fallbackUsuario);
         setBackendConectado(false);
         if (err instanceof Error) {
-          // No bloqueamos la UI con un error si es desconexión del backend
           console.info(
-            `[useSession] Conmutación local a "${nuevoUsuario}". Backend no disponible aún en :3001.`
+            `[useSession] Conmutación reactiva global a "${nuevoUsuario}". Backend en :3001 no conectado.`
           );
         }
       } finally {
@@ -127,7 +156,7 @@ export function useSession(): UseSessionReturn {
     []
   );
 
-  return {
+  const value: UseSessionReturn = {
     usuarioActivo,
     catalogoIdentidades: CATALOGO_IDENTIDADES,
     cargando,
@@ -137,4 +166,27 @@ export function useSession(): UseSessionReturn {
     conmutarUsuario,
     recargarSesion: cargarSesion,
   };
+
+  return React.createElement(SessionContext.Provider, { value }, children);
+};
+
+/**
+ * Hook de consumo del contexto global de sesión
+ */
+export function useSession(): UseSessionReturn {
+  const context = useContext(SessionContext);
+  if (!context) {
+    // Si se utiliza fuera de SessionProvider, fallback tolerante para no romper rendering aislado
+    return {
+      usuarioActivo: CATALOGO_IDENTIDADES[0],
+      catalogoIdentidades: CATALOGO_IDENTIDADES,
+      cargando: false,
+      conmutando: false,
+      error: null,
+      backendConectado: false,
+      conmutarUsuario: async () => {},
+      recargarSesion: async () => {},
+    };
+  }
+  return context;
 }

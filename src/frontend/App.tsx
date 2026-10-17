@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { HeaderSelectorIdentidad } from './components/common/HeaderSelectorIdentidad';
 import { Navbar, type NavTabId } from './components/common/Navbar';
-import { useSession } from './hooks/useSession';
+import { SessionProvider, useSession } from './hooks/useSession';
 import { useEvaluacion } from './hooks/useEvaluacion';
 import { useUmbrales } from './hooks/useUmbrales';
 
@@ -16,7 +16,7 @@ import { FormularioPropuesta } from './components/umbrales/FormularioPropuesta';
 import { BandejaRevision } from './components/umbrales/BandejaRevision';
 import { HistorialVersiones } from './components/umbrales/HistorialVersiones';
 
-export const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavTabId>('evaluacion');
   const { backendConectado, usuarioActivo } = useSession();
 
@@ -290,6 +290,14 @@ export const App: React.FC = () => {
         </p>
       </footer>
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <SessionProvider>
+      <AppContent />
+    </SessionProvider>
   );
 };
 
