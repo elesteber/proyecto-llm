@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import request from 'supertest';
 import { app } from '@backend/app';
 import { initialSeed } from '@backend/db/seeds/initial-seed';
@@ -10,6 +10,11 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
     const db = getDatabase();
     db.prepare('DELETE FROM umbrales_flujo WHERE version > 1').run();
     initialSeed();
+  });
+
+  afterAll(() => {
+    const db = getDatabase();
+    db.prepare('DELETE FROM umbrales_flujo WHERE version > 1').run();
   });
 
   it('GET /api/umbrales/vigente retorna la versión vigente por defecto (versión 1)', async () => {

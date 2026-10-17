@@ -8,6 +8,8 @@ describe('UmbralesRepo', () => {
 
   beforeEach(() => {
     // Asegurar siembra inicial en la base de datos de prueba/desarrollo
+    const db = getDatabase();
+    db.prepare('DELETE FROM umbrales_flujo WHERE version > 1').run();
     initialSeed();
     repo = new UmbralesRepo();
   });
