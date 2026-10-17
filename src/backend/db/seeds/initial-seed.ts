@@ -75,6 +75,8 @@ export function runSeed(customDbPath?: string): void {
   }
 }
 
+export const initialSeed = runSeed;
+
 // Ejecución directa vía CLI: npm run db:seed
 if (process.argv[1] && process.argv[1].endsWith('initial-seed.ts')) {
   try {
