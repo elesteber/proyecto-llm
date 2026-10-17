@@ -1,44 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { sessionApi } from './services/api-client';
-import type { IdentidadSimulada, RolUsuario } from '../shared/types';
+import React, { useState } from 'react';
+import { HeaderSelectorIdentidad } from './components/common/HeaderSelectorIdentidad';
+import { useSession } from './hooks/useSession';
 
 type TabView = 'evaluacion' | 'umbrales' | 'auditoria';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabView>('evaluacion');
-  const [identidadActual, setIdentidadActual] = useState<{
-    nombre: IdentidadSimulada;
-    rol: RolUsuario;
-    descripcion: string;
-  }>({
-    nombre: 'Diseñador 1',
-    rol: 'Diseñador',
-    descripcion: 'Usuario autorizado para proponer y editar borradores de umbrales.',
-  });
-  const [conexionApi, setConexionApi] = useState<'conectando' | 'conectado' | 'desconectado'>('conectando');
-
-  // Intentar verificar conectividad inicial con el backend
-  useEffect(() => {
-    let cancelado = false;
-    async function verificarSesion() {
-      try {
-        const respuesta = await sessionApi.obtenerSesionActual();
-        if (!cancelado && respuesta.usuarioActivo) {
-          setIdentidadActual(respuesta.usuarioActivo);
-          setConexionApi('conectado');
-        }
-      } catch {
-        if (!cancelado) {
-          // El backend puede no estar corriendo todavía en :3001 durante la Fase 0
-          setConexionApi('desconectado');
-        }
-      }
-    }
-    verificarSesion();
-    return () => {
-      cancelado = true;
-    };
-  }, []);
+  const { backendConectado } = useSession();
 
   return (
     <div className="app-container">
@@ -57,24 +25,8 @@ export const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Barra de sesión simulada */}
-          <div className="session-bar" title="Sesión simulada para segregación de roles (D-04)">
-            <span
-              className="session-indicator"
-              style={{
-                backgroundColor:
-                  conexionApi === 'conectado'
-                    ? 'var(--color-approved)'
-                    : conexionApi === 'conectando'
-                    ? 'var(--color-derived)'
-                    : 'var(--color-text-muted)',
-              }}
-            />
-            <div className="session-user-info">
-              <span>{identidadActual.nombre}</span>
-              <span className="session-role-tag">{identidadActual.rol}</span>
-            </div>
-          </div>
+          {/* Selector de identidad simulada para segregación de funciones (D-04, T037) */}
+          <HeaderSelectorIdentidad />
         </div>
       </header>
 
@@ -109,7 +61,7 @@ export const App: React.FC = () => {
       {/* Contenido Principal según Pestaña Activa */}
       <main className="main-content">
         {/* Banner de Estado de Conectividad con el Backend */}
-        {conexionApi === 'desconectado' && (
+        {!backendConectado && (
           <div
             style={{
               background: 'rgba(59, 130, 246, 0.08)',
