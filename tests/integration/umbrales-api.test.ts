@@ -259,5 +259,63 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
       expect(res.status).toBe(403);
       expect(res.body.error).toContain('segregación de funciones');
     });
+
+    it('POST /api/umbrales/borrador/desestimar desestima borrador, conserva versión histórica y libera índice único', async () => {
+      // 1. Crear borrador v2 como Diseñador 1
+      await request(app)
+        .post('/api/umbrales/borrador')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Diseñador 1')}`])
+        .send({
+          idFlujo: 'reembolso-gastos-medicos',
+          umbralAprobacion: 88.0,
+          umbralRiesgoAlto: 65.0,
+          minimoAutenticidad: 70.0,
+          minimoCruceFuentes: 70.0,
+          minimoCoherencia: 60.0,
+          pesoAutenticidad: 0.40,
+          pesoCruceFuentes: 0.40,
+          pesoCoherencia: 0.20,
+        });
+
+      // 2. Administrador 1 desestima borrador v2
+      const resDesestimar = await request(app)
+        .post('/api/umbrales/borrador/desestimar')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Administrador 1')}`])
+        .send({
+          idFlujo: 'reembolso-gastos-medicos',
+          motivoDesestimacion: 'Ponderaciones incompatibles con política de riesgo de octubre.',
+        });
+
+      expect(resDesestimar.status).toBe(200);
+      expect(resDesestimar.body.versionDesestimada).toBeDefined();
+      expect(resDesestimar.body.versionDesestimada.version).toBe(2);
+      expect(resDesestimar.body.versionDesestimada.estado).toBe('DESESTIMADO');
+
+      // 3. Verificar que la versión 2 se conserva en la base de datos como DESESTIMADO
+      const db = getDatabase();
+      const v2 = db.prepare("SELECT * FROM umbrales_flujo WHERE id_flujo = 'reembolso-gastos-medicos' AND version = 2").get() as any;
+      expect(v2).toBeDefined();
+      expect(v2.estado).toBe('DESESTIMADO');
+
+      // 4. Verificar que se puede crear un nuevo borrador (índice único liberado) asignando versión 3
+      const resNuevoBorrador = await request(app)
+        .post('/api/umbrales/borrador')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Diseñador 2')}`])
+        .send({
+          idFlujo: 'reembolso-gastos-medicos',
+          umbralAprobacion: 91.0,
+          umbralRiesgoAlto: 60.0,
+          minimoAutenticidad: 70.0,
+          minimoCruceFuentes: 70.0,
+          minimoCoherencia: 60.0,
+          pesoAutenticidad: 0.40,
+          pesoCruceFuentes: 0.40,
+          pesoCoherencia: 0.20,
+        });
+
+      expect(resNuevoBorrador.status).toBe(201);
+      expect(resNuevoBorrador.body.borrador.version).toBe(3);
+      expect(resNuevoBorrador.body.borrador.estado).toBe('BORRADOR');
+    });
   });
 });
