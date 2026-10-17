@@ -96,6 +96,103 @@ export class EvaluacionController {
     const casos = this.cargarCasos();
     res.status(200).json(casos);
   }
+
+  obtenerHistorial(req: Request, res: Response): void {
+    const { idCaso, limit = '50' } = req.query;
+    const limitNum = parseInt(limit as string, 10) || 50;
+    const db = getDatabase();
+
+    let query = 'SELECT * FROM auditoria_evaluaciones';
+    const params: any[] = [];
+
+    if (idCaso) {
+      query += ' WHERE id_caso = ?';
+      params.push(idCaso);
+    }
+
+    query += ' ORDER BY timestamp DESC LIMIT ?';
+    params.push(limitNum);
+
+    const rows = db.prepare(query).all(...params) as any[];
+
+    const evaluaciones = rows.map((r) => ({
+      idEvaluacion: r.id_evaluacion,
+      idCaso: r.id_caso,
+      versionUmbralesAplicada: r.version_umbrales_aplicada,
+      scoreGlobal: r.score_global,
+      decision: r.decision,
+      motivo: r.motivo,
+      riesgoAltoRechazo: Boolean(r.riesgo_alto_rechazo),
+      senalesInsumo: JSON.parse(r.senales_insumo),
+      usuarioOperador: r.usuario_operador,
+      timestamp: r.timestamp,
+    }));
+
+    res.status(200).json({
+      total: evaluaciones.length,
+      evaluaciones,
+    });
+  }
+
+  reevaluarHistorico(req: Request, res: Response): void {
+    const { idEvaluacion } = req.body || {};
+
+    if (!idEvaluacion) {
+      res.status(400).json({ error: 'El campo idEvaluacion es obligatorio.' });
+      return;
+    }
+
+    const db = getDatabase();
+    const evalOriginal = db
+      .prepare('SELECT * FROM auditoria_evaluaciones WHERE id_evaluacion = ?')
+      .get(idEvaluacion) as any;
+
+    if (!evalOriginal) {
+      res.status(404).json({ error: 'Evaluación histórica no encontrada.' });
+      return;
+    }
+
+    const umbralesArchivados = umbralesRepo.obtenerPorVersion(
+      evalOriginal.id_flujo,
+      evalOriginal.version_umbrales_aplicada
+    );
+
+    if (!umbralesArchivados) {
+      res.status(500).json({
+        error: `No se encontró la versión histórica de umbrales ${evalOriginal.version_umbrales_aplicada} para el flujo '${evalOriginal.id_flujo}'.`,
+      });
+      return;
+    }
+
+    const senalesInsumo = JSON.parse(evalOriginal.senales_insumo);
+    const recomputado = evaluacionEngine.reevaluarCasoHistorico(senalesInsumo, umbralesArchivados);
+
+    const puntajeCoincide = Math.abs(recomputado.scoreGlobal - evalOriginal.score_global) < 0.0001;
+    const decisionCoincide = recomputado.decision === evalOriginal.decision;
+    const motivoCoincide = recomputado.motivo === evalOriginal.motivo;
+    const riesgoAltoCoincide =
+      (recomputado.riesgoAltoRechazo ? 1 : 0) === evalOriginal.riesgo_alto_rechazo;
+    const consistencia100Porciento =
+      puntajeCoincide && decisionCoincide && motivoCoincide && riesgoAltoCoincide;
+
+    res.status(200).json({
+      idEvaluacionOriginal: evalOriginal.id_evaluacion,
+      versionUmbralesAplicada: evalOriginal.version_umbrales_aplicada,
+      resultadoReevaluacion: {
+        scoreGlobal: recomputado.scoreGlobal,
+        decision: recomputado.decision,
+        motivo: recomputado.motivo,
+        riesgoAltoRechazo: recomputado.riesgoAltoRechazo,
+      },
+      reproducibilidadDeterminista: {
+        puntajeCoincide,
+        decisionCoincide,
+        motivoCoincide,
+        riesgoAltoCoincide,
+        consistencia100Porciento,
+      },
+    });
+  }
 }
 
 export const evaluacionController = new EvaluacionController();

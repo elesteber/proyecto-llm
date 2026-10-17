@@ -128,6 +128,13 @@ export class EvaluacionEngine {
       desgloseComponentes,
     };
   }
+
+  /**
+   * Reevalúa deterministamente un caso histórico contra una versión archivada de umbrales (SC-004)
+   */
+  reevaluarCasoHistorico(senalesInsumo: SenalesCaso, umbralesArchivados: UmbralesFlujo): EvaluacionDictamen {
+    return this.evaluar(senalesInsumo, umbralesArchivados);
+  }
 }
 
 export const evaluacionEngine = new EvaluacionEngine();

@@ -130,4 +130,53 @@ describe('API de Evaluación F4', () => {
       expect(res.body.decision).not.toBe('RECHAZADO');
     });
   });
+
+  describe('User Story 6 - Historial y Reevaluación Determinista', () => {
+    it('GET /api/evaluacion/historial consulta evaluaciones registradas inmutablemente', async () => {
+      // 1. Evaluar CASO-MED-001
+      const evalRes = await request(app)
+        .post('/api/evaluacion/evaluar')
+        .send({ idCaso: 'CASO-MED-001', idFlujo: 'reembolso-gastos-medicos' });
+
+      expect(evalRes.status).toBe(200);
+
+      // 2. Consultar historial
+      const res = await request(app)
+        .get('/api/evaluacion/historial?idCaso=CASO-MED-001');
+
+      expect(res.status).toBe(200);
+      expect(res.body.total).toBeGreaterThanOrEqual(1);
+      expect(Array.isArray(res.body.evaluaciones)).toBe(true);
+      const primera = res.body.evaluaciones.find((e: any) => e.idEvaluacion === evalRes.body.idEvaluacion);
+      expect(primera).toBeDefined();
+      expect(primera.idCaso).toBe('CASO-MED-001');
+      expect(primera.decision).toBe('APROBADO_AUTOMATICO');
+      expect(primera.senalesInsumo).toBeDefined();
+    });
+
+    it('POST /api/evaluacion/reevaluar-historico reproduce deterministamente al 100% el dictamen histórico', async () => {
+      // 1. Evaluar CASO-MED-001 en v1
+      const evalRes = await request(app)
+        .post('/api/evaluacion/evaluar')
+        .send({ idCaso: 'CASO-MED-001', idFlujo: 'reembolso-gastos-medicos' });
+
+      const idEvaluacion = evalRes.body.idEvaluacion;
+
+      // 2. Reevaluar contra su versión archivada
+      const reevalRes = await request(app)
+        .post('/api/evaluacion/reevaluar-historico')
+        .send({ idEvaluacion });
+
+      expect(reevalRes.status).toBe(200);
+      expect(reevalRes.body.idEvaluacionOriginal).toBe(idEvaluacion);
+      expect(reevalRes.body.versionUmbralesAplicada).toBe(1);
+      expect(reevalRes.body.reproducibilidadDeterminista).toEqual({
+        puntajeCoincide: true,
+        decisionCoincide: true,
+        motivoCoincide: true,
+        riesgoAltoCoincide: true,
+        consistencia100Porciento: true,
+      });
+    });
+  });
 });
