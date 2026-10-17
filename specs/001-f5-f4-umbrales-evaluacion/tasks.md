@@ -78,7 +78,7 @@ En cumplimiento del principio de gobernanza y separación de frentes de trabajo 
 - [x] T021 [F4] [US3] Escribir pruebas de integración fallidas en `tests/integration/evaluacion-api.test.ts` verificando que la respuesta de `POST /api/evaluacion/evaluar` para `CASO-MED-004` y `CASO-MED-006` contiene `decision: 'DERIVADO_REVISION'` (nunca 'RECHAZADO') y `riesgoAltoRechazo: true` (Cubre: RQF-020 [fase5-lester], PF-015, FR-010, FR-011, AC-4, AC-6, SC-002; Responsable sugerido: Rodrigo)
 
 ### Implementación
-- [ ] T022 [F4] [US3] Implementar en `src/backend/services/evaluacion-engine.ts` la función `calcularRiesgoAltoRechazo` (`conteo(senales bajo minimo) >= 2 || scoreGlobal < umbralRiesgoAlto`) y garantizar en todo el backend la restricción de salidas exclusivas `APROBADO_AUTOMATICO` o `DERIVADO_REVISION` sin lenguaje de rechazo (Cubre: RQF-020 [fase5-lester], FR-010, FR-011, SC-002, DEC-08; Responsable sugerido: Rodrigo)
+- [x] T022 [F4] [US3] Implementar en `src/backend/services/evaluacion-engine.ts` la función `calcularRiesgoAltoRechazo` (`conteo(senales bajo minimo) >= 2 || scoreGlobal < umbralRiesgoAlto`) y garantizar en todo el backend la restricción de salidas exclusivas `APROBADO_AUTOMATICO` o `DERIVADO_REVISION` sin lenguaje de rechazo (Cubre: RQF-020 [fase5-lester], FR-010, FR-011, SC-002, DEC-08; Responsable sugerido: Rodrigo)
 - [x] T023 [F4] [US3] [P] Implementar componente de advertencia informativa `src/frontend/components/evaluacion/AlertaRiesgoAlto.tsx` desplegando tarjeta de aviso con el texto exacto *"Riesgo alto de rechazo: decide un operador"*, asegurando ausencia absoluta de la palabra "rechazado" como dictamen (Cubre: FR-010, FR-011, SC-002, AC-4, AC-6; Responsable sugerido: Jorge)
 
 ---

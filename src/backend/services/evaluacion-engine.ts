@@ -36,6 +36,18 @@ export class EvaluacionEngine {
   }
 
   /**
+   * Calcula la advertencia informativa de riesgo alto (RN-05, Clarify P3)
+   * Se activa si conteo(señales bajo mínimo) >= 2 O scoreGlobal < umbralRiesgoAlto.
+   */
+  calcularRiesgoAltoRechazo(
+    conteoBajoMinimo: number,
+    scoreGlobal: number,
+    umbralRiesgoAlto: number
+  ): boolean {
+    return conteoBajoMinimo >= 2 || scoreGlobal < umbralRiesgoAlto;
+  }
+
+  /**
    * Ejecuta la evaluación determinista según el orden de precedencia estricto (RN-04)
    * Precedencia:
    * 1. Alerta de fraude activa -> DERIVADO_REVISION ('alerta_fraude')
@@ -69,8 +81,11 @@ export class EvaluacionEngine {
     }
 
     // Cálculo de advertencia informativa de riesgo alto (RN-05, Clarify P3)
-    const riesgoAltoRechazo =
-      senalesBajoMinimo.length >= 2 || scoreGlobal < umbrales.umbralRiesgoAlto;
+    const riesgoAltoRechazo = this.calcularRiesgoAltoRechazo(
+      senalesBajoMinimo.length,
+      scoreGlobal,
+      umbrales.umbralRiesgoAlto
+    );
 
     let decision: DecisionSistema;
     let motivo: MotivoDecision;
