@@ -1,0 +1,33 @@
+{
+  "name": "proyecto-llm",
+  "version": "1.0.0",
+  "description": "**Caso MIRA**",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config src/frontend/vite.config.ts",
+    "build": "vite build --config src/frontend/vite.config.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elesteber/proyecto-llm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elesteber/proyecto-llm/issues"
+  },
+  "homepage": "https://github.com/elesteber/proyecto-llm#readme",
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}
