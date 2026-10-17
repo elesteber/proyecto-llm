@@ -6,9 +6,8 @@ import { getDatabase } from '@backend/db/database';
 
 describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
   beforeEach(() => {
-    // Limpiar borradores y resetear a v1
+    // Limpiar borradores pendientes y asegurar v1
     const db = getDatabase();
-    db.prepare("DELETE FROM rastro_auditoria WHERE accion IN ('PROPUESTA_CREADA', 'PROPUESTA_MODIFICADA')").run();
     db.prepare("DELETE FROM umbrales_flujo WHERE estado = 'BORRADOR'").run();
     initialSeed();
   });
@@ -162,5 +161,103 @@ describe('API de Umbrales F5 - Propuesta y Gestión en Borrador (US4)', () => {
     expect(res.body.borrador.version).toBe(2);
     expect(res.body.borrador.umbralAprobacion).toBe(89.0);
     expect(res.body.borrador.umbralRiesgoAlto).toBe(64.0);
+  });
+
+  describe('User Story 5 - Flujo de Doble Control y Aprobación', () => {
+    it('Administrador recibe 403 Forbidden al intentar proponer o modificar un borrador', async () => {
+      const res = await request(app)
+        .post('/api/umbrales/borrador')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Administrador 1')}`])
+        .send({
+          idFlujo: 'reembolso-gastos-medicos',
+          umbralAprobacion: 88.0,
+          umbralRiesgoAlto: 65.0,
+          minimoAutenticidad: 70.0,
+          minimoCruceFuentes: 70.0,
+          minimoCoherencia: 60.0,
+          pesoAutenticidad: 0.40,
+          pesoCruceFuentes: 0.40,
+          pesoCoherencia: 0.20,
+        });
+
+      expect(res.status).toBe(403);
+      expect(res.body.error).toContain('Diseñador');
+    });
+
+    it('Diseñador recibe 403 Forbidden al intentar aprobar una propuesta', async () => {
+      const res = await request(app)
+        .post('/api/umbrales/borrador/aprobar')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Diseñador 1')}`])
+        .send({ idFlujo: 'reembolso-gastos-medicos' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.error).toContain('Administrador');
+    });
+
+    it('Aprobación exitosa por Administrador independiente promueve borrador a APROBADO y rige en F4', async () => {
+      // 1. Diseñador 1 propone borrador v2 con umbralAprobacion = 92.0
+      await request(app)
+        .post('/api/umbrales/borrador')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Diseñador 1')}`])
+        .send({
+          idFlujo: 'reembolso-gastos-medicos',
+          umbralAprobacion: 92.0,
+          umbralRiesgoAlto: 65.0,
+          minimoAutenticidad: 70.0,
+          minimoCruceFuentes: 70.0,
+          minimoCoherencia: 60.0,
+          pesoAutenticidad: 0.40,
+          pesoCruceFuentes: 0.40,
+          pesoCoherencia: 0.20,
+        });
+
+      // 2. Administrador 1 aprueba formalmente
+      const resAprobar = await request(app)
+        .post('/api/umbrales/borrador/aprobar')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Administrador 1')}`])
+        .send({ idFlujo: 'reembolso-gastos-medicos' });
+
+      expect(resAprobar.status).toBe(200);
+      expect(resAprobar.body.versionAprobada).toBeDefined();
+      expect(resAprobar.body.versionAprobada.version).toBe(2);
+      expect(resAprobar.body.versionAprobada.estado).toBe('APROBADO');
+      expect(resAprobar.body.versionAprobada.aprobador).toBe('Administrador 1');
+
+      // 3. Verificar que rige de inmediato en F4 como versión vigente
+      const resVigente = await request(app).get('/api/umbrales/vigente');
+      expect(resVigente.status).toBe(200);
+      expect(resVigente.body.version).toBe(2);
+      expect(resVigente.body.umbralAprobacion).toBe(92.0);
+    });
+
+    it('Bloqueo estricto de auto-aprobación: si proponente === aprobador retorna 403 Forbidden', async () => {
+      // Crear un borrador donde el proponente coincidiría con el aprobador (simulado si un admin pudiera proponer)
+      const db = getDatabase();
+      const ultima = db.prepare("SELECT COALESCE(MAX(version), 0) as max_v FROM umbrales_flujo").get() as { max_v: number };
+      const vNext = ultima.max_v + 1;
+      const now = new Date().toISOString();
+
+      db.prepare(`
+        INSERT INTO umbrales_flujo (
+          id_flujo, version, umbral_aprobacion, umbral_riesgo_alto,
+          minimo_autenticidad, minimo_cruce_fuentes, minimo_coherencia,
+          peso_autenticidad, peso_cruce_fuentes, peso_coherencia,
+          proponente, fecha_propuesta, estado
+        ) VALUES (
+          'reembolso-gastos-medicos', ?, 90.0, 60.0,
+          70.0, 70.0, 60.0,
+          0.40, 0.40, 0.20,
+          'Administrador 1', ?, 'BORRADOR'
+        )
+      `).run(vNext, now);
+
+      const res = await request(app)
+        .post('/api/umbrales/borrador/aprobar')
+        .set('Cookie', [`mira_session=${encodeURIComponent('Administrador 1')}`])
+        .send({ idFlujo: 'reembolso-gastos-medicos' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.error).toContain('segregación de funciones');
+    });
   });
 });
