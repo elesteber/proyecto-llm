@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
 import { HeaderSelectorIdentidad } from './components/common/HeaderSelectorIdentidad';
 import { useSession } from './hooks/useSession';
+import { useEvaluacion } from './hooks/useEvaluacion';
+import { ListaCasosPrueba } from './components/evaluacion/ListaCasosPrueba';
+import { FormularioEvaluacion } from './components/evaluacion/FormularioEvaluacion';
+import { VistaResultado } from './components/evaluacion/VistaResultado';
 
 type TabView = 'evaluacion' | 'umbrales' | 'auditoria';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabView>('evaluacion');
   const { backendConectado } = useSession();
+  const {
+    casos,
+    casoSeleccionado,
+    resultado,
+    evaluando,
+    error: errorEvaluacion,
+    seleccionarCaso,
+    ejecutarEvaluacion,
+    limpiarResultado,
+  } = useEvaluacion();
 
   return (
     <div className="app-container">
@@ -140,42 +154,29 @@ export const App: React.FC = () => {
 
         {/* Vista: Evaluación de Casos (F4) */}
         {activeTab === 'evaluacion' && (
-          <section className="card" id="vista-evaluacion">
-            <div className="card-header">
-              <div>
-                <h2 className="card-title">Módulo de Evaluación de Casos (F4)</h2>
-                <p className="card-subtitle">
-                  Evaluación determinista multimodal de solicitudes de reembolso médico basada en precedencia estricta.
-                </p>
-              </div>
-              <span className="badge badge-approved">Motor F4 Listo</span>
+          <div className="evaluacion-layout-grid" id="vista-evaluacion">
+            {/* Columna Izquierda: Catálogo de Casos Sintéticos y Formulario */}
+            <div className="evaluacion-col-left">
+              <ListaCasosPrueba
+                casos={casos}
+                casoSeleccionadoId={casoSeleccionado?.idCaso}
+                onSeleccionarCaso={seleccionarCaso}
+                deshabilitado={evaluando}
+              />
+              <FormularioEvaluacion
+                caso={casoSeleccionado}
+                evaluando={evaluando}
+                onEjecutarEvaluacion={() => ejecutarEvaluacion()}
+                onLimpiar={limpiarResultado}
+                error={errorEvaluacion}
+              />
             </div>
 
-            <div style={{ padding: '1rem 0', color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-              <p style={{ marginBottom: '1rem' }}>
-                Este módulo acogerá los componentes <code>ListaCasosPrueba</code>, <code>FormularioEvaluacion</code>,{' '}
-                <code>VistaResultado</code> y <code>AlertaRiesgoAlto</code> (tareas T013, T018, T019, T023).
-              </p>
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px dashed var(--color-border)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '2rem',
-                  textAlign: 'center',
-                }}
-              >
-                <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>📋</div>
-                <h3 style={{ fontSize: '1.05rem', color: '#ffffff', marginBottom: '0.5rem' }}>
-                  Armazón de Evaluación Preparado
-                </h3>
-                <p style={{ fontSize: '0.85rem', maxWidth: '600px', margin: '0 auto' }}>
-                  Listo para integrar los expedientes sintéticos desde el contrato compartido{' '}
-                  <code>src/shared/types.ts</code> mediante <code>evaluacionApi.obtenerCasos()</code>.
-                </p>
-              </div>
+            {/* Columna Derecha: Dictamen del Motor de Decisión F4 */}
+            <div className="evaluacion-col-right">
+              <VistaResultado resultado={resultado} cargando={evaluando} />
             </div>
-          </section>
+          </div>
         )}
 
         {/* Vista: Gestión de Umbrales (F5) */}

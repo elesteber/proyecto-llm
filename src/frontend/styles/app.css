@@ -499,7 +499,501 @@ body {
   text-align: center;
 }
 
+/* ==========================================================================
+   Módulo de Evaluación de Casos F4 (T012, T013, T018, T019, T023)
+   ========================================================================== */
+
+/* Grilla principal de evaluación: catálogo/formulario y dictamen */
+.evaluacion-layout-grid {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(420px, 1.25fr);
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.evaluacion-col-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.evaluacion-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Catálogo de Casos Sintéticos (T018) */
+.cases-catalog-container {
+  background: var(--color-bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-md);
+}
+
+.catalog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+}
+
+.catalog-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.catalog-count {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-glass);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.cases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.cases-list::-webkit-scrollbar {
+  width: 5px;
+}
+.cases-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.case-item-card {
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.case-item-card:hover {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.case-item-card.selected {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+.case-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.case-item-id {
+  font-family: var(--font-family-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #93c5fd;
+}
+
+.badge-fraud-warning {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+.selected-indicator {
+  font-size: 0.72rem;
+  color: var(--color-approved);
+  font-weight: 600;
+}
+
+.case-item-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.35;
+}
+
+.case-signals-chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+}
+
+.signal-mini-chip {
+  font-size: 0.7rem;
+  font-family: var(--font-family-mono);
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-sm);
+}
+
+.chip-ok {
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.chip-below {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+/* Formulario de Evaluación (T019) */
+.evaluation-form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.case-id-badge {
+  font-family: var(--font-family-mono);
+  font-size: 0.78rem;
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.case-overview {
+  background: rgba(10, 15, 29, 0.6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.case-prestacion-text {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  margin-bottom: 0.85rem;
+}
+
+.input-signals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.input-signal-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.signal-label {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.signal-score {
+  font-size: 1.15rem;
+  font-family: var(--font-family-mono);
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.signal-threshold {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.signal-fraud-status {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.15rem 0;
+}
+
+.fraud-active {
+  color: #ef4444;
+}
+
+.fraud-inactive {
+  color: #10b981;
+}
+
+.form-actions-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.4rem;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+  margin-right: 0.4rem;
+}
+
+/* Vista de Resultado de Evaluación (T013) */
+.result-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.score-hero-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.7) 0%, rgba(17, 24, 39, 0.9) 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.score-display {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.score-number {
+  font-size: 3rem;
+  font-weight: 800;
+  font-family: var(--font-family-mono);
+  color: #ffffff;
+  line-height: 1;
+}
+
+.score-total {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.score-explanation {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.motivo-label {
+  font-size: 0.9rem;
+  color: #93c5fd;
+}
+
+.motivo-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Señales bajo mínimo */
+.warning-signals-box {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+}
+
+.warning-signals-title {
+  font-size: 0.8rem;
+  color: #fcd34d;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.warning-signals-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.warning-signal-chip {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+/* Desglose puntual */
+.signals-breakdown-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.signal-bars-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.signal-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.signal-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.signal-name {
+  color: var(--color-text-secondary);
+}
+
+.signal-value {
+  font-family: var(--font-family-mono);
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fill-good {
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+}
+
+.fill-warning {
+  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.operator-message-box {
+  background: rgba(6, 182, 212, 0.08);
+  border-left: 3px solid var(--color-info);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 0.85rem 1rem;
+}
+
+.operator-message-title {
+  font-size: 0.75rem;
+  color: #67e8f9;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.operator-message-content {
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+.result-metadata {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  padding-top: 0.75rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.empty-state-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.empty-state-title {
+  font-size: 1.15rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  gap: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
 /* Responsive */
+@media (max-width: 992px) {
+  .evaluacion-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .header-content {
     flex-direction: column;
@@ -511,4 +1005,8 @@ body {
   .metrics-grid {
     grid-template-columns: 1fr;
   }
+  .input-signals-grid {
+    grid-template-columns: 1fr;
+  }
 }
+
