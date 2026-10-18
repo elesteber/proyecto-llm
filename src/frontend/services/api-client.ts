@@ -11,6 +11,7 @@ import type {
   ResultadoEvaluacion,
   RespuestaEvaluarCaso,
   ElementoHistorialEvaluacion,
+  ResultadoReevaluacionHistorica,
   ElementoHistorialVersionUmbrales,
   VersionUmbralesResumida,
   IdentidadSimulada,
@@ -244,15 +245,15 @@ export const evaluacionApi = {
   /**
    * Obtiene la lista histórica de auditoría de casos evaluados
    */
-  async obtenerHistorial(): Promise<ElementoHistorialEvaluacion[]> {
-    return request<ElementoHistorialEvaluacion[]>('/api/evaluacion/historial');
+  async obtenerHistorial(): Promise<{ total: number; evaluaciones: ElementoHistorialEvaluacion[] }> {
+    return request<{ total: number; evaluaciones: ElementoHistorialEvaluacion[] }>('/api/evaluacion/historial');
   },
 
   /**
    * Reevalúa deterministamente un expediente histórico contra la versión original de umbrales
    */
-  async reevaluarHistorico(idEvaluacion: string): Promise<ResultadoEvaluacion> {
-    return request<ResultadoEvaluacion>('/api/evaluacion/reevaluar-historico', {
+  async reevaluarHistorico(idEvaluacion: string): Promise<ResultadoReevaluacionHistorica> {
+    return request<ResultadoReevaluacionHistorica>('/api/evaluacion/reevaluar-historico', {
       method: 'POST',
       body: JSON.stringify({ idEvaluacion }),
     });

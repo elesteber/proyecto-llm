@@ -9,6 +9,7 @@ import { useUmbrales } from './hooks/useUmbrales';
 import { ListaCasosPrueba } from './components/evaluacion/ListaCasosPrueba';
 import { FormularioEvaluacion } from './components/evaluacion/FormularioEvaluacion';
 import { VistaResultado } from './components/evaluacion/VistaResultado';
+import { HistorialEvaluaciones } from './components/evaluacion/HistorialEvaluaciones';
 
 // Componentes F5
 import { PanelUmbralesVigentes } from './components/umbrales/PanelUmbralesVigentes';
@@ -275,7 +276,14 @@ const AppContent: React.FC = () => {
           </div>
         )}
 
-        {/* Vista 3: Historial Inmutable y Auditoría (US6) */}
+        {/* Vista 3: Historial de Dictámenes y Reproducibilidad Determinista (T044, US6 / F4) */}
+        {activeTab === 'historial-evaluaciones' && (
+          <div id="vista-historial-evaluaciones">
+            <HistorialEvaluaciones />
+          </div>
+        )}
+
+        {/* Vista 4: Historial Inmutable de Versiones de Umbrales (US6 / F5) */}
         {activeTab === 'auditoria' && (
           <div id="vista-auditoria">
             <HistorialVersiones

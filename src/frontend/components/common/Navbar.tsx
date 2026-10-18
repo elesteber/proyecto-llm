@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-export type NavTabId = 'evaluacion' | 'umbrales' | 'auditoria';
+export type NavTabId = 'evaluacion' | 'umbrales' | 'historial-evaluaciones' | 'auditoria';
 
 interface NavbarProps {
   activeTab: NavTabId;
@@ -48,13 +48,24 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       <button
         type="button"
+        id="nav-tab-historial-evaluaciones"
+        className={`tab-btn ${activeTab === 'historial-evaluaciones' ? 'active' : ''}`}
+        onClick={() => onSelectTab('historial-evaluaciones')}
+        aria-current={activeTab === 'historial-evaluaciones' ? 'page' : undefined}
+      >
+        <span className="tab-icon" aria-hidden="true">📜</span>
+        <span>Historial de Dictámenes (F4)</span>
+      </button>
+
+      <button
+        type="button"
         id="nav-tab-auditoria"
         className={`tab-btn ${activeTab === 'auditoria' ? 'active' : ''}`}
         onClick={() => onSelectTab('auditoria')}
         aria-current={activeTab === 'auditoria' ? 'page' : undefined}
       >
         <span className="tab-icon" aria-hidden="true">🏛️</span>
-        <span>Historial y Auditoría</span>
+        <span>Historial de Versiones (F5)</span>
       </button>
     </nav>
   );

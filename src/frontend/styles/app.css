@@ -1533,4 +1533,104 @@ body {
   }
 }
 
+/* Estilos para Vista Historial de Evaluaciones y Reevaluación Determinista (T044, US6, SC-004) */
+.history-evaluations-card {
+  margin-bottom: 2rem;
+}
+
+.history-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.4rem 0.85rem;
+  min-width: 280px;
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.reevaluacion-box {
+  margin-top: 0.75rem;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.15rem;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.reevaluacion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reevaluacion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  font-size: 0.825rem;
+  margin-top: 0.5rem;
+}
+
+.reevaluacion-metric {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.reevaluacion-metric-label {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.reevaluacion-metric-val {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.signal-pill {
+  display: inline-flex;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+}
+
+.badge-high-risk {
+  background: var(--color-high-risk-bg);
+  color: #fca5a5;
+  border: 1px solid var(--color-high-risk-border);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
