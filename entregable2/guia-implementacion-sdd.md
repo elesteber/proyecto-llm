@@ -428,6 +428,31 @@ git status
 - **Análisis previo del equipo:** Con las ponderaciones asumidas (0.40, 0.40, 0.20) y los mínimos individuales (70, 70, 60), el puntaje mínimo alcanzable sin que ninguna señal caiga bajo su mínimo es de 68 puntos (0.40 * 70 + 0.40 * 70 + 0.20 * 60 = 28 + 28 + 12 = 68). Por lo tanto, cualquier caso con puntaje inferior a 60 presenta forzosamente al menos una señal bajo su mínimo propio. Dado que por la regla de precedencia estricta el motivo es siempre `'senal_bajo_minimo'` y que por DEC-08 todo caso derivado va a revisión asistida (sin rechazo automático), el valor 60 no operaba como corte de decisión.
 - **Resolución confirmada en `/speckit-clarify` (Pregunta 3, 14-10-2026):** Se mantiene formalmente como **`umbralRiesgoAlto`** (60 por defecto en F5 y versionado) exigiendo obligatoriamente en F5 la validación estricta de consistencia `umbralAprobacion > umbralRiesgoAlto` (90 > 60), preservando el rango de derivación ordinaria (60 a 89.9 puntos). En F4, el caso siempre se deriva (`decision: 'DERIVADO_REVISION'`) con cero rechazos automáticos (`DEC-08`, `DEC-E2-10(b)`). La advertencia `riesgoAltoRechazo: true` se activa si se cumple al menos una de dos condiciones: dos o más señales bajo mínimo O `scoreGlobal < umbralRiesgoAlto`. El motivo de derivación lo fija el orden de evaluación de RN-04: con los valores por defecto (mínimos 70/70/60 y pesos 0.40/0.40/0.20), un puntaje < 60 implica forzosamente al menos una señal bajo mínimo y por ende `motivo: 'senal_bajo_minimo'`, salvo que haya alerta de fraude, que tiene precedencia (`alerta_fraude`); con otra configuración de parámetros puede ser `motivo: 'puntaje_bajo_umbral'`. Cierra formalmente la duda y queda consignada en `docs/entregable2/clarificaciones.md`.
 
+### 3.3 Registro de Ejecución Real de la Fase de Implementación (`/speckit-implement`)
+
+La fase de implementación para el backend de MIRA fue ejecutada siguiendo estrictamente las directivas de SDD, la especificación consolidada y la constitución:
+
+1. **Estrategia de Ramificación:**  
+   Se creó y utilizó la rama técnica combinada `feat/backend-frontend` a partir de la rama `feat/frontend-ui`, asegurando que el backend se implemente en consonancia directa con las vistas React, el proxy inverso y los contratos formalizados.
+2. **Alcance y Ejecución por Fases (Fases 0 a 6):**  
+   Rodrigo Guerrero completó las **23 tareas de backend** bajo el ciclo TDD (pruebas rojas fallidas primero, seguidas de la implementación en verde):
+   - **Fase 0 (Infraestructura Base):** `T001` (dependencias y scripts), `T004` (DDL SQLite, triggers inmutables y claves foráneas activas con PRAGMA), `T005` (catálogo `data/casos_prueba.json` y script de siembra idempotente v1), `T006` (servidor Express modular desacoplado de listen con middlewares), `T031`/`T034` (sesión simulada con cookie `mira_session` y 5 identidades fijas), `T051` (repositorio `umbrales-repo.ts`).
+   - **Fase 1 (Motor F4 - US1):** `T008`/`T009` (pruebas unitarias e integración de fraude y señal bajo mínimo), `T010`/`T011` (motor `evaluacion-engine.ts` y controlador/rutas con inserción inmutable en auditoría).
+   - **Fase 2 (Aprobación Automática - US2 / MVP):** `T014`/`T015` (pruebas unitarias e integración de cálculo ponderado), `T016`/`T017` (lógica de aprobación `score >= 90` y endpoint `GET /api/evaluacion/casos`).
+   - **Fase 3 (Advertencia de Riesgo Alto - US3):** `T020`/`T021` (pruebas de `riesgoAltoRechazo: true` y garantía de cero rechazo), `T022` (cálculo de riesgo alto con salidas exclusivas `APROBADO_AUTOMATICO` / `DERIVADO_REVISION`).
+   - **Fase 4 (Gestión de Umbrales en Borrador - US4):** `T024`/`T025` (pruebas de validación matemática y gestión de borradores), `T026`/`T027` (servicio y endpoints de F5 con índice único de 1 borrador por flujo).
+   - **Fase 5 (Doble Control y Resolución Formal - US5):** `T032`/`T033` (pruebas de segregación de roles y desestimación), `T035`/`T036` (resolución formal con bloqueo estricto de auto-aprobación `aprobador !== proponente` retornando 403 Forbidden).
+   - **Fase 6 (Historial y Reproducibilidad - US6):** `T039` (pruebas de inmutabilidad en triggers SQLite y claves foráneas activas), `T041` (historial cronológico de versiones) y `T042` (reevaluación histórica determinista).
+3. **Regla de Commits Atómicos (Principio IX):**  
+   Cada tarea se verificó en verde con la suite automatizada y se commiteó individualmente en modo imperativo con el formato canónico `[TASK-xxx] Descripción`.
+4. **Intervenciones Humanas Aisladas (`[HUMAN-FIX]`):**  
+   - `86c0bad`: Aislamiento del estado de base de datos en tests de repositorio y API limpiando versiones $> 1$ en `beforeEach`/`afterAll`.
+   - `d63b5e8`: Actualización de `tsconfig.json` (`moduleResolution: "bundler"`, `jsx: "react-jsx"`) y tipado de cookies en `session-api.test.ts`, erradicando errores en el IDE y logrando `npx tsc --noEmit` en código 0 sin errores.
+5. **Artefacto Operativo de Pruebas:**  
+   Se generó la guía operativa y de procedimientos [docs/entregable2/guia_Procedimiento_MiraWeb.md](guia_Procedimiento_MiraWeb.md) detallando las pruebas de consola, navegación interactiva y llamadas a la API REST.
+6. **Estado de Pruebas Automatizadas:**  
+   **49 pruebas pasando al 100%** en Vitest distribuidas en 7 suites de prueba sin regresiones ni alertas de TypeScript.
+
 ---
 
 ## 4. 👤 Decisiones de Diseño Durante la Implementación
@@ -565,22 +590,22 @@ Lun 19:          Ensayo Demo (v2.0), Entrega 14:00 CLT, Exposición Oral [POR CO
   - [x] **Alineación del equipo y acuerdos de diseño:** Confirmación unánime de `DEC-E2-02`, `DEC-E2-07`, `DEC-E2-08`, `DEC-E2-09` y `DEC-E2-10`. Se formaliza que no se retira el umbral de 60 sino que opera como `umbralRiesgoAlto` activando `riesgoAltoRechazo: boolean` sin rechazo automático (DEC-08).
   - [x] **Ejecución de `/speckit-constitution`:** Lester completó `.specify/memory/constitution.md` incorporando los principios rectores de E1 y el mandato: *"El sistema nunca rechaza automáticamente un caso; el máximo efecto es derivarlo, con advertencia de riesgo alto cuando corresponda"*.
   - [x] **Redacción de `/speckit-specify` para F5 y F4:** Una sola spec consolidada (DEC-E2-10(c)) con los casos de prueba de gastos médicos generada en `specs/001-f5-f4-umbrales-evaluacion/spec.md`.
-  - [ ] Rodrigo y Jorge congelan el contrato de interfaces preliminar con `umbralRiesgoAlto` y `riesgoAltoRechazo` en `src/shared/types.ts`: se congela tras aprobar el plan (commit [PLAN], Compuerta 3).
+  - [x] Rodrigo y Jorge congelan el contrato de interfaces preliminar con `umbralRiesgoAlto` y `riesgoAltoRechazo` en `src/shared/types.ts`: se congela tras aprobar el plan (commit [PLAN], Compuerta 3).
   - [x] **Ejecución y cierre de `/speckit-clarify`:** Rodrigo Guerrero (representante del cliente en la E2) ratificó formalmente los supuestos de mínimos 70/70/60, pesos 0,40/0,40/0,20, selector de 5 identidades fijas y regla `umbralAprobacion > umbralRiesgoAlto`, documentados en `docs/entregable2/clarificaciones.md` (Compuerta 2: aprobada por el cliente y revisada por Lester; pendiente revisión de Jorge y Angel y confirmación de §7.1(f)).
   - [ ] Angel y Lester avanzan en la redacción de fichas DEC y exportación de `docs/entregable2/backlog.md`.
 - **Miércoles 14 a Viernes 16 de Octubre (Días 2 a 4 — Sprint de Implementación de Miércoles a Viernes):**
   - **Miércoles 14 de Octubre (Día 2 — Plan Técnico, Tareas y Arranque):**
-    - [ ] Ejecutar `/speckit-plan` (arquitectura SQLite, Express, React, declaración de reproducibilidad).
-    - [ ] 👤 **Revisión humana del plan técnico (Compuerta Crítica).**
-    - [ ] Ejecutar `/speckit-tasks` (tareas etiquetadas `[F5]` y `[F4]`) y auditoría de consistencia con `/speckit-analyze`.
-    - [ ] Arranque de código: Rodrigo inicializa base de datos SQLite y endpoints base; Jorge estructura layout de componentes React.
+    - [x] Ejecutar `/speckit-plan` (arquitectura SQLite, Express, React, declaración de reproducibilidad).
+    - [x] 👤 **Revisión humana del plan técnico (Compuerta Crítica):** Aprobada en PR #16 por Rodrigo y Jorge.
+    - [x] Ejecutar `/speckit-tasks` (tareas etiquetadas `[F5]` y `[F4]`) y auditoría de consistencia con `/speckit-analyze`.
+    - [x] Arranque de código: Rodrigo inicializa base de datos SQLite y endpoints base; Jorge estructura layout de componentes React.
   - **Jueves 15 de Octubre (Día 3 — Implementación Núcleo y Tests Unitarios):**
-    - [ ] Rodrigo implementa lógica de motor determinista de F4 (precedencia estricta de motivo y cálculo de `riesgoAltoRechazo`) y CRUD de umbrales F5 con versionado inmutable.
-    - [ ] Jorge implementa pantallas React en español: configuración de umbrales con flujo Diseñador propone / Administrador aprueba (F5) y evaluación con advertencia visual de riesgo alto sin usar palabra "rechazado" (F4).
-    - [ ] Lester implementa tests unitarios en Vitest: Casos 1 a 6 y prueba directa de dos señales bajo mínimo.
+    - [x] Rodrigo implementa lógica de motor determinista de F4 (precedencia estricta de motivo y cálculo de `riesgoAltoRechazo`) y CRUD de umbrales F5 con versionado inmutable (Fases 0 a 6 completadas).
+    - [x] Jorge implementa pantallas React en español: configuración de umbrales con flujo Diseñador propone / Administrador aprueba (F5) y evaluación con advertencia visual de riesgo alto sin usar palabra "rechazado" (F4).
+    - [x] Lester y Rodrigo implementan tests unitarios e integración en Vitest: Casos 1 a 6, fraude, mínimos y doble control (49 tests PASS).
     - [ ] Angel inicia redacción de secciones 6.2 y 6.3 del informe.
   - **Viernes 16 de Octubre (Día 4 — Integración, E2E y Prueba Extra-funcional Medible):**
-    - [ ] Conectar frontend con backend. Evaluar la suite de casos de prueba en la interfaz web de punta a punta.
+    - [x] Conectar frontend con backend en rama combinada `feat/backend-frontend`. Evaluar la suite de casos de prueba en la interfaz web de punta a punta.
     - [ ] Lester y Jorge ejecutan suite Playwright para recorrido E2E.
     - [ ] **Lester ejecuta la prueba extra-funcional medible (H-14):** Test automatizado que reevalúa casos históricos contra versiones de umbrales guardadas, verificando 100% de reproducibilidad determinista.
     - [ ] Angel avanza secciones 6.4 y 6.5 del informe.
