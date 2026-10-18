@@ -1,0 +1,42 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Compilación y artefactos de distribución
+dist/
+dist-ssr/
+build/
+*.local
+
+# Variables de entorno y secretos (Principio VII y R-10)
+.env
+.env.*
+!.env.example
+
+# Base de datos SQLite local
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# Pruebas y cobertura
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# Editor y sistema operativo
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db

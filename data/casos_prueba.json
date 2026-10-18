@@ -1,0 +1,92 @@
+[
+  {
+    "idCaso": "CASO-MED-001",
+    "prestacion": "Consulta médica de medicina general (45.000 CLP) [guía §2.d]",
+    "senales": {
+      "autenticidad_documentos": 95.0,
+      "cruce_fuentes": 95.0,
+      "coherencia_solicitud": 90.0,
+      "alertaFraudeActiva": false
+    },
+    "resultadoEsperado": {
+      "decision": "APROBADO_AUTOMATICO",
+      "motivo": "aprobado",
+      "riesgoAltoRechazo": false
+    }
+  },
+  {
+    "idCaso": "CASO-MED-002",
+    "prestacion": "Exámenes de laboratorio de sangre (120.000 CLP) [guía §2.d]",
+    "senales": {
+      "autenticidad_documentos": 100.0,
+      "cruce_fuentes": 100.0,
+      "coherencia_solicitud": 55.0,
+      "alertaFraudeActiva": false
+    },
+    "resultadoEsperado": {
+      "decision": "DERIVADO_REVISION",
+      "motivo": "senal_bajo_minimo",
+      "riesgoAltoRechazo": false
+    }
+  },
+  {
+    "idCaso": "CASO-MED-003",
+    "prestacion": "Reembolso de medicamentos de alto costo (280.000 CLP) [guía §2.d]",
+    "senales": {
+      "autenticidad_documentos": 95.0,
+      "cruce_fuentes": 95.0,
+      "coherencia_solicitud": 90.0,
+      "alertaFraudeActiva": true
+    },
+    "resultadoEsperado": {
+      "decision": "DERIVADO_REVISION",
+      "motivo": "alerta_fraude",
+      "riesgoAltoRechazo": false
+    }
+  },
+  {
+    "idCaso": "CASO-MED-004",
+    "prestacion": "Procedimiento ambulatorio (60.000 CLP) [guía §2.d]",
+    "senales": {
+      "autenticidad_documentos": 40.0,
+      "cruce_fuentes": 40.0,
+      "coherencia_solicitud": 60.0,
+      "alertaFraudeActiva": false
+    },
+    "resultadoEsperado": {
+      "decision": "DERIVADO_REVISION",
+      "motivo": "senal_bajo_minimo",
+      "riesgoAltoRechazo": true
+    }
+  },
+  {
+    "idCaso": "CASO-MED-005",
+    "prestacion": "Consulta médica con especialista (50.000 CLP) [guía §2.d]",
+    "senales": {
+      "autenticidad_documentos": 75.0,
+      "cruce_fuentes": 75.0,
+      "coherencia_solicitud": 75.0,
+      "alertaFraudeActiva": false
+    },
+    "resultadoEsperado": {
+      "decision": "DERIVADO_REVISION",
+      "motivo": "puntaje_bajo_umbral",
+      "riesgoAltoRechazo": false
+    }
+  },
+  {
+    "idCaso": "CASO-MED-006",
+    "prestacion": "Reembolso de exámenes complejos con documentación ilegible (95.000 CLP) [guía §2.d]",
+    "senales": {
+      "autenticidad_documentos": 0.0,
+      "cruce_fuentes": 70.0,
+      "coherencia_solicitud": 60.0,
+      "alertaFraudeActiva": false
+    },
+    "resultadoEsperado": {
+      "decision": "DERIVADO_REVISION",
+      "motivo": "senal_bajo_minimo",
+      "riesgoAltoRechazo": true
+    }
+  }
+]

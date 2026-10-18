@@ -165,6 +165,25 @@ export interface ElementoHistorialEvaluacion {
   timestamp: string;
 }
 
+// contracts/api-evaluacion-f4.md:242-259 (ResultadoReevaluacionHistorica: respuesta de POST /api/evaluacion/reevaluar-historico)
+export interface ResultadoReevaluacionHistorica {
+  idEvaluacionOriginal: string;
+  versionUmbralesAplicada: number;
+  resultadoReevaluacion: {
+    scoreGlobal: number;
+    decision: DecisionSistema;
+    motivo: MotivoDecision;
+    riesgoAltoRechazo: boolean;
+  };
+  reproducibilidadDeterminista: {
+    puntajeCoincide: boolean;
+    decisionCoincide: boolean;
+    motivoCoincide: boolean;
+    riesgoAltoCoincide: boolean;
+    consistencia100Porciento: boolean;
+  };
+}
+
 // contracts/api-umbrales-f5.md:54-70 (ElementoHistorialVersionUmbrales: ítem del array de versiones en historial de umbrales)
 export interface ElementoHistorialVersionUmbrales {
   version: number;

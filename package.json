@@ -1,0 +1,53 @@
+{
+  "name": "proyecto-llm",
+  "version": "1.0.0",
+  "description": "**Caso MIRA**",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -p \"[{name}]\" -n \"BACK,FRONT\" -c \"yellow.bold,cyan.bold\" \"tsx watch src/backend/server.ts\" \"vite --config src/frontend/vite.config.ts\"",
+    "dev:backend": "tsx watch src/backend/server.ts",
+    "dev:frontend": "vite --config src/frontend/vite.config.ts",
+    "build": "vite build --config src/frontend/vite.config.ts",
+    "db:seed": "tsx src/backend/db/seeds/initial-seed.ts",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:reproducibility": "vitest run tests/reproducibility",
+    "test:e2e": "playwright test --config tests/playwright.config.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elesteber/proyecto-llm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elesteber/proyecto-llm/issues"
+  },
+  "homepage": "https://github.com/elesteber/proyecto-llm#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/supertest": "^7.2.1",
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^10.0.6",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}
