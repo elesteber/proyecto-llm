@@ -34,7 +34,9 @@ describe('Gestión de Sesión Simulada (API /api/session)', () => {
       rol: 'Administrador',
     });
     expect(res.headers['set-cookie']).toBeDefined();
-    const cookieHeader = res.headers['set-cookie'].find((c: string) => c.startsWith('mira_session='));
+    const rawCookies = res.headers['set-cookie'];
+    const cookieList = Array.isArray(rawCookies) ? rawCookies : [rawCookies as string];
+    const cookieHeader = cookieList.find((c: string) => c.startsWith('mira_session='));
     expect(cookieHeader).toBeDefined();
     expect(cookieHeader).toContain('Administrador%201');
   });
