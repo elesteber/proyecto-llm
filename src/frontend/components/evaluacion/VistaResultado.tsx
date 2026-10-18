@@ -6,15 +6,16 @@
  */
 
 import React from 'react';
-import type { RespuestaEvaluarCaso, MotivoDecision } from '../../../shared/types';
+import type { RespuestaEvaluarCaso, MotivoDecision, UmbralesFlujo } from '../../../shared/types';
 import { AlertaRiesgoAlto } from './AlertaRiesgoAlto';
 
 interface VistaResultadoProps {
   resultado: RespuestaEvaluarCaso | null;
   cargando?: boolean;
+  vigente?: UmbralesFlujo | null;
 }
 
-export const VistaResultado: React.FC<VistaResultadoProps> = ({ resultado, cargando }) => {
+export const VistaResultado: React.FC<VistaResultadoProps> = ({ resultado, cargando, vigente }) => {
   if (cargando) {
     return (
       <div className="card result-card loading-state">
@@ -146,13 +147,15 @@ export const VistaResultado: React.FC<VistaResultadoProps> = ({ resultado, carga
           {/* Autenticidad */}
           <div className="signal-bar-item">
             <div className="signal-bar-header">
-              <span className="signal-name">Autenticidad Documental (Peso: 40%)</span>
+              <span className="signal-name">
+                Autenticidad Documental (Peso: {Math.round((vigente?.pesoAutenticidad ?? 0.4) * 100)}% | Mínimo: {vigente?.minimoAutenticidad ?? 70})
+              </span>
               <span className="signal-value">{resultado.desgloseComponentes.autenticidad} / 100</span>
             </div>
             <div className="progress-track">
               <div
                 className={`progress-fill ${
-                  resultado.desgloseComponentes.autenticidad < 70 ? 'fill-warning' : 'fill-good'
+                  resultado.senalesBajoMinimo?.includes('autenticidad_documentos') ? 'fill-warning' : 'fill-good'
                 }`}
                 style={{ width: `${Math.min(100, Math.max(0, resultado.desgloseComponentes.autenticidad))}%` }}
               />
@@ -162,13 +165,15 @@ export const VistaResultado: React.FC<VistaResultadoProps> = ({ resultado, carga
           {/* Cruce de fuentes */}
           <div className="signal-bar-item">
             <div className="signal-bar-header">
-              <span className="signal-name">Cruce de Fuentes (Peso: 40%)</span>
+              <span className="signal-name">
+                Cruce de Fuentes (Peso: {Math.round((vigente?.pesoCruceFuentes ?? 0.4) * 100)}% | Mínimo: {vigente?.minimoCruceFuentes ?? 70})
+              </span>
               <span className="signal-value">{resultado.desgloseComponentes.cruceFuentes} / 100</span>
             </div>
             <div className="progress-track">
               <div
                 className={`progress-fill ${
-                  resultado.desgloseComponentes.cruceFuentes < 70 ? 'fill-warning' : 'fill-good'
+                  resultado.senalesBajoMinimo?.includes('cruce_fuentes') ? 'fill-warning' : 'fill-good'
                 }`}
                 style={{ width: `${Math.min(100, Math.max(0, resultado.desgloseComponentes.cruceFuentes))}%` }}
               />
@@ -178,13 +183,15 @@ export const VistaResultado: React.FC<VistaResultadoProps> = ({ resultado, carga
           {/* Coherencia */}
           <div className="signal-bar-item">
             <div className="signal-bar-header">
-              <span className="signal-name">Coherencia de la Solicitud (Peso: 20%)</span>
+              <span className="signal-name">
+                Coherencia de la Solicitud (Peso: {Math.round((vigente?.pesoCoherencia ?? 0.2) * 100)}% | Mínimo: {vigente?.minimoCoherencia ?? 60})
+              </span>
               <span className="signal-value">{resultado.desgloseComponentes.coherencia} / 100</span>
             </div>
             <div className="progress-track">
               <div
                 className={`progress-fill ${
-                  resultado.desgloseComponentes.coherencia < 60 ? 'fill-warning' : 'fill-good'
+                  resultado.senalesBajoMinimo?.includes('coherencia_solicitud') ? 'fill-warning' : 'fill-good'
                 }`}
                 style={{ width: `${Math.min(100, Math.max(0, resultado.desgloseComponentes.coherencia))}%` }}
               />

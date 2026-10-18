@@ -231,12 +231,17 @@ const AppContent: React.FC = () => {
                 onEjecutarEvaluacion={() => ejecutarEvaluacion()}
                 onLimpiar={limpiarResultado}
                 error={errorEvaluacion}
+                vigente={vigente}
               />
             </div>
 
             {/* Columna Derecha: Dictamen del Motor de Decisión F4 */}
             <div className="evaluacion-col-right">
-              <VistaResultado resultado={resultado} cargando={evaluando} />
+              <VistaResultado
+                resultado={resultado}
+                cargando={evaluando}
+                vigente={vigente}
+              />
             </div>
           </div>
         )}

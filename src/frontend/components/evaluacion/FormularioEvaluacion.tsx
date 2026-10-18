@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import type { CasoPrueba } from '../../../shared/types';
+import type { CasoPrueba, UmbralesFlujo } from '../../../shared/types';
 
 interface FormularioEvaluacionProps {
   caso: CasoPrueba | null;
@@ -12,6 +12,7 @@ interface FormularioEvaluacionProps {
   onEjecutarEvaluacion: () => void;
   onLimpiar?: () => void;
   error?: string | null;
+  vigente?: UmbralesFlujo | null;
 }
 
 export const FormularioEvaluacion: React.FC<FormularioEvaluacionProps> = ({
@@ -20,6 +21,7 @@ export const FormularioEvaluacion: React.FC<FormularioEvaluacionProps> = ({
   onEjecutarEvaluacion,
   onLimpiar,
   error,
+  vigente,
 }) => {
   if (!caso) {
     return (
@@ -32,6 +34,13 @@ export const FormularioEvaluacion: React.FC<FormularioEvaluacionProps> = ({
   }
 
   const { senales } = caso;
+  const minAutenticidad = vigente ? vigente.minimoAutenticidad : 70;
+  const minCruceFuentes = vigente ? vigente.minimoCruceFuentes : 70;
+  const minCoherencia = vigente ? vigente.minimoCoherencia : 60;
+
+  const bajoMinAutenticidad = senales.autenticidad_documentos < minAutenticidad;
+  const bajoMinCruce = senales.cruce_fuentes < minCruceFuentes;
+  const bajoMinCoherencia = senales.coherencia_solicitud < minCoherencia;
 
   return (
     <div className="card evaluation-form-card" id="formulario-evaluacion-caso">
@@ -42,7 +51,9 @@ export const FormularioEvaluacion: React.FC<FormularioEvaluacionProps> = ({
             Expediente Preparado para Evaluación
           </h3>
         </div>
-        <span className="badge badge-info">F4 Motor Listo</span>
+        <span className="badge badge-info">
+          {vigente ? `Política Activa v${vigente.version}` : 'F4 Motor Listo'}
+        </span>
       </div>
 
       <div className="case-overview">
@@ -50,24 +61,30 @@ export const FormularioEvaluacion: React.FC<FormularioEvaluacionProps> = ({
           <strong>Prestación Médica:</strong> {caso.prestacion || 'Consulta / Reembolso Médico'}
         </p>
 
-        {/* Resumen de Señales de Insumo */}
+        {/* Resumen de Señales de Insumo con Mínimos Dinámicos de la Política Vigente */}
         <div className="input-signals-grid">
           <div className="input-signal-item">
             <span className="signal-label">Autenticidad</span>
             <span className="signal-score">{senales.autenticidad_documentos} / 100</span>
-            <span className="signal-threshold">Mínimo: 70</span>
+            <span className="signal-threshold" style={{ color: bajoMinAutenticidad ? '#f87171' : undefined }}>
+              Mínimo: {minAutenticidad} {bajoMinAutenticidad ? '(Bajo mínimo)' : ''}
+            </span>
           </div>
 
           <div className="input-signal-item">
             <span className="signal-label">Cruce Fuentes</span>
             <span className="signal-score">{senales.cruce_fuentes} / 100</span>
-            <span className="signal-threshold">Mínimo: 70</span>
+            <span className="signal-threshold" style={{ color: bajoMinCruce ? '#f87171' : undefined }}>
+              Mínimo: {minCruceFuentes} {bajoMinCruce ? '(Bajo mínimo)' : ''}
+            </span>
           </div>
 
           <div className="input-signal-item">
             <span className="signal-label">Coherencia</span>
             <span className="signal-score">{senales.coherencia_solicitud} / 100</span>
-            <span className="signal-threshold">Mínimo: 60</span>
+            <span className="signal-threshold" style={{ color: bajoMinCoherencia ? '#f87171' : undefined }}>
+              Mínimo: {minCoherencia} {bajoMinCoherencia ? '(Bajo mínimo)' : ''}
+            </span>
           </div>
 
           <div className="input-signal-item">
