@@ -10,6 +10,7 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     fileParallelism: false,
+    exclude: ['**/node_modules/**', '**/dist/**', 'tests/e2e/**'],
     env: {
       DB_PATH: path.resolve(__dirname, './data/mira.test.db'),
     },
