@@ -1,16 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { getDatabase } from '@backend/db/database';
-import { initialSeed } from '@backend/db/seeds/initial-seed';
 import { UmbralesRepo } from '@backend/repositories/umbrales-repo';
+import { resetTestDb } from '../setup-test-db.js';
 
 describe('UmbralesRepo', () => {
   let repo: UmbralesRepo;
 
   beforeEach(() => {
-    // Asegurar siembra inicial en la base de datos de prueba/desarrollo
-    const db = getDatabase();
-    db.prepare('DELETE FROM umbrales_flujo WHERE version > 1').run();
-    initialSeed();
+    resetTestDb();
     repo = new UmbralesRepo();
   });
 

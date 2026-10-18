@@ -157,10 +157,14 @@ export const umbralesApi = {
     pesoCruceFuentes: number;
     pesoCoherencia: number;
   }): Promise<UmbralesFlujo> {
-    return request<UmbralesFlujo>('/api/umbrales/borrador', {
-      method: 'POST',
-      body: JSON.stringify(datos),
-    });
+    const res = await request<{ mensaje: string; borrador: UmbralesFlujo } | UmbralesFlujo>(
+      '/api/umbrales/borrador',
+      {
+        method: 'POST',
+        body: JSON.stringify(datos),
+      }
+    );
+    return 'borrador' in res && res.borrador ? res.borrador : (res as UmbralesFlujo);
   },
 
   /**
@@ -177,30 +181,42 @@ export const umbralesApi = {
     pesoCruceFuentes?: number;
     pesoCoherencia?: number;
   }): Promise<UmbralesFlujo> {
-    return request<UmbralesFlujo>('/api/umbrales/borrador', {
-      method: 'PUT',
-      body: JSON.stringify(datos),
-    });
+    const res = await request<{ mensaje: string; borrador: UmbralesFlujo } | UmbralesFlujo>(
+      '/api/umbrales/borrador',
+      {
+        method: 'PUT',
+        body: JSON.stringify(datos),
+      }
+    );
+    return 'borrador' in res && res.borrador ? res.borrador : (res as UmbralesFlujo);
   },
 
   /**
    * Aprueba formalmente el borrador activo y promueve a nueva versión vigente (Rol Administrador independiente)
    */
   async aprobarBorrador(idFlujo: string): Promise<VersionUmbralesResumida> {
-    return request<VersionUmbralesResumida>('/api/umbrales/borrador/aprobar', {
-      method: 'POST',
-      body: JSON.stringify({ idFlujo }),
-    });
+    const res = await request<{ mensaje: string; versionAprobada: VersionUmbralesResumida } | VersionUmbralesResumida>(
+      '/api/umbrales/borrador/aprobar',
+      {
+        method: 'POST',
+        body: JSON.stringify({ idFlujo }),
+      }
+    );
+    return 'versionAprobada' in res && res.versionAprobada ? res.versionAprobada : (res as VersionUmbralesResumida);
   },
 
   /**
    * Desestima el borrador activo conservando su número correlativo como inmutable (Rol Administrador independiente)
    */
   async desestimarBorrador(idFlujo: string): Promise<VersionUmbralesResumida> {
-    return request<VersionUmbralesResumida>('/api/umbrales/borrador/desestimar', {
-      method: 'POST',
-      body: JSON.stringify({ idFlujo }),
-    });
+    const res = await request<{ mensaje: string; versionDesestimada: VersionUmbralesResumida } | VersionUmbralesResumida>(
+      '/api/umbrales/borrador/desestimar',
+      {
+        method: 'POST',
+        body: JSON.stringify({ idFlujo }),
+      }
+    );
+    return 'versionDesestimada' in res && res.versionDesestimada ? res.versionDesestimada : (res as VersionUmbralesResumida);
   },
 };
 

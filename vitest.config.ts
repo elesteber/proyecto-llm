@@ -9,6 +9,11 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    fileParallelism: false,
+    env: {
+      DB_PATH: path.resolve(__dirname, './data/mira.test.db'),
+    },
+    setupFiles: ['./tests/setup-test-db.ts'],
   },
   resolve: {
     alias: {

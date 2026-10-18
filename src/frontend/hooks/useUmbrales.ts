@@ -125,8 +125,9 @@ export function useUmbrales(): UseUmbralesReturn {
           idFlujo,
           ...datos,
         });
-        setBorradorActivo(nuevoBorrador);
-        setMensajeExito(`Borrador de versión ${nuevoBorrador.version} registrado exitosamente.`);
+        const borradorFinal = (nuevoBorrador as any)?.borrador || nuevoBorrador;
+        setBorradorActivo(borradorFinal);
+        setMensajeExito(`Borrador de versión ${borradorFinal.version} registrado exitosamente.`);
         setBackendConectado(true);
         await cargarDatos();
         return true;
@@ -175,9 +176,11 @@ export function useUmbrales(): UseUmbralesReturn {
           idFlujo: borradorActivo.idFlujo,
           ...datos,
         });
-        setBorradorActivo(borradorActualizado);
-        setMensajeExito(`Borrador de versión ${borradorActualizado.version} actualizado correctamente.`);
+        const borradorFinal = (borradorActualizado as any)?.borrador || borradorActualizado;
+        setBorradorActivo(borradorFinal);
+        setMensajeExito(`Borrador de versión ${borradorFinal.version} actualizado correctamente.`);
         setBackendConectado(true);
+        await cargarDatos();
         return true;
       } catch {
         // Simulación desacoplada local

@@ -42,11 +42,12 @@ export const BandejaRevision: React.FC<BandejaRevisionProps> = ({
   }
 
   // Comprobación de Segregación de Funciones (D-04)
-  const esMismoUsuario =
-    borradorActivo.proponente.trim().toLowerCase() === usuarioActivo.nombre.trim().toLowerCase();
+  const proponente = borradorActivo.proponente || '';
+  const usuarioNombre = usuarioActivo?.nombre || '';
+  const esMismoUsuario = proponente.trim().toLowerCase() === usuarioNombre.trim().toLowerCase();
 
   // Comprobación de Rol Administrador
-  const esRolAdministrador = usuarioActivo.rol === 'Administrador';
+  const esRolAdministrador = usuarioActivo?.rol === 'Administrador';
 
   // Puede aprobar solo si es Administrador y NO es el proponente
   const puedeResolver = esRolAdministrador && !esMismoUsuario && !procesando;
@@ -72,8 +73,8 @@ export const BandejaRevision: React.FC<BandejaRevisionProps> = ({
             Revisión de Propuesta — Versión {borradorActivo.version} (BORRADOR)
           </h3>
           <span className="card-subtitle">
-            Propuesto por: <strong>{borradorActivo.proponente}</strong> el{' '}
-            {new Date(borradorActivo.fechaPropuesta).toLocaleString('es-CL')}
+            Propuesto por: <strong>{borradorActivo.proponente || 'Diseñador'}</strong> el{' '}
+            {borradorActivo.fechaPropuesta ? new Date(borradorActivo.fechaPropuesta).toLocaleString('es-CL') : 'Reciente'}
           </span>
         </div>
         <span className="badge badge-info">Rol Requerido: Administrador</span>
@@ -123,69 +124,69 @@ export const BandejaRevision: React.FC<BandejaRevisionProps> = ({
           <tbody>
             <tr>
               <td>Umbral Aprobación Automática</td>
-              <td>{vigente.umbralAprobacion.toFixed(1)}</td>
-              <td><strong>{borradorActivo.umbralAprobacion.toFixed(1)}</strong></td>
+              <td>{vigente.umbralAprobacion?.toFixed(1) ?? '90.0'}</td>
+              <td><strong>{borradorActivo.umbralAprobacion?.toFixed(1) ?? '—'}</strong></td>
               <td>
                 <span className={borradorActivo.umbralAprobacion !== vigente.umbralAprobacion ? 'diff-changed' : 'diff-equal'}>
-                  {borradorActivo.umbralAprobacion - vigente.umbralAprobacion > 0 ? '+' : ''}
-                  {(borradorActivo.umbralAprobacion - vigente.umbralAprobacion).toFixed(1)}
+                  {(borradorActivo.umbralAprobacion ?? 0) - (vigente.umbralAprobacion ?? 0) > 0 ? '+' : ''}
+                  {((borradorActivo.umbralAprobacion ?? 0) - (vigente.umbralAprobacion ?? 0)).toFixed(1)}
                 </span>
               </td>
             </tr>
             <tr>
               <td>Umbral de Riesgo Alto</td>
-              <td>{vigente.umbralRiesgoAlto.toFixed(1)}</td>
-              <td><strong>{borradorActivo.umbralRiesgoAlto.toFixed(1)}</strong></td>
+              <td>{vigente.umbralRiesgoAlto?.toFixed(1) ?? '60.0'}</td>
+              <td><strong>{borradorActivo.umbralRiesgoAlto?.toFixed(1) ?? '—'}</strong></td>
               <td>
                 <span className={borradorActivo.umbralRiesgoAlto !== vigente.umbralRiesgoAlto ? 'diff-changed' : 'diff-equal'}>
-                  {borradorActivo.umbralRiesgoAlto - vigente.umbralRiesgoAlto > 0 ? '+' : ''}
-                  {(borradorActivo.umbralRiesgoAlto - vigente.umbralRiesgoAlto).toFixed(1)}
+                  {(borradorActivo.umbralRiesgoAlto ?? 0) - (vigente.umbralRiesgoAlto ?? 0) > 0 ? '+' : ''}
+                  {((borradorActivo.umbralRiesgoAlto ?? 0) - (vigente.umbralRiesgoAlto ?? 0)).toFixed(1)}
                 </span>
               </td>
             </tr>
             <tr>
               <td>Mínimo Autenticidad</td>
-              <td>{vigente.minimoAutenticidad.toFixed(1)}</td>
-              <td><strong>{borradorActivo.minimoAutenticidad.toFixed(1)}</strong></td>
+              <td>{vigente.minimoAutenticidad?.toFixed(1) ?? '70.0'}</td>
+              <td><strong>{borradorActivo.minimoAutenticidad?.toFixed(1) ?? '—'}</strong></td>
               <td>
                 <span className={borradorActivo.minimoAutenticidad !== vigente.minimoAutenticidad ? 'diff-changed' : 'diff-equal'}>
-                  {(borradorActivo.minimoAutenticidad - vigente.minimoAutenticidad).toFixed(1)}
+                  {((borradorActivo.minimoAutenticidad ?? 0) - (vigente.minimoAutenticidad ?? 0)).toFixed(1)}
                 </span>
               </td>
             </tr>
             <tr>
               <td>Mínimo Cruce Fuentes</td>
-              <td>{vigente.minimoCruceFuentes.toFixed(1)}</td>
-              <td><strong>{borradorActivo.minimoCruceFuentes.toFixed(1)}</strong></td>
+              <td>{vigente.minimoCruceFuentes?.toFixed(1) ?? '70.0'}</td>
+              <td><strong>{borradorActivo.minimoCruceFuentes?.toFixed(1) ?? '—'}</strong></td>
               <td>
                 <span className={borradorActivo.minimoCruceFuentes !== vigente.minimoCruceFuentes ? 'diff-changed' : 'diff-equal'}>
-                  {(borradorActivo.minimoCruceFuentes - vigente.minimoCruceFuentes).toFixed(1)}
+                  {((borradorActivo.minimoCruceFuentes ?? 0) - (vigente.minimoCruceFuentes ?? 0)).toFixed(1)}
                 </span>
               </td>
             </tr>
             <tr>
               <td>Mínimo Coherencia</td>
-              <td>{vigente.minimoCoherencia.toFixed(1)}</td>
-              <td><strong>{borradorActivo.minimoCoherencia.toFixed(1)}</strong></td>
+              <td>{vigente.minimoCoherencia?.toFixed(1) ?? '60.0'}</td>
+              <td><strong>{borradorActivo.minimoCoherencia?.toFixed(1) ?? '—'}</strong></td>
               <td>
                 <span className={borradorActivo.minimoCoherencia !== vigente.minimoCoherencia ? 'diff-changed' : 'diff-equal'}>
-                  {(borradorActivo.minimoCoherencia - vigente.minimoCoherencia).toFixed(1)}
+                  {((borradorActivo.minimoCoherencia ?? 0) - (vigente.minimoCoherencia ?? 0)).toFixed(1)}
                 </span>
               </td>
             </tr>
             <tr>
               <td>Ponderaciones (Aut / Cruce / Coh)</td>
               <td>
-                {vigente.pesoAutenticidad.toFixed(2)} / {vigente.pesoCruceFuentes.toFixed(2)} / {vigente.pesoCoherencia.toFixed(2)}
+                {vigente.pesoAutenticidad?.toFixed(2) ?? '0.40'} / {vigente.pesoCruceFuentes?.toFixed(2) ?? '0.40'} / {vigente.pesoCoherencia?.toFixed(2) ?? '0.20'}
               </td>
               <td>
                 <strong>
-                  {borradorActivo.pesoAutenticidad.toFixed(2)} / {borradorActivo.pesoCruceFuentes.toFixed(2)} / {borradorActivo.pesoCoherencia.toFixed(2)}
+                  {borradorActivo.pesoAutenticidad?.toFixed(2) ?? '—'} / {borradorActivo.pesoCruceFuentes?.toFixed(2) ?? '—'} / {borradorActivo.pesoCoherencia?.toFixed(2) ?? '—'}
                 </strong>
               </td>
               <td>
                 <span className="diff-equal">
-                  Suma: {(borradorActivo.pesoAutenticidad + borradorActivo.pesoCruceFuentes + borradorActivo.pesoCoherencia).toFixed(2)}
+                  Suma: {((borradorActivo.pesoAutenticidad ?? 0) + (borradorActivo.pesoCruceFuentes ?? 0) + (borradorActivo.pesoCoherencia ?? 0)).toFixed(2)}
                 </span>
               </td>
             </tr>

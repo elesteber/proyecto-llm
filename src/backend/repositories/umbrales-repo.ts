@@ -23,10 +23,14 @@ function mapRowToUmbralesFlujo(row: any): UmbralesFlujo {
 }
 
 export class UmbralesRepo {
-  private db: Database.Database;
+  private customDb?: Database.Database;
 
   constructor(db?: Database.Database) {
-    this.db = db || getDatabase();
+    this.customDb = db;
+  }
+
+  private get db(): Database.Database {
+    return this.customDb || getDatabase();
   }
 
   obtenerVigente(idFlujo: string): UmbralesFlujo | null {

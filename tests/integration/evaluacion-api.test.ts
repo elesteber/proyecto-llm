@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { app } from '@backend/app';
-import { initialSeed } from '@backend/db/seeds/initial-seed';
+import { resetTestDb } from '../setup-test-db.js';
 
 describe('API de Evaluación F4', () => {
   beforeEach(() => {
-    initialSeed();
+    resetTestDb();
   });
 
   describe('User Story 1 - Precedencia de Fraude y Señal Bajo Mínimo', () => {
