@@ -54,26 +54,26 @@ Se informó el resultado de la prueba con personas externas (`docs/entregable2/u
 
 ## 5. Resultado de la sesión
 
-- [x] Aceptado
-- [ ] Aceptado con observaciones
+- [ ] Aceptado
+- [x] Aceptado con observaciones
 - [ ] No aceptado
 
-El Representante del Cliente registró observaciones de diseño durante la sesión (abajo). La categoría final (Aceptado o Aceptado con observaciones) la confirma él en el comentario del PR (sección 6).
+El Representante del Cliente registró observaciones de diseño durante la sesión (abajo). La categoría final, Aceptado con observaciones, la confirmó él con su aprobación en el PR (sección 6).
 
 **Observaciones del cliente (texto textual):**
 
 > el tamaño de la puntuacion que se genera en la evaluacion es muy pequeña y es opacada por los demas textos. Hay mucha informacion en pantalla que no es relevante para lo que se va a realizar o aparece varias veces presentada, lo cual genera confusiones y hay algunas opciones que es necesario escrolear para encontrar lo cual puede confundir a los usuarios.
 
-**Compromisos o acciones derivadas (propuestos; el equipo los decide el 2026-10-19 a las 10:00):**
+**Compromisos o acciones derivadas (el equipo decidió el 2026-10-19 dejarlas para iteraciones futuras):**
 
 | # | Acción | Responsable | Plazo |
 |---|--------|-------------|-------|
-| 1 | Aumentar el tamaño de la puntuación en el resultado de la evaluación y reducir el texto repetido | Jorge Alvarez (por confirmar) | Decisión del equipo el 2026-10-19 a las 10:00 |
+| 1 | Aumentar el tamaño de la puntuación en el resultado de la evaluación y reducir el texto repetido | Por asignar | Iteración futura |
 | 2 | Evitar que opciones clave requieran scroll | Jorge Alvarez (por confirmar) | Idem |
 | 3 | Hacer más visibles los menús y el selector de rol; instructivo inicial breve | Jorge Alvarez (por confirmar) | Idem |
 
-Si alguna acción no se implementa antes de las 14:00 del 2026-10-19, se declara como defecto conocido en el informe.
+Por falta de tiempo no se implementan en esta entrega; se declaran como defecto conocido en el informe.
 
 ## 6. Confirmación
 
-La decisión de la sección 5 la confirma el Representante del Cliente (Rodrigo Guerrero) con un comentario en el PR que incorpora esta acta; el comentario se enlaza desde la descripción del PR.
+La decisión de la sección 5 la confirmó el Representante del Cliente (Rodrigo Guerrero) el 2026-10-19 con su aprobación y comentario en el PR que incorpora esta acta.
