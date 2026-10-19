@@ -1,6 +1,6 @@
 <!-- BORRADOR DE TRABAJO — no es el PDF final. Los bloques "> [EDITAR]" marcan lo único que falta llenar. -->
 
-# GRUPO 4 — MIRA — Guerrero, Alvarez, Gonzalez, Salgado
+# GRUPO 4 — MIRA — Guerrero, Alvarez, González, Salgado
 
 **Taller de Desarrollo de Software Conducido por Agentes de IA — Entrega 2**
 Escuela de Ingeniería Informática, Facultad de Ingeniería, Universidad de Valparaíso
@@ -10,7 +10,7 @@ Escuela de Ingeniería Informática, Facultad de Ingeniería, Universidad de Val
 | Caso de trabajo | MIRA — Plataforma de inteligencia multimodal para decisiones empresariales, DPRIME SpA |
 | Método declarado | **SDD (Spec-Driven Development)** — GitHub Spec Kit `1.0.2.dev0` sobre Antigravity |
 | Incremento construido | **F5 (Gestión de Umbrales)** + **F4 (Evaluación de Casos y Decisión)**, acotado al flujo de reembolso de gastos médicos |
-| Equipo | Rodrigo Guerrero (Backend; representante del cliente en esta entrega), Jorge Alvarez (Frontend; no participó en la Entrega 1), Lester Gonzalez (QA / Spec Kit / integración), Angel Salgado (Informe, trazabilidad, bitácora de decisiones, gobernanza documental) |
+| Equipo | Rodrigo Guerrero (Backend; representante del cliente en esta entrega), Jorge Alvarez (Frontend; no participó en la Entrega 1), Lester González (QA / Spec Kit / integración), Angel Salgado (Informe, trazabilidad, bitácora de decisiones, gobernanza documental) |
 | Repositorio | `github.com/elesteber/proyecto-llm` — versión evaluada: tag `v2.0` > [EDITAR] |
 | Fecha de entrega | Lunes 19 de octubre de 2026, 14:00 |
 
@@ -30,7 +30,7 @@ Se recomienda, antes de pasar este incremento a producción, invertir en una pas
 
 MIRA es la plataforma de inteligencia multimodal para decisiones empresariales que DPRIME SpA desarrolla para automatizar la evaluación de solicitudes (reembolsos de gastos médicos, en el piloto). La Entrega 1 (7 de septiembre de 2026, evaluada con nota 6,7) produjo un análisis de requisitos asistido por LLM: 415 afirmaciones estructuradas, un modelo de dominio de 26 entidades, 11 casos de uso, 49 requisitos funcionales/no funcionales consolidados en el informe PDF (75 en los documentos de fase, con una divergencia de numeración entre dos archivos de la Fase 5 nunca resuelta — ver `DEC-E2-02`), 16 inconsistencias detectadas (`H-01` a `H-16`) y 52 pruebas (40 funcionales + 12 extra-funcionales). Esta Entrega 2 toma ese análisis como entrada, no como documento archivado, y lo lleva a código.
 
-**Equipo y rol de representante del cliente:** el equipo mantiene a sus 4 integrantes; Jorge Alvarez no participó en la Entrega 1, lo cual se declara aquí explícitamente. El rol de representante del cliente rota respecto de la E1: lo ejerce **Rodrigo Guerrero** (en la E1 lo ejerció Lester Gonzalez).
+**Equipo y rol de representante del cliente:** el equipo mantiene a sus 4 integrantes; Jorge Alvarez no participó en la Entrega 1, lo cual se declara aquí explícitamente. El rol de representante del cliente rota respecto de la E1: lo ejerce **Rodrigo Guerrero** (en la E1 lo ejerció Lester González). **Limitación declarada:** Rodrigo Guerrero integra a la vez el equipo desarrollador (backend) y ejerce el rol de representante del cliente — es la misma persona evaluando criterios de aceptación sobre código que ella misma escribió. Esta superposición de roles se declara explícitamente en el acta de aceptación (Anexo A) y se mitigó con el protocolo de `DEC-E2-03`: criterios de aceptación congelados antes de la sesión, Lester González y Jorge Alvarez presentes como observadores, y acta inmutable una vez firmada.
 
 **Método:** se eligió **SDD con GitHub Spec Kit** (versión `1.0.2.dev0`) sobre el agente Antigravity, en vez de BMAD, por decisión explícita del equipo (`DEC-E2-01`): el flujo lineal de SDD (`constitution → specify → clarify → plan → tasks → analyze → implement`) se ajustaba mejor a un incremento de alcance acotado con una sola especificación consolidada, frente al modelo de roles con nombre de BMAD, pensado para equipos que simulan una organización completa.
 
@@ -56,7 +56,7 @@ El equipo recorrió las 7 fases de SDD en orden estricto, sin escribir lógica d
 
 **Implementación (`/speckit-implement`):** 39 commits `[TASK-xxx]` (algunos agrupan varios IDs) materializaron las 51 tareas con disciplina TDD por fase (tests en rojo antes de la implementación). Encima de ellos, **22 commits `[HUMAN-FIX]`** corrigieron errores del agente: aislamiento de bases de datos entre pruebas concurrentes, tipado de cookies, sincronización de `tsconfig.json`, desincronización de los umbrales mostrados en F4 respecto a la política vigente de F5, y un `useSession` con estado local que rompía la reactividad del selector de rol entre componentes.
 
-**Qué fase aportó más valor y cuál fue más costosa:** la fase de Aclaración aportó el mayor valor relativo a su costo — 5 preguntas resueltas en una sola sesión cerraron ambigüedades que la E1 había dejado abiertas durante semanas. La fase de Implementación fue la más costosa: concentró 22 de los 22 `[HUMAN-FIX]` del proyecto, evidenciando que, aun con specs y plan aprobados, el código generado por el agente requirió revisión línea por línea antes de aceptarse.
+**Qué fase aportó más valor y cuál fue más costosa:** la fase de Aclaración aportó el mayor valor relativo a su costo — 5 preguntas resueltas en una sola sesión cerraron ambigüedades que la E1 había dejado abiertas durante semanas. La fase de Implementación fue la más costosa en volumen de corrección: concentra los 22 commits `[HUMAN-FIX]` del proyecto (por convención de commits, ese prefijo se usa solo para código, no para specs/plan/tareas — ver Principio IX de la constitución), evidenciando que, aun con specs y plan aprobados, el código generado por el agente requirió revisión línea por línea antes de aceptarse. Esto es una medida distinta del `IRF` de Implementación (≥13,5%, ver 6.6): el `IRF` cuenta **archivos** tocados por al menos un `[HUMAN-FIX]` sobre el total de 52 archivos de `src/`+`tests/` (7 confirmados: `App.tsx`, `FormularioEvaluacion.tsx`, `VistaResultado.tsx`, `useSession.ts`, `session-api.test.ts`, `umbrales-api.test.ts`, `umbrales-repo.test.ts`), mientras que "22 de 22" cuenta **commits**, no archivos — un mismo archivo puede recibir varios de esos 22 commits.
 
 ---
 
@@ -64,29 +64,7 @@ El equipo recorrió las 7 fases de SDD en orden estricto, sin escribir lógica d
 
 **Arquitectura:** monorepo con tres paquetes lógicos desacoplados — `src/backend` (Express 5, 18 archivos: controllers, services, repositories, middlewares, DB), `src/frontend` (React 19 + Vite, 19 archivos: componentes de F4 en `components/evaluacion/`, de F5 en `components/umbrales/`, selector de identidad en `components/common/`), y `src/shared/types.ts` como único contrato de datos entre ambos. F5 y F4 interactúan exclusivamente a través de SQLite y ese contrato — ningún componente de F4 muta directamente datos de F5 (Restricción 4 de la constitución).
 
-```mermaid
-flowchart LR
-  subgraph Frontend[src/frontend — React + Vite]
-    F5UI[Componentes F5\nFormularioPropuesta, BandejaRevision,\nHistorialVersiones, PanelUmbralesVigentes]
-    F4UI[Componentes F4\nFormularioEvaluacion, VistaResultado,\nAlertaRiesgoAlto, HistorialEvaluaciones]
-    Sel[HeaderSelectorIdentidad\n5 identidades simuladas]
-  end
-  subgraph Backend[src/backend — Express]
-    UmbCtrl[umbrales-controller]
-    EvalCtrl[evaluacion-controller]
-    UmbSvc[umbrales-service]
-    EvalEngine[evaluacion-engine]
-    Repo[umbrales-repo]
-  end
-  DB[(SQLite\numbrales_flujo\nauditoria_evaluaciones\nrastro_auditoria\ntriggers inmutables)]
-  Shared[/src/shared/types.ts/]
-
-  Sel --> F5UI & F4UI
-  F5UI -->|POST/PUT /api/umbrales| UmbCtrl --> UmbSvc --> DB
-  F4UI -->|POST /api/evaluacion/evaluar| EvalCtrl --> EvalEngine --> Repo --> DB
-  EvalEngine -.contrato.-> Shared
-  UmbSvc -.contrato.-> Shared
-```
+![Arquitectura del incremento F5 + F4](../docs/entregable2/capturas/arquitectura-f5-f4.png)
 
 **Modelo de datos efectivamente implementado:** 3 tablas SQLite (`umbrales_flujo`, `auditoria_evaluaciones`, `rastro_auditoria`), con triggers `trg_prevent_update_*`/`trg_prevent_delete_*` que abortan cualquier `UPDATE`/`DELETE`, y un índice único parcial que impide más de un borrador activo por flujo simultáneamente. El seed inicial carga la Versión 1 de umbrales (valores por defecto) y los 6 casos sintéticos de `data/casos_prueba.json`.
 
@@ -109,9 +87,9 @@ flowchart LR
 
 **Prueba extra-funcional medible:** `tests/reproducibility/deterministic.test.ts` exige y verifica 100% de reproducibilidad determinista al reevaluar un caso histórico contra la versión de umbrales archivada (`SC-004`, heredada de `RQNF-002 [fase5-lester]` / `H-14`). El equipo decidió explícitamente no construir una prueba de latencia: la E1 (`H-11`) ya había mostrado que el requisito original de "5 segundos" era técnicamente inviable, y no hay datos de carga reales para fijar un SLA creíble.
 
-**Prueba de usabilidad con integrante externo — resultado no satisfactorio, declarado con honestidad:** Lester Gonzalez ejecutó la prueba el 18-oct con **2 personas externas al curso** (consentimiento informado, identificadas solo por iniciales). Resultado frente a `SC-005` (≤2 clics de consulta, ≤3 min de tarea, sin asistencia): **3 de 8 ejecuciones de tarea cumplieron**, y una de ellas sin recuento de clics registrado; el segundo participante no cumplió ninguna de las 4 tareas sin ayuda. Defecto dominante: los menús de navegación y el selector de rol "no se perciben como interactivos en el primer contacto" y se describieron como "chiquititos"/"muy pequeños" (cita textual de ambos participantes, `docs/entregable2/usabilidad.md`). Esto **contrasta** con la prueba E2E automatizada (`usabilidad-recorrido.spec.ts`), que sí cumple `SC-005` porque mide el camino técnico mínimo, no si una persona lo descubre — la propia matriz de trazabilidad (`docs/entregable2/matriz-trazabilidad-tareas.md`, §E.2) documenta esta brecha explícitamente.
+**Prueba de usabilidad con integrante externo — resultado no satisfactorio, declarado con honestidad:** Lester González ejecutó la prueba el 18-oct con **2 personas externas al curso** (consentimiento, identificadas solo por iniciales). Resultado frente a `SC-005` (≤2 clics de consulta, ≤3 min de tarea, sin asistencia): **3 de 8 ejecuciones de tarea cumplieron**, y una de ellas sin recuento de clics registrado; el segundo participante no cumplió ninguna de las 4 tareas sin ayuda. Defecto dominante: los menús de navegación y el selector de rol "no se perciben como interactivos en el primer contacto" y se describieron como "chiquititos"/"muy pequeños" (cita textual de ambos participantes, `docs/entregable2/usabilidad.md`). Esto **contrasta** con la prueba E2E automatizada (`usabilidad-recorrido.spec.ts`), que sí cumple `SC-005` porque mide el camino técnico mínimo, no si una persona lo descubre — la propia matriz de trazabilidad (`docs/entregable2/matriz-trazabilidad-tareas.md`, §E.2) documenta esta brecha explícitamente.
 
-**Sesión formal de aceptación con el representante del cliente:** Rodrigo Guerrero (representante del cliente) aceptó el incremento el 19-oct (00:15-00:38, videollamada; demo de Lester Gonzalez; versión demostrada `main @ b9f5f2d`). Se recorrieron 12 escenarios (propuesta y aprobación de umbrales con doble control, los 6 dictámenes de F4, reevaluación determinista) y los 12 dieron el resultado esperado — **resultado: Aceptado**. El cliente registró dos observaciones de diseño: la puntuación del dictamen se ve "muy pequeña y opacada por los demás textos" y "hay algunas opciones que es necesario escrolear para encontrar", y reaccionó al hallazgo de usabilidad de la sección anterior pidiendo una interfaz "más responsiva e intuitiva para la gente que no sea experta". Acta completa en el Anexo A.
+**Sesión formal de aceptación con el representante del cliente:** Rodrigo Guerrero (representante del cliente) aceptó el incremento el 19-oct (00:15-00:38, videollamada; demo de Lester González; versión demostrada `main @ b9f5f2d`). Se recorrieron 12 escenarios (propuesta y aprobación de umbrales con doble control, los 6 dictámenes de F4, reevaluación determinista) y los 12 dieron el resultado esperado — **resultado: Aceptado con observaciones**. El cliente registró dos observaciones de diseño: la puntuación del dictamen se ve "muy pequeña y opacada por los demás textos" y "hay algunas opciones que es necesario escrolear para encontrar", y reaccionó al hallazgo de usabilidad de la sección anterior pidiendo una interfaz "más responsiva e intuitiva para la gente que no sea experta". Por falta de tiempo, las 3 acciones correctivas derivadas de estas observaciones no se implementan en esta entrega y quedan declaradas como defecto conocido para la siguiente iteración. Acta completa en el Anexo A.
 
 **Advertencia aplicada:** se verificó que las pruebas automatizadas comprueban los criterios de aceptación de la E1/spec (valores de entrada y salida fijados de antemano en la guía), no el comportamiento que el código ya tenía — el hallazgo de usabilidad de arriba es evidencia de que esta disciplina se mantuvo: una prueba que solo confirmara su propia implementación no habría podido mostrar ese resultado.
 
@@ -232,8 +210,21 @@ Queda pendiente para la siguiente entrega: cerrar `H-11` y `H-16` con datos real
 - **Reporte de análisis de consistencia:** `specs/001-f5-f4-umbrales-evaluacion/reporte-analisis-consistencia.md`.
 - **Constitución del proyecto:** `.specify/memory/constitution.md`.
 - **Especificación, plan y tareas:** `specs/001-f5-f4-umbrales-evaluacion/` (`spec.md`, `plan.md`, `tasks.md`, `data-model.md`, `contracts/`).
-- **Evidencia de prompts y comandos:** > [EDITAR].
-- **Capturas de pantalla de la interfaz (F4 y F5):** > [EDITAR].
+- **Registro de comandos `/speckit-*` ejecutados:** `entregable2/registro-comandos-speckit.md` — qué comando, quién, cuándo y en qué commit/PR. Los prompts literales no se incluyen porque Antigravity no ofrece función de exportación de historial de prompts; este registro documenta en su lugar lo verificable en git (comando, autor, fecha, commit).
+- **Evidencia de la sesión de aceptación:** `docs/entregable2/evidencia/sesion-aceptacion-historial-evaluaciones.json`, `...-historial-umbrales.json`.
+- **Capturas de pantalla de la interfaz:**
+
+**Gestión de Umbrales (F5)**
+
+![F5 — consulta de política vigente y propuesta de borrador](../docs/entregable2/capturas/f5-umbrales-1.png)
+
+![F5 — pesos y validación de la propuesta](../docs/entregable2/capturas/f5-umbrales-2.png)
+
+**Evaluación de Casos (F4)**
+
+![F4 — catálogo de casos sintéticos](../docs/entregable2/capturas/f4-evaluacion-1.png)
+
+![F4 — dictamen de evaluación](../docs/entregable2/capturas/f4-evaluacion-2.png)
 - **Repositorio y tag evaluado:** `github.com/elesteber/proyecto-llm`, tag `v2.0` > [EDITAR].
 
 ---
@@ -277,7 +268,7 @@ Queda pendiente para la siguiente entrega: cerrar `H-11` y `H-16` con datos real
 | 11 | Reevaluación determinista (F4) | Reevaluar un registro histórico | Reproduce el dictamen original al 100% | SC-004 | 11 reevaluaciones registradas, todas exitosas. | Sí |
 | 12 | Regla transversal | Revisar todos los resultados | Ningún caso termina en rechazo automático | — | 1 `APROBADO_AUTOMATICO` + 6 `DERIVADO_REVISION`; cero rechazos. | Sí |
 
-> [EDITAR: adjuntar `docs/entregable2/evidencia/sesion-aceptacion-historial-evaluaciones.json` y `...-historial-umbrales.json` citados como anexo de esta acta — no existen todavía en el repositorio].
+Evidencia cruda de la API al cierre de la sesión: `docs/entregable2/evidencia/sesion-aceptacion-historial-evaluaciones.json` y `...-historial-umbrales.json`.
 
 ### A.3 Hallazgos de usabilidad comunicados al cliente y reacción
 
@@ -287,18 +278,18 @@ Se informó el resultado de la prueba con personas externas (`docs/entregable2/u
 
 ### A.4 Resultado y observaciones del cliente
 
-**Resultado: Aceptado.**
+**Resultado: Aceptado con observaciones.**
 
 Observación textual del cliente:
 
 > el tamaño de la puntuacion que se genera en la evaluacion es muy pequeña y es opacada por los demas textos. Hay mucha informacion en pantalla que no es relevante para lo que se va a realizar o aparece varias veces presentada, lo cual genera confusiones y hay algunas opciones que es necesario escrolear para encontrar lo cual puede confundir a los usuarios.
 
-**Acciones derivadas (propuestas en la sesión del equipo del 19-oct, 10:00):**
+**Acciones derivadas (el equipo decidió el 19-oct dejarlas para iteraciones futuras, por falta de tiempo):**
 
 | # | Acción | Responsable | Plazo |
 |---|---|---|---|
-| 1 | Aumentar el tamaño de la puntuación y reducir texto repetido | Jorge Alvarez (por confirmar) | Decisión del equipo, 19-oct 10:00 |
-| 2 | Evitar que opciones clave requieran scroll | Jorge Alvarez (por confirmar) | Idem |
-| 3 | Hacer más visibles los menús y el selector de rol; instructivo inicial breve | Jorge Alvarez (por confirmar) | Idem |
+| 1 | Aumentar el tamaño de la puntuación y reducir texto repetido | Por asignar | Iteración futura |
+| 2 | Evitar que opciones clave requieran scroll | Por asignar | Iteración futura |
+| 3 | Hacer más visibles los menús y el selector de rol; instructivo inicial breve | Por asignar | Iteración futura |
 
-Confirmación final de la categoría de aceptación a cargo de Rodrigo Guerrero, en comentario del PR que incorpora esta acta.
+No se implementan en esta entrega; se declaran como defecto conocido en el informe. Confirmación final de la categoría de aceptación a cargo de Rodrigo Guerrero, con su aprobación y comentario en el PR que incorpora esta acta.
