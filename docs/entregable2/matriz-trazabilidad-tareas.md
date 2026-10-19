@@ -122,7 +122,7 @@ En estricto cumplimiento con el principio de honestidad técnica, transparencia 
 ### E.2. Dimensión Manual de Usabilidad y Sesión Formal de Aceptación (SC-005)
 
 - **Declaración:** El criterio `SC-005` estipula que *"operadores y administradores acceden en ≤ 2 clics y completan tareas en ≤ 3 minutos sin asistencia técnica externa (ratificado para la prueba de usabilidad y la sesión formal de aceptación)"*.
-- **Brecha Declarada:** La suite automatizada `tests/e2e/usabilidad-recorrido.spec.ts` (T048) verifica y mide algorítmicamente la cantidad de clics en el DOM (1 clic medido) y la latencia de completitud técnica (**entre 0,15 s y 0,60 s en las ejecuciones registradas**). Sin embargo, la validación cualitativa de usabilidad por parte de un operador o administrador real externo ("sin inducción previa") y la sesión formal de entrega/aceptación docente corresponden por naturaleza a actividades manuales presenciales que quedan formalmente deslindadas de la cobertura de código automatizado.
+- **Resultado de la prueba externa (n=2, 2026-10-18):** `docs/entregable2/usabilidad.md`. La suite automatizada `tests/e2e/usabilidad-recorrido.spec.ts` (T048) mide el camino mínimo (1 clic por recorrido; entre 0,15 s y 0,60 s por tarea) y cumple. La prueba con dos personas externas **no cumple SC-005**: de 8 ejecuciones de tarea, 3 cumplieron clics, tiempo y ausencia de asistencia (una de ellas sin recuento de clics registrado), y todas corresponden al participante IMO; KGR no cumplió ninguna. El defecto dominante es la descubribilidad (menús y selector de rol pequeños y poco evidentes). La sesión formal de aceptación se registra por separado.
 
 ### E.3. Decisión Humana Final del Operador sobre Casos Derivados (Fuera de Alcance)
 
