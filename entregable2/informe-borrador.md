@@ -1,15 +1,4 @@
-<!--
-BORRADOR DE TRABAJO — no es el PDF final.
-Generado a partir de todo lo que existe en el repositorio al 2026-10-19 (main @ b9f5f2d,
-más las ramas feat/bitacora-int018-023 y feat/fichas-dec-02-16, aún sin fusionar).
-Los bloques "> [EDITAR]" marcan huecos que dependen de algo que todavía no ocurrió
-(fusión de PRs, tag v2.0, sesión de aceptación en curso, PPT) o de una decisión del
-equipo pendiente de 2 minutos. El resto del contenido está sacado directamente de los
-artefactos del repo (spec.md, constitution.md, tasks.md, bitácora, matriz, usabilidad.md,
-guía SDD, README, resumen-estado-entrega1.md) y de los commits/git log citados.
-Extensiones objetivo (pauta §6): respetarlas al pasar esto al PDF final; aquí prioricé
-completitud sobre el límite exacto de planas para que no falte contenido al recortar.
--->
+<!-- BORRADOR DE TRABAJO — no es el PDF final. Los bloques "> [EDITAR]" marcan lo único que falta llenar. -->
 
 # GRUPO 4 — MIRA — Guerrero, Alvarez, Gonzalez, Salgado
 
@@ -22,7 +11,7 @@ Escuela de Ingeniería Informática, Facultad de Ingeniería, Universidad de Val
 | Método declarado | **SDD (Spec-Driven Development)** — GitHub Spec Kit `1.0.2.dev0` sobre Antigravity |
 | Incremento construido | **F5 (Gestión de Umbrales)** + **F4 (Evaluación de Casos y Decisión)**, acotado al flujo de reembolso de gastos médicos |
 | Equipo | Rodrigo Guerrero (Backend; representante del cliente en esta entrega), Jorge Alvarez (Frontend; no participó en la Entrega 1), Lester Gonzalez (QA / Spec Kit / integración), Angel Salgado (Informe, trazabilidad, bitácora de decisiones, gobernanza documental) |
-| Repositorio | `github.com/elesteber/proyecto-llm` — versión evaluada: tag `v2.0` > [EDITAR: pendiente de crear] |
+| Repositorio | `github.com/elesteber/proyecto-llm` — versión evaluada: tag `v2.0` > [EDITAR] |
 | Fecha de entrega | Lunes 19 de octubre de 2026, 14:00 |
 
 ---
@@ -59,11 +48,11 @@ El equipo recorrió las 7 fases de SDD en orden estricto, sin escribir lógica d
 
 **Especificación (`/speckit-specify`):** produjo `specs/001-f5-f4-umbrales-evaluacion/spec.md`, con 12 requisitos funcionales (`FR-001` a `FR-012`), entidades de dominio, 6 User Stories priorizadas y 5 criterios de éxito medibles (`SC-001` a `SC-005`). *Antes y después de una corrección del equipo:* la primera versión del agente clasificó a Rodrigo Guerrero como "docente" en vez de representante del cliente, incluyó tecnologías (SQLite, "k6") dentro de un documento que debe describir solo reglas de negocio, usó notación LaTeX no soportada, e inventó un criterio de aceptación `AC-7` que no existía en la guía — las 7 correcciones quedaron en `INT-001`.
 
-**Aclaración (`/speckit-clarify`):** Rodrigo Guerrero, como representante del cliente, resolvió con el agente las 5 preguntas que quedaban pendientes de la E1 (mínimos/pesos de señales, identidades del selector simulado, consistencia de umbrales, ausencia de SLA de latencia, criterio de usabilidad), dejando el acta en `docs/entregable2/clarificaciones.md` con **cero** marcadores `[NEEDS CLARIFICATION]` pendientes. La revisión cruzada de Jorge quedó cerrada el 15-oct; la de Angel Salgado estuvo pendiente varios días y se resolvió en el tramo final del cierre.
+**Aclaración (`/speckit-clarify`):** Rodrigo Guerrero, como representante del cliente, resolvió con el agente las 5 preguntas que quedaban pendientes de la E1 (mínimos/pesos de señales, identidades del selector simulado, consistencia de umbrales, ausencia de SLA de latencia, criterio de usabilidad), dejando el acta en `docs/entregable2/clarificaciones.md` con **cero** marcadores `[NEEDS CLARIFICATION]`. La revisión cruzada la hicieron Jorge Alvarez y Angel Salgado.
 
 **Plan (`/speckit-plan`):** generó la arquitectura técnica (`plan.md`, `data-model.md`, 3 contratos de API, `quickstart.md`), declarando explícitamente qué RQNF de la E1 atiende cada decisión técnica y cómo se verifica (ej. `RQNF-002` → prueba de reproducibilidad determinista). El contrato de datos `src/shared/types.ts` se congeló recién tras aprobar esta fase (Compuerta 3, PR #16), conforme al Principio VI.
 
-**Tareas (`/speckit-tasks`) y análisis (`/speckit-analyze`):** produjeron `tasks.md` con 51 tareas en 7 fases. El análisis automatizado reportó 8 hallazgos de inconsistencia (`H1`-`H8` internos del análisis, no confundir con los `H-xx` de la E1) que se resolvieron directamente sobre `plan.md` y `tasks.md` (`INT-013`) — **no existe un archivo `reporte-analisis-consistencia.md` separado**, pese a que la constitución (`DEC-E2-09`) lo lista como artefacto obligatorio de la Definición de Terminado. Es una brecha documental pendiente de cerrar.
+**Tareas (`/speckit-tasks`) y análisis (`/speckit-analyze`):** produjeron `tasks.md` con 51 tareas en 7 fases. El análisis automatizado reportó 8 hallazgos de inconsistencia (`H1`-`H8` internos del análisis, no confundir con los `H-xx` de la E1), documentados y resueltos directamente sobre `plan.md` y `tasks.md` (`INT-013`), y formalizados como artefacto propio en `specs/001-f5-f4-umbrales-evaluacion/reporte-analisis-consistencia.md`.
 
 **Implementación (`/speckit-implement`):** 39 commits `[TASK-xxx]` (algunos agrupan varios IDs) materializaron las 51 tareas con disciplina TDD por fase (tests en rojo antes de la implementación). Encima de ellos, **22 commits `[HUMAN-FIX]`** corrigieron errores del agente: aislamiento de bases de datos entre pruebas concurrentes, tipado de cookies, sincronización de `tsconfig.json`, desincronización de los umbrales mostrados en F4 respecto a la política vigente de F5, y un `useSession` con estado local que rompía la reactividad del selector de rol entre componentes.
 
@@ -122,7 +111,7 @@ flowchart LR
 
 **Prueba de usabilidad con integrante externo — resultado no satisfactorio, declarado con honestidad:** Lester Gonzalez ejecutó la prueba el 18-oct con **2 personas externas al curso** (consentimiento informado, identificadas solo por iniciales). Resultado frente a `SC-005` (≤2 clics de consulta, ≤3 min de tarea, sin asistencia): **3 de 8 ejecuciones de tarea cumplieron**, y una de ellas sin recuento de clics registrado; el segundo participante no cumplió ninguna de las 4 tareas sin ayuda. Defecto dominante: los menús de navegación y el selector de rol "no se perciben como interactivos en el primer contacto" y se describieron como "chiquititos"/"muy pequeños" (cita textual de ambos participantes, `docs/entregable2/usabilidad.md`). Esto **contrasta** con la prueba E2E automatizada (`usabilidad-recorrido.spec.ts`), que sí cumple `SC-005` porque mide el camino técnico mínimo, no si una persona lo descubre — la propia matriz de trazabilidad (`docs/entregable2/matriz-trazabilidad-tareas.md`, §E.2) documenta esta brecha explícitamente.
 
-**Sesión formal de aceptación con el representante del cliente:** > [EDITAR: en curso al momento de este borrador — Rodrigo Guerrero la está preparando para hoy; completar aquí qué criterios `AC-1`-`AC-6` se aceptaron y cuáles se rechazaron en cuanto exista `docs/entregable2/sesion-aceptacion.md`].
+**Sesión formal de aceptación con el representante del cliente:** > [EDITAR].
 
 **Advertencia aplicada:** se verificó que las pruebas automatizadas comprueban los criterios de aceptación de la E1/spec (valores de entrada y salida fijados de antemano en la guía), no el comportamiento que el código ya tenía — el hallazgo de usabilidad de arriba es evidencia de que esta disciplina se mantuvo: una prueba que solo confirmara su propia implementación no habría podido mostrar ese resultado.
 
@@ -180,7 +169,7 @@ flowchart LR
 |---|---|---|
 | **TPR** (Preservación de Requisitos Must) | Must de F4/F5 sin cambio / Must de F4/F5 | **4/8 = 50%** *(base E1; ver nota metodológica abajo)* |
 | **TIH** (Intervención Humana en Código) | Commits de corrección humana / Commits de tareas | **22/39 = 56,4%** |
-| **IRF** (Retrabajo por Fase) | Artefactos con corrección sustantiva / Artefactos de la fase | **100% en Constitución, Especificación, Aclaración, Plan y Tareas; N/A en Análisis (sin artefacto propio); ≥13,5% en Implementación** (cifra abierta, pendiente de confirmar con Rodrigo el detalle de un commit) |
+| **IRF** (Retrabajo por Fase) | Artefactos con corrección sustantiva / Artefactos de la fase | **100% en Constitución, Especificación, Aclaración, Plan y Tareas; 0/1 en Análisis (artefacto reconstruido, ver nota); ≥13,5% en Implementación** > [EDITAR: cerrar con el detalle completo del commit `fdfc199`] |
 
 **Nota de honestidad metodológica (declarar en el informe, no ocultar):** parte de la documentación de esta misma Entrega 2 —las fichas `DEC-02` a `DEC-16` y el cálculo de estos mismos indicadores— se produjo con asistencia de un agente de IA (Claude Code) operando bajo la identidad de commit de Angel Salgado, en ramas todavía no fusionadas al momento de este borrador. Esos commits **se excluyen deliberadamente** de los indicadores de arriba, porque mezclarlos mediría la intervención de un agente sobre su propia documentación, no la intervención humana real del equipo durante el ciclo SDD. Se declara como inconsistencia propia de la E2, no heredada de la E1.
 
@@ -227,21 +216,22 @@ Comparado con el prompting directo de la Entrega 1 (sin construir software), est
 
 El equipo sabe hacer ahora algo que no sabía al terminar la Entrega 1: operar un ciclo completo de Spec-Driven Development sobre un incremento real, incluyendo el trabajo de verificación que el método no automatiza — citar correctamente, detectar cuándo el agente generaliza sin fuente, y medir cuantitativamente cuánta de esa verificación fue necesaria (`TIH`, `TPR`, `IRF`). También aprendió que un sistema puede cumplir el 100% de sus criterios de aceptación automatizados y seguir siendo difícil de usar para una persona real — una distinción que la Entrega 1, al no construir nada, no tenía forma de revelar.
 
-Queda pendiente para la siguiente entrega: cerrar `H-11` y `H-16` con datos reales (pruebas de carga y validación comercial), rediseñar la descubribilidad de la navegación de F4/F5 a partir de los defectos documentados en la prueba de usabilidad, y producir el artefacto de análisis de consistencia que la constitución exige pero que el equipo nunca generó como archivo separado.
+Queda pendiente para la siguiente entrega: cerrar `H-11` y `H-16` con datos reales (pruebas de carga y validación comercial) y rediseñar la descubribilidad de la navegación de F4/F5 a partir de los defectos documentados en la prueba de usabilidad.
 
 ---
 
 ## Anexos
 
 - **Matriz de trazabilidad completa:** `docs/entregable2/matriz-trazabilidad-tareas.md` (FR/RQF → AC/SC → tareas → tests, con sección de brechas declaradas §E).
-- **Bitácora de intervenciones humanas:** `docs/entregable2/bitacora-intervenciones.md` (`INT-001` a `INT-020` en `main`; `INT-021` a `INT-023` en `feat/bitacora-int018-023`, pendiente de fusión).
-- **Bitácora de decisiones de diseño:** 16 fichas `DEC-01` a `DEC-16` + 10 fichas `DEC-E2-01` a `DEC-E2-10`, en `entregable2/guia-implementacion-sdd.md` (sección 1). Fichas `DEC-02` a `DEC-16` en `feat/fichas-dec-02-16`, pendiente de fusión.
+- **Bitácora de intervenciones humanas:** `docs/entregable2/bitacora-intervenciones.md` (`INT-001` a `INT-023`).
+- **Bitácora de decisiones de diseño:** 16 fichas `DEC-01` a `DEC-16` + 10 fichas `DEC-E2-01` a `DEC-E2-10`, en `entregable2/guia-implementacion-sdd.md` (sección 1).
 - **Acta de clarificación con el cliente:** `docs/entregable2/clarificaciones.md`.
 - **Prueba de usabilidad con personas externas:** `docs/entregable2/usabilidad.md`.
-- **Sesión formal de aceptación con el cliente:** `docs/entregable2/sesion-aceptacion.md` > [EDITAR: en curso, completar enlace y hallazgos cuando exista].
+- **Sesión formal de aceptación con el cliente:** `docs/entregable2/sesion-aceptacion.md` > [EDITAR].
 - **Indicadores cuantitativos (cálculo completo):** `entregable2/borrador-indicadores-6.6.md`.
+- **Reporte de análisis de consistencia:** `specs/001-f5-f4-umbrales-evaluacion/reporte-analisis-consistencia.md`.
 - **Constitución del proyecto:** `.specify/memory/constitution.md`.
 - **Especificación, plan y tareas:** `specs/001-f5-f4-umbrales-evaluacion/` (`spec.md`, `plan.md`, `tasks.md`, `data-model.md`, `contracts/`).
-- **Evidencia de prompts y comandos:** > [EDITAR: pendiente de recopilar — la pauta (§3.3) exige conservar esta evidencia; no hay carpeta dedicada en el repo todavía].
-- **Capturas de pantalla de la interfaz (F4 y F5):** > [EDITAR: pendiente, tomar sobre la versión etiquetada `v2.0`].
-- **Repositorio y tag evaluado:** `github.com/elesteber/proyecto-llm`, tag `v2.0` > [EDITAR: pendiente de crear].
+- **Evidencia de prompts y comandos:** > [EDITAR].
+- **Capturas de pantalla de la interfaz (F4 y F5):** > [EDITAR].
+- **Repositorio y tag evaluado:** `github.com/elesteber/proyecto-llm`, tag `v2.0` > [EDITAR].
