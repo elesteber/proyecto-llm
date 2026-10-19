@@ -121,6 +121,216 @@ A continuación se registran formalmente las decisiones iniciales del proyecto b
 
 ---
 
+### DEC-02: Formalización de Inconsistencia H-02 (Plazo de Retención de Evidencia)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-02` (formalización oficial del hallazgo `H-02` / `HC-002`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Plazo de retención de evidencia original ante conflicto entre la plataforma y la aseguradora |
+| **Contexto** | MIRA §2.11 establece que *"la evidencia y los resultados se conservan noventa días, plazo tras el cual la evidencia original se elimina"*. En ENT6 [00:07:26], Daniela Cortés (Cumplimiento) señala: *"Noventa días es imposible. Un siniestro puede reclamarse ante la comisión mucho después... Nosotros conservamos cinco años, y en algunos productos diez. Si la plataforma borra la evidencia a los noventa días, nos deja sin respaldo justo cuando lo necesitamos."* (Fuente: `fase2/consolidacion-contradicciones.md`, fila `HC-002`.) |
+| **Alternativas** | **(a)** Mantener el plazo de 90 días de la plataforma, ignorando el requisito regulatorio de la aseguradora.<br>**(b)** Adoptar el plazo máximo de la aseguradora (10 años) para todos los productos sin distinción.<br>**(c)** Adoptar el plazo de la aseguradora por producto (5 a 10 años), con almacenamiento activo los primeros 90 días y archivo frío el resto del período. |
+| **Decisión** | Se adopta la **Alternativa (c)**: se mantiene el almacenamiento activo de evidencia por 90 días y luego se traslada a archivo frío hasta cumplir el plazo de retención definido por producto de la aseguradora (5 a 10 años), en lugar de eliminarla a los 90 días. |
+| **Justificación** | Prioriza el requisito regulatorio/contractual de la aseguradora (evidencia necesaria ante reclamos tardíos) sobre el valor de diseño original de la plataforma, sin incurrir en el costo de mantener todo en almacenamiento activo indefinidamente. |
+| **Impacto** | Fuera del alcance funcional directo de F5 y F4 en esta entrega (afecta el módulo de gestión de evidencia/expedientes, no implementado en el incremento); impacto documental para la comparativa 6.6. |
+
+---
+
+### DEC-03: Formalización de Inconsistencia H-03 (Límite de Llamadas / Rate Limit)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-03` (formalización oficial del hallazgo `H-03` / `HC-003`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Comportamiento del sistema ante exceso del límite de llamadas a la API |
+| **Contexto** | MIRA §2.10 define *"el límite general es de mil llamadas por minuto por cliente... límite de cien llamadas por minuto para los ambientes de integración"*, sin especificar qué ocurre al superarlo. En ENT7 [00:06:37], Hugo Marambio advierte: *"Si el límite de integración es cien por minuto, cuando yo haga la carga inicial de casos históricos, o cuando se me acumulen dos días de casos por una caída, voy a superarlo en el primer minuto. Necesito saber qué pasa cuando lo supero: ¿me rechazan las llamadas?, ¿me encolan?"* (Fuente: `fase2/consolidacion-contradicciones.md`, fila `HC-003`.) |
+| **Alternativas** | **(a)** Rechazar sin más toda llamada que exceda el límite, sin mecanismo de aviso.<br>**(b)** Encolar indefinidamente todo exceso, sin límite propio.<br>**(c)** Definir un modo de carga por lote (*bulk*) con límite propio para cargas masivas predecibles, y para tráfico estándar, rechazar el exceso con cabecera `Retry-After`. |
+| **Decisión** | Se adopta la **Alternativa (c)**. |
+| **Justificación** | Diferencia el tráfico operativo normal (protegido con rechazo informativo y reintento guiado por `Retry-After`) de cargas masivas predecibles —como la carga histórica inicial o el *catch-up* tras una caída—, que requieren una vía propia y no deben competir con el límite de integración estándar. |
+| **Impacto** | Fuera del alcance funcional de F5 y F4 en esta entrega (afecta la capa de integración/API general, no el motor de decisión ni la gestión de umbrales); impacto documental para la comparativa 6.6. |
+
+---
+
+### DEC-04: Formalización de Inconsistencia H-04 (Criterio de Cobro de Casos Derivados)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-04` (formalización oficial del hallazgo `H-04` / `HC-004`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Determinación de si los casos derivados a revisión humana se facturan |
+| **Contexto** | La propuesta comercial enviada al cliente (ENT8 [00:02:36], Valentina Ruiz-Tagle) establece: *"lo que le vendimos a la aseguradora es la decisión: si la plataforma resuelve el caso sola, se cobra. Si el caso termina en el escritorio de un analista... no hay nada que cobrar."* En tensión, ENT1 [00:06:26] registra la opinión de Rodrigo Vergara (sponsor): *"Ahí también hubo trabajo nuestro. El análisis se hizo igual. Yo diría que se cobra."* (Fuente: `fase2/consolidacion-contradicciones.md`, fila `HC-004`.) |
+| **Alternativas** | **(a)** Cobrar todo caso procesado, incluidos los derivados a revisión humana, siguiendo la opinión interna de Rodrigo Vergara.<br>**(b)** No cobrar ningún caso derivado, siguiendo estrictamente la propuesta comercial ya enviada al cliente. |
+| **Decisión** | Se adopta la **Alternativa (b)**: se mantiene el criterio ya comprometido por escrito con el cliente — se cobra únicamente cuando la plataforma resuelve el caso de forma automática; los casos derivados a revisión humana no se facturan. |
+| **Justificación** | La propuesta comercial ya fue enviada y es un compromiso externo vigente con el cliente; modificarlo retroactivamente por una opinión interna no documentada formalmente generaría un conflicto contractual. |
+| **Impacto** | Fuera del alcance funcional de F5 y F4 en esta entrega (afecta el módulo de facturación/medición de consumo, F7, no implementado en el incremento); impacto documental para la comparativa 6.6. |
+
+---
+
+### DEC-05: Formalización de Inconsistencia H-05 (Mínimos por Señal y Ponderaciones del Puntaje)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-05` (formalización oficial del hallazgo `H-05` / `HC-005`) |
+| **Fecha** | 14-10-2026 (cerrada en sesión formal de `/speckit-clarify` con Rodrigo Guerrero como representante del cliente) |
+| **Asunto** | Mínimos individuales por señal y ponderaciones del puntaje global en el flujo de reembolso médico |
+| **Contexto** | MIRA §2.6 declara explícitamente que *"el detalle de qué señales tienen mínimo propio y cuáles son sus valores está pendiente de definir con el área de riesgo del cliente piloto"* (`HC-005`/`H-05`), sin fijar fórmula de cálculo del puntaje ni valores de mínimos. En ENT3 [00:21:47], Sebastián señala: *"mínimos por señal… aunque nadie ha definido cuáles son"* (cita verificada contra el MIRA docx, ver `INT-021`/`DEC-E2-10`). |
+| **Alternativas** | **(a)** Dejar los mínimos y pesos sin definir y posponer la especificación hasta coordinar con el área de riesgo real del cliente (bloquea el sprint).<br>**(b)** Definir valores arbitrarios sin declarar su carácter de supuesto.<br>**(c)** Fijar valores razonables como `[SUPUESTO del equipo]`, explícitamente declarados como tales, modificables dinámicamente desde F5 con doble control, y someterlos a confirmación del representante del cliente en la sesión formal de `/speckit-clarify`. |
+| **Decisión** | Se adopta la **Alternativa (c)**: mínimos individuales — `autenticidad_documentos` = 70, `cruce_fuentes` = 70, `coherencia_solicitud` = 60 — y ponderaciones — 0,40 / 0,40 / 0,20 — ratificados por Rodrigo Guerrero como representante del cliente en la sesión de `/speckit-clarify` del 14-10-2026, con la bandera de fraude (`alertaFraudeActiva`) tratada aparte, no como señal ponderada. |
+| **Justificación** | Permite avanzar con la implementación sin bloquear el sprint por falta de un dato que la propia Entrega 1 reconoce como pendiente, dejando los valores configurables y versionados en F5 para ajustarlos empíricamente más adelante sin requerir cambios de código. |
+| **Impacto** | Contrato `src/shared/types.ts` (campos `minimoAutenticidad`, `minimoCruceFuentes`, `minimoCoherencia`, `pesoAutenticidad`, `pesoCruceFuentes`, `pesoCoherencia`), lógica de evaluación de F4, y los 6 casos de prueba de `data/casos_prueba.json` (§2.d). |
+
+---
+
+### DEC-06: Formalización de Inconsistencia H-06 (Autenticación SSO Corporativo)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-06` (formalización oficial del hallazgo `H-06` / `HC-006`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Mecanismo de autenticación de usuarios del cliente (SSO corporativo vs. credenciales propias) |
+| **Contexto** | MIRA §2.13 establece que *"los usuarios de los clientes se autentican con las credenciales que administra la propia plataforma"*, mientras que en ENT7 [00:18:26] Hugo Marambio exige: *"Nuestros usuarios se autentican contra el directorio corporativo... No voy a administrar un segundo juego de contraseñas para cincuenta analistas... eso va a tener que cambiar para nosotros."* (Fuente: `fase2/consolidacion-contradicciones.md`, fila `HC-006`.) |
+| **Alternativas** | **(a)** Mantener credenciales propias de la plataforma, como indica el documento original.<br>**(b)** Tratar la autenticación contra el directorio corporativo del cliente (SSO) como requisito duro del proyecto en producción, incorporándolo formalmente al alcance y cronograma. |
+| **Decisión** | Se adopta la **Alternativa (b)** para el entorno de producción. Para la Entrega 2 (incremento F5+F4), se simula mediante un selector de rol/usuario en la interfaz (`D-04`), dejando explícito que esto no sustituye la implementación real de SSO exigida para producción. |
+| **Justificación** | El cliente piloto condiciona su adopción a no administrar un segundo set de credenciales; simular la identidad en el incremento permite probar la separación de roles de doble control (F5) sin construir la integración SSO real, que está fuera del alcance de este sprint. |
+| **Impacto** | Selector de identidad simulada en la interfaz de F5/F4 (`D-04`, `contracts/session-simulada.md`); la integración SSO real queda fuera del alcance de F5+F4 y se registra como pendiente para una entrega posterior. |
+
+---
+
+### DEC-07: Formalización de Inconsistencia H-07 (Escritura de Resultados en el Sistema de Siniestros)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-07` (formalización oficial del hallazgo `H-07` / `HC-007`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Modalidad de escritura de resultados en el sistema de siniestros del cliente |
+| **Contexto** | En ENT7 [00:03:46], Hugo Marambio señala: *"Hay que decidir si el resultado se escribe automático o si el operador lo transcribe"*, sin que el documento original fije una decisión. (Fuente: `fase2/consolidacion-contradicciones.md`, fila `HC-007`.) |
+| **Alternativas** | **(a)** Transcripción manual del resultado por un operador.<br>**(b)** Escritura automática de los resultados en el sistema de siniestros, vía el mismo mecanismo de intercambio de archivos definido para la integración con el cliente piloto (`HC-013`/`H-13`). |
+| **Decisión** | Se adopta la **Alternativa (b)**: la escritura de resultados se automatiza, usando el mecanismo de intercambio de archivos ya acordado para la integración (no transcripción manual). |
+| **Justificación** | Evita el riesgo de error humano y el costo operativo de transcripción manual recurrente, reutilizando el mecanismo de integración ya definido para el cliente piloto en lugar de construir uno nuevo. |
+| **Impacto** | Fuera del alcance funcional de F5 y F4 en esta entrega (afecta el módulo de integración y escritura de resultados hacia el sistema externo del cliente); impacto documental para la comparativa 6.6. |
+
+---
+
+### DEC-08: Formalización de Inconsistencia H-08 (Prohibición de Rechazo Automático Bajo 60 Puntos)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-08` (formalización oficial del hallazgo `H-08` / `HC-008`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Prohibición de rechazo automático para casos con puntaje bajo 60 |
+| **Contexto** | MIRA §2.6 permite, en su redacción original, que *"los casos evaluados con un puntaje por debajo de 60 son escalados o rechazados"* (`HC-008`/`H-08`). En ENT6 [00:04:06], Daniela Cortés (Cumplimiento) exige: *"En el documento, el tramo bajo sesenta dice 'escalamiento o rechazo'... ese 'o rechazo' es exactamente lo que no puede quedar así... Lo que no puede ocurrir es un rechazo automático. Ahí necesito una persona que decida y que pueda explicar."* |
+| **Alternativas** | **(a)** Mantener la opción de rechazo automático para el tramo bajo 60 puntos, como permite la redacción original.<br>**(b)** Eliminar completamente la opción de rechazo automático para ese tramo, escalando siempre a un analista humano que deba justificar la decisión. |
+| **Decisión** | Se adopta la **Alternativa (b)**: se elimina la opción de rechazo automático para el tramo bajo 60 puntos; todo caso en ese tramo se deriva obligatoriamente a revisión humana asistida. |
+| **Justificación** | Da cumplimiento a la exigencia explícita del área de Cumplimiento, que condiciona la operación del sistema a que ninguna denegación de reembolso ocurra sin intervención y justificación humana. |
+| **Impacto** | Principio I de la constitución (prohibición absoluta de rechazo automático), lógica de evaluación de F4 (estados `APROBADO_AUTOMATICO` / `DERIVADO_REVISION` únicamente), formalizado técnicamente junto con `DEC-E2-06` y `DEC-E2-10(b)` mediante el campo informativo `riesgoAltoRechazo`. |
+
+---
+
+### DEC-09: Formalización de Inconsistencia H-09 (Cobro por Reevaluaciones)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-09` (formalización oficial del hallazgo `H-09` / `HC-009`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Contabilización de reevaluaciones de un mismo caso para efectos de cobro |
+| **Contexto** | En ENT8 [00:07:26], Valentina Ruiz-Tagle documenta posiciones divergentes: *"Yo diría dos, porque hubo dos análisis"* frente a *"El cliente va a decir una, porque es un solo siniestro"*, concluyendo *"Necesitamos una definición escrita antes de la marcha blanca y no después de la primera factura."* (Fuente: `fase2/consolidacion-contradicciones.md`, fila `HC-009`.) |
+| **Alternativas** | **(a)** Cobrar siempre dos validaciones por cualquier reevaluación.<br>**(b)** Cobrar siempre una sola validación por caso, sin excepción.<br>**(c)** Cobrar una validación por caso, salvo que exista evidencia nueva sustantiva que gatille un reanálisis completo, en cuyo caso se cobra una segunda validación. |
+| **Decisión** | Se adopta la **Alternativa (c)**. |
+| **Justificación** | Equilibra el interés del cliente (no pagar dos veces por el mismo siniestro sin razón) con el de la aseguradora (reconocer el costo de un reanálisis genuino cuando hay evidencia nueva sustantiva), evitando la ambigüedad que exponía Valentina. |
+| **Impacto** | Fuera del alcance funcional de F5 y F4 en esta entrega (afecta el módulo de medición de consumo/facturación, F7); impacto documental para la comparativa 6.6. Relacionado conceptualmente con la prueba de reproducibilidad histórica (`DEC-14`), que sí está en alcance vía F4/F5. |
+
+---
+
+### DEC-10: Formalización de Inconsistencia H-10 (Cronograma Formal vs. Compromiso Comercial)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-10` (formalización oficial del hallazgo `H-10` / `HC-010`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Tensión entre el cronograma formal del proyecto y el compromiso comercial con el cliente piloto |
+| **Contexto** | MIRA §5.2 fija el cronograma formal en 4 entregas, con marcha blanca a fines de febrero de 2027 y producción a fines de abril de 2027. En ENT1 [00:11:05], Rodrigo Vergara (sponsor) señala: *"la aseguradora quiere estar operando con casos reales en enero, y hay una feria del sector a fines de marzo donde queremos mostrar la plataforma completa funcionando en vivo... No es lo mismo una marcha blanca en febrero que un cliente operando en enero."* |
+| **Alternativas** | **(a)** Adoptar el compromiso comercial informal (operar en enero) por sobre el cronograma formal, acelerando el plan.<br>**(b)** Rige el cronograma formal de MIRA §5.2 sin modificaciones, registrando la tensión comercial como riesgo.<br>**(c)** Aclarar primero con el cliente si "operar en enero" significa lanzamiento productivo completo o un piloto supervisado de volumen acotado, antes de decidir. |
+| **Decisión** | Se adopta la **Alternativa (b)** para efectos de esta entrega: rige el plan formal de MIRA §5.2; la tensión comercial queda registrada como riesgo formal en la matriz de riesgos (`R-11`, §9), sin alterar el cronograma. La aclaración de la Alternativa (c) queda pendiente de gestión comercial, fuera del alcance técnico de F5+F4. |
+| **Justificación** | El cronograma formal es el compromiso contractual vigente; comprometer una aceleración sin antes aclarar su alcance real con el cliente expondría al equipo a un riesgo de incumplimiento no gestionado. |
+| **Impacto** | Matriz de riesgos del proyecto (`R-11`, §9); sin impacto directo en el código de F5/F4 de esta entrega, salvo la configurabilidad del umbral de aprobación (`DEC-01`), que permite operar inicialmente conservador y recalibrar en la marcha blanca. |
+
+---
+
+### DEC-11: Formalización de Inconsistencia H-11 (SLA de Procesamiento por Tramos) — ⚠️ PARCIALMENTE ABIERTA
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-11` (formalización oficial del hallazgo `H-11` / `HC-011`) |
+| **Fecha** | 12-10-2026 (estructura definida); los valores numéricos no tienen fecha de cierre — la ficha permanece parcialmente abierta |
+| **Asunto** | SLA de tiempo de procesamiento por caso (inviabilidad del valor único de 5 segundos) |
+| **Contexto** | MIRA §4 exige que *"ningún caso debe demorar más de cinco segundos en procesarse"*. En ENT3 [00:08:57], Sebastián Alarcón objeta: *"Un caso de reembolso médico de verdad trae doce documentos... se va a treinta o cuarenta segundos. Un video de cinco minutos con análisis por eventos son varios minutos... Prometer cinco segundos para todo caso, como quedó en el documento, es prometer algo que el motor no puede hacer."* |
+| **Alternativas** | **(a)** Mantener el requisito original de 5 segundos para todo caso, aun sabiendo que es técnicamente inviable.<br>**(b)** Eliminar todo compromiso de tiempo de procesamiento.<br>**(c)** Redefinir el SLA por tramos según tipo/tamaño de archivo, dejando pendientes los valores numéricos exactos hasta contar con pruebas de carga. |
+| **Decisión** | Se adopta la **Alternativa (c)** solo en su estructura: el SLA se redefine por tramos según tipo/tamaño en lugar de un número único. **Los valores numéricos exactos por tramo permanecen sin definir** por falta de pruebas de carga suficientes — esta ficha queda formalmente **⚠️ PARCIALMENTE ABIERTA**. Para la Entrega 2, el equipo decide no construir una prueba extra-funcional de latencia (no hay base de datos para fijar un SLA creíble) y en su lugar implementa la prueba extra-funcional de reproducibilidad determinista (`DEC-14`/`H-14`), que sí es medible sin datos de producción. |
+| **Justificación** | Prometer un número sin respaldo empírico incurriría en el mismo defecto que el documento original (requisito no verificable); se prefiere declarar la estructura y dejar los valores pendientes de forma honesta, antes que inventar cifras sin sustento. |
+| **Impacto** | No se implementa prueba extra-funcional de latencia en F4/F5 de esta entrega; la prueba extra-funcional medible exigida por la pauta (§6.5) se cubre con `SC-004` (reproducibilidad). Pendiente para una entrega futura: ejecutar pruebas de carga reales y fijar los valores de SLA por tramo. |
+
+---
+
+### DEC-12: Formalización de Inconsistencia H-12 (Rastro Inalterable vs. Derecho de Eliminación)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-12` (formalización oficial del hallazgo `H-12` / `HC-012`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Compatibilización entre la inalterabilidad del rastro de auditoría y el derecho del titular a eliminar sus datos |
+| **Contexto** | MIRA §2.11 establece que *"el rastro es inalterable. Ningún usuario... puede modificarlo ni eliminarlo"*, mientras que §3 exige que *"los datos personales contenidos en la evidencia... se eliminan cuando el titular ejerce su derecho a que se eliminen."* En ENT6 [00:10:08], Daniela Cortés señala: *"esas dos frases juntas no funcionan. Alguien tiene que sentarse a resolver eso con criterio: qué se elimina, qué se conserva anonimizado y qué se conserva sí o sí porque existe una obligación legal que prevalece sobre la solicitud del titular."* |
+| **Alternativas** | **(a)** Priorizar la inalterabilidad absoluta, negando toda solicitud de eliminación de datos personales.<br>**(b)** Priorizar el derecho de eliminación, permitiendo borrar también el registro de auditoría.<br>**(c)** Separar el rastro de decisión (metadato: quién, cuándo, score, decisión), que se mantiene inalterable, del contenido personal de la evidencia, que puede anonimizarse ante una solicitud válida sin eliminar el registro de que la decisión existió. |
+| **Decisión** | Se adopta la **Alternativa (c)**, propuesta por Daniela Cortés. |
+| **Justificación** | Permite cumplir simultáneamente la obligación regulatoria de mantener un rastro de decisión inalterable (necesario ante auditorías) y el derecho del titular a que se anonimice su información personal, sin que una obligación anule a la otra. |
+| **Impacto** | Diseño de las tablas de auditoría (triggers inmutables en `auditoria_evaluaciones`, `rastro_auditoria`, implementadas en F4/F5 de esta entrega conforme al Principio VIII de la constitución); la funcionalidad específica de anonimización de datos personales queda fuera del alcance de F5+F4 en esta entrega. |
+
+---
+
+### DEC-13: Formalización de Inconsistencia H-13 (Integración API REST vs. Archivos)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-13` (formalización oficial del hallazgo `H-13` / `HC-013`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Modalidad de integración con el sistema central del cliente piloto |
+| **Contexto** | MIRA §2.10 asume integración vía API REST donde *"el cliente integra ese punto de acceso desde sus sistemas y envía la evidencia en la misma llamada"*, pero en ENT7 [00:01:06], Hugo Marambio advierte: *"Nuestro sistema central de siniestros... no expone servicios web. Lo que sí tiene es un intercambio de archivos... Todo lo que ustedes diseñen asumiendo llamadas en línea contra nuestro core no va a funcionar."* |
+| **Alternativas** | **(a)** Mantener únicamente la integración vía API REST, como en el documento original (inviable para el cliente piloto).<br>**(b)** Reemplazar completamente la API REST por intercambio de archivos.<br>**(c)** Soportar ambos patrones de integración: API REST para clientes que la expongan, e intercambio de archivos para clientes cuyo core no expone servicios web (caso del cliente piloto). |
+| **Decisión** | Se adopta la **Alternativa (c)**. |
+| **Justificación** | Preserva la arquitectura general basada en API REST para clientes futuros que sí expongan servicios web, sin descartarla, mientras resuelve la restricción técnica real y verificada del cliente piloto actual. |
+| **Impacto** | Fuera del alcance funcional directo de F5 y F4 en esta entrega (afecta la capa general de integración con sistemas externos); impacto documental para la comparativa 6.6. |
+
+---
+
+### DEC-14: Formalización de Inconsistencia H-14 (Reproducibilidad como Trazabilidad)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-14` (formalización oficial del hallazgo `H-14` / `HC-014`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Redefinición de "reconstruir una decisión pasada" ante el no determinismo de modelos generativos |
+| **Contexto** | MIRA §2.11 exige que *"debe ser posible reconstruir una decisión pasada tal como se tomó, es decir, con las versiones de los módulos y del flujo que estaban vigentes en ese momento."* En ENT3 [00:03:25], Sebastián Alarcón objeta: *"buena parte del análisis se apoya en modelos generativos, que no son deterministas... Puedes fijar parámetros para reducir la variación, pero no la eliminas. Y los proveedores actualizan sus modelos sin avisar... Si el documento promete reproducibilidad y firmamos eso, estamos firmando algo que no se cumple."* |
+| **Alternativas** | **(a)** Mantener la promesa de reproducibilidad exacta del output de los modelos generativos, sabiendo que es técnicamente inviable.<br>**(b)** Eliminar todo compromiso de reconstrucción histórica.<br>**(c)** Redefinir "reconstruir una decisión pasada" como trazabilidad completa (inputs, versión de modelo/umbrales, parámetros y lógica vigentes en ese momento), sin prometer reproducibilidad exacta del output de un modelo generativo no determinista. |
+| **Decisión** | Se adopta la **Alternativa (c)**. |
+| **Justificación** | Permite cumplir el espíritu auditable del requisito original (poder explicar cómo se tomó una decisión pasada) sin comprometerse a algo que Sebastián demuestra como técnicamente imposible de garantizar con modelos generativos no deterministas. |
+| **Impacto** | Fundamenta directamente la prueba extra-funcional obligatoria de esta entrega (`tests/reproducibility/deterministic.test.ts`, `SC-004`, Principio VIII de la constitución): como el motor de F4 es determinista (reglas simuladas, no generativo), se exige y se verifica reproducibilidad 100% exacta al reevaluar un caso histórico contra la versión de umbrales archivada en SQLite, cumpliendo la trazabilidad exigida sin las limitaciones que señaló Sebastián para modelos generativos reales. |
+
+---
+
+### DEC-15: Formalización de Inconsistencia H-15 (Plazo de Onboarding de Cliente Nuevo)
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-15` (formalización oficial del hallazgo `H-15` / `HC-015`) |
+| **Fecha** | 12-10-2026 |
+| **Asunto** | Plazo realista de incorporación de un cliente nuevo en producción |
+| **Contexto** | MIRA §2.16 fija como meta que *"un cliente nuevo pueda estar procesando casos de prueba el mismo día en que se firma... y en producción dentro de dos semanas."* En ENT2 [00:10:26], Camila Ordóñez matiza: *"Cuando llega un formulario propio de un cliente, con su formato, tomamos entre dos y tres semanas en dejarlo funcionando bien."* |
+| **Alternativas** | **(a)** Mantener la meta única de 2 semanas para todo cliente nuevo, sin distinción.<br>**(b)** Descartar la meta de 2 semanas por considerarla irreal en todos los casos.<br>**(c)** Mantener la meta de 2 semanas para clientes sin formulario personalizado, y comunicar un plazo adicional realista de 2-3 semanas específicamente para la configuración de un formulario propio. |
+| **Decisión** | Se adopta la **Alternativa (c)**. |
+| **Justificación** | Reconcilia la meta comercial (que sigue siendo válida para el caso estándar) con la estimación operativa real de quien ejecuta la configuración, evitando comprometer un plazo que el propio equipo de producto sabe que no puede cumplir cuando hay personalización de formulario. |
+| **Impacto** | Fuera del alcance funcional de F5 y F4 en esta entrega (afecta el proceso comercial/de onboarding de nuevos clientes); impacto documental para la comparativa 6.6. |
+
+---
+
+### DEC-16: Formalización de Inconsistencia H-16 (Tramos de Facturación del Cliente Piloto) — ⚠️ ABIERTA
+| Campo | Contenido |
+| :--- | :--- |
+| **ID** | `DEC-16` (formalización oficial del hallazgo `H-16` / `HC-016`) |
+| **Fecha** | 12-10-2026 (sin fecha de cierre — permanece abierta, fuera de alcance de F5+F4) |
+| **Asunto** | Tramos de facturación insuficientes para el volumen del cliente piloto |
+| **Contexto** | MIRA §2.14 define tramos *"hasta dos mil validaciones mensuales, de dos mil a cinco mil, y sobre cinco mil"* sin precio para el tramo superior. En ENT4 [00:03:07], Francisca Leiva señala: *"Si una validación es un documento, son cuarenta mil. Si es un caso, son doce mil. En ningún escenario son dos mil."* En ENT8 [00:15:16], Valentina Ruiz-Tagle agrega: *"Los tramos están definidos hasta diez mil validaciones mensuales y hay un tramo que dice 'diez mil o más' sin precio. Ese es el tramo en el que va a caer el cliente piloto."* |
+| **Alternativas** | **(a)** Mantener los tramos actuales sin modificación, dejando sin base comercial al cliente piloto.<br>**(b)** Agregar un único tramo nuevo con precio fijo (5.000-15.000) suficiente para cubrir al cliente piloto bajo cualquiera de las dos definiciones de "validación" en disputa (documento vs. caso), dejando el tramo sobre 15.000 como "Enterprise/a convenir" hasta contar con más datos de costo real. |
+| **Decisión** | Se propone la **Alternativa (b)**, pero **queda formalmente ⚠️ ABIERTA**: pendiente de validar con finanzas/comercial, y depende de resolver primero la definición de "validación" (documento vs. caso), que tampoco está cerrada. |
+| **Justificación** | No corresponde al equipo técnico fijar unilateralmente un precio comercial sin la validación del área de finanzas; se documenta la propuesta como punto de partida para esa conversación, sin presentarla como decisión cerrada. |
+| **Impacto** | Fuera del alcance funcional de F5 y F4 en esta entrega (afecta el módulo de medición de consumo/facturación, F7); queda registrada como pendiente abierta para la comparativa 6.6 y para una entrega futura, sin bloquear el incremento actual. |
+
+---
+
 ### DEC-E2-06: Precedencia Absoluta de Alerta de Fraude con Derivación a Revisión Asistida
 | Campo | Contenido |
 | :--- | :--- |
@@ -243,26 +453,23 @@ Por convención formal (**DEC-E2-02**), la presente guía adopta como numeració
 
 ### 2.b Formalización de DEC-01 a DEC-16 desde H-01 a H-16
 - **Responsable:** Angel Salgado (con revisión de Rodrigo Guerrero (representante del cliente en la E2)).
-- **Estado de las Decisiones al 13-10-2026:**
-  - `DEC-01` (H-01): **Cerrada y confirmada.** Umbral ≥ 90 parametrizable por flujo (decisión del equipo que fija "≥ 90" formalizando el "sobre noventa" de ENT4; adopta el valor más alto en conflicto y se deja configurable para ajustarlo durante la marcha blanca).
-  - `DEC-02` (H-02): Cerrada (retención 5-10 años: 90 días activo, luego frío).
-  - `DEC-03` (H-03): Cerrada (rate limits con `Retry-After` y modo bulk).
-  - `DEC-04` (H-04): Cerrada (cobro restringido a decisiones automáticas).
-  - **`DEC-05` (H-05): Cerrada en `clarify` (14-10-2026)** (ratificados los mínimos individuales: Autenticidad = 70, Cruce de fuentes = 70, Coherencia = 60, y pesos: 0.40, 0.40, 0.20 como `[SUPUESTO del equipo]`, ratificados por Rodrigo Guerrero como Representante del Cliente (sesión de clarify del 14-10-2026, ejecutada por Rodrigo con el agente; revisión de Lester hecha, pendiente Jorge y Angel); bandera de fraude independiente).
-  - `DEC-06` (H-06): Cerrada (SSO corporativo obligatorio en producción; en E2 se simula con selector de rol).
-  - `DEC-07` (H-07): Cerrada (escritura automática en siniestros vía archivos).
-  - `DEC-08` (H-08): Cerrada (prohibición de rechazo automático bajo 60 puntos; siempre derivar a revisión asistida, formalizado con `riesgoAltoRechazo` en DEC-E2-10).
-  - `DEC-09` (H-09): Cerrada (cobro de 1 validación por siniestro salvo reanálisis sustantivo).
-  - `DEC-10` (H-10): **Cerrada (rige el plan formal de MIRA §5.2; compromiso comercial registrado como riesgo en §9).** Se adopta formalmente el cronograma de **MIRA §5.2 (Plazos)**:  
-    > *"El proyecto comienza el 1 de septiembre de 2026 y se organiza en cuatro entregas. La primera, a mediados de octubre, cubre la especificación, el modelo de datos y un prototipo navegable del diseñador de flujos y de la bandeja de revisión. La segunda, a mediados de diciembre, entrega la ingesta de evidencia, el motor sobre documentos e imágenes, el cálculo del puntaje y la interfaz de programación. La tercera, a fines de febrero de 2027, incorpora video y audio, el diseñador completo con versionamiento y la bandeja de revisión asistida, y comienza la marcha blanca con el cliente piloto. La cuarta, a fines de abril de 2027, cubre paneles, medición de consumo, aislamiento multicliente y el despliegue en producción. La marcha blanca se realiza con el proceso de reembolso de gastos médicos de la aseguradora piloto, por ser el de mayor volumen y menor riesgo unitario."* (Fuente: MIRA §5.2 Plazos).  
-    *Tensión con compromiso comercial (HC-010):* La declaración de Rodrigo Vergara (sponsor, ENT1 [00:11:05]) (*"la aseguradora quiere estar operando con casos reales en enero, y hay una feria del sector a fines de marzo donde queremos mostrar la plataforma completa funcionando en vivo..."*) contradice el plan formal. El equipo resuelve que rige el plan formal de MIRA §5.2, registrándose la tensión comercial como riesgo formal en la matriz de riesgos del proyecto ([R-11 en §9](#9-matriz-de-riesgos-y-mitigaciones-específicas)).  
-    *Relación con la configurabilidad del umbral (DEC-01):* Al ratificarse la marcha blanca en febrero de 2027 con reembolsos de gastos médicos, la parametrización de umbrales (F5) permite operar inicialmente con un umbral conservador (≥ 90 puntos) y recalibrarlo empíricamente antes de la eventual salida a producción en abril de 2027.
-  - **`DEC-11` (H-11): ⚠️ PARCIALMENTE ABIERTA.** Estructura de SLA por tramos según tipo/tamaño definida por Sebastián Alarcón (ENT3); valores numéricos siguen abiertos por falta de pruebas de carga. La prueba extra-funcional de la Entrega 2 no usa latencia, sino reproducibilidad determinista (H-14).
-  - `DEC-12` (H-12): Cerrada (rastro inalterable de decisión disociado de evidencia personal).
-  - `DEC-13` (H-13): Cerrada (soporte dual: API REST y carpetas compartidas).
-  - `DEC-14` (H-14): Cerrada (reconstrucción como trazabilidad de inputs/versiones, base de la prueba extra-funcional).
-  - `DEC-15` (H-15): Cerrada (plazo 2 semanas estándar, +2-3 con formulario propio).
-  - **`DEC-16` (H-16): ⚠️ ABIERTA** (tramos de facturación 5.000–15.000 y Enterprise; fuera de alcance de F5+F4).
+- **Estado al 18-10-2026:** las 16 fichas completas (Contexto, Alternativas, Decisión, Justificación, Impacto) viven en la sección 1 de esta guía, junto a `DEC-01` y las `DEC-E2-xx`. Resumen de estado:
+  - `DEC-01` (H-01): **Cerrada.** Umbral ≥ 90 parametrizable por flujo. Ficha completa en §1.
+  - `DEC-02` (H-02): Cerrada (retención 5-10 años: 90 días activo, luego frío). Ficha completa en §1.
+  - `DEC-03` (H-03): Cerrada (rate limits con `Retry-After` y modo bulk). Ficha completa en §1.
+  - `DEC-04` (H-04): Cerrada (cobro restringido a decisiones automáticas). Ficha completa en §1.
+  - `DEC-05` (H-05): Cerrada en `clarify` (14-10-2026) (mínimos 70/70/60, pesos 0,40/0,40/0,20, ratificados por Rodrigo Guerrero). Ficha completa en §1.
+  - `DEC-06` (H-06): Cerrada (SSO corporativo obligatorio en producción; en E2 se simula con selector de rol). Ficha completa en §1.
+  - `DEC-07` (H-07): Cerrada (escritura automática en siniestros vía archivos). Ficha completa en §1.
+  - `DEC-08` (H-08): Cerrada (prohibición de rechazo automático bajo 60 puntos; formalizado con `riesgoAltoRechazo` en DEC-E2-10). Ficha completa en §1.
+  - `DEC-09` (H-09): Cerrada (cobro de 1 validación por siniestro salvo reanálisis sustantivo). Ficha completa en §1.
+  - `DEC-10` (H-10): Cerrada (rige el plan formal de MIRA §5.2; compromiso comercial registrado como riesgo `R-11` en §9). Ficha completa en §1.
+  - **`DEC-11` (H-11): ⚠️ PARCIALMENTE ABIERTA.** Estructura de SLA por tramos definida; valores numéricos siguen abiertos por falta de pruebas de carga. Ficha completa en §1.
+  - `DEC-12` (H-12): Cerrada (rastro inalterable de decisión disociado de evidencia personal). Ficha completa en §1.
+  - `DEC-13` (H-13): Cerrada (soporte dual: API REST y carpetas compartidas). Ficha completa en §1.
+  - `DEC-14` (H-14): Cerrada (reconstrucción como trazabilidad de inputs/versiones, base de la prueba extra-funcional). Ficha completa en §1.
+  - `DEC-15` (H-15): Cerrada (plazo 2 semanas estándar, +2-3 con formulario propio). Ficha completa en §1.
+  - **`DEC-16` (H-16): ⚠️ ABIERTA** (tramos de facturación 5.000–15.000 y Enterprise; fuera de alcance de F5+F4). Ficha completa en §1.
 
 ---
 
