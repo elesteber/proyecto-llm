@@ -61,7 +61,7 @@ La presente Constitución establece los principios rectores, invariantes de nego
 ### IV. Inmutabilidad de Artefactos Heredados de la Entrega 1
 - **Solo Lectura Histórica:** Todos los artefactos generados en la Entrega 1 y archivados en el directorio `fases-y-plan-de-trabajo/` son considerados patrimonio documental de solo lectura histórica (`DEC-E2-01`, §0.1, §2.f).
 - **Prohibición de Edición Directa:** Ni el agente de IA ni los desarrolladores humanos modificarán directamente los archivos de `fases-y-plan-de-trabajo/`.
-- **Formalización de Refinamientos:** Cualquier cambio, clarificación, refinamiento o resolución de inconsistencias heredadas se formaliza mediante una nueva ficha de decisión documentada (`DEC-xx` o `DEC-E2-xx`) en `docs/entregable2/decisiones/` y en `entregable2/guia-implementacion-sdd.md`.
+- **Formalización de Refinamientos:** Cualquier cambio, clarificación, refinamiento o resolución de inconsistencias heredadas se formaliza mediante una nueva ficha de decisión documentada (`DEC-xx` o `DEC-E2-xx`) en `entregable2/guia-implementacion-sdd.md` (sección 1), que es el único repositorio de fichas DEC del proyecto. *(Corrección 2026-10-19: se eliminó la referencia a una carpeta `docs/entregable2/decisiones/` que nunca llegó a crearse; las 16 fichas `DEC-01` a `DEC-16` y las 10 `DEC-E2-01` a `DEC-E2-10` viven únicamente en la guía.)*
 
 ### V. Trazabilidad Canónica, Citación de Fuentes y Verificación Pre-Entrega
 - **Convención Canónica de Identificadores:** Ante la colisión de IDs detectada entre los archivos de la Fase 5, rige como convención rectora la numeración de `fase5/fase5-lester/requisitos_formato_final.md` respaldada por la suite de pruebas funcionales de `fase6/pruebas-funcionales.md` (`DEC-E2-02`, §2.a).
