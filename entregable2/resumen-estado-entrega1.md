@@ -11,7 +11,7 @@
 A continuación se detalla cada elemento del repositorio (excluyendo `.git/` y los archivos metodológicos de `entregable2/`):
 
 ### Raíz del repositorio
-- [`README.md`](../README.md): Pauta y rúbrica oficial de la evaluación ("Entregable 1: Articulación y análisis de requisitos asistido por LLM", ICI525, Universidad de Valparaíso).
+- [`pauta-entregable1.md`](pauta-entregable1.md): Pauta y rúbrica oficial de la evaluación ("Entregable 1: Articulación y análisis de requisitos asistido por LLM", ICI525, Universidad de Valparaíso).
 - [`Resumen_Profundo_Proyecto_MIRA.md`](../Resumen_Profundo_Proyecto_MIRA.md): Documento de síntesis y preparación del equipo para la presentación oral, con análisis de vacíos, técnicas y reflexiones.
 - [`Resumen_Requisitos_con_Agentes_IA.md`](../Resumen_Requisitos_con_Agentes_IA.md): Apunte conceptual del curso sobre vibe coding, las 5 técnicas de prompting y los 6 artefactos de requisitos.
 
