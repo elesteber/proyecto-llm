@@ -111,7 +111,7 @@ flowchart LR
 
 **Prueba de usabilidad con integrante externo — resultado no satisfactorio, declarado con honestidad:** Lester Gonzalez ejecutó la prueba el 18-oct con **2 personas externas al curso** (consentimiento informado, identificadas solo por iniciales). Resultado frente a `SC-005` (≤2 clics de consulta, ≤3 min de tarea, sin asistencia): **3 de 8 ejecuciones de tarea cumplieron**, y una de ellas sin recuento de clics registrado; el segundo participante no cumplió ninguna de las 4 tareas sin ayuda. Defecto dominante: los menús de navegación y el selector de rol "no se perciben como interactivos en el primer contacto" y se describieron como "chiquititos"/"muy pequeños" (cita textual de ambos participantes, `docs/entregable2/usabilidad.md`). Esto **contrasta** con la prueba E2E automatizada (`usabilidad-recorrido.spec.ts`), que sí cumple `SC-005` porque mide el camino técnico mínimo, no si una persona lo descubre — la propia matriz de trazabilidad (`docs/entregable2/matriz-trazabilidad-tareas.md`, §E.2) documenta esta brecha explícitamente.
 
-**Sesión formal de aceptación con el representante del cliente:** > [EDITAR].
+**Sesión formal de aceptación con el representante del cliente:** Rodrigo Guerrero (representante del cliente) aceptó el incremento el 19-oct (00:15-00:38, videollamada; demo de Lester Gonzalez; versión demostrada `main @ b9f5f2d`). Se recorrieron 12 escenarios (propuesta y aprobación de umbrales con doble control, los 6 dictámenes de F4, reevaluación determinista) y los 12 dieron el resultado esperado — **resultado: Aceptado**. El cliente registró dos observaciones de diseño: la puntuación del dictamen se ve "muy pequeña y opacada por los demás textos" y "hay algunas opciones que es necesario escrolear para encontrar", y reaccionó al hallazgo de usabilidad de la sección anterior pidiendo una interfaz "más responsiva e intuitiva para la gente que no sea experta". Acta completa en el Anexo A.
 
 **Advertencia aplicada:** se verificó que las pruebas automatizadas comprueban los criterios de aceptación de la E1/spec (valores de entrada y salida fijados de antemano en la guía), no el comportamiento que el código ya tenía — el hallazgo de usabilidad de arriba es evidencia de que esta disciplina se mantuvo: una prueba que solo confirmara su propia implementación no habría podido mostrar ese resultado.
 
@@ -227,7 +227,7 @@ Queda pendiente para la siguiente entrega: cerrar `H-11` y `H-16` con datos real
 - **Bitácora de decisiones de diseño:** 16 fichas `DEC-01` a `DEC-16` + 10 fichas `DEC-E2-01` a `DEC-E2-10`, en `entregable2/guia-implementacion-sdd.md` (sección 1).
 - **Acta de clarificación con el cliente:** `docs/entregable2/clarificaciones.md`.
 - **Prueba de usabilidad con personas externas:** `docs/entregable2/usabilidad.md`.
-- **Sesión formal de aceptación con el cliente:** `docs/entregable2/sesion-aceptacion.md` > [EDITAR].
+- **Sesión formal de aceptación con el cliente:** `docs/entregable2/sesion-aceptacion.md` — texto completo en el Anexo A.
 - **Indicadores cuantitativos (cálculo completo):** `entregable2/borrador-indicadores-6.6.md`.
 - **Reporte de análisis de consistencia:** `specs/001-f5-f4-umbrales-evaluacion/reporte-analisis-consistencia.md`.
 - **Constitución del proyecto:** `.specify/memory/constitution.md`.
@@ -235,3 +235,70 @@ Queda pendiente para la siguiente entrega: cerrar `H-11` y `H-16` con datos real
 - **Evidencia de prompts y comandos:** > [EDITAR].
 - **Capturas de pantalla de la interfaz (F4 y F5):** > [EDITAR].
 - **Repositorio y tag evaluado:** `github.com/elesteber/proyecto-llm`, tag `v2.0` > [EDITAR].
+
+---
+
+## Anexo A — Acta de la sesión formal de aceptación con el cliente
+
+*(texto completo de `docs/entregable2/sesion-aceptacion.md`)*
+
+### A.1 Datos de la sesión
+
+| Campo | Valor |
+|---|---|
+| Fecha | 2026-10-19 |
+| Hora de inicio / término | 00:15 / 00:38 |
+| Medio | Videollamada |
+| Representante del Cliente | Rodrigo Guerrero |
+| Demostración | Lester González |
+| Acta | Lester González |
+| Otros asistentes | Angel Salgado |
+| Versión demostrada | `main` en el commit `b9f5f2d` |
+| Preparación del entorno | `rm -f data/mira.db*` y `npm run db:seed` (base sembrada el 2026-10-18 a las 23:58); `npm run dev`; navegador |
+
+**Declaración de rol:** Rodrigo Guerrero integra el equipo desarrollador (backend) y actúa como Representante del Cliente por asignación del taller. La aceptación se registra bajo ese rol.
+
+**Alcance:** incluido F5 (configuración de umbrales con doble control) y F4 (evaluación de casos por umbrales). Fuera de alcance de este incremento: la decisión final humana del Operador sobre casos derivados (`spec.md`, supuesto (f)) y el SLA numérico (`H-11`).
+
+### A.2 Escenarios demostrados
+
+| # | Escenario | Pasos resumidos | Resultado esperado | Criterio | Resultado observado | Decisión |
+|---|---|---|---|---|---|---|
+| 1 | Consultar la política vigente (F5) | Abrir la pestaña de umbrales | Se muestra la versión vigente (v1) | — | Versión 1, umbral de aprobación 90, cargada por el sistema. | Sí |
+| 2 | Proponer una nueva versión (F5) | Como Diseñador 1, proponer umbral de aprobación 92 | Se crea un borrador con versión correlativa | — | Versión 2 propuesta (00:19). | Sí |
+| 3 | Doble control (F5) | Intentar aprobar como el mismo proponente; intentar proponer como Administrador | Ambos intentos son rechazados | — | Bloqueado como esperado; cubierto además por `tests/integration/umbrales-api.test.ts`. | Sí |
+| 4 | Aprobación independiente (F5) | Cambiar a Administrador 1 y aprobar | La versión 2 entra en vigencia; la 1 queda en el historial | — | Aprobada a las 00:21. | Sí |
+| 5 | Historial de versiones (F5) | Abrir el historial | Se listan las versiones; las cerradas no son modificables | — | Lista v1 (carga inicial), v2 (Diseñador 1 → Administrador 1) y v3 (Diseñador 1 → Administrador 2, 00:38). Inmutabilidad verificada por `tests/integration/auditoria-inmutable.test.ts`. | Sí |
+| 6 | CASO-MED-001 (F4) | Evaluar el caso | `APROBADO_AUTOMATICO` | AC-1 | Puntaje 94, `aprobado`, `riesgoAltoRechazo: false`. | Sí |
+| 7 | CASO-MED-002 (F4) | Evaluar el caso | `DERIVADO_REVISION` por `senal_bajo_minimo` | AC-2 | Puntaje 91, coherencia 55 < 60. Evaluado dos veces (00:24, 00:28) con el mismo resultado. | Sí |
+| 8 | CASO-MED-003 (F4) | Evaluar el caso | `DERIVADO_REVISION` por `alerta_fraude` | AC-3 | Puntaje 94 con fraude activo; deriva igual. | Sí |
+| 9 | CASO-MED-004 y 006 (F4) | Evaluar ambos | `riesgoAltoRechazo` informativo, sin rechazo automático | AC-4, AC-6 | Puntajes 44 y 40; ambos `DERIVADO_REVISION`/`senal_bajo_minimo`, `riesgoAltoRechazo: true`. | Sí |
+| 10 | CASO-MED-005 (F4) | Evaluar el caso | `DERIVADO_REVISION` por `puntaje_bajo_umbral` | AC-5 | Puntaje 75, sin señales bajo mínimo. | Sí |
+| 11 | Reevaluación determinista (F4) | Reevaluar un registro histórico | Reproduce el dictamen original al 100% | SC-004 | 11 reevaluaciones registradas, todas exitosas. | Sí |
+| 12 | Regla transversal | Revisar todos los resultados | Ningún caso termina en rechazo automático | — | 1 `APROBADO_AUTOMATICO` + 6 `DERIVADO_REVISION`; cero rechazos. | Sí |
+
+> [EDITAR: adjuntar `docs/entregable2/evidencia/sesion-aceptacion-historial-evaluaciones.json` y `...-historial-umbrales.json` citados como anexo de esta acta — no existen todavía en el repositorio].
+
+### A.3 Hallazgos de usabilidad comunicados al cliente y reacción
+
+Se informó el resultado de la prueba con personas externas (`docs/entregable2/usabilidad.md`): `SC-005` no se cumple en la dimensión manual. Reacción textual del cliente:
+
+> mi reaccion es que nececitan hacerlo mas responsivo y de mas intuitivo para la gente que no sea experta
+
+### A.4 Resultado y observaciones del cliente
+
+**Resultado: Aceptado.**
+
+Observación textual del cliente:
+
+> el tamaño de la puntuacion que se genera en la evaluacion es muy pequeña y es opacada por los demas textos. Hay mucha informacion en pantalla que no es relevante para lo que se va a realizar o aparece varias veces presentada, lo cual genera confusiones y hay algunas opciones que es necesario escrolear para encontrar lo cual puede confundir a los usuarios.
+
+**Acciones derivadas (propuestas en la sesión del equipo del 19-oct, 10:00):**
+
+| # | Acción | Responsable | Plazo |
+|---|---|---|---|
+| 1 | Aumentar el tamaño de la puntuación y reducir texto repetido | Jorge Alvarez (por confirmar) | Decisión del equipo, 19-oct 10:00 |
+| 2 | Evitar que opciones clave requieran scroll | Jorge Alvarez (por confirmar) | Idem |
+| 3 | Hacer más visibles los menús y el selector de rol; instructivo inicial breve | Jorge Alvarez (por confirmar) | Idem |
+
+Confirmación final de la categoría de aceptación a cargo de Rodrigo Guerrero, en comentario del PR que incorpora esta acta.
