@@ -69,8 +69,8 @@ El Representante del Cliente registró observaciones de diseño durante la sesi�
 | # | Acción | Responsable | Plazo |
 |---|--------|-------------|-------|
 | 1 | Aumentar el tamaño de la puntuación en el resultado de la evaluación y reducir el texto repetido | Por asignar | Iteración futura |
-| 2 | Evitar que opciones clave requieran scroll | Jorge Alvarez (por confirmar) | Idem |
-| 3 | Hacer más visibles los menús y el selector de rol; instructivo inicial breve | Jorge Alvarez (por confirmar) | Idem |
+| 2 | Evitar que opciones clave requieran scroll | Por asignar | Iteración futura |
+| 3 | Hacer más visibles los menús y el selector de rol; instructivo inicial breve | Por asignar | Iteración futura |
 
 Por falta de tiempo no se implementan en esta entrega; se declaran como defecto conocido en el informe.
 
