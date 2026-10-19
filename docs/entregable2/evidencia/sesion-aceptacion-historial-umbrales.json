@@ -1,0 +1,57 @@
+{
+    "idFlujo": "reembolso-gastos-medicos",
+    "borradorActivo": null,
+    "versiones": [
+        {
+            "idFlujo": "reembolso-gastos-medicos",
+            "version": 3,
+            "umbralAprobacion": 92,
+            "umbralRiesgoAlto": 65,
+            "minimoAutenticidad": 70,
+            "minimoCruceFuentes": 70,
+            "minimoCoherencia": 60,
+            "pesoAutenticidad": 0.4,
+            "pesoCruceFuentes": 0.4,
+            "pesoCoherencia": 0.2,
+            "proponente": "Dise\u00f1ador 1",
+            "aprobador": "Administrador 2",
+            "fechaPropuesta": "2026-10-19T03:38:33.985Z",
+            "fechaResolucion": "2026-10-19T03:38:53.822Z",
+            "estado": "APROBADO"
+        },
+        {
+            "idFlujo": "reembolso-gastos-medicos",
+            "version": 2,
+            "umbralAprobacion": 92,
+            "umbralRiesgoAlto": 60,
+            "minimoAutenticidad": 70,
+            "minimoCruceFuentes": 70,
+            "minimoCoherencia": 60,
+            "pesoAutenticidad": 0.4,
+            "pesoCruceFuentes": 0.4,
+            "pesoCoherencia": 0.2,
+            "proponente": "Dise\u00f1ador 1",
+            "aprobador": "Administrador 1",
+            "fechaPropuesta": "2026-10-19T03:19:20.472Z",
+            "fechaResolucion": "2026-10-19T03:21:46.253Z",
+            "estado": "APROBADO"
+        },
+        {
+            "idFlujo": "reembolso-gastos-medicos",
+            "version": 1,
+            "umbralAprobacion": 90,
+            "umbralRiesgoAlto": 60,
+            "minimoAutenticidad": 70,
+            "minimoCruceFuentes": 70,
+            "minimoCoherencia": 60,
+            "pesoAutenticidad": 0.4,
+            "pesoCruceFuentes": 0.4,
+            "pesoCoherencia": 0.2,
+            "proponente": "sistema",
+            "aprobador": "carga inicial del sistema (valores por defecto)",
+            "fechaPropuesta": "2026-10-19T02:58:34.603Z",
+            "fechaResolucion": "2026-10-19T02:58:34.603Z",
+            "estado": "APROBADO"
+        }
+    ]
+}

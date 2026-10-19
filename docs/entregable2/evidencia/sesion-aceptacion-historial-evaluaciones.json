@@ -1,0 +1,124 @@
+{
+    "total": 7,
+    "evaluaciones": [
+        {
+            "idEvaluacion": "1071f8e3-a7f7-4aa2-aecd-bc4644b4a1f8",
+            "idCaso": "CASO-MED-005",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 75,
+            "decision": "DERIVADO_REVISION",
+            "motivo": "puntaje_bajo_umbral",
+            "riesgoAltoRechazo": false,
+            "senalesInsumo": {
+                "autenticidad_documentos": 75,
+                "cruce_fuentes": 75,
+                "coherencia_solicitud": 75,
+                "alertaFraudeActiva": false
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:28:28.340Z"
+        },
+        {
+            "idEvaluacion": "34d1c882-5f2d-44fd-96c1-f662c529c1b5",
+            "idCaso": "CASO-MED-002",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 91,
+            "decision": "DERIVADO_REVISION",
+            "motivo": "senal_bajo_minimo",
+            "riesgoAltoRechazo": false,
+            "senalesInsumo": {
+                "autenticidad_documentos": 100,
+                "cruce_fuentes": 100,
+                "coherencia_solicitud": 55,
+                "alertaFraudeActiva": false
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:28:10.610Z"
+        },
+        {
+            "idEvaluacion": "6a235c2e-5cd5-419d-9580-fe94a56b0a3e",
+            "idCaso": "CASO-MED-006",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 40,
+            "decision": "DERIVADO_REVISION",
+            "motivo": "senal_bajo_minimo",
+            "riesgoAltoRechazo": true,
+            "senalesInsumo": {
+                "autenticidad_documentos": 0,
+                "cruce_fuentes": 70,
+                "coherencia_solicitud": 60,
+                "alertaFraudeActiva": false
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:27:32.508Z"
+        },
+        {
+            "idEvaluacion": "d998f1d2-1278-4583-9cd0-c1183c834341",
+            "idCaso": "CASO-MED-004",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 44,
+            "decision": "DERIVADO_REVISION",
+            "motivo": "senal_bajo_minimo",
+            "riesgoAltoRechazo": true,
+            "senalesInsumo": {
+                "autenticidad_documentos": 40,
+                "cruce_fuentes": 40,
+                "coherencia_solicitud": 60,
+                "alertaFraudeActiva": false
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:26:59.358Z"
+        },
+        {
+            "idEvaluacion": "e84be114-caa9-4683-b20a-7c463c3e1a28",
+            "idCaso": "CASO-MED-003",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 94,
+            "decision": "DERIVADO_REVISION",
+            "motivo": "alerta_fraude",
+            "riesgoAltoRechazo": false,
+            "senalesInsumo": {
+                "autenticidad_documentos": 95,
+                "cruce_fuentes": 95,
+                "coherencia_solicitud": 90,
+                "alertaFraudeActiva": true
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:25:47.927Z"
+        },
+        {
+            "idEvaluacion": "e7cebe77-b874-4c9e-83c9-c075de39af72",
+            "idCaso": "CASO-MED-002",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 91,
+            "decision": "DERIVADO_REVISION",
+            "motivo": "senal_bajo_minimo",
+            "riesgoAltoRechazo": false,
+            "senalesInsumo": {
+                "autenticidad_documentos": 100,
+                "cruce_fuentes": 100,
+                "coherencia_solicitud": 55,
+                "alertaFraudeActiva": false
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:24:28.506Z"
+        },
+        {
+            "idEvaluacion": "dfce2a47-5f18-420d-88c9-b5b14f82b132",
+            "idCaso": "CASO-MED-001",
+            "versionUmbralesAplicada": 2,
+            "scoreGlobal": 94,
+            "decision": "APROBADO_AUTOMATICO",
+            "motivo": "aprobado",
+            "riesgoAltoRechazo": false,
+            "senalesInsumo": {
+                "autenticidad_documentos": 95,
+                "cruce_fuentes": 95,
+                "coherencia_solicitud": 90,
+                "alertaFraudeActiva": false
+            },
+            "usuarioOperador": "Administrador 1",
+            "timestamp": "2026-10-19T03:24:00.552Z"
+        }
+    ]
+}
